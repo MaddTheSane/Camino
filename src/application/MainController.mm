@@ -290,8 +290,7 @@ static const char* ioServiceContractID = "@mozilla.org/network/io-service;1";
 // Bookmarks menu actions.
 -(IBAction) importBookmarks:(id)aSender
 {
-  // IE favorites: ~/Library/Preferences/Explorer/Favorites.html
-  // Omniweb favorites: ~/Library/Application Support/Omniweb/Bookmarks.html
+
 }
 
 -(IBAction) addBookmark:(id)aSender
