@@ -11,15 +11,15 @@
 # for the specific language governing rights and limitations under the
 # License.
 #
-# The Original Code is mozilla.org code.
+# The Original Code is the Mozilla Browser code.
 #
 # The Initial Developer of the Original Code is
-# Netscape Communications.
-# Portions created by the Initial Developer are Copyright (C) 2003
+# IBM Corporation.
+# Portions created by the Initial Developer are Copyright (C) 2004
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s):
-#  Brian Ryner <bryner@brianryner.com>
+#  Mark Mentovai <mark@moxienet.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -35,58 +35,33 @@
 #
 # ***** END LICENSE BLOCK *****
 
-DEPTH		= ..
-topsrcdir	= @top_srcdir@
-srcdir		= @srcdir@
-VPATH		= @srcdir@
+DEPTH		= ../..
+topsrcdir       = @top_srcdir@
+srcdir          = @srcdir@
+VPATH           = @srcdir@
 
 include $(DEPTH)/config/autoconf.mk
 
-APP_NAME	= Camino
-
-ifdef MOZ_DEBUG
-BUILDSTYLE	= Development
-else
-ifdef CHIMERA_OPT_SYMBOLS
-BUILDSTYLE	= DeploymentSymbols
-else
-BUILDSTYLE	= Deployment
-endif
-endif
-
-ifdef BUILD_STATIC_LIBS
-TARGET		= CaminoStatic
-else
-TARGET		= Camino
-endif
-
-GARBAGE_DIRS += build 
-
 include $(topsrcdir)/config/rules.mk
 
-unexport CC CXX
+CAMINO_VERSION=0.9a2
+_RELNOTE_VERSION:=$(subst .,-,$(CAMINO_VERSION))
 
-ABS_topsrcdir := $(shell cd $(topsrcdir); pwd)
+# The packager runs in the dist directory, paths must be relative to there.
+MOZ_PKG_MAC_DSSTORE=../camino/resources/package/dsstore
+MOZ_PKG_MAC_BACKGROUND=../camino/resources/package/background.jpg
+MOZ_PKG_MAC_ICON=../camino/resources/package/disk.icns
+MOZ_PKG_MAC_RSRC=../camino/resources/package/license.r
+# The docs aren't copied into an objdir, chase them in the srcdir.
+MOZ_PKG_MAC_EXTRA=--copy "$(topsrcdir)/camino/docs/ReadMe.rtf" --copy "$(topsrcdir)/camino/docs/Release Notes $(_RELNOTE_VERSION).rtf:Release Notes.rtf" --attribute "E:/ReadMe.rtf:/Release Notes.rtf"
 
-export::
-	mkdir -p ./wallet/tables && ln -sf $(ABS_topsrcdir)/extensions/wallet/src/*.tbl ./wallet/tables
-ifneq ($(ABS_topsrcdir),$(MOZ_BUILD_ROOT))
-	rsync -a --exclude .DS_Store --exclude "CVS/" --exclude "*.mode1" --exclude "*.pbxuser" $(srcdir)/Camino.xcode .
-	ln -fs $(srcdir)/src
-	ln -fs $(srcdir)/resources
-	ln -fs $(srcdir)/PreferencePanes
-	ln -fs $(srcdir)/Info-*.plist .
-endif
+include $(topsrcdir)/toolkit/mozapps/installer/packager.mk
 
-clean clobber repackage::
-	rm -rf $(DIST)/$(APP_NAME).app
+# The core build system thinks it's Mozilla.  Override what's necessary.
+MOZ_APP_DISPLAYNAME=Camino
+MOZ_PKG_APPNAME=camino
+MOZ_PKG_VERSION=0.9a2
 
-libs::
-	$(PBBUILD) -project Camino.xcode -target $(TARGET) -buildstyle $(BUILDSTYLE) $(PBBUILD_SETTINGS)
-
-libs repackage::
-	rsync -a --copy-unsafe-links $(XCODE_PRODUCT_DIR)/Camino.app/ $(DIST)/$(APP_NAME).app
-
-# convenience target for PB script build phases
-echo_srcdir:
-	@echo $(srcdir)
+# Override toolkit/mozapps/installer/package-name.mk - we're Mac-only, and
+# handle localizations differently, so just use name-version.
+PKG_BASENAME=$(MOZ_PKG_APPNAME)-$(MOZ_PKG_VERSION)
