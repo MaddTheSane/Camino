@@ -72,7 +72,7 @@
 #include "nsIDOMLocation.h"
 #include "nsIDOMWindowInternal.h"
 #include "nsIDOMNSDocument.h"
-#include "nsIDOMNSHTMLElement.h"
+#include "nsIDOMNSElement.h"
 
 /* static */
 void GeckoUtils::GatherTextUnder(nsIDOMNode* aNode, nsString& aResult) 
@@ -290,7 +290,7 @@ void GeckoUtils::GetIntrinsicSize(nsIDOMWindow* aWindow,  PRInt32* outWidth, PRI
   if (!docElement)
     return;
 
-  nsCOMPtr<nsIDOMNSHTMLElement> nsElement = do_QueryInterface(docElement);
+  nsCOMPtr<nsIDOMNSElement> nsElement = do_QueryInterface(docElement);
   if (!nsElement)
     return;
 
