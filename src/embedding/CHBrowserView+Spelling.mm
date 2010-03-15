@@ -299,10 +299,9 @@
   selection->GetFocusNode(getter_AddRefs(selectionEndNode));
   selection->GetFocusOffset(&selectionEndOffset);
 
-  // The misspelling "mispelled" is (sadly) deliberate; see bug 357465.
-  (*outInlineChecker)->GetMispelledWord(selectionEndNode,
-                                        (long)selectionEndOffset,
-                                        outRange); // addrefs
+  (*outInlineChecker)->GetMisspelledWord(selectionEndNode,
+                                         (long)selectionEndOffset,
+                                         outRange); // addrefs
 }
 
 @end
