@@ -776,7 +776,10 @@ const char* const kHTMLMIMEType = "text/html";
                   NSIntPixelsToAppUnits(scrollY, appUnitsPerPixel),
                   NSIntPixelsToAppUnits(viewportSize.width, appUnitsPerPixel),
                   NSIntPixelsToAppUnits(viewportSize.height, appUnitsPerPixel));
-  presShell->RenderDocument(viewRect, PR_FALSE, PR_TRUE, NS_RGB(255, 255, 255), context);
+  presShell->RenderDocument(viewRect,
+                            nsIPresShell::RENDER_IGNORE_VIEWPORT_SCROLLING,
+                            NS_RGB(255, 255, 255),
+                            context);
 
   // Now transfer the context contents into an NSImage.
   CGContextRef surfaceContext = surface->GetCGContext();
