@@ -1396,7 +1396,7 @@ const char* const kHTMLMIMEType = "text/html";
     return YES;
 
   PRBool canUnload;
-  contentViewer->PermitUnload(&canUnload);
+  contentViewer->PermitUnload(PR_TRUE, &canUnload);
   return canUnload ? YES : NO;
 }
 
