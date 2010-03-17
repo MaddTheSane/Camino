@@ -1,4 +1,3 @@
-#! /bin/sh
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -12,15 +11,15 @@
 # for the specific language governing rights and limitations under the
 # License.
 #
-# The Original Code is the the Mozilla build system
+# The Original Code is the Mozilla build system.
 #
 # The Initial Developer of the Original Code is
-# Ben Turner <mozilla@songbirdnest.com>
-#
-# Portions created by the Initial Developer are Copyright (C) 2007
+# the Mozilla Foundation <http://www.mozilla.org/>.
+# Portions created by the Initial Developer are Copyright (C) 2008
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s):
+#   Robert Kaiser <kairo@kairo.at> (Initial Code)
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -36,14 +35,15 @@
 #
 # ***** END LICENSE BLOCK *****
 
-add_makefiles "
-camino/Makefile
-camino/IBPalette/Makefile
-camino/feedhandlers/Makefile
-camino/flashblock/Makefile
-camino/idl/Makefile
-camino/installer/Makefile
-camino/pinstripe/Makefile
-camino/striptease/Makefile
-camino/safebrowsing/Makefile
-"
+MOZ_MACBROWSER = 1
+DEFINES += -DMOZ_MACBROWSER=1
+
+# Make the whole tree rebuild if app-config.mk changes
+# Use MOZ_BUILD_APP to make life easy
+ifeq (,$(wildcard $(topsrcdir)/$(MOZ_BUILD_APP)/app-config.mk))
+#Fail if normal means of finding app-config.mk does not work
+$(error Somehow we got included but we can't find ourselves...)
+else
+GLOBAL_DEPS += $(topsrcdir)/$(MOZ_BUILD_APP)/app-config.mk
+endif
+

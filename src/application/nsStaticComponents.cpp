@@ -82,9 +82,7 @@
     MODULE(nsTransactionManagerModule) \
     MODULE(application) \
     MODULE(nsCookieModule) \
-    MODULE(nsXMLExtrasModule) \
     MODULE(nsUniversalCharDetModule) \
-    MODULE(nsTypeAheadFind) \
     MODULE(nsPermissionsModule) \
     MODULE(nsComposerModule) \
     MODULE(mozSpellCheckerModule) \

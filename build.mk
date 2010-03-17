@@ -50,7 +50,6 @@ tier_app_dirs += $(MOZ_BRANDING_DIRECTORY)
 endif
 
 tier_app_dirs += \
-	embedding/config \
 	camino \
 	$(NULL)
 

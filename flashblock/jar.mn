@@ -1,5 +1,5 @@
 flashblock.jar:
-  content/flashblock/contents.rdf    (content/contents.rdf)
+% content	flashblock	%content/flashblock/	contentaccessible=yes
   content/flashblock/flashblock.xml  (content/flashblock.xml)
   content/flashblock/flashblock.css  (content/flashblock.css)
   content/flashblock/authorware.png  (content/authorware.png)

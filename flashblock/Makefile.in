@@ -42,22 +42,3 @@ VPATH		= @srcdir@
 include $(DEPTH)/config/autoconf.mk
 
 include $(topsrcdir)/config/rules.mk
-
-# The presence of jar.mn causes $(SOURCE_CHROME_DIR)/$(JAR_FILE).jar to be
-# built and $(SOURCE_CHROME_DIR)/installed-chrome.txt to be updated.  Camino
-# uses $(TARGET_CHROME_DIR)/installed-chrome.txt instead, though, so copy
-# the jar and update the correct installed-chrome.txt file.
-
-SOURCE_CHROME_DIR	= $(DIST)/bin/chrome
-TARGET_CHROME_DIR	= $(DIST)/Embed/chrome
-INSTALLED_CHROME	= $(TARGET_CHROME_DIR)/installed-chrome.txt
-CHROME_TYPE		= content
-CHROME_PKG_NAME		= flashblock
-JAR_FILE		= $(CHROME_PKG_NAME)
-
-libs realchrome:: $(CHROME_DEPS)
-	chmod a-x $(INSTALLED_CHROME)
-	$(NSINSTALL) -t -m 0644 \
-	  $(SOURCE_CHROME_DIR)/$(JAR_FILE).jar $(TARGET_CHROME_DIR)
-	$(PERL) -I$(MOZILLA_DIR)/config $(MOZILLA_DIR)/config/add-chrome.pl \
-	  $(INSTALLED_CHROME) 0 $(CHROME_TYPE) $(CHROME_PKG_NAME) $(JAR_FILE)
