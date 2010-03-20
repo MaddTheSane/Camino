@@ -1,0 +1,14 @@
+# There can only be one .hgignore file per repository, so all rules should be
+# defined here, either globally or with an appropriate directory prefix.
+# N.B. All .hgignore rules are unrooted by default.
+
+Makefile
+build
+generated
+
+# Default syntax is Perl/Python regexp; use shell glob for the project
+syntax: glob
+
+*.xcodeproj/*.mode?
+*.xcodeproj/*.mode?v?
+*.xcodeproj/*.pbxuser

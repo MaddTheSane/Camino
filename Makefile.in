@@ -55,7 +55,7 @@ DIRS = \
 
 APP_NAME	= Camino
 
-RSYNC_ALL = rsync -aC --exclude .cvsignore --delete
+RSYNC_ALL = rsync -aC --exclude '*.xcodeproj/*.mode*' --exclude '*.xcodeproj/*.pbxuser' --delete
 
 CM_APP_VERSION_FILE = $(srcdir)/config/version.txt
 CM_APP_VERSION := $(shell cat $(CM_APP_VERSION_FILE))
