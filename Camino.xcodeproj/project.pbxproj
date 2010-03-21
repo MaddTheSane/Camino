@@ -6106,7 +6106,7 @@
 			files = (
 			);
 			inputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(WRAPPER_NAME)/Contents/MacOS/libmozlcms.dylib",
+				"$(BUILT_PRODUCTS_DIR)/$(WRAPPER_NAME)/Contents/MacOS/libxpcom_core.dylib",
 				"$(BUILT_PRODUCTS_DIR)/$(WRAPPER_NAME)/Contents/Frameworks/Breakpad.framework",
 			);
 			name = "Force Copy Before Link";
