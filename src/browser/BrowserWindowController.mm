@@ -4812,45 +4812,45 @@ public:
 //
 - (BOOL)isFlashblockElement:(nsIDOMNode*)aNode
 {
-  nsCOMPtr<nsIDOMElement> flashElement(do_QueryInterface(aNode));
-  if(!flashElement) {
-    return NO;
-  }
+  nsresult rv;
+  nsCOMPtr<nsIDOMElement> flashElement = do_QueryInterface(aNode, &rv);
+  NS_ENSURE_SUCCESS(rv, NO);
+  NS_ENSURE_TRUE(flashElement, NO);
 
   nsCOMPtr<nsIDOMDocument> document;
-  flashElement->GetOwnerDocument(getter_AddRefs(document));
-  nsCOMPtr<nsIDOMDocumentView> docView(do_QueryInterface(document));
-  if (!docView) {
-    return NO;
-  }
+  rv = flashElement->GetOwnerDocument(getter_AddRefs(document));
+  NS_ENSURE_SUCCESS(rv, NO);
+
+  nsCOMPtr<nsIDOMDocumentView> docView = do_QueryInterface(document, &rv);
+  NS_ENSURE_SUCCESS(rv, NO);
+  NS_ENSURE_TRUE(docView, NO);
 
   nsCOMPtr<nsIDOMAbstractView> defaultView;
-  docView->GetDefaultView(getter_AddRefs(defaultView));
-  nsCOMPtr<nsIDOMViewCSS> defaultCSSView(do_QueryInterface(defaultView));
-  if (!defaultCSSView) {
-    return NO;
-  }
+  rv = docView->GetDefaultView(getter_AddRefs(defaultView));
+  NS_ENSURE_SUCCESS(rv, NO);
+
+  nsCOMPtr<nsIDOMViewCSS> defaultCSSView = do_QueryInterface(defaultView, &rv);
+  NS_ENSURE_SUCCESS(rv, NO);
+  NS_ENSURE_TRUE(defaultCSSView, NO);
 
   nsCOMPtr<nsIDOMCSSStyleDeclaration> computedStyle;
-  defaultCSSView->GetComputedStyle(flashElement, EmptyString(),
-                                   getter_AddRefs(computedStyle));
-  if (!computedStyle) {
-    return NO;
-  }
+  rv = defaultCSSView->GetComputedStyle(flashElement, EmptyString(),
+                                        getter_AddRefs(computedStyle));
+  NS_ENSURE_SUCCESS(rv, NO);
+  NS_ENSURE_TRUE(computedStyle, NO);
 
   nsCOMPtr<nsIDOMCSSValue> cssValue;
-  computedStyle->GetPropertyCSSValue(NS_LITERAL_STRING("background-image"),
-                                     getter_AddRefs(cssValue));
-  nsCOMPtr<nsIDOMCSSPrimitiveValue> primitiveValue;
-  primitiveValue = do_QueryInterface(cssValue);
-  if (!primitiveValue) {
-    return NO;
-  }
+  rv = computedStyle->GetPropertyCSSValue(NS_LITERAL_STRING("background-image"),
+                                          getter_AddRefs(cssValue));
+  NS_ENSURE_SUCCESS(rv, NO);
+  NS_ENSURE_TRUE(cssValue, NO);
 
   nsAutoString bgStringValue;
-  primitiveValue->GetStringValue(bgStringValue);
+  rv = cssValue->GetCssText(bgStringValue);
+  NS_ENSURE_SUCCESS(rv, NO);
+
   return [[NSString stringWith_nsAString:bgStringValue]
-          hasPrefix:@"chrome://flashblock/content/"];
+          hasPrefix:@"url(\"chrome://flashblock/"];
 }
 
 //

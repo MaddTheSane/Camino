@@ -990,6 +990,8 @@
 		B3128A120E5D14C8009F0595 /* pageBigger.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B3757F860E5D0FE70006EDF1 /* pageBigger.tiff */; };
 		B3128A130E5D14CD009F0595 /* pageSmaller.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B3757F870E5D0FE70006EDF1 /* pageSmaller.tiff */; };
 		B3128A140E5D14CE009F0595 /* pageSmaller.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B3757F870E5D0FE70006EDF1 /* pageSmaller.tiff */; };
+		B328DF46114ED069004D2EDC /* nsPlacesDBFlush.js in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = B328DEF9114ECFBF004D2EDC /* nsPlacesDBFlush.js */; };
+		B328DF47114ED0AD004D2EDC /* nsPlacesDBFlush.js in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = B328DEF9114ECFBF004D2EDC /* nsPlacesDBFlush.js */; };
 		B33032C910AE16D7002FA0A7 /* libmorkreader_s.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B33032C810AE16D7002FA0A7 /* libmorkreader_s.a */; };
 		B33032CA10AE16D7002FA0A7 /* libmorkreader_s.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B33032C810AE16D7002FA0A7 /* libmorkreader_s.a */; };
 		B33032CC10AE178E002FA0A7 /* places.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = B33032AE10AE166F002FA0A7 /* places.xpt */; };
@@ -1736,6 +1738,7 @@
 				3F44AD2705BDFB9F00CB4B08 /* nsProxyAutoConfig.js in Copy Component Libraries */,
 				0098B1230CAEA77500DA0F2F /* nsHandlerService.js in Copy Component Libraries */,
 				B33032F610AE17C9002FA0A7 /* nsLivemarkService.js in Copy Component Libraries */,
+				B328DF46114ED069004D2EDC /* nsPlacesDBFlush.js in Copy Component Libraries */,
 				C7DE8E300F30D2C100CD3872 /* nsUrlClassifierListManager.js in Copy Component Libraries */,
 				C7DE8E310F30D2C100CD3872 /* nsUrlClassifierLib.js in Copy Component Libraries */,
 			);
@@ -1777,6 +1780,7 @@
 				3F44AF4405BDFBA000CB4B08 /* nsProxyAutoConfig.js in Copy Component Libraries */,
 				0098B12A0CAEA81700DA0F2F /* nsHandlerService.js in Copy Component Libraries */,
 				B33032F710AE17F1002FA0A7 /* nsLivemarkService.js in Copy Component Libraries */,
+				B328DF47114ED0AD004D2EDC /* nsPlacesDBFlush.js in Copy Component Libraries */,
 				C7DE8E4B0F30D41500CD3872 /* nsUrlClassifierListManager.js in Copy Component Libraries */,
 				C7DE8E4C0F30D41500CD3872 /* nsUrlClassifierLib.js in Copy Component Libraries */,
 			);
@@ -2813,6 +2817,7 @@
 		A708E74103FB9041003C038B /* libi18n.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; name = libi18n.dylib; path = ../dist/bin/components/libi18n.dylib; sourceTree = SOURCE_ROOT; };
 		A7C1276F0495618300A967F8 /* libjar50.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjar50.a; path = ../modules/libjar/libjar50.a; sourceTree = SOURCE_ROOT; };
 		A7E5D960041A07C900A967F8 /* libi18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libi18n.a; path = ../intl/build/libi18n.a; sourceTree = SOURCE_ROOT; };
+		B328DEF9114ECFBF004D2EDC /* nsPlacesDBFlush.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = nsPlacesDBFlush.js; path = ../dist/bin/components/nsPlacesDBFlush.js; sourceTree = SOURCE_ROOT; };
 		B33032AA10AE15EA002FA0A7 /* nsLivemarkService.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = nsLivemarkService.js; path = ../dist/bin/components/nsLivemarkService.js; sourceTree = SOURCE_ROOT; };
 		B33032AE10AE166F002FA0A7 /* places.xpt */ = {isa = PBXFileReference; lastKnownFileType = file; name = places.xpt; path = ../toolkit/components/places/public/_xpidlgen/places.xpt; sourceTree = SOURCE_ROOT; };
 		B33032C810AE16D7002FA0A7 /* libmorkreader_s.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmorkreader_s.a; path = ../db/morkreader/libmorkreader_s.a; sourceTree = SOURCE_ROOT; };
@@ -5000,6 +5005,7 @@
 				F5461CBB03AAC25C01A96660 /* nsProxyAutoConfig.js */,
 				0098B11D0CAEA75700DA0F2F /* nsHandlerService.js */,
 				B33032AA10AE15EA002FA0A7 /* nsLivemarkService.js */,
+				B328DEF9114ECFBF004D2EDC /* nsPlacesDBFlush.js */,
 				C7DE8E150F30D14F00CD3872 /* nsUrlClassifierListManager.js */,
 				C7DE8E160F30D14F00CD3872 /* nsUrlClassifierLib.js */,
 				0098B17F0CAEA9CF00DA0F2F /* XPCOMUtils.jsm */,

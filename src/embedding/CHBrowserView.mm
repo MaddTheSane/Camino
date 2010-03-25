@@ -97,7 +97,7 @@
 #include "nsISelection.h"
 
 // Focus accessors
-#include "nsIFocusController.h"
+#include "nsFocusManager.h"
 #include "nsIDOMElement.h"
 
 // Focus tests
@@ -166,7 +166,6 @@ const char* const kHTMLMIMEType = "text/html";
 - (NSString*)selectedText;
 - (already_AddRefed<nsIDOMWindow>)focussedDOMWindow;
 - (already_AddRefed<nsIDOMElement>)focusedDOMElement;
-- (already_AddRefed<nsIFocusController>)focusController;
 - (already_AddRefed<nsISecureBrowserUI>)secureBrowserUI;
 - (NSString*)locationFromDOMWindow:(nsIDOMWindow*)inDOMWindow;
 - (void)ensurePrintSettings;
@@ -694,30 +693,20 @@ const char* const kHTMLMIMEType = "text/html";
 
 }
 
-// Returns the focus controller, AddRef'd.
-- (already_AddRefed<nsIFocusController>)focusController
-{
-  if (!_webBrowser)
-    return nsnull;
-  nsCOMPtr<nsIDOMWindow> domWindow;
-  _webBrowser->GetContentDOMWindow(getter_AddRefs(domWindow));
-  nsCOMPtr<nsPIDOMWindow> privateWindow = do_QueryInterface(domWindow);
-  if (!privateWindow)
-    return nsnull;
-  nsIFocusController* focusController = privateWindow->GetRootFocusController();
-  NS_IF_ADDREF(focusController);
-  return focusController;
-}
-
 // Returns the currently focused DOM element, AddRef'd.
 - (already_AddRefed<nsIDOMElement>)focusedDOMElement
 {
-  nsCOMPtr<nsIFocusController> controller = [self focusController];
-  if (!controller)
-    return nsnull;
-  nsCOMPtr<nsIDOMElement> focusedItem;
-  controller->GetFocusedElement(getter_AddRefs(focusedItem));
-  nsIDOMElement* domElement = focusedItem.get();
+  nsresult rv;
+  nsCOMPtr<nsIFocusManager> fm =
+    do_GetService("@mozilla.org/focus-manager;1", &rv);
+  NS_ENSURE_SUCCESS(rv, nsnull);
+  NS_ENSURE_TRUE(fm, nsnull);
+
+  nsCOMPtr<nsIDOMElement> focusedElement;
+  fm->GetFocusedElement(getter_AddRefs(focusedElement));
+  NS_ENSURE_TRUE(focusedElement, nsnull);
+
+  nsIDOMElement* domElement = focusedElement.get();
   NS_IF_ADDREF(domElement);
   return domElement;
 }
@@ -1430,8 +1419,6 @@ const char* const kHTMLMIMEType = "text/html";
 //
 - (BOOL)isTextFieldFocused
 {
-  BOOL isFocused = NO;
-  
   nsCOMPtr<nsIDOMElement> focusedItem = [self focusedDOMElement];
   
   // we got it, now check if it's what we care about
@@ -1441,34 +1428,39 @@ const char* const kHTMLMIMEType = "text/html";
     nsAutoString type;
     input->GetType(type);
     if (type == NS_LITERAL_STRING("text"))
-      isFocused = YES;
+      return YES;
     if (type == NS_LITERAL_STRING("password"))
-      isFocused = YES;
+      return YES;
   }
   else if (textArea) {
-    isFocused = YES;
+    return YES;
   }
   else { // check for Midas
-    nsCOMPtr<nsIFocusController> controller = [self focusController];
-    if (controller) {
-      nsCOMPtr<nsIDOMWindowInternal> winInternal;
-      controller->GetFocusedWindow(getter_AddRefs(winInternal));
-      nsCOMPtr<nsIDOMWindow> focusedWindow(do_QueryInterface(winInternal));
-      if (focusedWindow) {
-        nsCOMPtr<nsIDOMDocument> domDoc;
-        focusedWindow->GetDocument(getter_AddRefs(domDoc));
-        nsCOMPtr<nsIDOMNSHTMLDocument> htmlDoc(do_QueryInterface(domDoc));
-        if (htmlDoc) {
-          nsAutoString designMode;
-          htmlDoc->GetDesignMode(designMode);
-          if (designMode.EqualsLiteral("on"))
-            isFocused = YES;
-        }
-      }
-    }
+    nsresult rv;
+    nsCOMPtr<nsIFocusManager> fm =
+      do_GetService("@mozilla.org/focus-manager;1", &rv);
+    NS_ENSURE_SUCCESS(rv, NO);
+    NS_ENSURE_TRUE(fm, NO);
+
+    nsCOMPtr<nsIDOMWindow> focusedWindow;
+    fm->GetFocusedWindow(getter_AddRefs(focusedWindow));
+    NS_ENSURE_TRUE(focusedWindow, NO);
+
+    nsCOMPtr<nsIDOMDocument> domDoc;
+    rv = focusedWindow->GetDocument(getter_AddRefs(domDoc));
+    NS_ENSURE_SUCCESS(rv, NO);
+
+    nsCOMPtr<nsIDOMNSHTMLDocument> htmlDoc = do_QueryInterface(domDoc, &rv);
+    NS_ENSURE_SUCCESS(rv, NO);
+    NS_ENSURE_TRUE(htmlDoc, NO);
+
+    nsAutoString designMode;
+    htmlDoc->GetDesignMode(designMode);
+    if (designMode.EqualsLiteral("on"))
+      return YES;
   }
 
-  return isFocused;
+  return NO;
 }
 
 // -isPluginFocused
