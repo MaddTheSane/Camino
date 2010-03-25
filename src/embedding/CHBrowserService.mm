@@ -201,9 +201,14 @@ void CHBrowserService::ShutDown()
   nsCOMPtr<nsIObserverService> observerService = do_GetService("@mozilla.org/observer-service;1");
   if (observerService)
     observerService->NotifyObservers(nsnull, "profile-change-net-teardown", nsnull);
-  
+
   // phase 2 notifcation (we really are about to terminate)
   [[NSNotificationCenter defaultCenter] postNotificationName:XPCOMShutDownNotificationName object:nil];
+
+  // Camino observers have been notified of XPCOM shutdown. Now notify Gecko
+  // that we are quitting.
+  if (observerService)
+    observerService->NotifyObservers(nsnull, "quit-application", nsnull);
 
   NS_IF_RELEASE(sSingleton);
   NS_TermEmbedding();
