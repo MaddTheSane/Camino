@@ -43,7 +43,6 @@
 
 #include "nsCOMPtr.h"
 #include "nsCRT.h"
-#include "nsFocusManager.h"
 #include "nsIDocShell.h"
 #include "nsIDOMElement.h"
 #include "nsIDOMNSEditableElement.h"
@@ -53,11 +52,11 @@
 #include "nsIEditingSession.h"
 #include "nsIEditor.h"
 #include "nsIEditorSpellCheck.h"
+#include "nsIFocusController.h"
 #include "nsIInlineSpellChecker.h"
 #include "nsIInterfaceRequestorUtils.h"
 #include "nsISelection.h"
 #include "nsPIDOMWindow.h"
-#include "nsServiceManagerUtils.h"
 #include "nsString.h"
 
 #if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
@@ -78,6 +77,7 @@
 @interface CHBrowserView (PrivateCHBrowserViewMethodsUsedForSpelling)
 
 - (already_AddRefed<nsIDOMElement>)focusedDOMElement;
+- (already_AddRefed<nsIFocusController>)focusController;
 
 @end
 
@@ -230,37 +230,36 @@
   }
   else {
     // if there's no element focused, we're probably in a Midas editor
-    nsresult rv;
-    nsCOMPtr<nsIFocusManager> fm =
-      do_GetService("@mozilla.org/focus-manager;1", &rv);
-    NS_ENSURE_SUCCESS(rv, NULL);
-    NS_ENSURE_TRUE(fm, NULL);
+    nsCOMPtr<nsIFocusController> controller = [self focusController];
+    if (!controller)
+      return NULL;
 
-    nsCOMPtr<nsIDOMWindow> focusedWindow;
-    fm->GetFocusedWindow(getter_AddRefs(focusedWindow));
-    NS_ENSURE_TRUE(focusedWindow, NULL);
+    nsCOMPtr<nsIDOMWindowInternal> winInternal;
+    controller->GetFocusedWindow(getter_AddRefs(winInternal));
+    nsCOMPtr<nsIDOMWindow> focusedWindow(do_QueryInterface(winInternal));
+    if (!focusedWindow)
+      return NULL;
 
     nsCOMPtr<nsIDOMDocument> domDoc;
-    rv = focusedWindow->GetDocument(getter_AddRefs(domDoc));
-    NS_ENSURE_SUCCESS(rv, NULL);
-    nsCOMPtr<nsIDOMNSHTMLDocument> htmlDoc = do_QueryInterface(domDoc);
-    NS_ENSURE_TRUE(htmlDoc, NULL);
+    focusedWindow->GetDocument(getter_AddRefs(domDoc));
+    nsCOMPtr<nsIDOMNSHTMLDocument> htmlDoc(do_QueryInterface(domDoc));
+    if (!htmlDoc)
+      return NULL;
 
     nsAutoString designMode;
-    rv = htmlDoc->GetDesignMode(designMode);
-    NS_ENSURE_SUCCESS(rv, NULL);
+    htmlDoc->GetDesignMode(designMode);
     if (designMode.EqualsLiteral("on")) {
       // we are in a Midas editor, so find its editor
       nsCOMPtr<nsPIDOMWindow> privateWindow = do_QueryInterface(focusedWindow);
-      NS_ENSURE_TRUE(privateWindow, NULL);
+      if (!privateWindow)
+        return NULL;
 
       nsIDocShell *docshell = privateWindow->GetDocShell();
-      nsCOMPtr<nsIEditingSession> editSession = do_GetInterface(docshell, &rv);
-      NS_ENSURE_SUCCESS(rv, NULL);
-      NS_ENSURE_TRUE(editSession, NULL);
+      nsCOMPtr<nsIEditingSession> editSession = do_GetInterface(docshell);
+      if (!editSession)
+        return NULL;
 
-      rv = editSession->GetEditorForWindow(focusedWindow, &editor); // addrefs
-      NS_ENSURE_SUCCESS(rv, NULL);
+      editSession->GetEditorForWindow(focusedWindow, &editor); // addrefs
     }
   }
   return editor;

@@ -199,11 +199,9 @@ void CHBrowserService::ShutDown()
   NS_ASSERTION(sCanTerminate, "Should be able to terminate here!");
 
   nsCOMPtr<nsIObserverService> observerService = do_GetService("@mozilla.org/observer-service;1");
-  if (observerService) {
+  if (observerService)
     observerService->NotifyObservers(nsnull, "profile-change-net-teardown", nsnull);
-    observerService->NotifyObservers(nsnull, "quit-application", nsnull);
-  }
-
+  
   // phase 2 notifcation (we really are about to terminate)
   [[NSNotificationCenter defaultCenter] postNotificationName:XPCOMShutDownNotificationName object:nil];
 
