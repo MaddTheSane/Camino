@@ -6,6 +6,8 @@ toolkit.jar:
 # Replace the generic Toolkit license and crashes.xhtml with ones appropriate for Camino
 *  content/global/license.html                             (/toolkit/content/license.html)
 +  content/global/crashes.xhtml                            (../embed-replacements/content/global/crashes.xhtml)
+# The default CSS for about:plugins is in content; override it to make sure nothing bleeds through.
++  content/global/plugins.css                              (../embed-replacements/content/global/plugins.css)
 # Uh, yeah.  On 1.9.3, this can move to classic.jar, though; see bug 520364.
 +  content/global/aboutMemory.css                          (../embed-replacements/skin/classic/global/aboutMemory.css)
 
