@@ -704,7 +704,8 @@ const char* const kHTMLMIMEType = "text/html";
 
   nsCOMPtr<nsIDOMElement> focusedElement;
   fm->GetFocusedElement(getter_AddRefs(focusedElement));
-  NS_ENSURE_TRUE(focusedElement, nsnull);
+  if (!focusedElement)
+    return nsnull;
 
   nsIDOMElement* domElement = focusedElement.get();
   NS_IF_ADDREF(domElement);
