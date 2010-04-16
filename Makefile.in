@@ -209,7 +209,6 @@ GARBAGE_DIRS += \
 	build \
 	$(DIST)/$(APP_NAME).app \
 	crashreporter-symbols \
-	embed-replacements.tmp \
 	generated \
 	growl/build \
 	sparkle/build \
