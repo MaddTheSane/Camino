@@ -1223,6 +1223,21 @@ typedef enum EProxyConfig {
 
 #pragma mark -
 
+- (NSURL*)getFilePref:(const char*)prefName withSuccess:(BOOL*)outSuccess
+{
+  NSURL* prefValue = nil;
+  if (mPrefs) {
+    nsCOMPtr<nsILocalFile> filePref;
+    mPrefs->GetComplexValue(prefName, NS_GET_IID(nsILocalFile), getter_AddRefs(filePref));
+    if (filePref) {
+      nsAutoString path;
+      filePref->GetPath(path);
+      prefValue = [NSURL fileURLWithPath:[NSString stringWith_nsAString:path]];
+    }
+  }
+  return prefValue;
+}
+
 - (NSString*)getStringPref:(const char*)prefName withSuccess:(BOOL*)outSuccess
 {
   NSString* prefValue = @"";
@@ -1292,6 +1307,15 @@ typedef enum EProxyConfig {
     *outSuccess = NS_SUCCEEDED(rv);
 
   return intPref;
+}
+
+- (void)setPref:(const char*)prefName toFile:(NSURL*)value
+{
+  nsCOMPtr<nsILocalFile> filePref(do_CreateInstance("@mozilla.org/file/local;1"));
+  if (mPrefs && filePref) {
+    filePref->InitWithPath(NS_ConvertUTF8toUTF16([[value path] UTF8String]));
+    mPrefs->SetComplexValue(prefName, NS_GET_IID(nsILocalFile), filePref);
+  }
 }
 
 - (void)setPref:(const char*)prefName toString:(NSString*)value

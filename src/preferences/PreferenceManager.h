@@ -73,11 +73,13 @@ extern NSString* const kPrefChangedPrefNameUserInfoKey;   // NSString
 
 - (NSString*)homePageUsingStartPage:(BOOL)checkStartupPagePref;
 
+- (NSURL*)getFilePref:(const char*)prefName withSuccess:(BOOL*)outSuccess;
 - (NSString*)getStringPref: (const char*)prefName withSuccess:(BOOL*)outSuccess;
 - (NSColor*)getColorPref: (const char*)prefName withSuccess:(BOOL*)outSuccess;
 - (BOOL)getBooleanPref: (const char*)prefName withSuccess:(BOOL*)outSuccess;
 - (int)getIntPref: (const char*)prefName withSuccess:(BOOL*)outSuccess;
 
+- (void)setPref:(const char*)prefName toFile:(NSURL*)value;
 - (void)setPref:(const char*)prefName toString:(NSString*)value;
 - (void)setPref:(const char*)prefName toInt:(int)value;
 - (void)setPref:(const char*)prefName toBoolean:(BOOL)value;
