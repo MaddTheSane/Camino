@@ -49,6 +49,8 @@ asm(".no_dead_strip _kGeckoPrefUsePageColors");
 asm(".no_dead_strip _kGeckoPrefUsePageFonts");
 asm(".no_dead_strip _kGeckoPrefVisitedLinkColor");
 asm(".no_dead_strip _kGeckoPrefCookieLifetimePolicy");
+asm(".no_dead_strip _kGeckoPrefDownloadsFolderList");
+asm(".no_dead_strip _kGeckoPrefDownloadsDir");
 asm(".no_dead_strip _kGeckoPrefDefaultCertificateBehavior");
 asm(".no_dead_strip _kGeckoPrefBlockPopups");
 asm(".no_dead_strip _kGeckoPrefEnableJava");
@@ -85,6 +87,9 @@ asm(".no_dead_strip _kCookieAcceptNone");
 asm(".no_dead_strip _kCookieLifetimeAsk");
 asm(".no_dead_strip _kCookieLifetimeNormal");
 asm(".no_dead_strip _kCookieLifetimeSession");
+asm(".no_dead_strip _kDownloadsFolderDesktop");
+asm(".no_dead_strip _kDownloadsFolderDownloads");
+asm(".no_dead_strip _kDownloadsFolderCustom");
 
 
 #pragma mark Tab Behavior
@@ -181,6 +186,8 @@ const char* const kGeckoPrefProxyBypassList = "network.proxy.no_proxies_on";
 
 #pragma mark Downloads
 
+const char* const kGeckoPrefDownloadsFolderList = "browser.download.folderList";
+const char* const kGeckoPrefDownloadsDir = "browser.download.dir";
 const char* const kGeckoPrefAutoOpenDownloads = "browser.download.manager.openDownloadedFiles";
 const char* const kGeckoPrefDownloadCleanupPolicy = "browser.download.manager.retention";
 const char* const kGeckoPrefFocusDownloadManagerOnDownload = "browser.download.manager.focusWhenStarting";
@@ -287,6 +294,11 @@ const int kCookieAcceptNone = 2;
 const int kCookieLifetimeNormal = 0;
 const int kCookieLifetimeAsk = 1;
 const int kCookieLifetimeSession = 2;
+
+// kGeckoPrefDownloadsFolderList values
+const int kDownloadsFolderDesktop = 0;
+const int kDownloadsFolderDownloads = 1;
+const int kDownloadsFolderCustom = 2;
 
 // kGeckoPrefDownloadCleanupPolicy values
 // NB: these are the opposite of what they used to be!

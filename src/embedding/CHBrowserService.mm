@@ -278,13 +278,13 @@ CHBrowserService::CreateChromeWindow(nsIWebBrowserChrome *parent,
 }
 
 
-//    void show( in nsIHelperAppLauncher aLauncher, in nsISupports aContext, in unsigned long aReason );
+// void show(in nsIHelperAppLauncher aLauncher, in nsISupports aContext, in unsigned long aReason);
 NS_IMETHODIMP
 CHBrowserService::Show(nsIHelperAppLauncher* inLauncher, nsISupports* inContext, PRUint32 aReason)
 {
   PRBool downloadWithoutDialog = PR_FALSE;
 
-  // Check for pref to download to defined downloads directory
+  // Check for pref to download to defined downloads directory.
   nsCOMPtr<nsIPref> prefService (do_GetService(NS_PREF_CONTRACTID));
   if (prefService)
     prefService->GetBoolPref(kGeckoPrefDownloadToDefaultLocation, &downloadWithoutDialog);
@@ -292,8 +292,11 @@ CHBrowserService::Show(nsIHelperAppLauncher* inLauncher, nsISupports* inContext,
   nsCOMPtr<nsIFile> downloadFile;
   if (downloadWithoutDialog)
   {
-    NS_GetSpecialDirectory(NS_MAC_DEFAULT_DOWNLOAD_DIR, getter_AddRefs(downloadFile));
-    
+    // This respects the gecko pref we set in the Download prefpane, so there's
+    // no need to change it.
+    nsCOMPtr<nsIFile> targetFile;
+    inLauncher->GetTargetFile(getter_AddRefs(targetFile));
+    targetFile->GetParent(getter_AddRefs(downloadFile));
     nsAutoString leafName;
     inLauncher->GetSuggestedFileName(leafName);
     if (leafName.IsEmpty())
@@ -302,8 +305,8 @@ CHBrowserService::Show(nsIHelperAppLauncher* inLauncher, nsISupports* inContext,
       inLauncher->GetSource(getter_AddRefs(sourceURI));
       if (sourceURI)
       {
-        // we know this doesn't have a leaf name, because nsExternalAppHandler::SetUpTempFile would have
-        // got it already.
+        // We know this doesn't have a leaf name, because
+        // nsExternalAppHandler::SetUpTempFile would have got it already.
         nsCAutoString hostName;
         sourceURI->GetHost(hostName);
         leafName = NS_ConvertUTF8toUTF16(hostName);
@@ -316,12 +319,13 @@ CHBrowserService::Show(nsIHelperAppLauncher* inLauncher, nsISupports* inContext,
     }
 
     downloadFile->Append(leafName);
-    // this will make an empty file, that persists until the download is done, "holding"
-    // a file system location for the final file. Note that if you change this, be
-    // sure to fix nsDownloadListener::DownloadDone not to delete some random file.
+    // This will make an empty file that persists until the download is done,
+    // "holding" a file system location for the final file. Note that if you
+    // change this, be sure to fix nsDownloadListener::DownloadDone not to
+    // delete some random file.
     downloadFile->CreateUnique(nsIFile::NORMAL_FILE_TYPE, 0600);
-  }  
-  
+  }
+
   return inLauncher->SaveToDisk(downloadFile, PR_FALSE);
 }
 

@@ -43,39 +43,9 @@
 #import "GeckoPrefConstants.h"
 #import "PreferenceManager.h"
 
-// handy stack-based class to start and stop an Internet Config session
-class StInternetConfigSession
-{
-public:
-
-  StInternetConfigSession(OSType inSignature)
-  : mICInstance(NULL)
-  , mStartedOK(false)
-  {
-    mStartedOK = (::ICStart(&mICInstance, inSignature) == noErr);
-  }
-
-  ~StInternetConfigSession()
-  {
-    if (mStartedOK)
-      ::ICStop(mICInstance);
-  }
-
-  bool        Available() const { return mStartedOK;  }
-  ICInstance  Instance()  const { return mICInstance; }
-
-private:
-
-  ICInstance    mICInstance;
-  bool          mStartedOK;
-};
-
-
-
 @interface OrgMozillaCaminoPreferenceDownloads(Private)
 
 - (void)setupDownloadMenuWithPath:(NSString*)inDLPath;
-- (void)setDownloadFolder:(NSString*)inNewFolder;
 
 @end
 
@@ -114,48 +84,6 @@ private:
 
   if (sender == mEnableHelperApps)
     [self setPref:kGeckoPrefAutoOpenDownloads toBoolean:[sender state]];
-}
-
-// Sets the IC download pref to the given path. We write to Internet Config
-// because Gecko reads from IC when getting NS_MAC_DEFAULT_DOWNLOAD_DIR.
-- (void)setDownloadFolder:(NSString*)inNewFolder
-{
-  if (!inNewFolder)
-    return;
-
-  // It would be nice to use PreferenceManager, but I don't want to drag
-  // all that code into the plugin.
-  StInternetConfigSession icSession('MOZC');
-  if (!icSession.Available())
-    return;
-
-  // Make a ICFileSpec out of our path and shove it into IC. This requires
-  // creating an FSSpec and an alias.
-  FSRef fsRef;
-  Boolean isDir;
-  OSStatus error = ::FSPathMakeRef((UInt8*)[inNewFolder fileSystemRepresentation], &fsRef, &isDir);
-  if (error != noErr)
-    return;
-
-  FSSpec fsSpec;
-  error = ::FSGetCatalogInfo(&fsRef, kFSCatInfoNone, nil, nil, &fsSpec, nil);
-  if (error != noErr)
-    return;
-
-  AliasHandle alias = nil;
-  error = ::FSNewAlias(nil, &fsRef, &alias);
-
-  // Copy the data out of our variables into the ICFileSpec and hand it to IC.
-  if (error == noErr && alias) {
-    long headerSize = offsetof(ICFileSpec, alias);
-    long aliasSize = ::GetHandleSize((Handle)alias);
-    ICFileSpec* realbuffer = (ICFileSpec*) calloc(headerSize + aliasSize, 1);
-    realbuffer->fss = fsSpec;
-    memcpy(&realbuffer->alias, *alias, aliasSize);
-    ::ICSetPref(icSession.Instance(), kICDownloadFolder, kICAttrNoChange, (const void*)realbuffer, headerSize + aliasSize);
-    free(realbuffer);
-    ::DisposeHandle((Handle)alias);
-  }
 }
 
 // Given a full path to the d/l dir, display the leaf name and the Finder icon associated
@@ -212,15 +140,15 @@ private:
 }
 
 // This is called when the user closes the open panel sheet for selecting a new d/l folder.
-// If they clicked ok, change the IC pref and re-display the new choice in the
+// If they clicked ok, change the pref and display the new choice in the
 // popup menu.
 - (void)openPanelDidEnd:(NSOpenPanel*)sheet returnCode:(int)returnCode contextInfo:(void*)contextInfo
 {
   if (returnCode == NSOKButton) {
     // stuff path into pref
     NSString* newPath = [[sheet filenames] objectAtIndex:0];
-    [self setDownloadFolder:newPath];
-    
+    [[PreferenceManager sharedInstance] setDownloadDirectoryPath:newPath];
+
     // update the menu
     [self setupDownloadMenuWithPath:newPath];
   }

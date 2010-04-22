@@ -270,6 +270,16 @@ extern const char* const kGeckoPrefProxyBypassList;                    // string
 
 #pragma mark Downloads
 
+// A list of possible download directories
+extern const char* const kGeckoPrefDownloadsFolderList;                // int
+// Possible values:
+extern const int kDownloadsFolderDesktop;
+extern const int kDownloadsFolderDownloads;
+extern const int kDownloadsFolderCustom;
+
+// If kGeckoPrefsDownloadsFolderList is kDownloadsFolderCustom
+extern const char* const kGeckoPrefDownloadsDir;                       // nsILocalFile
+
 // Controls whether downloads should be auto-launched
 extern const char* const kGeckoPrefAutoOpenDownloads;                  // bool
 

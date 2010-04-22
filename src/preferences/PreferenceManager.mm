@@ -86,7 +86,7 @@ static NSString* const kFlashblockChangedNotificationName = @"FlashblockChanged"
 // This is an arbitrary version stamp that gets written to the prefs file.
 // It can be used to detect when a new version of Camino is run that needs
 // some prefs to be upgraded.
-static const PRInt32 kCurrentPrefsVersion = 2;
+static const PRInt32 kCurrentPrefsVersion = 3;
 
 // CheckCompatibility and WriteVersion are based on the versions in
 // toolkit/xre/nsAppRunner.cpp.  This is done to provide forward
@@ -197,6 +197,8 @@ WriteVersion(nsIFile* aProfileDir, const nsACString& aVersion,
 - (void)initUpdatePrefs;
 - (void)cleanUpObsoletePrefs;
 - (void)migrateOldDownloadPrefs;
+// Returns the path of the download directory set in Internet Config.
+- (NSString*)internetConfigDownloadDirectoryPref;
 
 - (void)termEmbedding:(NSNotification*)aNotification;
 - (void)xpcomTerminate:(NSNotification*)aNotification;
@@ -223,6 +225,11 @@ WriteVersion(nsIFile* aProfileDir, const nsACString& aVersion,
 - (BOOL)isFlashblockAllowed;
 
 - (NSString*)pathForSpecialDirectory:(const char*)specialDirectory;
+
+// the path to the default system download folder
+- (NSString*)geckoDefaultDownloadDirectory;
+// the path to the users's desktop folder
+- (NSString*)geckoDesktopDirectory;
 
 @end
 
@@ -802,6 +809,12 @@ static BOOL gMadePrefManager;
   if (mLastRunPrefsVersion < 2)
     [self migrateOldDownloadPrefs];
 
+  // Starting with Gecko 1.9.1, the download directory is set in Gecko prefs,
+  // rather than Internet Config. We need to move the setting over for users
+  // when they upgrade.
+  if (mLastRunPrefsVersion && mLastRunPrefsVersion < 3)
+    [self setDownloadDirectoryPath:[self internetConfigDownloadDirectoryPref]];
+
   mPrefs->SetIntPref("camino.prefs_version", kCurrentPrefsVersion);
 
   // Fix up the cookie prefs. If 'p3p' or 'accept foreign cookies' are on,
@@ -959,6 +972,19 @@ static BOOL gMadePrefManager;
     // user pref.
     [self clearPref:kGeckoPrefUserAgentLocale];
   }
+}
+
+- (void)setDownloadDirectoryPath:(NSString*)aPath
+{
+  int folderType = kDownloadsFolderDownloads;
+  if ([aPath isEqualToString:[self geckoDesktopDirectory]]) {
+    folderType = kDownloadsFolderDesktop;
+  }
+  else if (aPath && ![aPath isEqualToString:[self geckoDefaultDownloadDirectory]]) {
+    folderType = kDownloadsFolderCustom;
+    [self setPref:kGeckoPrefDownloadsDir toFile:[NSURL fileURLWithPath:aPath]];
+  }
+  [self setPref:kGeckoPrefDownloadsFolderList toInt:folderType];
 }
 
 #pragma mark -
@@ -1389,7 +1415,28 @@ typedef enum EProxyConfig {
 
 - (NSString*)downloadDirectoryPath
 {
+  NSString* prefValue = nil;
+  BOOL gotPref;
+  int downloadFolder = [self getIntPref:kGeckoPrefDownloadsFolderList withSuccess:&gotPref];
+
+  if (gotPref && (downloadFolder == kDownloadsFolderDesktop))
+    prefValue = [[PreferenceManager sharedInstance] geckoDesktopDirectory];
+  else if (gotPref && downloadFolder == kDownloadsFolderCustom)
+    prefValue = [[self getFilePref:kGeckoPrefDownloadsDir withSuccess:NULL] path];
+  else
+    prefValue = [[PreferenceManager sharedInstance] geckoDefaultDownloadDirectory];
+
+  return prefValue;
+}
+
+- (NSString*)geckoDefaultDownloadDirectory
+{
   return [self pathForSpecialDirectory:NS_MAC_DEFAULT_DOWNLOAD_DIR];
+}
+
+- (NSString*)geckoDesktopDirectory
+{
+  return [self pathForSpecialDirectory:NS_MAC_DESKTOP_DIR];
 }
 
 - (NSString*)pathForSpecialDirectory:(const char*)specialDirectory
@@ -1535,6 +1582,76 @@ typedef enum EProxyConfig {
   [self clearPref:kOldGeckoPrefLeaveDownloadManagerOpen];
   [self clearPref:kOldGeckoPrefDownloadToDefaultLocation];
   [self clearPref:kOldGeckoPrefAutoOpenDownloads];
+}
+
+-(NSString*)internetConfigDownloadDirectoryPref
+{
+  NSURL* oldDownloadDir = nil;
+  ICInstance icInstance;
+
+  OSErr err = ::ICStart(&icInstance, 'XPCM');
+
+  if (err == noErr) {
+    // ICFindPrefHandle() crashes when getting the download directory if the
+    // download directory has never been specified (e.g. a new user account),
+    // bug 265903. To work around this we enumerate through the IC prefs to see
+    // if the download directory has been specified before trying to obtain it.
+    long numPrefs = 0;
+    err = ::ICCountPref(icInstance, &numPrefs);
+
+    if (err == noErr) {
+      CFStringRef icKeyRef = CFStringCreateWithPascalString(NULL,
+                                                            kICDownloadFolder,
+                                                            kCFStringEncodingMacRoman);
+      NSString* icDownloadFolderKey = [(NSString*)icKeyRef autorelease];
+
+      for (long i = 0; i < numPrefs; ++i) {
+        Str255 key;
+        err = ::ICGetIndPref(icInstance, i, key);
+        if (err != noErr)
+          continue;
+
+        CFStringRef keyStringRef = CFStringCreateWithPascalString(NULL,
+                                                                  key,
+                                                                  kCFStringEncodingMacRoman);
+        NSString* keyString = [(NSString*)keyStringRef autorelease];
+
+        if (![keyString isEqualToString:icDownloadFolderKey])
+          continue;
+
+        ICAttr attrs;
+        Handle icFolderHandle = NewHandle(0);
+        err = ::ICFindPrefHandle(icInstance, kICDownloadFolder, &attrs, icFolderHandle);
+
+        if (err == noErr && icFolderHandle) {
+          long aliasSize = GetHandleSize(icFolderHandle) - sizeof(ICFileSpec) + sizeof(AliasRecord);
+          AliasHandle aliasHandle = (AliasHandle)NewHandleClear(aliasSize);
+
+          if (aliasHandle) {
+            ICFileSpec** fileSpec = (ICFileSpec**)icFolderHandle;
+            FSRef ref = {'\0'};
+            Boolean wasChanged = FALSE;
+
+            HLock(icFolderHandle);
+            HLock((Handle)aliasHandle);
+            memcpy(*aliasHandle, &((**fileSpec).alias), aliasSize);
+
+            err = FSResolveAlias(NULL, aliasHandle, &ref, &wasChanged);
+
+            if (err == noErr)
+              oldDownloadDir = [(NSURL*)CFURLCreateFromFSRef(NULL, &ref) autorelease];
+
+            DisposeHandle((Handle)aliasHandle);
+          }            
+          DisposeHandle(icFolderHandle);
+        }
+        break;
+      }
+    }
+    ::ICStop(icInstance);
+  }
+
+  return [oldDownloadDir path];
 }
 
 - (NSString*)fontNameForGeckoFontName:(NSString*)geckoFontName

@@ -77,6 +77,9 @@ pref("browser.urlbar.autocomplete.enabled", true);
 // Don't do inline autocomplete in the location bar
 pref("browser.urlbar.autoFill", false);
 
+// Download to the system download folder by default
+pref("browser.download.folderList", 1);
+
 // Download to the default location but don't process files after downloading.
 pref("browser.download.useDownloadDir", true);
 pref("browser.download.manager.openDownloadedFiles", false);
