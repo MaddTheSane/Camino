@@ -295,3 +295,6 @@ pref("places.frecency.defaultVisitBonus", 0);
 // bonus (in percent) for place types for frecency calculations
 pref("places.frecency.unvisitedBookmarkBonus", 140);
 pref("places.frecency.unvisitedTypedBonus", 200);
+
+// Use in-content missing plug-in UI
+pref("plugin.default_plugin_disabled", true);

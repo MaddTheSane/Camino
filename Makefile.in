@@ -185,7 +185,6 @@ CORE_SYMBOL_SOURCE_FILES = \
 	$(XCODE_PRODUCT_DIR)/Camino.app/Contents/MacOS/plugins/JavaEmbeddingPlugin.bundle/Contents/MacOS/JavaEmbeddingPlugin \
 	$(XCODE_PRODUCT_DIR)/Camino.app/Contents/MacOS/plugins/MRJPlugin.plugin/Contents/MacOS/MRJPlugin \
 	$(XCODE_PRODUCT_DIR)/Camino.app/Contents/PlugIns/PrintPDE.plugin/Contents/MacOS/PrintPDE \
-	"$(XCODE_PRODUCT_DIR)/Camino.app/Contents/MacOS/plugins/Default Plugin.plugin/Contents/MacOS/Default Plugin" \
 	$(NULL)
 
 ifdef MOZ_DEBUG

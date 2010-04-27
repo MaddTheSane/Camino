@@ -912,8 +912,6 @@
 		4D2996690869C5FA00E84287 /* libplds4.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BD638201B30EA301A962F7 /* libplds4.dylib */; };
 		4D29966A0869C5FA00E84287 /* libxpcom.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F57F0F470209DF5301A967DF /* libxpcom.dylib */; };
 		4D29966B0869C5FA00E84287 /* libxpcom_core.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F12FC56072E8ECB00995ED9 /* libxpcom_core.dylib */; };
-		4D5881770864B28D001305B3 /* DefaultPlugin.plugin in Copy Gecko Plugins */ = {isa = PBXBuildFile; fileRef = F56610BC0394775201A9666E /* DefaultPlugin.plugin */; };
-		4D58817B0864B2AE001305B3 /* DefaultPlugin.plugin in Copy Gecko Plugins */ = {isa = PBXBuildFile; fileRef = F56610BC0394775201A9666E /* DefaultPlugin.plugin */; };
 		4DC28F5E099184B80081939B /* libucvmath.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DC28F5D099184B80081939B /* libucvmath.a */; };
 		4DC41D3F0869D7A400947044 /* libjsj.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DC41D3C0869D7A400947044 /* libjsj.a */; };
 		4DC41D400869D7A400947044 /* libmozjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DC41D3D0869D7A400947044 /* libmozjpeg.a */; };
@@ -1126,6 +1124,8 @@
 		DE57A0010D43FB790057C437 /* BloglinesFeedHandler.app in Copy Feed Handlers */ = {isa = PBXBuildFile; fileRef = DE579FFB0D43FB790057C437 /* BloglinesFeedHandler.app */; };
 		DE57A0020D43FB790057C437 /* GoogleFeedHandler.app in Copy Feed Handlers */ = {isa = PBXBuildFile; fileRef = DE579FFC0D43FB790057C437 /* GoogleFeedHandler.app */; };
 		DE57A0030D43FB790057C437 /* MyYahooFeedHandler.app in Copy Feed Handlers */ = {isa = PBXBuildFile; fileRef = DE579FFD0D43FB790057C437 /* MyYahooFeedHandler.app */; };
+		DE581AB511865B1A00BAEA05 /* pluginGlue.js in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = DE581AB411865B1A00BAEA05 /* pluginGlue.js */; };
+		DE581AB611865B1A00BAEA05 /* pluginGlue.js in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = DE581AB411865B1A00BAEA05 /* pluginGlue.js */; };
 		DE62E4300B72B3D200142851 /* libauth.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = DE62E42F0B72B3D200142851 /* libauth.dylib */; };
 		DE62E4320B72B50C00142851 /* libauth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE62E4310B72B50C00142851 /* libauth.a */; };
 		DE6D27E70C1A014D00292043 /* CHPermissionManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = DE6D27E60C1A014D00292043 /* CHPermissionManager.mm */; };
@@ -1783,6 +1783,7 @@
 				0098B1230CAEA77500DA0F2F /* nsHandlerService.js in Copy Component Libraries */,
 				B33032F610AE17C9002FA0A7 /* nsLivemarkService.js in Copy Component Libraries */,
 				B328DF46114ED069004D2EDC /* nsPlacesDBFlush.js in Copy Component Libraries */,
+				DE581AB611865B1A00BAEA05 /* pluginGlue.js in Copy Component Libraries */,
 				C7DE8E300F30D2C100CD3872 /* nsUrlClassifierListManager.js in Copy Component Libraries */,
 				C7DE8E310F30D2C100CD3872 /* nsUrlClassifierLib.js in Copy Component Libraries */,
 			);
@@ -1825,6 +1826,7 @@
 				0098B12A0CAEA81700DA0F2F /* nsHandlerService.js in Copy Component Libraries */,
 				B33032F710AE17F1002FA0A7 /* nsLivemarkService.js in Copy Component Libraries */,
 				B328DF47114ED0AD004D2EDC /* nsPlacesDBFlush.js in Copy Component Libraries */,
+				DE581AB511865B1A00BAEA05 /* pluginGlue.js in Copy Component Libraries */,
 				C7DE8E4B0F30D41500CD3872 /* nsUrlClassifierListManager.js in Copy Component Libraries */,
 				C7DE8E4C0F30D41500CD3872 /* nsUrlClassifierLib.js in Copy Component Libraries */,
 			);
@@ -2411,7 +2413,6 @@
 			files = (
 				3FEBB09D0899C0F700BD8373 /* JavaEmbeddingPlugin.bundle in Copy Gecko Plugins */,
 				3FEBB0F90899C18600BD8373 /* MRJPlugin.plugin in Copy Gecko Plugins */,
-				4D5881770864B28D001305B3 /* DefaultPlugin.plugin in Copy Gecko Plugins */,
 			);
 			name = "Copy Gecko Plugins";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2424,7 +2425,6 @@
 			files = (
 				3FEBB0A70899C0F700BD8373 /* JavaEmbeddingPlugin.bundle in Copy Gecko Plugins */,
 				3FEBB0FA0899C18600BD8373 /* MRJPlugin.plugin in Copy Gecko Plugins */,
-				4D58817B0864B2AE001305B3 /* DefaultPlugin.plugin in Copy Gecko Plugins */,
 			);
 			name = "Copy Gecko Plugins";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2949,6 +2949,7 @@
 		DE579FFB0D43FB790057C437 /* BloglinesFeedHandler.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = BloglinesFeedHandler.app; path = generated/feedhandlers/BloglinesFeedHandler.app; sourceTree = SOURCE_ROOT; };
 		DE579FFC0D43FB790057C437 /* GoogleFeedHandler.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = GoogleFeedHandler.app; path = generated/feedhandlers/GoogleFeedHandler.app; sourceTree = SOURCE_ROOT; };
 		DE579FFD0D43FB790057C437 /* MyYahooFeedHandler.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = MyYahooFeedHandler.app; path = generated/feedhandlers/MyYahooFeedHandler.app; sourceTree = SOURCE_ROOT; };
+		DE581AB411865B1A00BAEA05 /* pluginGlue.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = pluginGlue.js; path = ../dist/bin/components/pluginGlue.js; sourceTree = SOURCE_ROOT; };
 		DE59E2F50FA54EC8001F240C /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = "resources/google-breakpad/InfoPlist.strings"; sourceTree = SOURCE_ROOT; };
 		DE62E42F0B72B3D200142851 /* libauth.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; name = libauth.dylib; path = ../dist/bin/components/libauth.dylib; sourceTree = SOURCE_ROOT; };
 		DE62E4310B72B50C00142851 /* libauth.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libauth.a; path = ../staticlib/components/libauth.a; sourceTree = SOURCE_ROOT; };
@@ -3151,7 +3152,6 @@
 		F55CCFD2020E98EA010001CA /* print.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = print.tiff; path = resources/images/toolbar/print.tiff; sourceTree = SOURCE_ROOT; };
 		F5607CB5023944AD01A967DF /* GeckoUtils.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GeckoUtils.h; path = src/extensions/GeckoUtils.h; sourceTree = "<group>"; };
 		F564872F023B957F010001CA /* history_icon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = history_icon.tiff; path = resources/images/chrome/history_icon.tiff; sourceTree = SOURCE_ROOT; };
-		F56610BC0394775201A9666E /* DefaultPlugin.plugin */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.cfbundle; name = DefaultPlugin.plugin; path = ../dist/bin/plugins/DefaultPlugin.plugin; sourceTree = SOURCE_ROOT; };
 		F566BD1202EFA9AD01A967F3 /* CocoaPromptService.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CocoaPromptService.h; path = src/browser/CocoaPromptService.h; sourceTree = "<group>"; };
 		F566BD1302EFA9AD01A967F3 /* CocoaPromptService.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = CocoaPromptService.mm; path = src/browser/CocoaPromptService.mm; sourceTree = SOURCE_ROOT; };
 		F56769FB0208F74A010001CA /* BrowserWindowController.mm */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 2; lastKnownFileType = sourcecode.cpp.objcpp; name = BrowserWindowController.mm; path = src/browser/BrowserWindowController.mm; sourceTree = SOURCE_ROOT; tabWidth = 8; usesTabs = 0; };
@@ -4857,7 +4857,6 @@
 		F56610A40394767101A9666E /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
-				F56610BC0394775201A9666E /* DefaultPlugin.plugin */,
 				3FEBB0E60899C18600BD8373 /* MRJPlugin.plugin */,
 				3FEBB08E0899C0F600BD8373 /* JavaEmbeddingPlugin.bundle */,
 			);
@@ -5074,6 +5073,7 @@
 				0098B11D0CAEA75700DA0F2F /* nsHandlerService.js */,
 				B33032AA10AE15EA002FA0A7 /* nsLivemarkService.js */,
 				B328DEF9114ECFBF004D2EDC /* nsPlacesDBFlush.js */,
+				DE581AB411865B1A00BAEA05 /* pluginGlue.js */,
 				C7DE8E150F30D14F00CD3872 /* nsUrlClassifierListManager.js */,
 				C7DE8E160F30D14F00CD3872 /* nsUrlClassifierLib.js */,
 				0098B17F0CAEA9CF00DA0F2F /* XPCOMUtils.jsm */,
