@@ -155,16 +155,11 @@ const unsigned int kNumberOfItemsPerChunk = 100;
   }
 }
 
-- (void)cancelSearch
-{
-  [self resetSearch];
-  [NSObject cancelPreviousPerformRequestsWithTarget:self];
-}
-
 - (void)performSearchWithString:(NSString *)searchString delegate:(id)delegate
 {
   mDelegate = delegate;
-  [self cancelSearch];
+  [self resetSearch];
+  [NSObject cancelPreviousPerformRequestsWithTarget:self];
 
   // Construct the regular expression for url matching. NSPredicate will
   // only evaluate to true if the entire string matches--thus the leading
