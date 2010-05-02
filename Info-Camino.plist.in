@@ -21,6 +21,10 @@
 	<string>%BREAKPAD_UPLOAD_URL%</string>
 	<key>BreakpadVendor</key>
 	<string>the Camino developers</string>
+	<key>CaminoChangeset</key>
+	<string>%CM_CHANGESET%</string>
+	<key>CaminoRepository</key>
+	<string>%CM_REPO%</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleDocumentTypes</key>
@@ -203,8 +207,12 @@
 	<string>%CVS_TAG%</string>
 	<key>MozillaCVSTime</key>
 	<date>%CVS_TIME%</date>
+	<key>MozillaChangeset</key>
+	<string>%PLATFORM_CHANGESET%</string>
 	<key>MozillaGeckoVersion</key>
 	<string>%PLATFORM_VERSION%</string>
+	<key>MozillaRepository</key>
+	<string>%PLATFORM_REPO%</string>
 	<key>NSAppleScriptEnabled</key>
 	<true/>
 	<key>NSMainNibFile</key>

@@ -67,7 +67,6 @@ PLATFORM_VERSION_FILE = $(topsrcdir)/config/milestone.txt
 PLATFORM_VERSION := $(shell egrep "^[^\#]+" $(PLATFORM_VERSION_FILE))
 PLATFORM_BUILD_ID_FILE = $(DEPTH)/config/buildid
 PLATFORM_BUILD_ID := $(shell cat $(PLATFORM_BUILD_ID_FILE))
-PLATFORM_INI_FILE = ../toolkit/xre/platform.ini
 
 ifdef MOZILLA_OFFICIAL
 APP_UPDATE_URL = https://caminobrowser.org/update-check
@@ -130,6 +129,50 @@ else  # MOZ_CO_DATE
 # strings we care about.
 GREP_V_PATTERN += \|MozillaCVSTime\|%CVS_TIME%\|__dummy__
 endif  # MOZ_CO_DATE
+
+# Generate the Gecko and Camino changeset and repository names
+# make+shell+sed = awful
+_dollar=$$
+
+PLATFORM_CHANGESET_FILE = generated/platform_changeset
+PLATFORM_CHANGESET := $(shell hg -R $(topsrcdir) parent --template="{node|short}\n" 2>/dev/null)
+ifdef PLATFORM_CHANGESET
+SED_ARGS += -e "s/%PLATFORM_CHANGESET%/$(PLATFORM_CHANGESET)/"
+else  # PLATFORM_CHANGESET
+# Add the extra dummy pattern to ensure that make can't add whitespace to the
+# strings we care about.
+GREP_V_PATTERN += \|MozillaChangeset\|%PLATFORM_CHANGESET%\|__dummy__
+endif  # PLATFORM_CHANGESET
+
+PLATFORM_REPO_FILE = generated/platform_repo
+PLATFORM_REPO := $(shell cd $(topsrcdir) && hg showconfig paths.default 2>/dev/null | head -n1 | sed -e "s/^ssh:/http:/" -e "s/\/$(_dollar)//" )
+ifdef PLATFORM_REPO
+SED_ARGS += -e "s|%PLATFORM_REPO%|$(PLATFORM_REPO)|"
+else  # PLATFORM_REPO
+# Add the extra dummy pattern to ensure that make can't add whitespace to the
+# strings we care about.
+GREP_V_PATTERN += \|MozillaRepository\|%PLATFORM_REPO%\|__dummy__
+endif  # PLATFORM_REPO
+
+CM_CHANGESET_FILE = generated/camino_changeset
+CM_CHANGESET := $(shell hg -R $(srcdir) parent --template="{node|short}\n" 2>/dev/null)
+ifdef CM_CHANGESET
+SED_ARGS += -e "s/%CM_CHANGESET%/$(CM_CHANGESET)/"
+else  # CM_CHANGESET
+# Add the extra dummy pattern to ensure that make can't add whitespace to the
+# strings we care about.
+GREP_V_PATTERN += \|CaminoChangeset\|%CM_CHANGESET%\|__dummy__
+endif  # CM_CHANGESET
+
+CM_REPO_FILE = generated/camino_repo
+CM_REPO := $(shell cd $(srcdir) && hg showconfig paths.default 2>/dev/null | head -n1 | sed -e "s/^ssh:/http:/" -e "s/\/$(_dollar)//" )
+ifdef CM_REPO
+SED_ARGS += -e "s|%CM_REPO%|$(CM_REPO)|"
+else  # CM_REPO
+# Add the extra dummy pattern to ensure that make can't add whitespace to the
+# strings we care about.
+GREP_V_PATTERN += \|CaminoRepository\|%CM_REPO%\|__dummy__
+endif  # CM_REPO
 
 STRINGS_FILES = \
 	resources/localized/English.lproj/CertificateDialogs.strings \
@@ -197,11 +240,6 @@ TARGET		= CaminoStatic
 else
 TARGET		= Camino
 endif
-
-GARBAGE += \
-	$(PLATFORM_INI_FILE) \
-	$(DIST)/bin/platform.ini \
-	$(NULL)
 
 GARBAGE_DIRS += \
 	build \
@@ -286,6 +324,10 @@ generated/Info-Camino.plist: \
   $(CM_COPYRIGHT_YEAR_FILE) \
   $(PLATFORM_BUILD_ID_FILE) \
   $(PLATFORM_VERSION_FILE) \
+  $(PLATFORM_CHANGESET_FILE) \
+  $(PLATFORM_REPO_FILE) \
+  $(CM_CHANGESET_FILE) \
+  $(CM_REPO_FILE) \
   $(CVS_TAG_FILE) \
   $(CVS_TIME_FILE)
 	mkdir -p $(dir $@)
@@ -338,15 +380,21 @@ $(CVS_TIME_FILE): FORCE
 	grep -lFx "$(CVS_TIME)" $@ >& /dev/null || \
 	  (mkdir -p $(dir $@) && echo "$(CVS_TIME)" > $@)
 
-# Put platform.ini into toolkit/xre and dist/bin, because that's where
-# Tinderbox looks to figure out the build ID.  It currently doesn't need
-# to be distributed with the application.
-$(PLATFORM_INI_FILE): $(PLATFORM_BUILD_ID_FILE) $(PLATFORM_VERSION_FILE)
-	mkdir -p $(dir $@)
-	echo [Build] > $@
-	echo BuildID=$(PLATFORM_BUILD_ID) >> $@
-	echo Milestone=$(PLATFORM_VERSION) >> $@
-	$(INSTALL) $@ $(DIST)/bin
+$(PLATFORM_CHANGESET_FILE): FORCE
+	grep -lFx "$(PLATFORM_CHANGESET)" $@ >& /dev/null || \
+	  (mkdir -p $(dir $@) && echo "$(PLATFORM_CHANGESET)" > $@)
+
+$(PLATFORM_REPO_FILE): FORCE
+	grep -lFx "$(PLATFORM_REPO)" $@ >& /dev/null || \
+	  (mkdir -p $(dir $@) && echo "$(PLATFORM_REPO)" > $@)
+
+$(CM_CHANGESET_FILE): FORCE
+	grep -lFx "$(CM_CHANGESET)" $@ >& /dev/null || \
+	  (mkdir -p $(dir $@) && echo "$(CM_CHANGESET)" > $@)
+
+$(CM_REPO_FILE): FORCE
+	grep -lFx "$(CM_REPO)" $@ >& /dev/null || \
+	  (mkdir -p $(dir $@) && echo "$(CM_REPO)" > $@)
 
 # In a real auto-generate system, $(GENERATED_GECKO_STRINGS_FILES) would need
 # to be called after making in pinstripe (which would itself be followed by a
@@ -356,8 +404,7 @@ libs:: \
   generated/Info-Camino.plist \
   generated/resources/localized/English.lproj/InfoPlist.strings \
   $(GENERATED_STRINGS_FILES) \
-  $(GENERATED_GECKO_STRINGS_FILES) \
-  $(PLATFORM_INI_FILE)
+  $(GENERATED_GECKO_STRINGS_FILES)
 	$(PBBUILD) -project Camino.xcodeproj -target $(TARGET) \
 	  -configuration $(BUILDSTYLE) $(PBBUILD_SETTINGS)
 	$(RSYNC_ALL) --copy-unsafe-links \
