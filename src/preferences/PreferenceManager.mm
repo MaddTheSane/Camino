@@ -480,7 +480,7 @@ static BOOL gMadePrefManager;
     nsresult rv;
 
     NSString* path = [[[NSBundle mainBundle] executablePath] stringByDeletingLastPathComponent];
-    const char* binDirPath = [path fileSystemRepresentation];
+    const char* binDirPath = [[path stringByStandardizingPath] fileSystemRepresentation];
     nsCOMPtr<nsILocalFile> binDir;
     rv = NS_NewNativeLocalFile(nsDependentCString(binDirPath), PR_TRUE, getter_AddRefs(binDir));
     if (NS_FAILED(rv)) {
