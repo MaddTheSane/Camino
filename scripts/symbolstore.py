@@ -43,7 +43,6 @@
 # - Allows the contents of a dSYM bundle to be used directly if passed in
 #   as one of the command-line arguments. (Note that it must be the symbol
 #   file itself, not the containing .dSYM folder, or it will be skipped.)
-# - Adds fall-back to non-DWARF symbols (see bug 493392).
 # - When no actual symbols are generated for a binary, the useless file is
 #   removed and its path is not echoed to stdout.
 # - Commented out the 'subprocess' import, since that module isn't available
@@ -501,7 +500,8 @@ class Dumper:
     def ProcessFile(self, file):
         """Dump symbols from this file into a symbol file, stored
         in the proper directory structure in  |symbol_path|."""
-        processedLines = 0
+        print >> sys.stderr, "Processing file: %s" % file
+        result = False
         sourceFileStream = ''
         # tries to get the vcs root from the .mozconfig first - if it's not set
         # the tinderbox vcs path will be assigned further down
@@ -532,8 +532,6 @@ class Dumper:
                     f.write(module_line)
                     # now process the rest of the output
                     for line in cmd:
-                        if not line.startswith("MODULE"):
-                            processedLines += 1
                         if line.startswith("FILE"):
                             # FILE index filename
                             (x, index, filename) = line.split(None, 2)
@@ -559,10 +557,12 @@ class Dumper:
                         else:
                             # pass through all other lines unchanged
                             f.write(line)
+                            # we want to return true only if at least one line is not a MODULE or FILE line
+                            result = True
                     f.close()
                     cmd.close()
                     # If the symbol file was empty, throw it away and don't report it.
-                    if processedLines == 0:
+                    if result == False:
                         os.remove(full_path)
                         # If the two enclosing directories that we (potentially) made above
                         # are empty, remove them too. If they aren't empty, fail silently.
@@ -576,17 +576,17 @@ class Dumper:
                     # we output relative paths so callers can get a list of what
                     # was generated
                     print rel_path
+                    if self.srcsrv and vcs_root:
+                        # add source server indexing to the pdb file
+                        self.SourceServerIndexing(file, guid, sourceFileStream, vcs_root)
                     if self.copy_debug:
                         self.CopyDebug(file, debug_file, guid)
-                    if self.srcsrv and vcs_root:
-                        # Call on SourceServerIndexing
-                        result = self.SourceServerIndexing(debug_file, guid, sourceFileStream, vcs_root)
             except StopIteration:
                 pass
             except:
                 print >> sys.stderr, "Unexpected error: ", sys.exc_info()[0]
                 raise
-        return (processedLines > 0)
+        return result
 
 # Platform-specific subclasses.  For the most part, these just have
 # logic to determine what files to extract symbols from.
@@ -646,20 +646,17 @@ class Dumper_Win32(Dumper):
         
     def SourceServerIndexing(self, debug_file, guid, sourceFileStream, vcs_root):
         # Creates a .pdb.stream file in the mozilla\objdir to be used for source indexing
-        cwd = os.getcwd()
+        debug_file = os.path.abspath(debug_file)
         streamFilename = debug_file + ".stream"
-        stream_output_path = os.path.join(cwd, streamFilename)
+        stream_output_path = os.path.abspath(streamFilename)
         # Call SourceIndex to create the .stream file
         result = SourceIndex(sourceFileStream, stream_output_path, vcs_root)
-        
         if self.copy_debug:
             pdbstr_path = os.environ.get("PDBSTR_PATH")
             pdbstr = os.path.normpath(pdbstr_path)
-            pdb_rel_path = os.path.join(debug_file, guid, debug_file)
-            pdb_filename = os.path.normpath(os.path.join(self.symbol_path, pdb_rel_path))
-            # move to the dir with the stream files to call pdbstr
-            os.chdir(os.path.dirname(stream_output_path))
-            os.spawnv(os.P_WAIT, pdbstr, [pdbstr, "-w", "-p:" + pdb_filename, "-i:" + streamFilename, "-s:srcsrv"])
+            call([pdbstr, "-w", "-p:" + os.path.basename(debug_file),
+                  "-i:" + os.path.basename(streamFilename), "-s:srcsrv"],
+                 cwd=os.path.dirname(stream_output_path))
             # clean up all the .stream files when done
             os.remove(stream_output_path)
         return result
@@ -733,28 +730,28 @@ class Dumper_Mac(Dumper):
         """dump_syms on Mac needs to be run on a dSYM bundle produced
         by dsymutil(1), so run dsymutil here and pass the bundle name
         down to the superclass method instead."""
-        res = False
         # If there's a dSYM in the path then we must have been given an
         # existing dSYM file as an argument (since ShouldSkipDir would have
         # skipped it), so we should use it directly.
         # If no_dsym is set, then everything bypasses the dSYM generation.
         if self.no_dsym or file.find('.dSYM/') != -1:
-            res = Dumper.ProcessFile(self, file)
-        else:
-            dsymbundle = file + ".dSYM"
-            if os.path.exists(dsymbundle):
-                shutil.rmtree(dsymbundle)
-            # dsymutil takes --arch=foo instead of -a foo like everything else
-            os.system("dsymutil %s \"%s\" >/dev/null" % (' '.join([a.replace('-a ', '--arch=') for a in self.archs]),
-                                      file))
-            res = Dumper.ProcessFile(self, dsymbundle)
-            # CopyDebug will already have been run from Dumper.ProcessFile
+            return Dumper.ProcessFile(self, file)
+
+        dsymbundle = file + ".dSYM"
+        if os.path.exists(dsymbundle):
             shutil.rmtree(dsymbundle)
-            # If there were no DWARF symbols, run dump_syms on the binary
-            # itself so we can at least get minimal symbol information.
-            if not res:
-                print >> sys.stderr, "No DWARF symbols for %s; using fallback symbols" % file
-                res = Dumper.ProcessFile(self, file)
+        # dsymutil takes --arch=foo instead of -a foo like everything else
+        os.system("dsymutil %s \"%s\" >/dev/null" % (' '.join([a.replace('-a ', '--arch=') for a in self.archs]),
+                                  file))
+        res = Dumper.ProcessFile(self, dsymbundle)
+        # CopyDebug will already have been run from Dumper.ProcessFile
+        shutil.rmtree(dsymbundle)
+
+        # fallback for DWARF-less binaries
+        if not res:
+            print >> sys.stderr, "Couldn't read DWARF symbols in: %s" % dsymbundle
+            res = Dumper.ProcessFile(self, file)
+
         return res
 
     def CopyDebug(self, file, debug_file, guid):
