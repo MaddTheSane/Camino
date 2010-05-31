@@ -4920,7 +4920,7 @@
 				95E17B9B085E21C400990AB3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		95EE274B0855AA6C0045DB39 /* Build configuration list for PBXNativeTarget "Brushed" */ = {
 			isa = XCConfigurationList;
@@ -5040,7 +5040,7 @@
 				95EE27890855AA6C0045DB39 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		95EE278C0855AA6C0045DB39 /* Build configuration list for PBXNativeTarget "Growl-WithInstaller.framework" */ = {
 			isa = XCConfigurationList;

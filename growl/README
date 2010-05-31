@@ -12,5 +12,4 @@ with the following changes:
   - Commented out any Xcode 3.1-style [arch=<foo>] notation and supplied non-arch-specific values where appropriate.
   - Supplied valid archs for building with toolchains on Mac OS X 10.4 and 10.5.
   - Set the MACOSX_DEPLOYMENT_TARGET to 10.4 in all configurations.
-  - Changed the default build configuration to Release.
   - Disabled the incompatible save-repository setting to prevent bustage when building on 10.4.

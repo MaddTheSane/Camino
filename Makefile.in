@@ -214,21 +214,10 @@ GECKO_STRINGS_FILES = \
 	$(NULL)
 GENERATED_GECKO_STRINGS_FILES = $(patsubst %,generated/%,$(GECKO_STRINGS_FILES))
 
-SYMBOL_SOURCE_FILES = \
-	$(XCODE_PRODUCT_DIR)/*.dSYM/Contents/Resources/DWARF/* \
-	google-breakpad/src/client/mac/build/Release/Breakpad.framework.dSYM/Contents/Resources/DWARF/Breakpad \
-	google-breakpad/src/client/mac/build/Release/breakpadUtilities.dylib.dSYM/Contents/Resources/DWARF/breakpadUtilities.dylib \
-	growl/build/Release/Growl.framework.dSYM/Contents/Resources/DWARF/Growl \
-	sparkle/build/Release/Sparkle.framework.dSYM/Contents/Resources/DWARF/Sparkle \
-	$(XCODE_PRODUCT_DIR)/Camino.app/Contents/MacOS/*.dylib \
-	$(XCODE_PRODUCT_DIR)/Camino.app/Contents/MacOS/plugins/JavaEmbeddingPlugin.bundle/Contents/MacOS/JavaEmbeddingPlugin \
-	$(XCODE_PRODUCT_DIR)/Camino.app/Contents/MacOS/plugins/MRJPlugin.plugin/Contents/MacOS/MRJPlugin \
-	$(NULL)
-
 ifdef MOZ_DEBUG
-BUILDSTYLE	= Development
+BUILDSTYLE	= Debug
 else
-BUILDSTYLE	= Deployment
+BUILDSTYLE	= Release
 endif
 
 ifdef BUILD_STATIC_LIBS
@@ -236,6 +225,17 @@ TARGET		= CaminoStatic
 else
 TARGET		= Camino
 endif
+
+SYMBOL_SOURCE_FILES = \
+	$(XCODE_PRODUCT_DIR)/*.dSYM/Contents/Resources/DWARF/* \
+	google-breakpad/src/client/mac/build/$(BUILDSTYLE)/Breakpad.framework.dSYM/Contents/Resources/DWARF/Breakpad \
+	google-breakpad/src/client/mac/build/$(BUILDSTYLE)/breakpadUtilities.dylib.dSYM/Contents/Resources/DWARF/breakpadUtilities.dylib \
+	growl/build/$(BUILDSTYLE)/Growl.framework.dSYM/Contents/Resources/DWARF/Growl \
+	sparkle/build/$(BUILDSTYLE)/Sparkle.framework.dSYM/Contents/Resources/DWARF/Sparkle \
+	$(XCODE_PRODUCT_DIR)/Camino.app/Contents/MacOS/*.dylib \
+	$(XCODE_PRODUCT_DIR)/Camino.app/Contents/MacOS/plugins/JavaEmbeddingPlugin.bundle/Contents/MacOS/JavaEmbeddingPlugin \
+	$(XCODE_PRODUCT_DIR)/Camino.app/Contents/MacOS/plugins/MRJPlugin.plugin/Contents/MacOS/MRJPlugin \
+	$(NULL)
 
 GARBAGE_DIRS += \
 	build \
@@ -414,12 +414,12 @@ libs:: \
 
 buildcaminosymbols:
 	$(PBBUILD) -project google-breakpad/src/tools/mac/dump_syms/dump_syms.xcodeproj \
-	  -configuration Release
+	  -configuration $(BUILDSTYLE)
 	@echo Generating symbols
 	mkdir -p $(SYMBOL_OUTPUT_DIR)
 	$(PYTHON) $(srcdir)/scripts/symbolstore.py \
 	  -a $(OS_TEST) -s $(shell pwd),$(srcdir) -s $(topsrcdir) --vcs-info \
-	  google-breakpad/src/tools/mac/dump_syms/build/Release/dump_syms \
+	  google-breakpad/src/tools/mac/dump_syms/build/$(BUILDSTYLE)/dump_syms \
 	  $(SYMBOL_OUTPUT_DIR) \
 	  $(SYMBOL_SOURCE_FILES) > \
 	  $(SYMBOL_OUTPUT_DIR)/$(SYMBOL_ARCHIVE_BASENAME)-symbols.txt

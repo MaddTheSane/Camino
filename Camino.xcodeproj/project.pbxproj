@@ -58,10 +58,20 @@
 		001FFD9A0C795D5400D9C2C8 /* designmode.css in Copy Gecko Resources */ = {isa = PBXBuildFile; fileRef = 001FFD940C795D3300D9C2C8 /* designmode.css */; };
 		00335B8E0C655ABC00A607F2 /* WebSearchField.mm in Sources */ = {isa = PBXBuildFile; fileRef = 00335B8C0C655ABC00A607F2 /* WebSearchField.mm */; };
 		00335B900C655ABC00A607F2 /* WebSearchField.mm in Sources */ = {isa = PBXBuildFile; fileRef = 00335B8C0C655ABC00A607F2 /* WebSearchField.mm */; };
-		003F2D37115554310093969B /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BAEF7470CCFDE7D00384F4E /* Sparkle.framework */; };
-		003F2D38115554470093969B /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BAEF7470CCFDE7D00384F4E /* Sparkle.framework */; };
 		00450523100A8E140096B649 /* bookmark_group_badge.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 00450522100A8E140096B649 /* bookmark_group_badge.tiff */; };
 		00450524100A8E140096B649 /* bookmark_group_badge.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 00450522100A8E140096B649 /* bookmark_group_badge.tiff */; };
+		005C998D11B3FC54002FAA43 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 7B64B7CA0CCFD9F50098406C /* Sparkle.framework */; };
+		005C998E11B3FC68002FAA43 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B64B7CA0CCFD9F50098406C /* Sparkle.framework */; };
+		005C998F11B3FC78002FAA43 /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 00BC6C81114B6F45000A0508 /* Growl.framework */; };
+		005C999111B3FC83002FAA43 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00BC6C81114B6F45000A0508 /* Growl.framework */; };
+		005C999311B3FC8C002FAA43 /* Breakpad.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 33820DA60F8AA24500D2164A /* Breakpad.framework */; };
+		005C999511B3FC98002FAA43 /* Breakpad.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33820DA60F8AA24500D2164A /* Breakpad.framework */; };
+		005C999611B3FCB5002FAA43 /* Breakpad.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 33820DA60F8AA24500D2164A /* Breakpad.framework */; };
+		005C999711B3FCBD002FAA43 /* Breakpad.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33820DA60F8AA24500D2164A /* Breakpad.framework */; };
+		005C999811B3FCC4002FAA43 /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 00BC6C81114B6F45000A0508 /* Growl.framework */; };
+		005C999911B3FCCF002FAA43 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00BC6C81114B6F45000A0508 /* Growl.framework */; };
+		005C999A11B3FCD9002FAA43 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B64B7CA0CCFD9F50098406C /* Sparkle.framework */; };
+		005C99B611B403A8002FAA43 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 7B64B7CA0CCFD9F50098406C /* Sparkle.framework */; };
 		005F387E0E50852D00D8E7A6 /* InvalidCertOverrideDialog.nib in Resources */ = {isa = PBXBuildFile; fileRef = 005F387C0E50852D00D8E7A6 /* InvalidCertOverrideDialog.nib */; };
 		005F387F0E50852D00D8E7A6 /* InvalidCertOverrideDialog.nib in Resources */ = {isa = PBXBuildFile; fileRef = 005F387C0E50852D00D8E7A6 /* InvalidCertOverrideDialog.nib */; };
 		0081150B0B180DDE001CB3F0 /* libthebes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0081150A0B180DDE001CB3F0 /* libthebes.a */; };
@@ -247,10 +257,6 @@
 		337F2BA70CA200D100572F7D /* ContentDispatchChooser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 337F2BA30CA200D100572F7D /* ContentDispatchChooser.mm */; };
 		33819AD70D938A3B00CA9F52 /* GeckoPrefConstants.mm in Sources */ = {isa = PBXBuildFile; fileRef = 33819AD30D938A2D00CA9F52 /* GeckoPrefConstants.mm */; };
 		33819AD80D938A3B00CA9F52 /* GeckoPrefConstants.mm in Sources */ = {isa = PBXBuildFile; fileRef = 33819AD30D938A2D00CA9F52 /* GeckoPrefConstants.mm */; };
-		33820E4E0F8AA44F00D2164A /* Breakpad.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 33820DC00F8AA31B00D2164A /* Breakpad.framework */; };
-		33820E510F8AA46E00D2164A /* Breakpad.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 33820DC00F8AA31B00D2164A /* Breakpad.framework */; };
-		33820E800F8AA62C00D2164A /* Breakpad.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33820DC00F8AA31B00D2164A /* Breakpad.framework */; };
-		33820E810F8AA63800D2164A /* Breakpad.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33820DC00F8AA31B00D2164A /* Breakpad.framework */; };
 		33B775AA0C4EAC1E00A6D67F /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 33B775A90C4EAC1E00A6D67F /* libsqlite3.dylib */; };
 		33B775AB0C4EAC1E00A6D67F /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 33B775A90C4EAC1E00A6D67F /* libsqlite3.dylib */; };
 		33B7763C0C4EB32C00A6D67F /* libsqlite3.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 33B775A90C4EAC1E00A6D67F /* libsqlite3.dylib */; };
@@ -933,8 +939,6 @@
 		7B5073010D11E89600458384 /* KeyEquivView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7B5072FD0D11E83B00458384 /* KeyEquivView.mm */; };
 		7B64B7EE0CCFDAAF0098406C /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B64B7CA0CCFD9F50098406C /* Sparkle.framework */; };
 		7B9A26190D411275008CDB39 /* libnssutil3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B9A26180D411275008CDB39 /* libnssutil3.dylib */; };
-		7BAEF8120CCFDF3400384F4E /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 7BAEF7470CCFDE7D00384F4E /* Sparkle.framework */; };
-		7BAEF8150CCFDF4A00384F4E /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 7BAEF7470CCFDE7D00384F4E /* Sparkle.framework */; };
 		7BB332F40A7E99BC0075521C /* libspellchecker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BB332F30A7E99BC0075521C /* libspellchecker.a */; };
 		7BB8FC1D0D2D58BB00CC63B0 /* KeychainDenyList.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7BB8FC1A0D2D589100CC63B0 /* KeychainDenyList.mm */; };
 		7BB8FC1F0D2D58D000CC63B0 /* KeychainDenyList.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7BB8FC1A0D2D589100CC63B0 /* KeychainDenyList.mm */; };
@@ -1190,10 +1194,6 @@
 		DEE8101F0EFB7D2E006ACC7D /* aquaSelect.css in Resources */ = {isa = PBXBuildFile; fileRef = DEE8101D0EFB7D2E006ACC7D /* aquaSelect.css */; };
 		DEE9EBA70AF5C390002BC511 /* SessionManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = DEE9EBA60AF5C390002BC511 /* SessionManager.mm */; };
 		DEE9EBA80AF5C390002BC511 /* SessionManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = DEE9EBA60AF5C390002BC511 /* SessionManager.mm */; };
-		DEFAA3440F241C1600BD51C1 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEFAA3430F241C1600BD51C1 /* Growl.framework */; };
-		DEFAA3450F241C1600BD51C1 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEFAA3430F241C1600BD51C1 /* Growl.framework */; };
-		DEFAA34D0F241C3C00BD51C1 /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = DEFAA3430F241C1600BD51C1 /* Growl.framework */; };
-		DEFAA34F0F241C4F00BD51C1 /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = DEFAA3430F241C1600BD51C1 /* Growl.framework */; };
 		DEFD23500D021C3A006899B9 /* dom_loadsave.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = DEFD234F0D021C3A006899B9 /* dom_loadsave.xpt */; };
 		DEFD23510D021C3A006899B9 /* dom_loadsave.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = DEFD234F0D021C3A006899B9 /* dom_loadsave.xpt */; };
 		DEFD23530D021C48006899B9 /* dom_storage.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = DEFD23520D021C48006899B9 /* dom_storage.xpt */; };
@@ -1646,14 +1646,14 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = DEFAA2850F24192200BD51C1 /* Growl.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 34F60EAA078E1CD500CECA86 /* Growl.framework */;
+			remoteGlobalIDString = 34F60EAA078E1CD500CECA86;
 			remoteInfo = Growl.framework;
 		};
 		DEF57538115FD0DB00813B61 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DEFAA2850F24192200BD51C1 /* Growl.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 34F60EAA078E1CD500CECA86 /* Growl.framework */;
+			remoteGlobalIDString = 34F60EAA078E1CD500CECA86;
 			remoteInfo = Growl.framework;
 		};
 /* End PBXContainerItemProxy section */
@@ -2098,9 +2098,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				7BAEF8120CCFDF3400384F4E /* Sparkle.framework in Copy Frameworks */,
-				DEFAA34D0F241C3C00BD51C1 /* Growl.framework in Copy Frameworks */,
-				33820E4E0F8AA44F00D2164A /* Breakpad.framework in Copy Frameworks */,
+				005C999311B3FC8C002FAA43 /* Breakpad.framework in Copy Frameworks */,
+				005C998F11B3FC78002FAA43 /* Growl.framework in Copy Frameworks */,
+				005C998D11B3FC54002FAA43 /* Sparkle.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2364,9 +2364,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				7BAEF8150CCFDF4A00384F4E /* Sparkle.framework in Copy Frameworks */,
-				DEFAA34F0F241C4F00BD51C1 /* Growl.framework in Copy Frameworks */,
-				33820E510F8AA46E00D2164A /* Breakpad.framework in Copy Frameworks */,
+				005C999611B3FCB5002FAA43 /* Breakpad.framework in Copy Frameworks */,
+				005C999811B3FCC4002FAA43 /* Growl.framework in Copy Frameworks */,
+				005C99B611B403A8002FAA43 /* Sparkle.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2681,7 +2681,6 @@
 		33819AD20D938A2D00CA9F52 /* GeckoPrefConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GeckoPrefConstants.h; path = src/preferences/GeckoPrefConstants.h; sourceTree = "<group>"; };
 		33819AD30D938A2D00CA9F52 /* GeckoPrefConstants.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = GeckoPrefConstants.mm; path = src/preferences/GeckoPrefConstants.mm; sourceTree = "<group>"; };
 		33820D980F8AA24500D2164A /* Breakpad.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Breakpad.xcodeproj; path = "google-breakpad/src/client/mac/Breakpad.xcodeproj"; sourceTree = "<group>"; };
-		33820DC00F8AA31B00D2164A /* Breakpad.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Breakpad.framework; path = "google-breakpad/src/client/mac/build/Release/Breakpad.framework"; sourceTree = "<group>"; };
 		33B775A90C4EAC1E00A6D67F /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = ../dist/lib/libsqlite3.dylib; sourceTree = SOURCE_ROOT; };
 		33B777E10C5588E500A6D67F /* libmozqcms.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmozqcms.a; path = ../dist/lib/libmozqcms.a; sourceTree = SOURCE_ROOT; };
 		33B778800C55C57800A6D67F /* libnssdbm3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libnssdbm3.dylib; path = ../dist/lib/libnssdbm3.dylib; sourceTree = SOURCE_ROOT; };
@@ -2835,7 +2834,6 @@
 		7B5072FD0D11E83B00458384 /* KeyEquivView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = KeyEquivView.mm; path = src/extensions/KeyEquivView.mm; sourceTree = "<group>"; };
 		7B64B7BA0CCFD9F50098406C /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		7B9A26180D411275008CDB39 /* libnssutil3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libnssutil3.dylib; path = ../dist/bin/libnssutil3.dylib; sourceTree = SOURCE_ROOT; };
-		7BAEF7470CCFDE7D00384F4E /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = sparkle/build/Release/Sparkle.framework; sourceTree = "<group>"; };
 		7BB332F30A7E99BC0075521C /* libspellchecker.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libspellchecker.a; path = ../staticlib/components/libspellchecker.a; sourceTree = SOURCE_ROOT; };
 		7BB8FC190D2D589100CC63B0 /* KeychainDenyList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeychainDenyList.h; path = src/formfill/KeychainDenyList.h; sourceTree = "<group>"; };
 		7BB8FC1A0D2D589100CC63B0 /* KeychainDenyList.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = KeychainDenyList.mm; path = src/formfill/KeychainDenyList.mm; sourceTree = "<group>"; };
@@ -3000,7 +2998,6 @@
 		DEE9EBA30AF5C379002BC511 /* SessionManager.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SessionManager.h; path = src/application/SessionManager.h; sourceTree = "<group>"; };
 		DEE9EBA60AF5C390002BC511 /* SessionManager.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = SessionManager.mm; path = src/application/SessionManager.mm; sourceTree = SOURCE_ROOT; };
 		DEFAA2850F24192200BD51C1 /* Growl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Growl.xcodeproj; path = growl/Growl.xcodeproj; sourceTree = "<group>"; };
-		DEFAA3430F241C1600BD51C1 /* Growl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = Growl.framework; path = growl/build/Release/Growl.framework; sourceTree = "<group>"; };
 		DEFD234F0D021C3A006899B9 /* dom_loadsave.xpt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = file; name = dom_loadsave.xpt; path = ../dist/bin/components/dom_loadsave.xpt; sourceTree = SOURCE_ROOT; };
 		DEFD23520D021C48006899B9 /* dom_storage.xpt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = file; name = dom_storage.xpt; path = ../dist/bin/components/dom_storage.xpt; sourceTree = SOURCE_ROOT; };
 		DEFD23550D021C63006899B9 /* content_xmldoc.xpt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = file; name = content_xmldoc.xpt; path = ../dist/bin/components/content_xmldoc.xpt; sourceTree = SOURCE_ROOT; };
@@ -3410,11 +3407,11 @@
 				DEB968320B0D8E9F0023F8B1 /* Security.framework in Frameworks */,
 				008115430B180F35001CB3F0 /* libthebes.dylib in Frameworks */,
 				33B775AA0C4EAC1E00A6D67F /* libsqlite3.dylib in Frameworks */,
-				003F2D37115554310093969B /* Sparkle.framework in Frameworks */,
 				7BC5674C0D4113D8007503E1 /* libnssutil3.dylib in Frameworks */,
-				DEFAA3450F241C1600BD51C1 /* Growl.framework in Frameworks */,
-				33820E800F8AA62C00D2164A /* Breakpad.framework in Frameworks */,
 				B33032C910AE16D7002FA0A7 /* libmorkreader_s.a in Frameworks */,
+				005C999511B3FC98002FAA43 /* Breakpad.framework in Frameworks */,
+				005C999111B3FC83002FAA43 /* Growl.framework in Frameworks */,
+				005C998E11B3FC68002FAA43 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3530,15 +3527,15 @@
 				DE62E4320B72B50C00142851 /* libauth.a in Frameworks */,
 				DEC87B150C288403002EB106 /* libstoragecomps.a in Frameworks */,
 				33B775AB0C4EAC1E00A6D67F /* libsqlite3.dylib in Frameworks */,
-				003F2D38115554470093969B /* Sparkle.framework in Frameworks */,
 				7B9A26190D411275008CDB39 /* libnssutil3.dylib in Frameworks */,
 				DE846DA90D84D03400009C6A /* libimgicon.a in Frameworks */,
-				DEFAA3440F241C1600BD51C1 /* Growl.framework in Frameworks */,
 				DE2AC7180F33EBAB009C0A42 /* libcaminosafebrowsing.a in Frameworks */,
-				33820E810F8AA63800D2164A /* Breakpad.framework in Frameworks */,
 				B33032CA10AE16D7002FA0A7 /* libmorkreader_s.a in Frameworks */,
 				DE19C72F1121F350007A57E0 /* libplaces.a in Frameworks */,
 				DE482A84114DF54E0039D61B /* AudioUnit.framework in Frameworks */,
+				005C999711B3FCBD002FAA43 /* Breakpad.framework in Frameworks */,
+				005C999911B3FCCF002FAA43 /* Growl.framework in Frameworks */,
+				005C999A11B3FCD9002FAA43 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3902,9 +3899,6 @@
 				F5FEDBCB02AD8DD101A967F3 /* QuickTime.framework */,
 				DEB968300B0D8E9F0023F8B1 /* Security.framework */,
 				F52D5CDD027D412A01A80166 /* SystemConfiguration.framework */,
-				7BAEF7470CCFDE7D00384F4E /* Sparkle.framework */,
-				DEFAA3430F241C1600BD51C1 /* Growl.framework */,
-				33820DC00F8AA31B00D2164A /* Breakpad.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -5259,6 +5253,7 @@
 				3F44AD6005BDFB9F00CB4B08 /* Copy Libraries */,
 				3F44AD6A05BDFB9F00CB4B08 /* Copy Security Components */,
 				33819D740D98189700CA9F52 /* Copy Feed Handlers */,
+				005C9E1111B44D3D002FAA43 /* Copy Frameworks to Build Dir */,
 				3F44AD7705BDFB9F00CB4B08 /* Copy Frameworks */,
 				DE578A7A0FA69EAF0032CFD2 /* Copy Crash Reporter InfoPlists.strings Override */,
 				0080C7DE0E2E4CD9006AFD32 /* Change Sparkle Load ID */,
@@ -5398,6 +5393,7 @@
 				3F44AF7B05BDFBA000CB4B08 /* Copy Security Components */,
 				3F44AF8605BDFBA000CB4B08 /* Copy Libraries */,
 				33819D750D98189700CA9F52 /* Copy Feed Handlers */,
+				005C9E1711B44D66002FAA43 /* Copy Frameworks to Build Dir */,
 				3F44AF9005BDFBA000CB4B08 /* Copy Frameworks */,
 				DE578A7C0FA69FCB0032CFD2 /* Copy Crash Reporter InfoPlist.strings Override */,
 				0080C7F10E2E4D7A006AFD32 /* Change Sparkle Load ID */,
@@ -6122,6 +6118,40 @@
 			shellScript = "\"${SRCROOT}/scripts/strip-headers.sh\"";
 			showEnvVarsInLog = 0;
 		};
+		005C9E1111B44D3D002FAA43 /* Copy Frameworks to Build Dir */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Frameworks to Build Dir";
+			outputPaths = (
+				"${BUILT_PRODUCTS_DIR}/Breakpad.framework",
+				"${BUILT_PRODUCTS_DIR}/Growl.framework",
+				"${BUILT_PRODUCTS_DIR}/Sparkle.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/scripts/copy-third-party-frameworks.sh\"";
+		};
+		005C9E1711B44D66002FAA43 /* Copy Frameworks to Build Dir */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Frameworks to Build Dir";
+			outputPaths = (
+				"${BUILT_PRODUCTS_DIR}/Breakpad.framework",
+				"${BUILT_PRODUCTS_DIR}/Growl.framework",
+				"${BUILT_PRODUCTS_DIR}/Sparkle.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/scripts/copy-third-party-frameworks.sh\"";
+		};
 		0080C7DE0E2E4CD9006AFD32 /* Change Sparkle Load ID */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -6261,6 +6291,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "echo \"Copy Crash Reporter InfoPlists.strings Override\"\ncp $SRCROOT/resources/google-breakpad/InfoPlist.strings $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/Breakpad.framework/Versions/A/Resources/crash_report_sender.app/Contents/Resources/English.lproj/";
+			showEnvVarsInLog = 0;
 		};
 		DE578A7C0FA69FCB0032CFD2 /* Copy Crash Reporter InfoPlist.strings Override */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6276,6 +6307,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "echo \"Copy Crash Reporter InfoPlists.strings Override\"\ncp $SRCROOT/resources/google-breakpad/InfoPlist.strings $BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/Breakpad.framework/Versions/A/Resources/crash_report_sender.app/Contents/Resources/English.lproj/";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -7397,7 +7429,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		00BC6876114B5EA5000A0508 /* Development */ = {
+		00BC6876114B5EA5000A0508 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
@@ -7405,9 +7437,9 @@
 				PRODUCT_NAME = CaminoImporter;
 				WRAPPER_EXTENSION = mdimporter;
 			};
-			name = Development;
+			name = Debug;
 		};
-		00BC6877114B5EA5000A0508 /* Deployment */ = {
+		00BC6877114B5EA5000A0508 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
@@ -7415,137 +7447,137 @@
 				PRODUCT_NAME = CaminoImporter;
 				WRAPPER_EXTENSION = mdimporter;
 			};
-			name = Deployment;
+			name = Release;
 		};
-		3323775D0C4D0F9600A34879 /* Development */ = {
+		3323775D0C4D0F9600A34879 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = "Info-AppearancePrefPane.plist";
 				PRODUCT_NAME = Appearance;
 			};
-			name = Development;
+			name = Debug;
 		};
-		3323775E0C4D0F9600A34879 /* Deployment */ = {
+		3323775E0C4D0F9600A34879 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = "Info-AppearancePrefPane.plist";
 				PRODUCT_NAME = Appearance;
 			};
-			name = Deployment;
+			name = Release;
 		};
-		332377620C4D0F9600A34879 /* Development */ = {
+		332377620C4D0F9600A34879 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = sparkle/build/Release;
+				FRAMEWORK_SEARCH_PATHS = "sparkle/build/$(CONFIGURATION)";
 				INFOPLIST_FILE = "Info-GeneralPrefPane.plist";
 				PRODUCT_NAME = General;
 			};
-			name = Development;
+			name = Debug;
 		};
-		332377630C4D0F9600A34879 /* Deployment */ = {
+		332377630C4D0F9600A34879 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = sparkle/build/Release;
+				FRAMEWORK_SEARCH_PATHS = "sparkle/build/$(CONFIGURATION)";
 				INFOPLIST_FILE = "Info-GeneralPrefPane.plist";
 				PRODUCT_NAME = General;
 			};
-			name = Deployment;
+			name = Release;
 		};
-		332377670C4D0F9600A34879 /* Development */ = {
+		332377670C4D0F9600A34879 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = "Info-PrivacyPrefPane.plist";
 				PRODUCT_NAME = Privacy;
 			};
-			name = Development;
+			name = Debug;
 		};
-		332377680C4D0F9600A34879 /* Deployment */ = {
+		332377680C4D0F9600A34879 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = "Info-PrivacyPrefPane.plist";
 				PRODUCT_NAME = Privacy;
 			};
-			name = Deployment;
+			name = Release;
 		};
-		3323776C0C4D0F9600A34879 /* Development */ = {
+		3323776C0C4D0F9600A34879 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = "Info-SecurityPrefPane.plist";
 				PRODUCT_NAME = Security;
 			};
-			name = Development;
+			name = Debug;
 		};
-		3323776D0C4D0F9600A34879 /* Deployment */ = {
+		3323776D0C4D0F9600A34879 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = "Info-SecurityPrefPane.plist";
 				PRODUCT_NAME = Security;
 			};
-			name = Deployment;
+			name = Release;
 		};
-		332377710C4D0F9600A34879 /* Development */ = {
+		332377710C4D0F9600A34879 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = "Info-WebFeaturesPrefPane.plist";
 				PRODUCT_NAME = WebFeatures;
 			};
-			name = Development;
+			name = Debug;
 		};
-		332377720C4D0F9600A34879 /* Deployment */ = {
+		332377720C4D0F9600A34879 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = "Info-WebFeaturesPrefPane.plist";
 				PRODUCT_NAME = WebFeatures;
 			};
-			name = Deployment;
+			name = Release;
 		};
-		332377760C4D0F9600A34879 /* Development */ = {
+		332377760C4D0F9600A34879 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = "Info-TabsPrefPane.plist";
 				PRODUCT_NAME = Tabs;
 			};
-			name = Development;
+			name = Debug;
 		};
-		332377770C4D0F9600A34879 /* Deployment */ = {
+		332377770C4D0F9600A34879 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = "Info-TabsPrefPane.plist";
 				PRODUCT_NAME = Tabs;
 			};
-			name = Deployment;
+			name = Release;
 		};
-		3323777B0C4D0F9600A34879 /* Development */ = {
+		3323777B0C4D0F9600A34879 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = "Info-DownloadsPrefPane.plist";
 				PRODUCT_NAME = Downloads;
 			};
-			name = Development;
+			name = Debug;
 		};
-		3323777C0C4D0F9600A34879 /* Deployment */ = {
+		3323777C0C4D0F9600A34879 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = "Info-DownloadsPrefPane.plist";
 				PRODUCT_NAME = Downloads;
 			};
-			name = Deployment;
+			name = Release;
 		};
-		332377800C4D0F9600A34879 /* Development */ = {
+		332377800C4D0F9600A34879 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
@@ -7579,9 +7611,9 @@
 				);
 				PRODUCT_NAME = History;
 			};
-			name = Development;
+			name = Debug;
 		};
-		332377810C4D0F9600A34879 /* Deployment */ = {
+		332377810C4D0F9600A34879 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
@@ -7614,9 +7646,9 @@
 					"-Wno-four-char-constants",
 				);
 			};
-			name = Deployment;
+			name = Release;
 		};
-		332377850C4D0F9600A34879 /* Development */ = {
+		332377850C4D0F9600A34879 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377970C4D0FBD00A34879 /* Camino.xcconfig */;
 			buildSettings = {
@@ -7636,9 +7668,9 @@
 					"-DTRACING",
 				);
 			};
-			name = Development;
+			name = Debug;
 		};
-		332377860C4D0F9600A34879 /* Deployment */ = {
+		332377860C4D0F9600A34879 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377970C4D0FBD00A34879 /* Camino.xcconfig */;
 			buildSettings = {
@@ -7652,9 +7684,9 @@
 					../staticlib/components,
 				);
 			};
-			name = Deployment;
+			name = Release;
 		};
-		3323778A0C4D0F9600A34879 /* Development */ = {
+		3323778A0C4D0F9600A34879 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377970C4D0FBD00A34879 /* Camino.xcconfig */;
 			buildSettings = {
@@ -7684,9 +7716,9 @@
 					"-DTRACING",
 				);
 			};
-			name = Development;
+			name = Debug;
 		};
-		3323778B0C4D0F9600A34879 /* Deployment */ = {
+		3323778B0C4D0F9600A34879 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377970C4D0FBD00A34879 /* Camino.xcconfig */;
 			buildSettings = {
@@ -7711,9 +7743,9 @@
 					../dist/lib,
 				);
 			};
-			name = Deployment;
+			name = Release;
 		};
-		3323778F0C4D0F9600A34879 /* Development */ = {
+		3323778F0C4D0F9600A34879 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377CF0C4D886800A34879 /* Debug.xcconfig */;
 			buildSettings = {
@@ -7723,9 +7755,9 @@
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				ZERO_LINK = NO;
 			};
-			name = Development;
+			name = Debug;
 		};
-		332377900C4D0F9600A34879 /* Deployment */ = {
+		332377900C4D0F9600A34879 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D00C4D887600A34879 /* Release.xcconfig */;
 			buildSettings = {
@@ -7735,9 +7767,9 @@
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				ZERO_LINK = NO;
 			};
-			name = Deployment;
+			name = Release;
 		};
-		7BDD26CD0D0DC2BA00BA05C6 /* Development */ = {
+		7BDD26CD0D0DC2BA00BA05C6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
@@ -7745,9 +7777,9 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				PRODUCT_NAME = Camino;
 			};
-			name = Development;
+			name = Debug;
 		};
-		7BDD26CE0D0DC2BA00BA05C6 /* Deployment */ = {
+		7BDD26CE0D0DC2BA00BA05C6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
@@ -7756,9 +7788,9 @@
 				PRODUCT_NAME = Camino;
 				ZERO_LINK = NO;
 			};
-			name = Deployment;
+			name = Release;
 		};
-		7BDD26E40D0DC30700BA05C6 /* Development */ = {
+		7BDD26E40D0DC30700BA05C6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
@@ -7766,9 +7798,9 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				PRODUCT_NAME = CaminoStatic;
 			};
-			name = Development;
+			name = Debug;
 		};
-		7BDD26E50D0DC30700BA05C6 /* Deployment */ = {
+		7BDD26E50D0DC30700BA05C6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
@@ -7777,7 +7809,7 @@
 				PRODUCT_NAME = CaminoStatic;
 				ZERO_LINK = NO;
 			};
-			name = Deployment;
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
@@ -7785,128 +7817,128 @@
 		00BC6878114B5EA5000A0508 /* Build configuration list for PBXNativeTarget "CaminoImporter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				00BC6876114B5EA5000A0508 /* Development */,
-				00BC6877114B5EA5000A0508 /* Deployment */,
+				00BC6876114B5EA5000A0508 /* Debug */,
+				00BC6877114B5EA5000A0508 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Development;
+			defaultConfigurationName = Debug;
 		};
 		3323775C0C4D0F9600A34879 /* Build configuration list for PBXNativeTarget "AppearancePrefPane" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3323775D0C4D0F9600A34879 /* Development */,
-				3323775E0C4D0F9600A34879 /* Deployment */,
+				3323775D0C4D0F9600A34879 /* Debug */,
+				3323775E0C4D0F9600A34879 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Development;
+			defaultConfigurationName = Debug;
 		};
 		332377610C4D0F9600A34879 /* Build configuration list for PBXNativeTarget "GeneralPrefPane" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				332377620C4D0F9600A34879 /* Development */,
-				332377630C4D0F9600A34879 /* Deployment */,
+				332377620C4D0F9600A34879 /* Debug */,
+				332377630C4D0F9600A34879 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Development;
+			defaultConfigurationName = Debug;
 		};
 		332377660C4D0F9600A34879 /* Build configuration list for PBXNativeTarget "PrivacyPrefPane" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				332377670C4D0F9600A34879 /* Development */,
-				332377680C4D0F9600A34879 /* Deployment */,
+				332377670C4D0F9600A34879 /* Debug */,
+				332377680C4D0F9600A34879 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Development;
+			defaultConfigurationName = Debug;
 		};
 		3323776B0C4D0F9600A34879 /* Build configuration list for PBXNativeTarget "SecurityPrefPane" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3323776C0C4D0F9600A34879 /* Development */,
-				3323776D0C4D0F9600A34879 /* Deployment */,
+				3323776C0C4D0F9600A34879 /* Debug */,
+				3323776D0C4D0F9600A34879 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Development;
+			defaultConfigurationName = Debug;
 		};
 		332377700C4D0F9600A34879 /* Build configuration list for PBXNativeTarget "WebFeaturesPrefPane" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				332377710C4D0F9600A34879 /* Development */,
-				332377720C4D0F9600A34879 /* Deployment */,
+				332377710C4D0F9600A34879 /* Debug */,
+				332377720C4D0F9600A34879 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Development;
+			defaultConfigurationName = Debug;
 		};
 		332377750C4D0F9600A34879 /* Build configuration list for PBXNativeTarget "TabsPrefPane" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				332377760C4D0F9600A34879 /* Development */,
-				332377770C4D0F9600A34879 /* Deployment */,
+				332377760C4D0F9600A34879 /* Debug */,
+				332377770C4D0F9600A34879 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Development;
+			defaultConfigurationName = Debug;
 		};
 		3323777A0C4D0F9600A34879 /* Build configuration list for PBXNativeTarget "DownloadsPrefPane" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3323777B0C4D0F9600A34879 /* Development */,
-				3323777C0C4D0F9600A34879 /* Deployment */,
+				3323777B0C4D0F9600A34879 /* Debug */,
+				3323777C0C4D0F9600A34879 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Development;
+			defaultConfigurationName = Debug;
 		};
 		3323777F0C4D0F9600A34879 /* Build configuration list for PBXNativeTarget "HistoryPrefPane" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				332377800C4D0F9600A34879 /* Development */,
-				332377810C4D0F9600A34879 /* Deployment */,
+				332377800C4D0F9600A34879 /* Debug */,
+				332377810C4D0F9600A34879 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Development;
+			defaultConfigurationName = Debug;
 		};
 		332377840C4D0F9600A34879 /* Build configuration list for PBXNativeTarget "CaminoApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				332377850C4D0F9600A34879 /* Development */,
-				332377860C4D0F9600A34879 /* Deployment */,
+				332377850C4D0F9600A34879 /* Debug */,
+				332377860C4D0F9600A34879 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Development;
+			defaultConfigurationName = Debug;
 		};
 		332377890C4D0F9600A34879 /* Build configuration list for PBXNativeTarget "CaminoStaticApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3323778A0C4D0F9600A34879 /* Development */,
-				3323778B0C4D0F9600A34879 /* Deployment */,
+				3323778A0C4D0F9600A34879 /* Debug */,
+				3323778B0C4D0F9600A34879 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Development;
+			defaultConfigurationName = Debug;
 		};
 		3323778E0C4D0F9600A34879 /* Build configuration list for PBXProject "Camino" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3323778F0C4D0F9600A34879 /* Development */,
-				332377900C4D0F9600A34879 /* Deployment */,
+				3323778F0C4D0F9600A34879 /* Debug */,
+				332377900C4D0F9600A34879 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Development;
+			defaultConfigurationName = Debug;
 		};
 		7BDD26E20D0DC30200BA05C6 /* Build configuration list for PBXAggregateTarget "Camino" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7BDD26CD0D0DC2BA00BA05C6 /* Development */,
-				7BDD26CE0D0DC2BA00BA05C6 /* Deployment */,
+				7BDD26CD0D0DC2BA00BA05C6 /* Debug */,
+				7BDD26CE0D0DC2BA00BA05C6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Development;
+			defaultConfigurationName = Debug;
 		};
 		7BDD26FB0D0DC33B00BA05C6 /* Build configuration list for PBXAggregateTarget "CaminoStatic" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7BDD26E40D0DC30700BA05C6 /* Development */,
-				7BDD26E50D0DC30700BA05C6 /* Deployment */,
+				7BDD26E40D0DC30700BA05C6 /* Debug */,
+				7BDD26E50D0DC30700BA05C6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Development;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
