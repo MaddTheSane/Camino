@@ -22,6 +22,7 @@
 #  Brian Ryner <bryner@brianryner.com>
 #  Mark Mentovai <mark@moxienet.com>
 #  Smokey Ardisson <alqahira@ardisson.org>
+#  Stuart Morgan <stuart.morgan@alumni.case.edu>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -213,17 +214,12 @@ GECKO_STRINGS_FILES = \
 	$(NULL)
 GENERATED_GECKO_STRINGS_FILES = $(patsubst %,generated/%,$(GECKO_STRINGS_FILES))
 
-# We split this into two groups because symbols for things we build have source files based on
-# the objdir, and we have to do some tweaking to get the cvs paths to work out right.
-CAMINO_SYMBOL_SOURCE_FILES = \
+SYMBOL_SOURCE_FILES = \
 	$(XCODE_PRODUCT_DIR)/*.dSYM/Contents/Resources/DWARF/* \
 	google-breakpad/src/client/mac/build/Release/Breakpad.framework.dSYM/Contents/Resources/DWARF/Breakpad \
 	google-breakpad/src/client/mac/build/Release/breakpadUtilities.dylib.dSYM/Contents/Resources/DWARF/breakpadUtilities.dylib \
 	growl/build/Release/Growl.framework.dSYM/Contents/Resources/DWARF/Growl \
 	sparkle/build/Release/Sparkle.framework.dSYM/Contents/Resources/DWARF/Sparkle \
-	$(NULL)
-
-CORE_SYMBOL_SOURCE_FILES = \
 	$(XCODE_PRODUCT_DIR)/Camino.app/Contents/MacOS/*.dylib \
 	$(XCODE_PRODUCT_DIR)/Camino.app/Contents/MacOS/plugins/JavaEmbeddingPlugin.bundle/Contents/MacOS/JavaEmbeddingPlugin \
 	$(XCODE_PRODUCT_DIR)/Camino.app/Contents/MacOS/plugins/MRJPlugin.plugin/Contents/MacOS/MRJPlugin \
@@ -422,17 +418,10 @@ buildcaminosymbols:
 	@echo Generating symbols
 	mkdir -p $(SYMBOL_OUTPUT_DIR)
 	$(PYTHON) $(srcdir)/scripts/symbolstore.py \
-	  -a $(OS_TEST) -s $(shell pwd) --vcs-info \
+	  -a $(OS_TEST) -s $(shell pwd),$(srcdir) -s $(topsrcdir) --vcs-info \
 	  google-breakpad/src/tools/mac/dump_syms/build/Release/dump_syms \
 	  $(SYMBOL_OUTPUT_DIR) \
-	  $(CAMINO_SYMBOL_SOURCE_FILES) > \
-	  $(SYMBOL_OUTPUT_DIR)/$(SYMBOL_ARCHIVE_BASENAME)-symbols.txt
-	find $(SYMBOL_OUTPUT_DIR) -name '*.sym' -exec sed -e 's#cvsroot:camino#cvsroot:mozilla/camino#' -e "s#/camino$(topsrcdir)##" -i '' "{}" \;
-	$(PYTHON) $(srcdir)/scripts/symbolstore.py \
-	  -a $(OS_TEST) -s $(topsrcdir) --vcs-info \
-	  google-breakpad/src/tools/mac/dump_syms/build/Release/dump_syms \
-	  $(SYMBOL_OUTPUT_DIR) \
-	  $(CORE_SYMBOL_SOURCE_FILES) >> \
+	  $(SYMBOL_SOURCE_FILES) > \
 	  $(SYMBOL_OUTPUT_DIR)/$(SYMBOL_ARCHIVE_BASENAME)-symbols.txt
 
 uploadcaminosymbols:

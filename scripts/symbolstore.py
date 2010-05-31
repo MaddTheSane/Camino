@@ -22,6 +22,7 @@
 # Contributor(s):
 # Ted Mielczarek <ted.mielczarek@gmail.com>
 # Ben Turner <mozilla@songbirdnest.com>
+# Stuart Morgan <stuart.morgan@alumni.case.edu>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -50,6 +51,8 @@
 # - Added a --no_dsym option that causes all symbols to be generated directly
 #   from the binary (intended for use in generating OS symbols, where
 #   trying to make a dSYM will fail due to permissions).
+# - Changed srcdirs to an array of tuples, containing the VCS root and the
+#   build root, to allow for the possibility that they are different.
 #
 # Usage: symbolstore.py <params> <dump_syms path> <symbol store path>
 #                                <debug info files or dirs>
@@ -283,32 +286,32 @@ class HGRepoInfo:
         self.cleanroot = cleanroot
 
 class HGFileInfo(VCSFileInfo):
-    def __init__(self, file, srcdir):
+    def __init__(self, file, builddir, vcsdir):
         VCSFileInfo.__init__(self, file)
         # we should only have to collect this info once per-repo
-        if not srcdir in HGRepoInfo.repos:
-            rev = os.popen('hg identify -i "%s"' % srcdir, "r").readlines()[0].rstrip()
+        if not vcsdir in HGRepoInfo.repos:
+            rev = os.popen('hg identify -i "%s"' % vcsdir, "r").readlines()[0].rstrip()
             # could have a + if there are uncommitted local changes
             if rev.endswith('+'):
                 rev = rev[:-1]
 
-            path = os.popen('hg -R "%s" showconfig paths.default' % srcdir, "r").readlines()[0].rstrip()
+            path = os.popen('hg -R "%s" showconfig paths.default' % vcsdir, "r").readlines()[0].rstrip()
             if path == '':
                 hg_root = os.environ.get("SRCSRV_ROOT")
                 if hg_root:
                     path = hg_root
                 else:
-                    print >> sys.stderr, "Failed to get HG Repo for %s" % srcdir
+                    print >> sys.stderr, "Failed to get HG Repo for %s" % vcsdir
             if path != '': # not there?
                 match = rootRegex.match(path)
                 if match:
                     cleanroot = match.group(1)
                     if cleanroot.endswith('/'):
                         cleanroot = cleanroot[:-1]
-            HGRepoInfo.repos[srcdir] = HGRepoInfo(path, rev, cleanroot)
-        self.repo = HGRepoInfo.repos[srcdir]
+            HGRepoInfo.repos[vcsdir] = HGRepoInfo(path, rev, cleanroot)
+        self.repo = HGRepoInfo.repos[vcsdir]
         self.file = file
-        self.srcdir = srcdir
+        self.srcdir = builddir
 
     def GetRoot(self):
         return self.repo.path
@@ -345,7 +348,7 @@ def IsInDir(file, dir):
     return os.path.abspath(file).lower().startswith(os.path.abspath(dir).lower())
 
 def GetVCSFilename(file, srcdirs):
-    """Given a full path to a file, and the top source directory,
+    """Given a full path to a file, and the top source directory tuple,
     look for version control information about this file, and return
     a tuple containing
     1) a specially formatted filename that contains the VCS type,
@@ -364,17 +367,18 @@ def GetVCSFilename(file, srcdirs):
         # Already cached this info, use it.
         fileInfo = vcsFileInfoCache[file]
     else:
-        for srcdir in srcdirs:
+        for srcdirtuple in srcdirs:
+            builddir, vcsdir = srcdirtuple
             if os.path.isdir(os.path.join(path, "CVS")):
-                fileInfo = CVSFileInfo(file, srcdir)
+                fileInfo = CVSFileInfo(file, builddir)
                 if fileInfo:
                     root = fileInfo.root
             elif os.path.isdir(os.path.join(path, ".svn")) or \
                  os.path.isdir(os.path.join(path, "_svn")):
                  fileInfo = SVNFileInfo(file);
-            elif os.path.isdir(os.path.join(srcdir, '.hg')) and \
-                 IsInDir(file, srcdir):
-                 fileInfo = HGFileInfo(file, srcdir)
+            elif os.path.isdir(os.path.join(vcsdir, '.hg')) and \
+                 IsInDir(file, builddir):
+                 fileInfo = HGFileInfo(file, builddir, vcsdir)
 
             if fileInfo: 
                 vcsFileInfoCache[file] = fileInfo
@@ -436,7 +440,7 @@ class Dumper:
         else:
             self.archs = ['-a %s' % a for a in archs.split()]
         if srcdirs is not None:
-            self.srcdirs = [os.path.normpath(a) for a in srcdirs]
+            self.srcdirs = [(os.path.normpath(a[0]), os.path.normpath(a[1])) for a in srcdirs]
         else:
             self.srcdirs = None
         self.copy_debug = copy_debug
@@ -537,7 +541,7 @@ class Dumper:
                             (x, index, filename) = line.split(None, 2)
                             if sys.platform == "sunos5":
                                 for srcdir in self.srcdirs:
-                                    start = filename.find(self.srcdir)
+                                    start = filename.find(self.srcdir[0])
                                     if start != -1:
                                         filename = filename[start:]
                                         break
@@ -782,7 +786,7 @@ def main():
                       help="Run dump_syms -a <arch> for each space separated cpu architecture in ARCHS (only on OS X)")
     parser.add_option("-s", "--srcdir",
                       action="append", dest="srcdir", default=[],
-                      help="Use SRCDIR to determine relative paths to source files")
+                      help="Use SRCDIR to determine relative paths to source files. This can be either a single path (taken to be both the build root and the VCS root), or two paths in the form buildroot,vcsroot if they aren't the same.")
     parser.add_option("-v", "--vcs-info",
                       action="store_true", dest="vcsinfo",
                       help="Try to retrieve VCS info for each FILE listed in the output")
@@ -805,11 +809,19 @@ def main():
         parser.error("not enough arguments")
         exit(1)
 
+    srcdirs = []
+    for arg in options.srcdir:
+        dirs = arg.split(",")
+        if len(dirs) == 2:
+            srcdirs.append((dirs[0], dirs[1]))
+        else:
+            srcdirs.append((arg, arg))
+
     dumper = GetPlatformSpecificDumper(dump_syms=args[0],
                                        symbol_path=args[1],
                                        copy_debug=options.copy_debug,
                                        archs=options.archs,
-                                       srcdirs=options.srcdir,
+                                       srcdirs=srcdirs,
                                        vcsinfo=options.vcsinfo,
                                        srcsrv=options.srcsrv,
                                        no_dsym=options.no_dsym)
