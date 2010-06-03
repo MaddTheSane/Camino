@@ -220,7 +220,14 @@ typedef enum  {
 
 - (NSSize)windowWillResize:(NSWindow *)sender toSize:(NSSize)proposedFrameSize;
 
-- (IBAction)toggleStatusBar:(id)aSender;
+// Gets/sets the visibility of the bookmark bar.
+- (BOOL)bookmarkBarIsVisible;
+- (void)setBookmarkBarIsVisible:(BOOL)visible;
+
+// Gets/sets the visibility of the status bar.
+- (BOOL)statusBarIsVisible;
+- (IBAction)setStatusBarIsVisible:(BOOL)visible;
+
 - (IBAction)viewSource:(id)aSender;			// focussed frame or page
 - (IBAction)viewPageSource:(id)aSender;	// top-level page
 
@@ -369,8 +376,6 @@ typedef enum  {
 - (IBAction)copyImageLocation:(id)sender;
 
 - (IBAction)unblockFlashFromCurrentDomain:(id)sender;
-
-- (BookmarkToolbar*) bookmarkToolbar;
 
 - (BOOL)windowClosesQuietly;
 - (void)setWindowClosesQuietly:(BOOL)inClosesQuietly;

@@ -58,7 +58,6 @@
 #import "BookmarkFolder.h"
 #import "BookmarkInfoController.h"
 #import "BookmarkManager.h"
-#import "BookmarkToolbar.h"
 #import "BrowserTabView.h"
 #import "CHBrowserService.h"
 #import "UserDefaults.h"
@@ -1531,12 +1530,26 @@ const int kZoomActionsTag = 108;
   if (!browserController)
     return;
 
-  BOOL showToolbar = ![[browserController bookmarkToolbar] isVisible];
-  [[browserController bookmarkToolbar] setVisible:showToolbar];
+  BOOL showBar = ![browserController bookmarkBarIsVisible];
+  [browserController setBookmarkBarIsVisible:showBar];
 
-  // save prefs here
   NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-  [defaults setInteger:((showToolbar) ? 0 : 1) forKey:USER_DEFAULTS_HIDE_PERS_TOOLBAR_KEY];
+  [defaults setInteger:((showBar) ? 0 : 1)
+                forKey:USER_DEFAULTS_HIDE_PERS_TOOLBAR_KEY];
+}
+
+- (IBAction)toggleStatusBar:(id)aSender
+{
+  BrowserWindowController* browserController = [self mainWindowBrowserController];
+  if (!browserController)
+    return;
+
+  BOOL showBar = ![browserController statusBarIsVisible];
+  [browserController setStatusBarIsVisible:showBar];
+
+  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+  [defaults setBool:!showBar
+             forKey:USER_DEFAULTS_HIDE_STATUS_BAR_KEY];
 }
 
 - (IBAction)stop:(id)aSender
@@ -1892,17 +1905,24 @@ const int kZoomActionsTag = 108;
   // window open. Popup windows that have the personal toolbar removed should always gray
   // out this menu.
   if (action == @selector(toggleBookmarksToolbar:)) {
-    if (browserController) {
-      BookmarkToolbar* bookmarkToolbar = [browserController bookmarkToolbar];
-      if (bookmarkToolbar) {
-        if ([bookmarkToolbar isVisible])
-          [mBookmarksToolbarMenuItem setTitle:NSLocalizedString(@"Hide Bookmarks Toolbar", nil)];
-        else
-          [mBookmarksToolbarMenuItem setTitle:NSLocalizedString(@"Show Bookmarks Toolbar", nil)];
-        return YES;
-      }
-    }
-    return NO;
+    if (!browserController)
+      return NO;
+    if ([browserController bookmarkBarIsVisible])
+      [aMenuItem setTitle:NSLocalizedString(@"Hide Bookmarks Toolbar", nil)];
+    else
+      [aMenuItem setTitle:NSLocalizedString(@"Show Bookmarks Toolbar", nil)];
+    return YES;
+  }
+
+  // Check the state of the status bar.
+  if (action == @selector(toggleStatusBar:)) {
+    if (!browserController)
+      return NO;
+    if ([browserController statusBarIsVisible])
+      [aMenuItem setTitle:NSLocalizedString(@"HideStatusBar", nil)];
+    else
+      [aMenuItem setTitle:NSLocalizedString(@"ShowStatusBar", nil)];
+    return YES;
   }
 
   if (action == @selector(manageBookmarks:)) {

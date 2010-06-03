@@ -708,11 +708,8 @@ public:
   // toolbar's appearance is tweaked to better match the unified look.
   // Its active/inactive state needs to change along with the toolbar's.
   BrowserWindow* browserWin = (BrowserWindow*)[self window];
-  if ([browserWin hasUnifiedToolbarAppearance]) {
-    BookmarkToolbar* bookmarkToolbar = [self bookmarkToolbar];
-    if (bookmarkToolbar)
-      [bookmarkToolbar setNeedsDisplay:YES];
-  }
+  if ([browserWin hasUnifiedToolbarAppearance])
+    [mPersonalToolbar setNeedsDisplay:YES];
 }
 
 - (void)windowDidBecomeMain:(NSNotification *)notification
@@ -967,7 +964,7 @@ public:
     if ([NSWorkspace isLeopardOrHigher]) {
       // On 10.5+, give the text an etched look for the textured status bar.
       [[mStatus cell] setBackgroundStyle:NSBackgroundStyleRaised];
-      if (![mStatusBar isHidden])
+      if ([self statusBarIsVisible])
         [[self window] setContentBorderThickness:NSHeight([mStatusBar bounds]) forEdge:NSMinYEdge];
     }
     else {
@@ -1180,10 +1177,12 @@ public:
   // Change the window size, but don't let it be to narrow
   stdFrame.size.width = MAX([[self window] minSize].width, stdFrame.size.width + widthChange);
 
-  if ([mPersonalToolbar isVisible])
-    // if the personal toolbar is shown we need to adjust for its height change
-    heightChange += [mPersonalToolbar computeHeight:stdFrame.size.width startingAtIndex:0]
-                    - [mPersonalToolbar frame].size.height;
+  if ([self bookmarkBarIsVisible]) {
+    // if the bookmark bar is shown we need to adjust for its height change
+    heightChange +=
+        [mPersonalToolbar computeHeight:stdFrame.size.width startingAtIndex:0] -
+        [mPersonalToolbar frame].size.height;
+  }
 
   stdFrame.size.height += heightChange;
   stdFrame.origin.y    -= heightChange;
@@ -2715,28 +2714,38 @@ public:
   }
 }
 
-// This method is currently unused due to bug 56488, but is completely functional.
-- (IBAction)toggleStatusBar:(id)aSender
+- (BOOL)bookmarkBarIsVisible
 {
-  BOOL shouldHide = ![mStatusBar isHidden];
-  [[NSUserDefaults standardUserDefaults] setBool:shouldHide forKey:USER_DEFAULTS_HIDE_STATUS_BAR_KEY];
+  return [mPersonalToolbar isVisible];
+}
 
-  [mStatusBar setHidden:shouldHide];
+- (void)setBookmarkBarIsVisible:(BOOL)visible
+{
+  [mPersonalToolbar setVisible:visible];
+}
+
+- (BOOL)statusBarIsVisible
+{
+  return ![mStatusBar isHidden];
+}
+
+- (void)setStatusBarIsVisible:(BOOL)visible
+{
+  if ([self statusBarIsVisible] == visible)
+    return;
+
+  [mStatusBar setHidden:!visible];
   if ([NSWorkspace isLeopardOrHigher]) {
-    if (shouldHide)
-      [[self window] setContentBorderThickness:0 forEdge:NSMinYEdge];
+    if (visible)
+      [[self window] setContentBorderThickness:NSHeight([mStatusBar bounds])
+                                       forEdge:NSMinYEdge];
     else
-      [[self window] setContentBorderThickness:NSHeight([mStatusBar bounds]) forEdge:NSMinYEdge];
+      [[self window] setContentBorderThickness:0 forEdge:NSMinYEdge];
   }
 
-  NSSize oldContentSize = [mContentView frame].size;
   NSRect windowRect = [[self window] frame];
   float statusBarHeight = [mStatusBar frame].size.height;
-  if (shouldHide) {
-    windowRect.origin.y += statusBarHeight;
-    windowRect.size.height -= statusBarHeight;
-  }
-  else {
+  if (visible) {
     // shift and/or shrink the window as necessary to keep it within the screen area
     NSRect screenRect = [[[self window] screen] visibleFrame];
     windowRect.origin.y = MAX(windowRect.origin.y - statusBarHeight,
@@ -2744,11 +2753,22 @@ public:
     windowRect.size.height = MIN(windowRect.size.height + statusBarHeight,
                                  screenRect.size.height);
   }
+  else {
+    windowRect.origin.y += statusBarHeight;
+    windowRect.size.height -= statusBarHeight;
+  }
+
+  // Gecko doesn't notice that it needs to update the scrollbar to add/remove
+  // the drag thumb area until it is resized, so force a content resize.
+  NSRect dummyRect = windowRect;
+  // The dummy resize direction depends on whether we are showing or hiding in
+  // order to minimize the visibility of this hack for the user.
+  int hackDelta = visible ? 1 : -1;
+  dummyRect.size.height -= hackDelta;
+  dummyRect.origin.y += hackDelta;
+  [[self window] setFrame:dummyRect display:YES];
+
   [[self window] setFrame:windowRect display:YES];
-  // if the window height didn't change, then the content view may not have been resized,
-  // so we need to ensure that it's updated to account for the status bar changing.
-  if ([mContentView frame].size.height == oldContentSize.height)
-    [mContentView resizeSubviewsWithOldSize:oldContentSize];
 }
 
 - (IBAction)viewSource:(id)aSender
@@ -4895,11 +4915,6 @@ public:
   }
 }
 
-- (BookmarkToolbar*) bookmarkToolbar
-{
-  return mPersonalToolbar;
-}
-
 - (BOOL)windowClosesQuietly
 {
   return mWindowClosesQuietly;
@@ -5188,7 +5203,7 @@ public:
 - (BOOL)loadBookmarkBarIndex:(unsigned short)inIndex openBehavior:(EBookmarkOpenBehavior)inBehavior
 {
   // We don't want to trigger bookmark bar loads if the bookmark bar isn't visible
-  if (![mPersonalToolbar isVisible])
+  if (![self bookmarkBarIsVisible])
     return NO;
 
   NSArray* bookmarkBarChildren   = [[[BookmarkManager sharedBookmarkManager] toolbarFolder] children];

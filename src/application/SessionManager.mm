@@ -55,6 +55,7 @@ static NSString* const kIsKeyWindowKey = @"Key";
 static NSString* const kIsMiniaturizedKey = @"Miniaturized";
 static NSString* const kToolbarIsVisibleKey = @"ToolbarVisible";
 static NSString* const kBookmarkBarIsVisibleKey = @"BookmarkBarVisible";
+static NSString* const kStatusBarIsVisibleKey = @"StatusBarVisible";
 
 // Number of seconds to coalesce changes before saving them
 const NSTimeInterval kPersistDelay = 10.0;
@@ -64,6 +65,11 @@ const NSTimeInterval kPersistDelay = 10.0;
 - (NSDictionary*)dictionaryForCurrentWindowState;
 - (void)setWindowStateFromDictionary:(NSDictionary*)windowState;
 - (void)setWindowStateIsDirty:(BOOL)isDirty;
+
+// Returns the serializable dictionary for the given window's state.
+- (NSDictionary*)serializationForBrowserWindow:(NSWindow*)window;
+// Creates a new browser window, restored from the given state serialization.
+- (void)createBrowserWindowFromSerialization:(NSDictionary*)state;
 
 @end
 
@@ -107,37 +113,8 @@ const NSTimeInterval kPersistDelay = 10.0;
   NSEnumerator* windowEnumerator = [windows objectEnumerator];
   NSWindow* window;
   while ((window = [windowEnumerator nextObject])) {
-    if ([[window windowController] isMemberOfClass:[BrowserWindowController class]]) {
-      BrowserWindowController* browser = (BrowserWindowController*)[window windowController];
-
-      NSMutableArray* storedTabs = [NSMutableArray array];
-      BrowserTabView* tabView = [browser tabBrowser];
-      NSEnumerator* tabEnumerator = [[tabView tabViewItems] objectEnumerator];
-      BrowserTabViewItem* tab;
-      while ((tab = [tabEnumerator nextObject])) {
-        BrowserWrapper* browser = (BrowserWrapper*)[tab view];
-        NSString* foundWindowURL;
-        // if the user quits too quickly, the pages in the process of being restored will
-        // still be blank; in those cases, save the URI they are trying to load instead.
-        if ([browser isEmpty] && [browser pendingURI])
-          foundWindowURL = [browser pendingURI];
-        else
-          foundWindowURL = [browser currentURI];
-        [storedTabs addObject:foundWindowURL];
-      }
-      int selectedTabIndex = [tabView indexOfTabViewItem:[tabView selectedTabViewItem]];
-      NSMutableDictionary* windowInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-          storedTabs, kTabListKey,
-          [NSNumber numberWithInt:selectedTabIndex], kSelectedTabKey,
-          [NSNumber numberWithBool:[window isMiniaturized]], kIsMiniaturizedKey,
-          [NSNumber numberWithBool:[[window toolbar] isVisible]], kToolbarIsVisibleKey,
-          [NSNumber numberWithBool:[[browser bookmarkToolbar] isVisible]], kBookmarkBarIsVisibleKey,
-          NSStringFromRect([window frame]), kFrameKey,
-          nil];
-
-      //TODO (possibly): session history, scroll position, chrome flags, tab scroll positon (trunk)
-      [storedBrowserWindows addObject:windowInfo];
-    }
+    if ([[window windowController] isMemberOfClass:[BrowserWindowController class]])
+      [storedBrowserWindows addObject:[self serializationForBrowserWindow:window]];
   }
   [state setValue:storedBrowserWindows forKey:kBrowserWindowListKey];
 
@@ -175,18 +152,7 @@ const NSTimeInterval kPersistDelay = 10.0;
   NSEnumerator* storedWindowEnumerator = [storedBrowserWindows reverseObjectEnumerator];
   NSDictionary* windowInfo;
   while ((windowInfo = [storedWindowEnumerator nextObject])) {
-    BrowserWindowController* browser = [[BrowserWindowController alloc] initWithWindowNibName:@"BrowserWindow"];
-
-    [[[browser window] toolbar] setVisible:[[windowInfo valueForKey:kToolbarIsVisibleKey] boolValue]];
-    [[browser bookmarkToolbar] setVisible:[[windowInfo valueForKey:kBookmarkBarIsVisibleKey] boolValue]];
-    [[browser window] setFrame:NSRectFromString([windowInfo valueForKey:kFrameKey]) display:YES];
-
-    [browser showWindow:self];
-    [browser openURLArray:[windowInfo objectForKey:kTabListKey] tabOpenPolicy:eReplaceTabs allowPopups:NO];
-    [[browser tabBrowser] selectTabViewItemAtIndex:[[windowInfo objectForKey:kSelectedTabKey] intValue]];
-
-    if ([[windowInfo valueForKey:kIsMiniaturizedKey] boolValue])
-      [[browser window] miniaturize:self];
+    [self createBrowserWindowFromSerialization:windowInfo];
   }
 
   // if the download window was key, pull it to the front
@@ -258,6 +224,68 @@ const NSTimeInterval kPersistDelay = 10.0;
 {
   NSFileManager* fileManager = [NSFileManager defaultManager];
   return [fileManager fileExistsAtPath:mSessionStatePath];
+}
+
+// TODO: The BWC-specific part of these two methods should be moved into BWC
+// itself, and this should just tack on the general window state.
+- (NSDictionary*)serializationForBrowserWindow:(NSWindow*)window
+{
+  BrowserWindowController* browser =
+      (BrowserWindowController*)[window windowController];
+
+  BrowserTabView* tabView = [browser tabBrowser];
+  NSMutableArray* storedTabs = [NSMutableArray array];
+  NSEnumerator* tabEnumerator = [[tabView tabViewItems] objectEnumerator];
+  BrowserTabViewItem* tab;
+  while ((tab = [tabEnumerator nextObject])) {
+    BrowserWrapper* browser = (BrowserWrapper*)[tab view];
+    // if the user quits too quickly, the pages in the process of being restored
+    // will still be blank; in those cases, save the URI they are trying to load
+    // instead.
+    NSString* tabURL = ([browser isEmpty] && [browser pendingURI]) ?
+        [browser pendingURI] : [browser currentURI];
+    [storedTabs addObject:tabURL];
+  }
+  int selectedTabIndex = [tabView indexOfTabViewItem:[tabView selectedTabViewItem]];
+  
+  // TODO (possibly): session history, scroll position, chrome flags, tab bar
+  // scroll positon.
+
+  return [NSDictionary dictionaryWithObjectsAndKeys:
+                                                  storedTabs, kTabListKey,
+                   [NSNumber numberWithInt:selectedTabIndex], kSelectedTabKey,
+           [NSNumber numberWithBool:[window isMiniaturized]], kIsMiniaturizedKey,
+      [NSNumber numberWithBool:[[window toolbar] isVisible]], kToolbarIsVisibleKey,
+    [NSNumber numberWithBool:[browser bookmarkBarIsVisible]], kBookmarkBarIsVisibleKey,
+      [NSNumber numberWithBool:[browser statusBarIsVisible]], kStatusBarIsVisibleKey,
+                            NSStringFromRect([window frame]), kFrameKey,
+                                                              nil];
+}
+
+- (void)createBrowserWindowFromSerialization:(NSDictionary*)state
+{
+  BrowserWindowController* browser =
+      [[BrowserWindowController alloc] initWithWindowNibName:@"BrowserWindow"];
+
+  // Make sure we have entries for anything where nil would wreak havoc.
+  if (!([state valueForKey:kTabListKey] && [state valueForKey:kFrameKey]))
+    return;
+
+  [[[browser window] toolbar] setVisible:[[state valueForKey:kToolbarIsVisibleKey] boolValue]];
+  [browser setBookmarkBarIsVisible:[[state valueForKey:kBookmarkBarIsVisibleKey] boolValue]];
+  if ([state valueForKey:kStatusBarIsVisibleKey])
+    [browser setStatusBarIsVisible:[[state valueForKey:kStatusBarIsVisibleKey] boolValue]];
+  [[browser window] setFrame:NSRectFromString([state valueForKey:kFrameKey]) display:YES];
+
+  [browser showWindow:self];
+  [browser openURLArray:[state objectForKey:kTabListKey]
+          tabOpenPolicy:eReplaceTabs
+            allowPopups:NO];
+  int selectedTabIndex = [[state objectForKey:kSelectedTabKey] intValue];
+  [[browser tabBrowser] selectTabViewItemAtIndex:selectedTabIndex];
+
+  if ([[state valueForKey:kIsMiniaturizedKey] boolValue])
+    [[browser window] miniaturize:self];
 }
 
 @end

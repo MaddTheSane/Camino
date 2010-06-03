@@ -96,8 +96,7 @@ typedef enum ETabAndWindowCount
     IBOutlet NSMenu*        mTextEncodingsMenu;
 
     IBOutlet NSMenu*        mBookmarksHelperMenu; // not shown, used to get enable state
-	
-    IBOutlet NSMenuItem*    mBookmarksToolbarMenuItem;
+
     IBOutlet NSMenuItem*    mAddBookmarkMenuItem;
     IBOutlet NSMenuItem*    mAddBookmarkWithoutPromptMenuItem;
     IBOutlet NSMenuItem*    mAddTabGroupMenuItem;
@@ -161,6 +160,7 @@ typedef enum ETabAndWindowCount
 
 // View menu actions.
 - (IBAction)toggleBookmarksToolbar:(id)aSender;
+- (IBAction)toggleStatusBar:(id)aSender;
 - (IBAction)stop:(id)aSender;
 - (IBAction)reload:(id)aSender;
 - (IBAction)reloadAllTabs:(id)aSender;
