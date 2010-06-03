@@ -88,7 +88,12 @@ extern NSString* const kBrowserInstanceClosedNotification;
 // Called when the user clicks buttons on the about:safebrowsingblocked error page.
 - (void)showSafeBrowsingInformation;
 - (void)showMalwareDiagnosticInformation;
-- (void)reportIncorrectlyBlockedSite:(NSString*)aBlockedURL reason:(ESafeBrowsingBlockedReason)aBlockedReason;
+- (void)reportIncorrectlyBlockedSite:(NSString*)aBlockedURL
+                              reason:(ESafeBrowsingBlockedReason)aBlockedReason;
+
+// Returns YES if the given event should be sent to the main menu first, then
+// only sent on to the content view if unhandled.
+- (BOOL)shouldDivertKeyEquivalentToMenu:(NSEvent*)event;
 
 @end
 

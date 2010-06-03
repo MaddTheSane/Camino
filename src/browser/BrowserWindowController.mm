@@ -5378,6 +5378,12 @@ public:
   [[self tabBrowser] setBarAlwaysVisible:newValue];
 }
 
+- (BOOL)shouldDivertKeyEquivalentToMenu:(NSEvent*)event
+{
+  return [(MainController*)[NSApp delegate]
+      isEventNonOverridableMenuShortcut:event];
+}
+
 @end
 
 #pragma mark -

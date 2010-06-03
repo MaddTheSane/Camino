@@ -150,6 +150,9 @@ static const NSTimeInterval kTimeIntervalToConsiderSiteBlockingStatusValid = 900
 
 - (void)handleDelete:(NSEvent*)theEvent;
 
+// Returns YES if the web content is the current first responder.
+- (BOOL)webContentIsFirstResponder;
+
 @end
 
 #pragma mark -
@@ -1072,39 +1075,62 @@ static const NSTimeInterval kTimeIntervalToConsiderSiteBlockingStatusValid = 900
   }
 }
 
+- (BOOL)webContentIsFirstResponder
+{
+  NSResponder* responder = [[self window] firstResponder];
+  while (responder && responder != mBrowserView) {
+    responder = [responder nextResponder];
+  }
+  return responder && (responder == mBrowserView);
+}
+
 - (BOOL)performKeyEquivalent:(NSEvent*)theEvent
 {
+  // All the special handling we do applies only if the content has focus.
+  if (![self webContentIsFirstResponder])
+    return [super performKeyEquivalent:theEvent];
+
+  // If this is a non-overridable shortcut, check with the menu first.
+  if ([mDelegate shouldDivertKeyEquivalentToMenu:theEvent]) {
+    if ([[NSApp mainMenu] performKeyEquivalent:theEvent])
+      return YES;
+  }
+  
+  NSString* characters = [theEvent charactersIgnoringModifiers];
+  unsigned int eventModifiers =
+      [theEvent modifierFlags] & NSDeviceIndependentModifierFlagsMask;
+
+  // There's no menu item for window cycling, but we always want that to work.
+  if ((eventModifiers == NSCommandKeyMask &&
+       [characters isEqualToString:@"`"]) ||
+      (eventModifiers == (NSCommandKeyMask | NSShiftKeyMask) &&
+       [characters isEqualToString:@"~"]))
+  {
+    return NO;
+  }
+
   // Catch Command-back/forward, and map them to history back/forward unless
   // there is a text area or plugin focused in the Gecko view.
-  if ((([theEvent modifierFlags] & NSDeviceIndependentModifierFlagsMask) ==
+  if ((eventModifiers ==
        (NSCommandKeyMask | NSNumericPadKeyMask | NSFunctionKeyMask)) &&
       mBrowserView &&
       !([mBrowserView isTextFieldFocused] || [mBrowserView isPluginFocused]))
   {
-    // ... but only if the content area is focused, so we don't interefere with
-    // chrome shortcuts.
-    NSResponder* responder = [[self window] firstResponder];
-    while (responder && responder != mBrowserView) {
-      responder = [responder nextResponder];
-    }
-    if (responder == mBrowserView) {
-      NSString* characters = [theEvent charactersIgnoringModifiers];
-      if ([characters length] > 0) {
-        unichar keyChar = [characters characterAtIndex:0];
-        if (keyChar == NSLeftArrowFunctionKey) {
-          // If someone assigns this shortcut to a menu, we want that to win.
-          if (![[NSApp mainMenu] performKeyEquivalent:theEvent])
-            [mBrowserView goBack];
+    if ([characters length] > 0) {
+      unichar keyChar = [characters characterAtIndex:0];
+      if (keyChar == NSLeftArrowFunctionKey) {
+        // If someone assigns this shortcut to a menu, we want that to win.
+        if (![[NSApp mainMenu] performKeyEquivalent:theEvent])
+          [mBrowserView goBack];
 
-          return YES;
-        }
-        else if (keyChar == NSRightArrowFunctionKey) {
-          // If someone assigns this shortcut to a menu, we want that to win.
-          if (![[NSApp mainMenu] performKeyEquivalent:theEvent])
-            [mBrowserView goForward];
+        return YES;
+      }
+      else if (keyChar == NSRightArrowFunctionKey) {
+        // If someone assigns this shortcut to a menu, we want that to win.
+        if (![[NSApp mainMenu] performKeyEquivalent:theEvent])
+          [mBrowserView goForward];
 
-          return YES;
-        }
+        return YES;
       }
     }
   }

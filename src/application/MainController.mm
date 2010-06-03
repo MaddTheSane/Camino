@@ -2255,6 +2255,44 @@ static int SortByProtocolAndName(NSDictionary* item1, NSDictionary* item2, void*
                     );
 }
 
+- (BOOL)isEventNonOverridableMenuShortcut:(NSEvent*)event
+{
+  if ([event type] != NSKeyDown)
+    return NO;
+
+  NSString* eventString = [event charactersIgnoringModifiers];
+  unsigned int eventModifiers = [event modifierFlags] &
+      (NSControlKeyMask | NSAlternateKeyMask | NSCommandKeyMask);
+
+  // The logic behind this list is to protect:
+  // - primary ways of leaving/closing a page
+  // - core OS window managment
+  // - focusing the location bar, as a way to quickly get focus out of the page
+  //   so that other shortcuts will work.
+  NSEnumerator* nonOverridableMenuEnumerator =
+      [[NSArray arrayWithObjects:mQuitMenuItem,
+                                 mCloseWindowMenuItem,
+                                 mCloseTabMenuItem,
+                                 mPreviousTabMenuItem,
+                                 mNextTabMenuItem,
+                                 mNewWindowMenuItem,
+                                 mNewTabMenuItem,
+                                 mHideMenuItem,
+                                 mMinimizeMenuItem,
+                                 mOpenLocationMenuItem,
+                                 nil] objectEnumerator];
+  NSMenuItem* menuItem = nil;
+  while ((menuItem = [nonOverridableMenuEnumerator nextObject])) {
+    if (eventModifiers == [menuItem keyEquivalentModifierMask] &&
+        [eventString isEqualToString:[menuItem keyEquivalent]])
+    {
+      return YES;
+    }
+  }
+
+  return NO;
+}
+
 #pragma mark -
 #pragma mark Supplemental View Helpers
 

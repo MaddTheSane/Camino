@@ -77,6 +77,12 @@ typedef enum ETabAndWindowCount
     IBOutlet NSView*        mExportPanelView;
 
     IBOutlet NSMenuItem*    mOfflineMenuItem;
+    IBOutlet NSMenuItem*    mHideMenuItem;
+    IBOutlet NSMenuItem*    mQuitMenuItem;
+
+    IBOutlet NSMenuItem*    mNewWindowMenuItem;
+    IBOutlet NSMenuItem*    mNewTabMenuItem;
+    IBOutlet NSMenuItem*    mOpenLocationMenuItem;
     IBOutlet NSMenuItem*    mCloseWindowMenuItem;
     IBOutlet NSMenuItem*    mCloseTabMenuItem;
 
@@ -99,6 +105,10 @@ typedef enum ETabAndWindowCount
     IBOutlet NSMenuItem*    mCreateBookmarksFolderMenuItem;
     IBOutlet NSMenuItem*    mCreateBookmarksSeparatorMenuItem;  // unused
     IBOutlet NSMenuItem*    mShowAllBookmarksMenuItem;
+
+    IBOutlet NSMenuItem*    mMinimizeMenuItem;
+    IBOutlet NSMenuItem*    mPreviousTabMenuItem;
+    IBOutlet NSMenuItem*    mNextTabMenuItem;
 
     IBOutlet SUUpdater*     mAutoUpdater;
 
@@ -216,5 +226,9 @@ typedef enum ETabAndWindowCount
 - (void)delayedUpdatePageInfo;
 
 - (NSView*)savePanelView;
+
+// Returns YES if the event is the shortcut for a menu item that web content
+// is not allowed to override.
+- (BOOL)isEventNonOverridableMenuShortcut:(NSEvent*)event;
 
 @end
