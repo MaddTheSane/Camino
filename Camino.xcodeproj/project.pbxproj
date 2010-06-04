@@ -132,7 +132,6 @@
 		03E2D8710771F8D100BD2443 /* Tabs.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 03E2D8600771F78500BD2443 /* Tabs.tiff */; };
 		03E2D8720771F8EC00BD2443 /* Tabs.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03E2D85F0771F78500BD2443 /* Tabs.mm */; };
 		03E2D8750771F90B00BD2443 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		0E6A98A1097E0091007962C1 /* libucvmath.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = 0E6A9882097DFF9A007962C1 /* libucvmath.dylib */; };
 		0E6A98A2097E00A6007962C1 /* mathml.css in Copy Gecko Resources */ = {isa = PBXBuildFile; fileRef = 0E6A9886097DFFD4007962C1 /* mathml.css */; };
 		0E6A98A3097E00BB007962C1 /* mathml.dtd in Copy Gecko DTDs */ = {isa = PBXBuildFile; fileRef = 0E6A9888097DFFF4007962C1 /* mathml.dtd */; };
 		0E6A98A9097E010C007962C1 /* mathfont.properties in Copy Gecko Fonts */ = {isa = PBXBuildFile; fileRef = 0E6A988E097E0044007962C1 /* mathfont.properties */; };
@@ -918,7 +917,6 @@
 		4D2996690869C5FA00E84287 /* libplds4.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BD638201B30EA301A962F7 /* libplds4.dylib */; };
 		4D29966A0869C5FA00E84287 /* libxpcom.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F57F0F470209DF5301A967DF /* libxpcom.dylib */; };
 		4D29966B0869C5FA00E84287 /* libxpcom_core.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F12FC56072E8ECB00995ED9 /* libxpcom_core.dylib */; };
-		4DC28F5E099184B80081939B /* libucvmath.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DC28F5D099184B80081939B /* libucvmath.a */; };
 		4DC41D3F0869D7A400947044 /* libjsj.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DC41D3C0869D7A400947044 /* libjsj.a */; };
 		4DC41D400869D7A400947044 /* libmozjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DC41D3D0869D7A400947044 /* libmozjpeg.a */; };
 		4DC41D410869D7A400947044 /* libmozpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DC41D3E0869D7A400947044 /* libmozpng.a */; };
@@ -1751,7 +1749,6 @@
 				E4C7D98C0A32108500B455AD /* libspellchecker.dylib in Copy Component Libraries */,
 				DEDDE2930ABFB4B400D415F2 /* libchardet.dylib in Copy Component Libraries */,
 				008115480B1811F0001CB3F0 /* libgkgfxthebes.dylib in Copy Component Libraries */,
-				0E6A98A1097E0091007962C1 /* libucvmath.dylib in Copy Component Libraries */,
 				82180ACB07368BF2002EFA6D /* libcomposer.dylib in Copy Component Libraries */,
 				3F44ACD605BDFB9F00CB4B08 /* libappcomps.dylib in Copy Component Libraries */,
 				3F44ACD805BDFB9F00CB4B08 /* libtxmgr.dylib in Copy Component Libraries */,
@@ -2571,7 +2568,6 @@
 		03E2D85F0771F78500BD2443 /* Tabs.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = Tabs.mm; sourceTree = "<group>"; };
 		03E2D8600771F78500BD2443 /* Tabs.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Tabs.tiff; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = generated/resources/localized/English.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
-		0E6A9882097DFF9A007962C1 /* libucvmath.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; name = libucvmath.dylib; path = ../dist/bin/components/libucvmath.dylib; sourceTree = SOURCE_ROOT; };
 		0E6A9886097DFFD4007962C1 /* mathml.css */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = mathml.css; path = ../dist/bin/res/mathml.css; sourceTree = SOURCE_ROOT; };
 		0E6A9888097DFFF4007962C1 /* mathml.dtd */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = mathml.dtd; sourceTree = "<group>"; };
 		0E6A988E097E0044007962C1 /* mathfont.properties */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = mathfont.properties; sourceTree = "<group>"; };
@@ -2820,7 +2816,6 @@
 		3FFE23520847CB0D00D6CAFC /* ad_blocking.css */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = ad_blocking.css; path = resources/application/ad_blocking.css; sourceTree = SOURCE_ROOT; };
 		3FFFEC1C081C3F0B00843C07 /* StatusBarView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = StatusBarView.h; path = src/browser/StatusBarView.h; sourceTree = "<group>"; };
 		3FFFEC1D081C3F0B00843C07 /* StatusBarView.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = StatusBarView.mm; path = src/browser/StatusBarView.mm; sourceTree = "<group>"; };
-		4DC28F5D099184B80081939B /* libucvmath.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libucvmath.a; path = ../staticlib/components/libucvmath.a; sourceTree = SOURCE_ROOT; };
 		4DC41D3C0869D7A400947044 /* libjsj.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjsj.a; path = ../dist/lib/libjsj.a; sourceTree = SOURCE_ROOT; };
 		4DC41D3D0869D7A400947044 /* libmozjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmozjpeg.a; path = ../jpeg/libmozjpeg.a; sourceTree = SOURCE_ROOT; };
 		4DC41D3E0869D7A400947044 /* libmozpng.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmozpng.a; path = ../modules/libimg/png/libmozpng.a; sourceTree = SOURCE_ROOT; };
@@ -3521,7 +3516,6 @@
 				34884A37074F7C5D000EA76B /* AddressBook.framework in Frameworks */,
 				0F518835088593F30091F3FB /* libpermissions.a in Frameworks */,
 				0FF288550961EDDD007527B4 /* libfreebl3.dylib in Frameworks */,
-				4DC28F5E099184B80081939B /* libucvmath.a in Frameworks */,
 				7BB332F40A7E99BC0075521C /* libspellchecker.a in Frameworks */,
 				DEB968310B0D8E9F0023F8B1 /* Security.framework in Frameworks */,
 				DE62E4320B72B50C00142851 /* libauth.a in Frameworks */,
@@ -4901,7 +4895,6 @@
 				4DC41D3E0869D7A400947044 /* libmozpng.a */,
 				4DC41D3E0869D7A400947045 /* libmozcairo.a */,
 				4DC41D3E0869D7A400947046 /* libmozlibpixman.a */,
-				4DC28F5D099184B80081939B /* libucvmath.a */,
 				DE62E4310B72B50C00142851 /* libauth.a */,
 				DEC87B140C288403002EB106 /* libstoragecomps.a */,
 				33B777E10C5588E500A6D67F /* libmozqcms.a */,
@@ -5061,7 +5054,6 @@
 				F50DCB4302C2856001A967F3 /* libjsj.dylib */,
 				008115420B180F35001CB3F0 /* libthebes.dylib */,
 				F6BD638701B30F5301A962F7 /* libgkgfx.dylib */,
-				0E6A9882097DFF9A007962C1 /* libucvmath.dylib */,
 				3FE5B9FC068A090F0001CECD /* libmozz.dylib */,
 				F5461CBB03AAC25C01A96660 /* nsProxyAutoConfig.js */,
 				0098B11D0CAEA75700DA0F2F /* nsHandlerService.js */,

@@ -59,7 +59,6 @@
     MODULE(nsI18nModule) \
     MODULE(nsChardetModule) \
     MODULE(nsUConvModule) \
-    MODULE(nsUCvMathModule) \
     MODULE(nsJarModule) \
     MODULE(xpconnect) \
     MODULE(necko) \
