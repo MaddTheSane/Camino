@@ -2677,7 +2677,7 @@
 		33819AD20D938A2D00CA9F52 /* GeckoPrefConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GeckoPrefConstants.h; path = src/preferences/GeckoPrefConstants.h; sourceTree = "<group>"; };
 		33819AD30D938A2D00CA9F52 /* GeckoPrefConstants.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = GeckoPrefConstants.mm; path = src/preferences/GeckoPrefConstants.mm; sourceTree = "<group>"; };
 		33820D980F8AA24500D2164A /* Breakpad.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Breakpad.xcodeproj; path = "google-breakpad/src/client/mac/Breakpad.xcodeproj"; sourceTree = "<group>"; };
-		33B775A90C4EAC1E00A6D67F /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = ../dist/lib/libsqlite3.dylib; sourceTree = SOURCE_ROOT; };
+		33B775A90C4EAC1E00A6D67F /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = ../dist/bin/libsqlite3.dylib; sourceTree = SOURCE_ROOT; };
 		33B777E10C5588E500A6D67F /* libmozqcms.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmozqcms.a; path = ../dist/lib/libmozqcms.a; sourceTree = SOURCE_ROOT; };
 		33B778800C55C57800A6D67F /* libnssdbm3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libnssdbm3.dylib; path = ../dist/bin/libnssdbm3.dylib; sourceTree = SOURCE_ROOT; };
 		33C222840D106CDD00611936 /* PreferencesWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesWindow.h; sourceTree = "<group>"; };
@@ -3094,7 +3094,7 @@
 		F538DFAF023B3739010001CA /* fileHtml.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = fileHtml.icns; path = resources/images/app/fileHtml.icns; sourceTree = SOURCE_ROOT; };
 		F538DFB1023B3739010001CA /* appicon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = appicon.icns; path = resources/images/app/appicon.icns; sourceTree = SOURCE_ROOT; };
 		F538DFB2023B3739010001CA /* fileBookmark.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = fileBookmark.icns; path = resources/images/app/fileBookmark.icns; sourceTree = SOURCE_ROOT; };
-		F53A902202C1127A01A967F3 /* liboji.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; name = liboji.dylib; path = ../modules/oji/src/liboji.dylib; sourceTree = SOURCE_ROOT; };
+		F53A902202C1127A01A967F3 /* liboji.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; name = liboji.dylib; path = ../dist/bin/components/liboji.dylib; sourceTree = SOURCE_ROOT; };
 		F53C1CD6032FF3B301A96654 /* BrowserContentViews.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = BrowserContentViews.h; path = src/browser/BrowserContentViews.h; sourceTree = "<group>"; };
 		F53C1CD7032FF3B301A96654 /* BrowserContentViews.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = BrowserContentViews.mm; path = src/browser/BrowserContentViews.mm; sourceTree = SOURCE_ROOT; };
 		F53E012902AEE91C01A967F3 /* BookmarkInfoController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = BookmarkInfoController.h; path = src/bookmarks/BookmarkInfoController.h; sourceTree = "<group>"; };
@@ -3115,7 +3115,7 @@
 		F549ACDF0302DE6001026D5D /* NSScreen+Utils.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = "NSScreen+Utils.m"; path = "src/extensions/NSScreen+Utils.m"; sourceTree = "<group>"; };
 		F549ACE40302DEBB01026D5D /* NSScreen+Utils.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = "NSScreen+Utils.h"; path = "src/extensions/NSScreen+Utils.h"; sourceTree = "<group>"; };
 		F549ACE70302DEF001026D5D /* ToolTip.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ToolTip.h; path = src/browser/ToolTip.h; sourceTree = "<group>"; };
-		F54AD84402C115D901A967F3 /* liboji.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liboji.a; path = ../modules/oji/src/liboji.a; sourceTree = SOURCE_ROOT; };
+		F54AD84402C115D901A967F3 /* liboji.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liboji.a; path = ../staticlib/components/liboji.a; sourceTree = SOURCE_ROOT; };
 		F54EF7ED022A2F9C01A80165 /* en-US.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; name = "en-US.jar"; path = "../dist/bin/chrome/en-US.jar"; sourceTree = SOURCE_ROOT; };
 		F5547D60020333DA01F448B0 /* home.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = home.tiff; path = resources/images/toolbar/home.tiff; sourceTree = SOURCE_ROOT; };
 		F5555C8202022F070164C72B /* back.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = back.tiff; path = resources/images/toolbar/back.tiff; sourceTree = SOURCE_ROOT; };
