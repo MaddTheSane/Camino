@@ -209,6 +209,7 @@ extern const char* const kHTMLMIMEType;
 
   nsIPrintSettings*     mPrintSettings; // we own this
   BOOL                  mUseGlobalPrintSettings;
+  BOOL                  mHasPendingActivation;
 }
 
 // class method to get at the browser view for a given nsIDOMWindow

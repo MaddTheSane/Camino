@@ -455,6 +455,9 @@ const char* const kHTMLMIMEType = "text/html";
   if (NS_FAILED(rv)) {
     // XXX need to throw
   }
+
+  if (mHasPendingActivation && ([[self window] firstResponder] == self))
+    [self setActive:YES];
 }
 
 - (void)reload:(unsigned int)flags
@@ -1508,14 +1511,27 @@ const char* const kHTMLMIMEType = "text/html";
   [[self browserContainer] didDismissPrompt];
 }
 
-- (void)setActive: (BOOL)aIsActive
+- (void)setActive:(BOOL)aIsActive
 {
   nsCOMPtr<nsIWebBrowserFocus> wbf(do_QueryInterface(_webBrowser));
   if (wbf) {
-    if (aIsActive)
+    if (aIsActive) {
+      // If presShell is NULL, core will get into a broken focus state, so
+      // defer the call until we have loaded something.
+      nsCOMPtr<nsIDocShell> docShell = [self docShell];
+      nsCOMPtr<nsIPresShell> presShell;
+      if (docShell)
+        docShell->GetPresShell(getter_AddRefs(presShell));
+      if (!presShell) {
+        mHasPendingActivation = YES;
+        return;
+      }
+
       wbf->Activate();
-    else
+      mHasPendingActivation = NO;
+    } else {
       wbf->Deactivate();
+    }
   }
 }
 
