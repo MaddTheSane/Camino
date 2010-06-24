@@ -1638,7 +1638,8 @@ typedef enum EProxyConfig {
 
           if (aliasHandle) {
             ICFileSpec** fileSpec = (ICFileSpec**)icFolderHandle;
-            FSRef ref = {'\0'};
+            FSRef ref;
+            memset(&ref, 0, sizeof(ref));
             Boolean wasChanged = FALSE;
 
             HLock(icFolderHandle);
