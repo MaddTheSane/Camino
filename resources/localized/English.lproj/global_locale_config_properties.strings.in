@@ -51,5 +51,6 @@
 "new_prompt" = "Enter the preference name";
 "modify_title" = "Enter %S value";
 
+/* Don’t remove these strings when syncing this file on 1.9.2, as toolkit is missing them */
 "nan_title" = "Invalid value";
 "nan_text" = "The text you entered is not a number.";
