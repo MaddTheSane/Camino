@@ -545,6 +545,7 @@ NSString* const kWillShowFeedMenu = @"WillShowFeedMenu";
   if (mSearchString)
     [mSearchString release];
   mSearchString = nil;
+  [self cancelSearch];
   [self closePopup];
 }
 

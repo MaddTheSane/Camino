@@ -127,6 +127,7 @@ const unsigned int kNumberOfItemsPerChunk = 100;
   mURLRegexTest = nil;
   [mTitleRegexTest release];
   mTitleRegexTest = nil;
+  mSearchStringLength = 0;
   mChunkRange = NSMakeRange(0, kNumberOfItemsPerChunk);
 }
 
@@ -165,6 +166,8 @@ const unsigned int kNumberOfItemsPerChunk = 100;
 {
   mDelegate = delegate;
   [self cancelSearch];
+
+  mSearchStringLength = [searchString length];
 
   // Construct the regular expression for url matching. NSPredicate will
   // only evaluate to true if the entire string matches--thus the leading
@@ -222,10 +225,17 @@ const unsigned int kNumberOfItemsPerChunk = 100;
 
 - (BOOL)searchStringMatchesItem:(id)item
 {
+  NSString* url = [item url];
+  NSString* title = [item title];
   // Never autocomplete bookmark shortcuts for searches
-  if ([[item url] rangeOfString:@"%s"].location != NSNotFound)
+  if ([url rangeOfString:@"%s"].location != NSNotFound)
     return NO;
-  return [mURLRegexTest evaluateWithObject:[item url]] || [mTitleRegexTest evaluateWithObject:[item title]];
+  // Check length as a quick pre-screen, since it's much less expensive than
+  // evaluating the regex.
+  return ([url length] >= mSearchStringLength &&
+          [mURLRegexTest evaluateWithObject:url]) ||
+         ([title length] >= mSearchStringLength &&
+          [mTitleRegexTest evaluateWithObject:title]);
 }
 
 - (AutoCompleteResult *)autoCompleteResultForItem:(id)item

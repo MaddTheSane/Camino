@@ -56,6 +56,7 @@
   NSRange                 mChunkRange;
   NSPredicate*            mURLRegexTest;                // owned
   NSPredicate*            mTitleRegexTest;              // owned
+  unsigned int            mSearchStringLength;
 
   NSMutableArray*         mBookmarkData;                // owned
   NSMutableArray*         mHistoryData;                 // owned
