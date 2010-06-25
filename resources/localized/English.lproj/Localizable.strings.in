@@ -548,3 +548,29 @@
 "GetMeOutButtonLabel" = "Close Page";
 "IgnoreWarningButtonLabel" = "Ignore this warning";
 "PhishReportingDisabledToolTip" = "“Warn me when visiting potentially malicious sites” must be enabled to report phishing pages.";
+
+/* Gecko Print Dialog; only needed for Gecko 1.9.2 */
+"Options:" = "Options:";
+"Print Selection Only" = "Print Selection Only";
+"Ignore Scaling and Shrink To Fit Page Width" = "Ignore Scaling and Shrink To Fit Page Width";
+
+"Appearance:" = "Appearance:";
+"Print Background Colors" = "Print Background Colors";
+"Print Background Images" = "Print Background Images";
+
+"Frames:" = "Frames:";
+"As Laid Out on the Screen" = "As Laid Out on the Screen";
+"The Selected Frame" = "The Selected Frame";
+"Each Frame on Separate Pages" = "Each Frame on Separate Pages";
+
+"Page Headers:" = "Page Headers:";
+"Page Footers:" = "Page Footers:";
+"Left" = "Left";
+"Center" = "Center";
+"Right" = "Right";
+"--blank--" = "--blank--";
+"Title" = "Title";
+"URL" = "URL";
+"Date/Time" = "Date/Time";
+"Page #" = "Page #";
+"Page # of #" = "Page # of #";
