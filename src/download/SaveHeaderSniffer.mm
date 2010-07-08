@@ -333,6 +333,7 @@ nsHeaderSniffer::PerformSave(nsIURI* inOriginalURI)
     
     // Now it's time to pose the save dialog.
     NSSavePanel* savePanel = [NSSavePanel savePanel];
+    [savePanel setCanSelectHiddenExtension:YES];
     NSString* file = nil;
     if (!defaultFileName.IsEmpty())
         file = [NSString stringWith_nsAString:defaultFileName];
@@ -341,14 +342,13 @@ nsHeaderSniffer::PerformSave(nsIURI* inOriginalURI)
         [savePanel setAccessoryView: mFilterView];
         // need this because the |stringWith_nsAString| returns a NSString 
         // with an extension that the savePanel does not like and will add
-        // the extensions on top of an extensions
+        // the extension on top of an extension
         if (filterIndex == eSaveFormatPlainText) {
           file = [file stringByDeletingPathExtension];
           file = [file stringByAppendingPathExtension:@"txt"];
         }
-        [savePanel setRequiredFileType:[file pathExtension]];
-        [savePanel setCanSelectHiddenExtension: YES];
     }
+    [savePanel setRequiredFileType:[file pathExtension]];
 
     [NSMenu cancelAllTracking];
     if ([savePanel runModalForDirectory: nil file: file] == NSFileHandlingPanelCancelButton)

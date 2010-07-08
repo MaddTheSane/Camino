@@ -336,6 +336,8 @@ nsISupports *aWindowContext, const PRUnichar *aDefaultFile, const PRUnichar *aSu
 {
   NSString* filename = [NSString stringWithPRUnichars:aDefaultFile];
   NSSavePanel *thePanel = [NSSavePanel savePanel];
+  [thePanel setRequiredFileType:[filename pathExtension]];
+  [thePanel setCanSelectHiddenExtension:YES];
   
   // Note: although the docs for NSSavePanel specifically state "path and filename can be empty strings, but
   // cannot be nil" if you want the last used directory to persist between calls to display the save panel
