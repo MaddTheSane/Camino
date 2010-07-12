@@ -20,6 +20,8 @@
 #                           that the client must be running to get the update.
 #   MaxCaminoVersionString: The maximum Camino version (in user-visible format)
 #                           that the client can be running to get the update.
+#   DescriptionBase: A string to use instead of VersionString in constructing
+#                    the update description file name.
 use strict;
 use warnings;
 
@@ -145,7 +147,13 @@ sub latest_supported_update {
         ($include_pre_release || version_is_release($update->{VersionString})))
     {
       # Load the description in the approriate language.
-      $update->{Description} = localized_description($update->{VersionString},
+      my $base_name = $update->{VersionString};
+      if (defined($update->{DescriptionBase})) {
+        $base_name = $update->{DescriptionBase};
+      } else {
+        $base_name =~ s/\s*Int.*$//;
+      }
+      $update->{Description} = localized_description($base_name,
                                                      $client_info->{lang});
       return $update;
     }
@@ -282,21 +290,20 @@ sub array_contains {
   return 0;
 }
 
-# Get the description for the $version, in $language. If $language is
+# Get the description with the given base, in $language. If $language is
 # not available but a non-locale specific version is that will be used;
 # if no matching language is available, it will use English.
 sub localized_description {
-  my ($version, $language) = @_;
-  $version =~ s/\s*Int.*$//;
-  my $description_file = "$update_desc_dir/$version-$language";
+  my ($base, $language) = @_;
+  my $description_file = "$update_desc_dir/$base-$language";
   # If we don't have a match, try a non-locale match
   if (!-e $description_file) {
     $language =~ s/[-_]\w+$//;
-    $description_file = "$update_desc_dir/$version-$language";
+    $description_file = "$update_desc_dir/$base-$language";
   }
   # Fall back to English if we don't have anything close
   if (!-e $description_file) {
-    $description_file = "$update_desc_dir/$version-en";
+    $description_file = "$update_desc_dir/$base-en";
   }
   # If we really have nothing, then we're out of luck
   return "" unless -e $description_file;
