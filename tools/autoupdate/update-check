@@ -1,4 +1,25 @@
 #!/usr/bin/perl
+# Examines an update ping to determine the client's configuration, then responds
+# with the best update configuration for that client from the available pool.
+#
+# Required update definition keys:
+#   Version: The bundle version.
+#   VersionString: The user-visible version.
+#   MinOSVersion: The minimum supported OS version.
+#   Arch: A comma-separated list of supported architectures (e.g., ppc,i386).
+#   Intl: 0 if the update is English-only, 1 if internationalized. Can also be
+#         0,1 if the two build types merge in the future.
+#   FileURL: The URL where the update can be downloaded.
+#   FileSignature: The signature of the disk image (see Sparkle documentation).
+#   FileSize: The size, in bytes, of the disk image.
+#   Date: The date the update was released, in appcast format (e.g.,
+#         Fri, 18 January 2008 15:00:00 GMT-8).
+#
+# Optional update definition keys:
+#   MinCaminoVersionString: The minimum Camino version (in user-visible format)
+#                           that the client must be running to get the update.
+#   MaxCaminoVersionString: The maximum Camino version (in user-visible format)
+#                           that the client can be running to get the update.
 use strict;
 use warnings;
 
@@ -156,9 +177,17 @@ sub client_meets_platform_requirements {
 # alpha/beta/nightly users jump across branches, for example.
 sub client_meets_camino_version_requirement {
   my ($client, $update) = @_;
-  return 1 unless defined($update->{MinCaminoVersionString});
-  return compare_versions($client->{version},
-                          $update->{MinCaminoVersionString}) >= 0;
+  if (defined($update->{MinCaminoVersionString}) &&
+      (compare_versions($client->{version},
+                        $update->{MinCaminoVersionString}) < 0)) {
+    return 0;
+  }
+  if (defined($update->{MaxCaminoVersionString}) &&
+      (compare_versions($client->{version},
+                        $update->{MaxCaminoVersionString}) > 0)) {
+    return 0;
+  }
+  return 1;
 }
 
 # Returns true if the update provides the same internationalization option that
