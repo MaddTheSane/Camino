@@ -324,7 +324,7 @@ static int kInvalidCertCancelOverride = 0;
   // important problem to tell them about.
   NSString* problemDescription = nil;
   if (mCertFailureFlags & CHCertificateOverrideFlagUntrusted) {
-    NSString* messageFormat = NSLocalizedStringFromTable(@"InvalidCertMessageFormat", @"CertificateDialogs", nil);
+    NSString* messageFormat = NSLocalizedStringFromTable(@"UntrustedCertMessageFormat", @"CertificateDialogs", nil);
     problemDescription = [NSString stringWithFormat:messageFormat, mSourceHost];
   }
   else if (mCertFailureFlags & CHCertificateOverrideFlagDomainMismatch) {

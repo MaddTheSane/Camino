@@ -103,6 +103,7 @@ the code for the whole key. */
 /* Bad cert dialog */
 "InvalidCertTitleFormat" = "Add a security exception for “%@”?";
 "InvalidCertMessageFormat" = "The certificate for “%@” could not be verified; are you sure you want to trust it?";
+"UntrustedCertMessageFormat" = "The certificate for “%@” has not been verified by a Certificate Authority trusted by Camino; are you sure you want to trust this certificate?";
 "MismatchedCertMessageFormat" = "This certificate is only valid for “%1$@”; are you sure you want to trust it for “%2$@”?";
 "ExpiredCertMessageFormat" = "The certificate for “%@” has expired; are you sure you want to trust it?";
 
