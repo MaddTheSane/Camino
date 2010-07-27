@@ -37,31 +37,37 @@
 #
 # ***** END LICENSE BLOCK *****
 
-if [ $# -ne 2 ]; then
-  echo "Usage: $0 <date in DD/Mmm format> <caminobrowser.org-ssl_log path>"
-  exit 1
+if [ $# -ne 3 ]; then
+  if [ $# -ne 2 ]; then
+    echo "Usage: $0 <date in DD/Mmm format> <caminobrowser.org-ssl_log path>"
+    exit 1
+  fi
 fi
 
 date="$1"
-file="$2"
+if [ $# -eq 2 ]; then
+  file="$2"
+else
+  file="$2 $3"
+fi
 badips="204.234.28.|149.150.236.250|203.42.177.18|200.19.92."
 
 echo "$date"
 
-grep "$date" "$file" | grep -Ev "$badips" | grep -c " /update-check?os="
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -c "x86"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -c "ppc"
+grep "$date" $file | grep -Ev "$badips" | grep -c " /update-check?os="
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -c "x86"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -c "ppc"
 
 echo "=================="
 echo "By OS"
 # Only run the greps once to generate the OS and Version/OS numbers, and then echo them in the appropriate locations to match the spreadsheet.
-cm16_pan=`grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=10\.3" | grep -E -c "version=1\.6"`
-cm16_tig=`grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=10\.4" | grep -E -c "version=1\.6"`
-cm16_lep=`grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=10\.5" | grep -E -c "version=1\.6"`
-cm16_snl=`grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=10\.6" | grep -E -c "version=1\.6"`
-cm20_tig=`grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=10\.4" | grep -E -c "version=2\.0"`
-cm20_lep=`grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=10\.5" | grep -E -c "version=2\.0"`
-cm20_snl=`grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=10\.6" | grep -E -c "version=2\.0"`
+cm16_pan=`grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=10\.3" | grep -E -c "version=1\.6"`
+cm16_tig=`grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=10\.4" | grep -E -c "version=1\.6"`
+cm16_lep=`grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=10\.5" | grep -E -c "version=1\.6"`
+cm16_snl=`grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=10\.6" | grep -E -c "version=1\.6"`
+cm20_tig=`grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=10\.4" | grep -E -c "version=2\.0"`
+cm20_lep=`grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=10\.5" | grep -E -c "version=2\.0"`
+cm20_snl=`grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=10\.6" | grep -E -c "version=2\.0"`
 # Do math to derive the OS numbers across all versions; this saves us 3 formulas/day in the spreadsheet.
 echo $cm16_pan
 echo `expr $cm16_tig "+" $cm20_tig`
@@ -70,27 +76,27 @@ echo `expr $cm16_snl "+" $cm20_snl`
 
 echo "=================="
 echo "By Version"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.11(I|\&)"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.10(I|\&)"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.9(I|\&)"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.8(I|\&)"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.7(I|\&)"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.6(I|&)"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.5(I|&)"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.4(I|&)"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.3(I|&)"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.2(I|&)"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.1(I|&)"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6(I|&)"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0\.3(I|&)"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0\.2(I|&)"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0\.1(I|&)"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0(I|&)"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0b4(I|&)"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0b3(I|&)"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0b2(I|&)"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0b1(I|&)"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0a1(I|&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.11(I|\&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.10(I|\&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.9(I|\&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.8(I|\&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.7(I|\&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.6(I|&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.5(I|&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.4(I|&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.3(I|&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.2(I|&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.1(I|&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6(I|&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0\.3(I|&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0\.2(I|&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0\.1(I|&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0(I|&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0b4(I|&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0b3(I|&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0b2(I|&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0b1(I|&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0a1(I|&)"
 
 echo "=================="
 echo "By Version and OS"
@@ -104,8 +110,8 @@ echo $cm20_snl
 
 # echo "=================="
 # echo "1.6 l10n"
-# grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep "version=1\.6" | grep "lang=" | cut -d " " -f 7 | cut -d "&" -f 5 | sort | uniq -c
+# grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep "version=1\.6" | grep "lang=" | cut -d " " -f 7 | cut -d "&" -f 5 | sort | uniq -c
 
 echo "=================="
 echo "2.0 l10n"
-grep "$date" "$file" | grep -Ev "$badips" | grep " /update-check?os=" | grep "version=2\.0" | grep "lang=" | cut -d " " -f 7 | cut -d "&" -f 5 | sort | uniq -c
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep "version=2\.0" | grep "lang=" | cut -d " " -f 7 | cut -d "&" -f 5 | sort | uniq -c
