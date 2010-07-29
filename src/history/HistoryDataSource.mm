@@ -591,6 +591,7 @@ public:
         nsCOMPtr<nsINavHistoryService> histSvc =
           do_GetService("@mozilla.org/browser/nav-history-service;1", &rv);
         NS_ENSURE_SUCCESS(rv, rv);
+        NS_ENSURE_TRUE(histSvc, NS_ERROR_UNEXPECTED);
 
         nsCOMPtr<nsINavHistoryQuery> query;
         rv = histSvc->GetNewQuery(getter_AddRefs(query));
@@ -613,6 +614,7 @@ public:
         nsCOMPtr<nsINavHistoryResult> result;
         rv = histSvc->ExecuteQuery(query, options, getter_AddRefs(result));
         NS_ENSURE_SUCCESS(rv, rv);
+        NS_ENSURE_TRUE(result, NS_ERROR_UNEXPECTED);
 
         nsCOMPtr<nsINavHistoryContainerResultNode> rootNode;
         rv = result->GetRoot(getter_AddRefs(rootNode));
@@ -631,6 +633,7 @@ public:
         nsCOMPtr<nsINavHistoryResultNode> resultNode;
         rv = rootNode->GetChild(0, getter_AddRefs(resultNode));
         NS_ENSURE_SUCCESS(rv, rv);
+        NS_ENSURE_TRUE(resultNode, NS_ERROR_UNEXPECTED);
 
         item = [[HistorySiteItem alloc] initWithDataSource:mDataSource resultNode:resultNode];
 
@@ -895,10 +898,12 @@ NS_IMPL_ISUPPORTS1(nsNavHistoryObserver, nsINavHistoryObserver);
   nsCOMPtr<nsINavHistoryResult> result;
   rv = mNavHistoryService->ExecuteQuery(query, options, getter_AddRefs(result));
   NS_ENSURE_SUCCESS(rv, /* void */);
+  NS_ENSURE_TRUE(result, /* void */);
 
   nsCOMPtr<nsINavHistoryContainerResultNode> rootNode;
   rv = result->GetRoot(getter_AddRefs(rootNode));
   NS_ENSURE_SUCCESS(rv, /* void */);
+  NS_ENSURE_TRUE(rootNode, /* void */);
 
   rv = rootNode->SetContainerOpen(PR_TRUE);
   NS_ENSURE_SUCCESS(rv, /* void */);

@@ -508,7 +508,7 @@ enum
       mTitle = [[NSString alloc] initWith_nsACString:title];
 
     nsCOMPtr<nsIURI> uri;
-    if (NS_SUCCEEDED(NS_NewURI(getter_AddRefs(uri), url))) {
+    if (NS_SUCCEEDED(NS_NewURI(getter_AddRefs(uri), url)) && uri) {
       nsCAutoString hostname;
       uri->GetHost(hostname);
       mHostname = [[NSString alloc] initWith_nsACString:hostname];
@@ -574,6 +574,7 @@ enum
     nsCOMPtr<nsINavHistoryQuery> query;
     rv = histSvc->GetNewQuery(getter_AddRefs(query));
     NS_ENSURE_SUCCESS(rv, mFirstVisitDate);
+    NS_ENSURE_TRUE(query, mFirstVisitDate);
 
     nsCOMPtr<nsIURI> uri;
     rv = NS_NewURI(getter_AddRefs(uri), [mURL UTF8String]);
@@ -585,6 +586,7 @@ enum
     nsCOMPtr<nsINavHistoryQueryOptions> options;
     rv = histSvc->GetNewQueryOptions(getter_AddRefs(options));
     NS_ENSURE_SUCCESS(rv, mFirstVisitDate);
+    NS_ENSURE_TRUE(options, mFirstVisitDate);
 
     rv = options->SetResultType(nsINavHistoryQueryOptions::RESULTS_AS_VISIT);
     NS_ENSURE_SUCCESS(rv, mFirstVisitDate);
@@ -599,10 +601,12 @@ enum
     nsCOMPtr<nsINavHistoryResult> result;
     rv = histSvc->ExecuteQuery(query, options, getter_AddRefs(result));
     NS_ENSURE_SUCCESS(rv, mFirstVisitDate);
+    NS_ENSURE_TRUE(result, mFirstVisitDate);
 
     nsCOMPtr<nsINavHistoryContainerResultNode> rootNode;
     rv = result->GetRoot(getter_AddRefs(rootNode));
     NS_ENSURE_SUCCESS(rv, mFirstVisitDate);
+    NS_ENSURE_TRUE(rootNode, mFirstVisitDate);
 
     rv = rootNode->SetContainerOpen(PR_TRUE);
     NS_ENSURE_SUCCESS(rv, mFirstVisitDate);
