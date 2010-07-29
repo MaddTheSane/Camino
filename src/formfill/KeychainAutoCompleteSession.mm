@@ -50,7 +50,6 @@
 static BOOL FindPasswordField(nsIDOMHTMLInputElement* inUsername, nsIDOMHTMLInputElement** outPassword);
 
 static void GetFormInfoForInput(nsIDOMHTMLInputElement* aElement,
-                                NSString** host,
                                 NSString** asciiHost,
                                 UInt16* port,
                                 NSString** scheme);
@@ -95,29 +94,19 @@ void KeychainAutoCompleteDOMListener::FillPassword()
   mUsernameElement->GetValue(nsUsername);
   NSString* username = [NSString stringWith_nsAString:nsUsername];
 
-  NSString* host;
-  NSString* asciiHost;
-  UInt16 port;
-  NSString* scheme;
+  NSString* host = nil;
+  UInt16 port = kAnyPort;
+  NSString* scheme = nil;
 
-  GetFormInfoForInput(mUsernameElement, &host, &asciiHost, &port, &scheme);
+  GetFormInfoForInput(mUsernameElement, &host, &port, &scheme);
+  if (!host)
+    return;
 
   KeychainService* keychain = [KeychainService instance];
   KeychainItem* keychainEntry = [keychain findWebFormKeychainEntryForUsername:username
                                                                       forHost:host
                                                                          port:port
                                                                        scheme:scheme];
-  if (![asciiHost isEqualToString:host]) {
-    if (keychainEntry) {
-      [keychainEntry setHost:asciiHost];
-    }
-    else {
-      keychainEntry = [keychain findWebFormKeychainEntryForUsername:username
-                                                            forHost:asciiHost
-                                                               port:port
-                                                             scheme:scheme];
-    }
-  }
   if (!keychainEntry)
     return;
 
@@ -198,12 +187,13 @@ void KeychainAutoCompleteDOMListener::FillPassword()
     return NO;
 
   // Get the host information so we can get the keychain entries below.
-  NSString* host;
-  NSString* asciiHost;
-  UInt16 port;
-  NSString* scheme;
+  NSString* host = nil;
+  UInt16 port = kAnyPort;
+  NSString* scheme = nil;
 
-  GetFormInfoForInput(usernameElement, &host, &asciiHost, &port, &scheme);
+  GetFormInfoForInput(usernameElement, &host, &port, &scheme);
+  if (!host)
+    return NO;
 
   // If session is not cached, default to empty session.
   [mUsernames removeAllObjects];
@@ -214,16 +204,9 @@ void KeychainAutoCompleteDOMListener::FillPassword()
   // Cache all of the usernames in the object so that the keychain
   // doesn't have to be read again.  This should be a faster way to search and sort.
   NSMutableArray* keychainEntries =
-    [NSMutableArray arrayWithArray:[keychain allWebFormKeychainItemsForHost:host port:port scheme:scheme]];
-
-  // Fix those entries, and add the keychain items for the punycode host.
-  if (![asciiHost isEqualToString:host]) {
-    [keychainEntries makeObjectsPerformSelector:@selector(setHost:) withObject:asciiHost];
-
-    [keychainEntries addObjectsFromArray:[keychain allWebFormKeychainItemsForHost:asciiHost
-                                                                             port:port
-                                                                           scheme:scheme]];
-  }
+    [NSMutableArray arrayWithArray:[keychain allWebFormKeychainItemsForHost:host
+                                                                       port:port
+                                                                     scheme:scheme]];
 
   NSEnumerator* keychainEnumerator = [keychainEntries objectEnumerator];
   KeychainItem* item;
@@ -330,14 +313,12 @@ BOOL FindPasswordField(nsIDOMHTMLInputElement* inUsername, nsIDOMHTMLInputElemen
 }
 
 static void GetFormInfoForInput(nsIDOMHTMLInputElement* aElement,
-                                NSString** host,
                                 NSString** asciiHost,
                                 UInt16* port,
                                 NSString** scheme)
 {
   if (!aElement)
     return;
-  *host = nil;
   *asciiHost = nil;
   *port = kAnyPort;
   *scheme = nil;
@@ -355,18 +336,20 @@ static void GetFormInfoForInput(nsIDOMHTMLInputElement* aElement,
   if (!docURL)
     return;
 
-  nsCAutoString hostCAString;
-  rv = docURL->GetHost(hostCAString);
-  if (NS_FAILED(rv))
-    return;
-
-  *host = [NSString stringWithUTF8String:hostCAString.get()];
-
   // Get the host in punycode for keychain use.
   nsCAutoString asciiHostCAString;
   rv = docURL->GetAsciiHost(asciiHostCAString);
-  *asciiHost = NS_SUCCEEDED(rv) ?
-      [NSString stringWithUTF8String:asciiHostCAString.get()] : *host;
+  if (NS_SUCCEEDED(rv)) {
+    *asciiHost = [NSString stringWithUTF8String:asciiHostCAString.get()];
+  }
+  else {
+    nsCAutoString hostCAString;
+    rv = docURL->GetHost(hostCAString);
+    if (NS_SUCCEEDED(rv))
+      *asciiHost = [NSString stringWithUTF8String:hostCAString.get()];
+  }
+  if (!*asciiHost)
+    return;
 
   PRInt32 signedPort;
   docURL->GetPort(&signedPort);

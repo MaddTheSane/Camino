@@ -1114,25 +1114,11 @@ KeychainFormSubmitObserver::Notify(nsIDOMHTMLFormElement* formNode, nsIDOMWindow
     // Check the cache first, then fall back to a search in case a cached
     // entry expired before the user submitted.
     KeychainItem* keychainEntry = [keychain cachedKeychainEntryForKey:uri];
-    // We weren't using punycode for keychain entries up through 1.5, so try
-    // non-punycode first to favor Camino entries.
     if (!keychainEntry || ![[keychainEntry username] isEqualToString:username]) {
       keychainEntry = [keychain findWebFormKeychainEntryForUsername:username
-                                                            forHost:host
+                                                            forHost:asciiHost
                                                                port:port
                                                              scheme:scheme];
-    }
-    if (![asciiHost isEqualToString:host]) {
-      if (keychainEntry) {
-        if ([[keychainEntry host] isEqualToString:host])
-          [keychainEntry setHost:asciiHost];
-      }
-      else {
-        keychainEntry = [keychain findWebFormKeychainEntryForUsername:username
-                                                              forHost:asciiHost
-                                                                 port:port
-                                                               scheme:scheme];
-      }
     }
     // If there's already an entry in the keychain for the username, check if the
     // password matches. If not, ask the user what they want to do and replace
@@ -1276,21 +1262,9 @@ KeychainFormSubmitObserver::Notify(nsIDOMHTMLFormElement* formNode, nsIDOMWindow
       docURL->GetPort(&signedPort);
       UInt16 port = (signedPort < 0) ? kAnyPort : (UInt16)signedPort;
 
-      // We weren't using punycode for keychain entries up through 1.5, so try
-      // non-punycode first to favor Camino entries.
-      keychainEntry = [keychain findDefaultWebFormKeychainEntryForHost:host
+      keychainEntry = [keychain findDefaultWebFormKeychainEntryForHost:asciiHost
                                                                   port:port
                                                                 scheme:scheme];
-      if (![asciiHost isEqualToString:host]) {
-        if (keychainEntry) {
-          [keychainEntry setHost:asciiHost];
-        }
-        else {
-          keychainEntry = [keychain findDefaultWebFormKeychainEntryForHost:asciiHost
-                                                                      port:port
-                                                                    scheme:scheme];
-        }
-      }
     }
     // If we don't have a password for the page, don't bother looking for
     // more forms.
