@@ -1468,7 +1468,8 @@ static const NSTimeInterval kTimeIntervalToConsiderSiteBlockingStatusValid = 900
 
 - (BOOL)isPageLoadErrorOverlayShowing
 {
-  return [[self documentURI] hasPrefix:@"about:neterror"];
+  return ([[self documentURI] hasPrefix:@"about:neterror"] ||
+          [[self documentURI] hasPrefix:@"about:certerror"]);
 }
 
 //

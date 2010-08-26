@@ -223,9 +223,12 @@ extern NSString* const kBrowserInstanceClosedNotification;
 // accessors
 - (CHBrowserView*)browserView;
 - (BOOL)isBusy;
-- (BOOL)isEmpty;                      // is about:blank loaded?
+// Returns YES if a blank page is showing.
+- (BOOL)isEmpty;
 - (BOOL)isInternalURI;
-- (BOOL)isBlockedErrorOverlayShowing; // is about:safebrowsingblocked loaded?
+// Returns YES if a phishing or malware error overlay is showing.
+- (BOOL)isBlockedErrorOverlayShowing;
+// Returns YES if a network or certificate error overlay is showing.
 - (BOOL)isPageLoadErrorOverlayShowing;
 - (BOOL)isBookmarkable;
 - (BOOL)canReload;

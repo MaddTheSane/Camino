@@ -356,7 +356,8 @@ public:
 - (void)insertNewlineIgnoringFieldEditor:(id)sender
 {
   BrowserWindowController* bwc = (BrowserWindowController *)[[self window] delegate];
-  if ([[bwc browserWrapper] isBlockedErrorOverlayShowing])
+  if ([[bwc browserWrapper] isBlockedErrorOverlayShowing] ||
+      [[bwc browserWrapper] isPageLoadErrorOverlayShowing])
     return;
   NSString* URLstring = [self string];
   // so that Option-return works on things like "google.com" where the scheme:// is missing
@@ -1958,14 +1959,15 @@ public:
     return (![[self browserWrapper] isInternalURI] && ![[self browserWrapper] isBlockedErrorOverlayShowing]);
   if (action == @selector(viewSource:) ||
       action == @selector(viewPageSource:) ||
-      action == @selector(fillForm:))
+      action == @selector(fillForm:) ||
+      action == @selector(savePage:))
   {
     BrowserWrapper* browser = [self browserWrapper];
-    return (![browser isInternalURI] && [[browser browserView] isTextBasedContent] && ![browser isBlockedErrorOverlayShowing]);
+    return (![browser isInternalURI] && [[browser browserView] isTextBasedContent] &&
+            ![browser isBlockedErrorOverlayShowing] && ![browser isPageLoadErrorOverlayShowing]);
   }
   if (action == @selector(printDocument:) ||
-      action == @selector(pageSetup:) ||
-      action == @selector(savePage:))
+      action == @selector(pageSetup:))
   {
     return (![self bookmarkManagerIsVisible] && ![[self browserWrapper] isBlockedErrorOverlayShowing]);
   }
