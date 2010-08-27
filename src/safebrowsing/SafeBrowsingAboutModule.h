@@ -62,7 +62,7 @@ class CHSafeBrowsingAboutModule : public nsIAboutModule
 
 /* EDF643A9-8B38-472C-92A0-B6 3B EF B3 07 69 */
 #define CH_SAFEBROWSING_ABOUT_MODULE_CID \
-{ 0xEDF643A9, 0xB38, 0x472C, \
+{ 0xEDF643A9, 0x8B38, 0x472C, \
 { 0x92, 0xA0, 0xB6, 0x3B, 0xEF, 0xB3, 0x07, 0x69}}
 
 #endif // CHSafeBrowsingAboutModule_h__
