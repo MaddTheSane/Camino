@@ -1879,6 +1879,15 @@ const int kZoomActionsTag = 108;
 #pragma mark -
 #pragma mark Menu Maintenance
 
+static BOOL HasHistoryItems()
+{
+  PRUint32 count = 0;
+  nsCOMPtr<nsIBrowserHistory> hist(do_GetService("@mozilla.org/browser/global-history;2"));
+  if (hist)
+    hist->GetCount(&count);
+  return count > 0;
+}
+
 - (BOOL)validateMenuItem:(NSMenuItem*)aMenuItem
 {
   BrowserWindowController* browserController = [self mainWindowBrowserController];
@@ -1939,6 +1948,10 @@ const int kZoomActionsTag = 108;
     // latter logic, but we need to translate |showHistory:| to |manageHistory:|.
     action = @selector(manageHistory:);
     return (!browserController || [browserController validateActionBySelector:action]);
+  }
+
+  if (action == @selector(clearHistory:)) {
+    return HasHistoryItems();
   }
 
   // key alternates
