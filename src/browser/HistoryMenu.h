@@ -42,12 +42,11 @@
 
 @class HistoryItem;
 
-// A class that builds and maintains a menu heirarchy parallel to some portion
+// A class that builds and maintains a menu hierarchy parallel to some portion
 // of the history backend.
 @interface HistorySubmenu : NSMenu
 {
   HistoryItem*          mRootItem;               // root history item for this menu (retained)
-  HistoryItem*          mAdditionalItemsParent;  // may also contain children of this item (retained)
 
   int                   mNumIgnoreItems;         // if > 0, ignore the first N items (for "earlier today")
   BOOL                  mHistoryItemsDirty;      // whether we need to rebuild the items on next update

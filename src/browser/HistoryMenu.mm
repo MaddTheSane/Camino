@@ -565,8 +565,17 @@ static const unsigned int kMaxTitleLength = 50;
 
 - (void)addLastItems
 {
-  if ([[mRootItem children] count] > 0)
-    [self addItem:[NSMenuItem separatorItem]];
+  // The History menu already has a separatorItem after "Show History". We only
+  // need to add another separatorItem before "Recently Closed" or
+  // "Clear History" if the menu also has history items or submenus.
+  NSEnumerator* categoryEnum = [[mRootItem children] objectEnumerator];
+  HistoryItem* curCategory;
+  while ((curCategory = [categoryEnum nextObject])) {
+    if ([[curCategory children] count] > 0) {
+      [self addItem:[NSMenuItem separatorItem]];
+      break;
+    }
+  }
 
   // Add the recently closed items menu if there are any.
   if ([mRecentlyClosedMenu numberOfItems] > 0) {
@@ -578,7 +587,7 @@ static const unsigned int kMaxTitleLength = 50;
     [self addItem:[NSMenuItem separatorItem]];
   }
 
-  // at the bottom of the go menu, add a Clear History item
+  // At the bottom of the History menu, add a Clear History item.
   NSMenuItem* clearHistoryItem = [[[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"ClearHistoryMenuItem", @"")
                                                              action:@selector(clearHistory:)
                                                       keyEquivalent:@""] autorelease];
