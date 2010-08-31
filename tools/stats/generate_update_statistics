@@ -50,7 +50,7 @@ if [ $# -eq 2 ]; then
 else
   file="$2 $3"
 fi
-badips="204.234.28.|149.150.236.250|203.42.177.[16-19]|200.19.92.|189.108.14.138|72.10.105.23|205.202.243.[23-47]"
+badips="204.234.28.|149.150.236.250|203.42.177.[16-19]|200.19.92.|189.108.14.138|72.10.105.23|205.202.243.[23-47]|63.245.210.43|204.234.25.253"
 
 echo "$date"
 
@@ -88,6 +88,7 @@ grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c
 grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.2(I|&)"
 grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.1(I|&)"
 grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6(I|&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0\.4(I|&)"
 grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0\.3(I|&)"
 grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0\.2(I|&)"
 grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0\.1(I|&)"
