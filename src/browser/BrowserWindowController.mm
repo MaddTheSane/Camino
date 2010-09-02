@@ -1959,12 +1959,16 @@ public:
     return (![[self browserWrapper] isInternalURI] && ![[self browserWrapper] isBlockedErrorOverlayShowing]);
   if (action == @selector(viewSource:) ||
       action == @selector(viewPageSource:) ||
-      action == @selector(fillForm:) ||
-      action == @selector(savePage:))
+      action == @selector(fillForm:))
   {
     BrowserWrapper* browser = [self browserWrapper];
     return (![browser isInternalURI] && [[browser browserView] isTextBasedContent] &&
             ![browser isBlockedErrorOverlayShowing] && ![browser isPageLoadErrorOverlayShowing]);
+  }
+  if (action == @selector(savePage:))
+  {
+    return (![self bookmarkManagerIsVisible] && ![[self browserWrapper] isBlockedErrorOverlayShowing] &&
+            ![[self browserWrapper] isPageLoadErrorOverlayShowing]);
   }
   if (action == @selector(printDocument:) ||
       action == @selector(pageSetup:))
