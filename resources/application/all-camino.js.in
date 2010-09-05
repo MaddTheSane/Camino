@@ -298,3 +298,7 @@ pref("places.frecency.unvisitedTypedBonus", 200);
 
 // Use in-content missing plug-in UI
 pref("plugin.default_plugin_disabled", true);
+
+// Name of alternate about: page to use for certificate errors (when undefined,
+// defaults to about:neterror)
+pref("security.alternate_certificate_error_page", "certerror");

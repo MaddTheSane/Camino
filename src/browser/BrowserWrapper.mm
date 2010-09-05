@@ -1053,6 +1053,10 @@ static const NSTimeInterval kTimeIntervalToConsiderSiteBlockingStatusValid = 900
   if ([elementIdentifier isEqualToString:@"exceptionDialogButton"]) {
     [mDelegate addCertificateOverrideForSite:siteURI];
   }
+
+  else if ([elementIdentifier isEqualToString:@"getMeOutOfHereButton"]) {
+    [mDelegate runAwayFromCertificateErrorSite];
+  }
   else if ([pageURI hasPrefix:@"about:safebrowsingblocked"]) {
     // pageURI contains an |e| parameter to indicate the type of
     // blocking error, such as e=malwareBlocked.

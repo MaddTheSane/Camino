@@ -574,3 +574,23 @@
 "Date/Time" = "Date/Time";
 "Page #" = "Page #";
 "Page # of #" = "Page # of #";
+
+/* Certificate Error Page */
+CertErrorTitleText = "Untrusted Connection";
+CertErrorPageHeadingText = "The identity of this site can’t be verified";
+
+/* The string "#1" will be replaced at runtime with the name of the server to
+   which the user was trying to connect. */
+CertErrorIntroPara1 = "You have asked Camino to connect securely to <b>#1</b>, but Camino can’t confirm that you are connecting to that site.";
+CertErrorIntroPara2 = "When you try to connect securely, sites will present identification to prove that you are going to the right place. However, this site’s identity can’t be verified by any Certificate Authority trusted by Camino.";
+
+CertErrorAdviceHeadingText = "What Should I Do?";
+CertErrorAdviceText = "If you usually connect to this site without problems, or if you have never connected before, this error could mean that someone is trying to impersonate the site, and you should not continue.";
+CertErrorGetMeOutButtonLabel = "Leave Site";
+
+CertErrorTechnicalHeading = "Technical Details";
+
+CertErrorExpertHeadingText = "I Understand the Risks";
+CertErrorExpertPara1 = "If you understand what’s going on, you can tell Camino to start trusting this site’s identification. <b>Even if you believe this is a trustworthy site, this error could mean that someone is tampering with your connection.</b>";
+CertErrorExpertPara2 = "You should not add an exception if you are using an internet connection that you do not trust completely, if you are not used to seeing a warning for this site, or if you do not know that there is a good reason why this site does not use identification that can be verified.";
+AddExceptionButtonLabel = "Add Exception…";

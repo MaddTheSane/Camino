@@ -1067,6 +1067,10 @@
 		DE1EBDC40D066F5100BE9ECC /* mathfontSTIXNonUnicode.properties in Copy Gecko Fonts */ = {isa = PBXBuildFile; fileRef = DE1EBDBC0D066F5100BE9ECC /* mathfontSTIXNonUnicode.properties */; };
 		DE1EBDC50D066F5100BE9ECC /* mathfontStandardSymbolsL.properties in Copy Gecko Fonts */ = {isa = PBXBuildFile; fileRef = DE1EBDBD0D066F5100BE9ECC /* mathfontStandardSymbolsL.properties */; };
 		DE2AC7180F33EBAB009C0A42 /* libcaminosafebrowsing.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE2AC6EC0F33EB8F009C0A42 /* libcaminosafebrowsing.a */; };
+		DE2D02D11214E17D000668C5 /* CertErrorAboutModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = DE2D02D01214E17D000668C5 /* CertErrorAboutModule.mm */; };
+		DE2D02D21214E17D000668C5 /* CertErrorAboutModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = DE2D02D01214E17D000668C5 /* CertErrorAboutModule.mm */; };
+		DE2D03471214E859000668C5 /* certError.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = DE2D03461214E859000668C5 /* certError.xhtml */; };
+		DE2D03481214E859000668C5 /* certError.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = DE2D03461214E859000668C5 /* certError.xhtml */; };
 		DE4025950FF4345D00568817 /* ServicesMenu.strings in Resources */ = {isa = PBXBuildFile; fileRef = DE4025930FF4345D00568817 /* ServicesMenu.strings */; };
 		DE4025960FF4345D00568817 /* ServicesMenu.strings in Resources */ = {isa = PBXBuildFile; fileRef = DE4025930FF4345D00568817 /* ServicesMenu.strings */; };
 		DE40444B0ED09D1E00057E17 /* pipnss_locale_security_properties.strings in Resources */ = {isa = PBXBuildFile; fileRef = DE4044060ED09D1E00057E17 /* pipnss_locale_security_properties.strings */; };
@@ -2911,6 +2915,9 @@
 		DE1EBDBC0D066F5100BE9ECC /* mathfontSTIXNonUnicode.properties */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = mathfontSTIXNonUnicode.properties; path = ../dist/bin/res/fonts/mathfontSTIXNonUnicode.properties; sourceTree = SOURCE_ROOT; };
 		DE1EBDBD0D066F5100BE9ECC /* mathfontStandardSymbolsL.properties */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = mathfontStandardSymbolsL.properties; path = ../dist/bin/res/fonts/mathfontStandardSymbolsL.properties; sourceTree = SOURCE_ROOT; };
 		DE2AC6EC0F33EB8F009C0A42 /* libcaminosafebrowsing.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcaminosafebrowsing.a; path = ../staticlib/components/libcaminosafebrowsing.a; sourceTree = SOURCE_ROOT; };
+		DE2D02CF1214E176000668C5 /* CertErrorAboutModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CertErrorAboutModule.h; path = src/browser/CertErrorAboutModule.h; sourceTree = SOURCE_ROOT; };
+		DE2D02D01214E17D000668C5 /* CertErrorAboutModule.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CertErrorAboutModule.mm; path = src/browser/CertErrorAboutModule.mm; sourceTree = SOURCE_ROOT; };
+		DE2D03461214E859000668C5 /* certError.xhtml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = certError.xhtml; path = resources/application/certError.xhtml; sourceTree = SOURCE_ROOT; };
 		DE4025940FF4345D00568817 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = generated/resources/localized/English.lproj/ServicesMenu.strings; sourceTree = "<group>"; };
 		DE4025DE0FF435A200568817 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = English; path = resources/localized/English.lproj/ServicesMenu.strings.in; sourceTree = "<group>"; };
 		DE4044070ED09D1E00057E17 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = generated/resources/localized/English.lproj/pipnss_locale_security_properties.strings; sourceTree = "<group>"; };
@@ -3873,6 +3880,7 @@
 				3D94197F0F559B2F00227277 /* blockedSite.xhtml */,
 				DE59E2F40FA54E6F001F240C /* Crash Reporter InfoPlist.strings Override */,
 				DE1E1E6011752B6300501E5C /* camino_dsa_pub.pem */,
+				DE2D03461214E859000668C5 /* certError.xhtml */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -4055,6 +4063,8 @@
 			children = (
 				F5125A110202064D01FAFD9F /* BrowserWrapper.h */,
 				F6BA6D4E01B2F8A601A962F7 /* BrowserWrapper.mm */,
+				DE2D02CF1214E176000668C5 /* CertErrorAboutModule.h */,
+				DE2D02D01214E17D000668C5 /* CertErrorAboutModule.mm */,
 				F59E9F3D0237E28401A967DF /* ContentClickListener.h */,
 				F59E9F3F0237E43401A967DF /* ContentClickListener.mm */,
 				B3886D870F79D53700D8E015 /* FlashblockWhitelistManager.mm */,
@@ -5869,6 +5879,7 @@
 				3D9A2B091001A45700CC9154 /* SafeBrowsingBar.nib in Resources */,
 				00450523100A8E140096B649 /* bookmark_group_badge.tiff in Resources */,
 				DE1E1E6211752B6300501E5C /* camino_dsa_pub.pem in Resources */,
+				DE2D03471214E859000668C5 /* certError.xhtml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6088,6 +6099,7 @@
 				3D9A2B0A1001A45700CC9154 /* SafeBrowsingBar.nib in Resources */,
 				00450524100A8E140096B649 /* bookmark_group_badge.tiff in Resources */,
 				DE1E1E6111752B6300501E5C /* camino_dsa_pub.pem in Resources */,
+				DE2D03481214E859000668C5 /* certError.xhtml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6492,6 +6504,7 @@
 				00F79F591075B622006688AC /* OperaBookmarkConverter.m in Sources */,
 				00F7A08C1077F255006688AC /* SafariBookmarkConverter.m in Sources */,
 				B386FC3110CF5AF30094DAAB /* NSMenu+Gecko.mm in Sources */,
+				DE2D02D11214E17D000668C5 /* CertErrorAboutModule.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6690,6 +6703,7 @@
 				00F79F5A1075B622006688AC /* OperaBookmarkConverter.m in Sources */,
 				00F7A08D1077F255006688AC /* SafariBookmarkConverter.m in Sources */,
 				B386FC3210CF5AF30094DAAB /* NSMenu+Gecko.mm in Sources */,
+				DE2D02D21214E17D000668C5 /* CertErrorAboutModule.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

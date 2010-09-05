@@ -79,6 +79,7 @@ extern NSString* const kBrowserInstanceClosedNotification;
 - (void)showBlockedPopups:(nsIArray*)blockedSites whitelistingSource:(BOOL)shouldWhitelist;
 - (void)blacklistPopupsFromURL:(NSString*)inURL;
 
+- (void)runAwayFromCertificateErrorSite;
 - (void)addCertificateOverrideForSite:(NSString*)url;
 
 - (BOOL)userChangedLocationField;

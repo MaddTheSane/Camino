@@ -2300,6 +2300,14 @@ public:
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[sender representedObject]]];
 }
 
+- (void)runAwayFromCertificateErrorSite
+{
+  if ([[mBrowserView browserView] canGoBack])
+    [self back:self];
+  else
+    [self home:self];
+}
+
 - (void)addCertificateOverrideForSite:(NSString*)uri
 {
   NSURL* url = [NSURL URLWithString:uri];

@@ -47,6 +47,7 @@
 #import "CHStringBundleOverride.h"
 #import "ContentDispatchChooser.h"
 #import "SafeBrowsingAboutModule.h"
+#import "CertErrorAboutModule.h"
 
 #include "nsIGenericFactory.h"
 
@@ -209,6 +210,12 @@ static const nsModuleComponentInfo gAppComponents[] = {
     CH_SAFEBROWSING_ABOUT_MODULE_CID,
     NS_ABOUT_MODULE_CONTRACTID_PREFIX "safebrowsingblocked",
     CHSafeBrowsingAboutModule::CreateSafeBrowsingAboutModule,
+  },
+  {
+    "Certificate Error Module",
+    CH_CERTERROR_ABOUT_MODULE_CID,
+    NS_ABOUT_MODULE_CONTRACTID_PREFIX "certerror",
+    CHCertErrorAboutModule::CreateCertErrorAboutModule,
   },
 };
 
