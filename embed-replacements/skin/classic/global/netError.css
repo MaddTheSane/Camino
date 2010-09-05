@@ -1,6 +1,8 @@
 /*
- *  This defines the look-and-feel styling of the error pages.
- *  (see: netError.xhtml)
+ *  This file defines the styles of the network, blocked site
+ *  (safe browsing), and certificate error pages.  See 
+ *  netError.xhtml (in docshell), blockedSite.xhtml, and 
+ *  certError.xhtml.
  *
  *  Original styling by William Price <bugzilla@mob.rice.edu>
  *  Updated by: Steven Garrity <steven@silverorange.com>
@@ -77,13 +79,52 @@ body[dir="rtl"] #errorPageContainer {
   -moz-margin-start: 64px;
 }
 
-#errorShortDesc > p {
+#errorShortDesc > p,
+#introContent > p {
   overflow: auto;
-  border-bottom: 1px solid ThreeDLightShadow;
-  padding-bottom: 1em;
   font-size: 130%;
   color: #0141b7;
   white-space: pre-wrap;
+}
+
+#errorShortDesc > p,
+#introContent {
+  border-bottom: 1px solid ThreeDLightShadow;
+}
+
+#errorShortDesc > p {
+  padding-bottom: 1em;
+}
+
+#technicalContentText {
+  overflow: auto;
+  white-space: pre-wrap;
+}
+
+#technicalContent > h2,
+#expertContent > h2 {
+  cursor: pointer;
+}
+
+#technicalContent > h2:before,
+#expertContent > h2:before {
+  content: '▼';
+  margin-left: -1.3em;
+  padding-right: .35em;
+  width: 1em;
+  display: inline-block;
+  font-size: 75%;
+  color: #aaa;
+}
+
+#technicalContent[collapsed] > h2:before,
+#expertContent[collapsed] > h2:before {
+  content: '▶';
+}
+
+div[collapsed] > p,
+div[collapsed] > div {
+  display: none;
 }
 
 #errorLongDesc {
@@ -120,29 +161,21 @@ body[dir="rtl"] #brand {
   display: none;
 }
 
-#securityOverrideDiv {
-  padding-top: 10px;
-}
-
-#securityOverrideContent {
+#expertContent div {
   background-color: #ffdd7f; /* pale orange */
   padding: 1.3em 1.5em;
   border: 1px solid transparent; /* bug 505946 */
   -moz-border-radius: 15px;
-  -moz-margin-end: 3em;
+  -moz-margin-end: 1.5em;
+  -moz-margin-start: -1.5em;
 }
 
-/* Ensure all text is left-aligned to the same position - bug 451131 comment 9 */
-/* the 'link' */
-#securityOverrideLink {
-  -moz-margin-start: 1.5em;
-}
-
-#securityOverrideContent > p {
+#expertContent p {
   margin: 0 0 1em;
 }
 
-#securityOverrideContent > button {
+#whatShouldIDoContent button,
+#expertContent button {
   margin: 0;
 }
 
