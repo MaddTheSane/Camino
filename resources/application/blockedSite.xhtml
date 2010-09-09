@@ -165,30 +165,6 @@
         return false;
       }
     ]]></script>
-    <style type="text/css">
-      /* CSS rules to make the buttons appear somewhat like a Mac OS X dialog.
-         These probably belong in netError.css, but Firefox had similar weird 
-         style rules here. */
-      #ignoreWarningButton {
-        /* Per HIG, there should be 24px between dangerous buttons and other
-           buttons. The buttons have a 6px margin on each side by default
-           (beginning after the 1px shadow) and the whitespace node between the
-           buttons takes 4px. Since Cocoa does not consider the shadow to be
-           part of the button’s width, use 12px as margin-right to achieve 24px
-           of space between the two buttons. */
-        margin-right: 12px;
-      }
-
-      #getMeOutButton {
-        /* Align the button’s right edge with the right edge of the 
-           border-bottom from the errorShortDesc div. */
-        margin-right: -2px;
-      }
-
-      #buttons {
-        text-align: right;
-      }
-    </style>
   </head>
 
   <body onkeypress="handleKeypress(event)">

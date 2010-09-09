@@ -13,13 +13,13 @@
  */
 
 html {
-  background: #F2F2F2;
+  background: #f2f2f2;
 }
 
 body {
   margin: 0;
   padding: 0 1em;
-  color: -moz-FieldText;
+  color: #000;
   font: message-box;
 }
 
@@ -42,7 +42,7 @@ ul, ol {
 }
 
 ul > li, ol > li {
-  margin-bottom: 0.7em;
+  margin-bottom: .7em;
 }
 
 ul {
@@ -61,11 +61,6 @@ ul {
   background: url("chrome://global/skin/icons/warning.png") 1.1em 1.6em no-repeat -moz-Field;
   -moz-box-shadow: -4px 4px 8px rgba(0,0,0,0.12), 4px 4px 8px rgba(0,0,0,0.12);
 }
-
-/* #errorPageContainer.certerror {
-  background-image: url("chrome://global/skin/icons/sslWarning.png");
-}
-*/
 
 body[dir="rtl"] #errorPageContainer {
   background-position: right 0;
@@ -132,29 +127,9 @@ div[collapsed] > div {
   font-size: 110%;
 }
 
-#errorLongDesc > p {
-}
-
 #errorTryAgain {
   margin-top: 2em;
   -moz-margin-start: 64px;
-}
-
-#brand {
-  position: absolute;
-  right: 0;
-  bottom: -1.5em;
-  -moz-margin-end: 10px;
-  opacity: .4;
-}
-
-body[dir="rtl"] #brand {
-  right: auto;
-  left: 0;
-}
-
-#brand > p {
-  margin: 0;
 }
 
 #errorContainer {
@@ -183,13 +158,13 @@ body[dir="rtl"] #brand {
 :root.blacklist #errorTitle, :root.blacklist #errorLongContent,
 :root.blacklist #errorShortDesc, :root.blacklist #errorLongDesc {
   background-color: #e8e8e8;
-  color: black;
+  color: #000;
 }
 
 :root.blacklist #errorPageContainer {
   background-image: url("chrome://global/skin/icons/blacklist.png");
   background-color: #e8e8e8;
-  border: 2px solid black;
+  border: 2px solid #000;
   -moz-box-shadow: -4px 4px 8px rgba(0,0,0,0.3), 4px 4px 8px rgba(0,0,0,0.3);
 }
 
@@ -202,9 +177,9 @@ body[dir="rtl"] #brand {
 }
 
 :root.blacklist #errorShortDesc > p {
-  color: black;
+  color: #000;
   font-weight: bold;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #000;
 }
 
 :root.blacklist #errorTitle h1 {
@@ -213,8 +188,23 @@ body[dir="rtl"] #brand {
 
 :root.blacklist #buttons {
   padding-top: 10px;
+  text-align: right;
 }
 
-ul strong {
-	color: #000;
+/* Per HIG, there should be 24px between dangerous buttons and other
+   buttons. The buttons have a 6px margin on each side by default
+   (beginning after the 1px shadow) and the whitespace node between the
+   buttons takes 4px. Since Cocoa does not consider the shadow to be
+   part of the button’s width, use 12px as margin-right to achieve 24px
+   of space between the two buttons.
+*/
+:root.blacklist #ignoreWarningButton {
+  margin-right: 12px;
+}
+
+/* Align the button’s right edge with the right edge of the 
+   border-bottom from the errorShortDesc div.
+*/
+:root.blacklist #getMeOutButton {
+  margin-right: -2px;
 }
