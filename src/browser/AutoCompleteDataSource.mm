@@ -259,8 +259,8 @@ const unsigned int kNumberOfItemsPerChunk = 100;
 
 - (void)reportResults
 {
-  [self addHeader:@"Bookmarks" toResults:mBookmarkResultsInProgress];
-  [self addHeader:@"History" toResults:mHistoryResultsInProgress];
+  [self addHeader:NSLocalizedString(@"BookmarksWindowTitle", nil) toResults:mBookmarkResultsInProgress];
+  [self addHeader:NSLocalizedString(@"HistoryWindowTitle", nil) toResults:mHistoryResultsInProgress];
   [mResults removeAllObjects];
   [mResults addObjectsFromArray:mBookmarkResultsInProgress];
   [mResults addObjectsFromArray:mHistoryResultsInProgress];
