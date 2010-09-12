@@ -30,3 +30,7 @@ en-US.jar:
 # Replace generic files with ones appropriate for Camino
 + locale/en-US/global/config.dtd                           (../embed-replacements/locale/en-US/global/config.dtd)
 + locale/en-US/global/netError.dtd                         (../embed-replacements/locale/en-US/global/netError.dtd)
+# Branding
+% locale branding en-US %locale/branding/
+  locale/branding/brand.dtd                                (../embed-replacements/locale/branding/brand.dtd)
+* locale/branding/brand.properties                         (../embed-replacements/locale/branding/brand.properties)
