@@ -9,10 +9,6 @@
 "ChooseDirectoryOKButton" = "Select";
 "DontShowWarningAgainCheckboxLabel" = "Don’t show this warning again";
 
-"yes" = "yes";
-"no" = "no";
-
-"BuildID" = "Build ID: %010u";
 "AlreadyRunningAlert" = "Cannot Launch %@";
 "AlreadyRunningMsg" = "%@ is already running on this system. Only one copy can be run at a time.";
 

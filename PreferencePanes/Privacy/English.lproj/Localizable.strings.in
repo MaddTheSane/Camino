@@ -1,5 +1,7 @@
 "PreferencePanelLabel" = "Privacy";
 
+"CookieSecureYesLabel" = "yes";
+"CookieSecureNoLabel" = "no";
 "CookieExpiresOnQuit" = "On Quit";
 "DontRemoveButtonText"  = "Don’t Remove";
 

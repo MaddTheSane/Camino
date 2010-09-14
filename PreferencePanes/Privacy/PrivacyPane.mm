@@ -697,7 +697,7 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
   else if (aTableView == mCookiesTable) {
     if ([[aTableColumn identifier] isEqualToString:@"isSecure"]) {
       BOOL secure = [[mCookies objectAtIndex:rowIndex] isSecure];
-      return [self localizedStringForKey:(secure ? @"yes": @"no")];
+      return [self localizedStringForKey:(secure ? @"CookieSecureYesLabel": @"CookieSecureNoLabel")];
     }
     else if ([[aTableColumn identifier] isEqualToString:@"expiresDate"]) {
       NSHTTPCookie* cookie = [mCookies objectAtIndex:rowIndex];
