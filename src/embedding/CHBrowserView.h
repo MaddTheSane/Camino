@@ -59,6 +59,7 @@ class nsIURI;
 class nsISupports;
 class nsISecureBrowserUI;
 class nsIDOMNSEvent;
+class nsIDOMSimpleGestureEvent;
 
 // Page load outcomes: succeeded means the page loaded successfully,
 // failed means there was an error (e.g., 404), and blocked means
@@ -118,6 +119,8 @@ typedef enum {
 // Called when an XUL element was activated (e.g. clicked) in the content area, 
 // typically on an about: page.
 - (void)onXULCommand:(nsIDOMNSEvent*)aDOMEvent;
+// Called when a mouse swipe gesture event occurs in the content area
+- (void)onMouseSwipeGestureEvent:(nsIDOMSimpleGestureEvent*)simpleGestureEvent;
 
 @end
 

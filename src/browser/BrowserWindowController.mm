@@ -746,16 +746,20 @@ public:
 // called if the gesture system changes in a future version.
 - (void)swipeWithEvent:(NSEvent*)event
 {
-  // Map forward and back to history; left is positive, right is negative (!)
+  CHSwipeGestureDirection swipeDirection;
+
   if ([event deltaX] > 0.5)
-    [self back:nil];
+    swipeDirection = CHSwipeGestureDirectionLeft;
   else if ([event deltaX] < -0.5)
-    [self forward:nil];
-  // Map up and down to page up/down
+    swipeDirection = CHSwipeGestureDirectionRight;
   else if ([event deltaY] > 0.5)
-    [[mBrowserView browserView] pageUp];
+    swipeDirection = CHSwipeGestureDirectionUp;
   else if ([event deltaY] < -0.5)
-    [[mBrowserView browserView] pageDown];
+    swipeDirection = CHSwipeGestureDirectionDown;
+  else
+    return;
+
+  [self swipeGestureDetectedWithDirection:swipeDirection];
 }
 
 - (void)magnifyWithEvent:(NSEvent*)event
@@ -5413,6 +5417,18 @@ public:
 {
   return [(MainController*)[NSApp delegate]
       isEventNonOverridableMenuShortcut:event];
+}
+
+- (void)swipeGestureDetectedWithDirection:(CHSwipeGestureDirection)swipeDirection
+{
+  if (swipeDirection == CHSwipeGestureDirectionLeft)
+    [self back:nil];
+  else if (swipeDirection == CHSwipeGestureDirectionRight)
+    [self forward:nil];
+  else if (swipeDirection == CHSwipeGestureDirectionUp)
+    [[mBrowserView browserView] pageUp];
+  else if (swipeDirection == CHSwipeGestureDirectionDown)
+    [[mBrowserView browserView] pageDown];
 }
 
 @end

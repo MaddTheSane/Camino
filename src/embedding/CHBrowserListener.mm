@@ -59,6 +59,7 @@
 #include "nsIDOMPopupBlockedEvent.h"
 #include "nsIDOMBarProp.h"
 #include "nsIDOMNSEvent.h"
+#include "nsIDOMSimpleGestureEvent.h"
 
 // XPCOM and String includes
 #include "nsIInterfaceRequestorUtils.h"
@@ -821,6 +822,9 @@ CHBrowserListener::HandleEvent(nsIDOMEvent* inEvent)
   if (eventType.Equals(NS_LITERAL_STRING("popupshowing")))
     return HandleXULPopupEvent(inEvent);
 
+  if (eventType.Equals(NS_LITERAL_STRING("MozSwipeGesture")))
+    return HandleSwipeGestureEvent(inEvent);
+
   if (eventType.Equals(NS_LITERAL_STRING("DOMPopupBlocked")))
     return HandleBlockedPopupEvent(inEvent);
 
@@ -1194,6 +1198,18 @@ CHBrowserListener::FocusPrevElement()
     return NS_ERROR_FAILURE;
 
   [mContainer tabOutOfBrowser:NO];
+
+  return NS_OK;
+}
+
+nsresult
+CHBrowserListener::HandleSwipeGestureEvent(nsIDOMEvent* inEvent)
+{
+  nsCOMPtr<nsIDOMSimpleGestureEvent> swipeGestureEvent = do_QueryInterface(inEvent);
+  if (!swipeGestureEvent)
+    return NS_ERROR_FAILURE;
+
+  [mContainer onMouseSwipeGestureEvent:swipeGestureEvent];
 
   return NS_OK;
 }

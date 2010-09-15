@@ -86,6 +86,7 @@
 #include "nsIDOM3Document.h"
 #include "nsIDOMEventTarget.h"
 #include "nsIDOMNSEvent.h"
+#include "nsIDOMSimpleGestureEvent.h"
 
 class nsIDOMPopupBlockedEvent;
 
@@ -1040,6 +1041,33 @@ static const NSTimeInterval kTimeIntervalToConsiderSiteBlockingStatusValid = 900
   [self performCommandForXULElementWithID:elementID
                                    onPage:documentURI
                                      site:siteURI];
+}
+
+- (void)onMouseSwipeGestureEvent:(nsIDOMSimpleGestureEvent*)simpleGestureEvent
+{
+  PRUint32 swipeDirection;
+  simpleGestureEvent->GetDirection(&swipeDirection);
+
+  CHSwipeGestureDirection nativeSwipeDirection;
+
+  switch (swipeDirection) {
+    case nsIDOMSimpleGestureEvent::DIRECTION_LEFT:
+      nativeSwipeDirection = CHSwipeGestureDirectionLeft;
+      break;
+    case nsIDOMSimpleGestureEvent::DIRECTION_RIGHT:
+      nativeSwipeDirection = CHSwipeGestureDirectionRight;
+      break;
+    case nsIDOMSimpleGestureEvent::DIRECTION_UP:
+      nativeSwipeDirection = CHSwipeGestureDirectionUp;
+      break;
+    case nsIDOMSimpleGestureEvent::DIRECTION_DOWN:
+      nativeSwipeDirection = CHSwipeGestureDirectionDown;
+      break;
+    default:
+      return;
+  }
+
+  [mDelegate swipeGestureDetectedWithDirection:nativeSwipeDirection];
 }
 
 // The pageURI is supplied because it might differ from -[self currentURI], particularly

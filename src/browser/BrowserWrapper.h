@@ -53,6 +53,13 @@ class nsIArray;
 
 extern NSString* const kBrowserInstanceClosedNotification;
 
+typedef enum {
+    CHSwipeGestureDirectionLeft = 0,
+    CHSwipeGestureDirectionRight,
+    CHSwipeGestureDirectionUp,
+    CHSwipeGestureDirectionDown
+} CHSwipeGestureDirection;
+
 // 
 // The BrowserWrapper communicates with the UI via this delegate.
 // The delegate will be nil for background tabs.
@@ -95,6 +102,8 @@ extern NSString* const kBrowserInstanceClosedNotification;
 // Returns YES if the given event should be sent to the main menu first, then
 // only sent on to the content view if unhandled.
 - (BOOL)shouldDivertKeyEquivalentToMenu:(NSEvent*)event;
+
+- (void)swipeGestureDetectedWithDirection:(CHSwipeGestureDirection)swipeDirection;
 
 @end
 
