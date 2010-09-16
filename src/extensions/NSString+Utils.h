@@ -78,6 +78,14 @@ typedef enum
 // Returns a version of the string with all regex special characters escaped.
 - (NSString*)stringbyEscapingForRegex;
 
+// Returns the conceptual character starting at |index|, correctly handling
+// composed characters.
+- (NSString*)composedCharacterAtIndex:(unsigned int)index;
+
+// Returns the first |count| conceptual characters of the string. If the string
+// has fewer than |count| characters, returns the original string.
+- (NSString*)prefixWithCharacterCount:(unsigned int)count;
+
 @end
 
 @interface NSMutableString (ChimeraMutableStringUtils)

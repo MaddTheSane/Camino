@@ -45,4 +45,8 @@
 // just returns nil if out of range, rather than throwing.
 - (id)safeObjectAtIndex:(unsigned)inIndex;
 
+// Returns YES if any of the array items match the given prefix. Should only
+// be called on arrays of NSStrings.
+- (BOOL)containsStringWithPrefix:(NSString*)prefix;
+
 @end

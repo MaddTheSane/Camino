@@ -242,6 +242,27 @@
   return escapedString;
 }
 
+- (NSString *)composedCharacterAtIndex:(unsigned int)index
+{
+  NSRange charRange = [self rangeOfComposedCharacterSequenceAtIndex:index];
+  return [self substringWithRange:charRange];
+}
+
+- (NSString*)prefixWithCharacterCount:(unsigned int)count
+{
+  // If the string is short enough, don't bother counting characters.
+  if ([self length] <= count)
+    return self;
+
+  NSRange charRange = NSMakeRange(0, 0);
+  for (unsigned int i = 0; i < count && NSMaxRange(charRange) < [self length]; ++i) {
+    charRange = [self rangeOfComposedCharacterSequenceAtIndex:NSMaxRange(charRange)];
+  }
+  if (NSMaxRange(charRange) >= [self length])
+    return self;
+  return [self substringWithRange:NSMakeRange(0, NSMaxRange(charRange))];
+}
+
 @end
 
 

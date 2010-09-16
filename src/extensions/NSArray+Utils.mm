@@ -52,4 +52,15 @@
   return (inIndex < [self count]) ? [self objectAtIndex:inIndex] : nil;
 }
 
+- (BOOL)containsStringWithPrefix:(NSString*)prefix
+{
+  NSEnumerator* stringEnumerator = [self objectEnumerator];
+  NSString* string;
+  while ((string = [stringEnumerator nextObject])) {
+    if ([string hasPrefix:prefix])
+      return YES;
+  }
+  return NO;
+}
+
 @end
