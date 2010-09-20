@@ -118,10 +118,10 @@ const int kZoomActionsTag = 108;
 - (void)setInitialized:(BOOL)flag;
 - (void)setupStartpage;
 - (void)setupRendezvous;
+- (void)addNoServicesFoundMenuItem;
 - (void)checkDefaultBrowser;
 - (void)checkForProblemAddOns;
 - (void)prelaunchHelperApps;
-- (void)adjustBookmarkMenuItems;
 - (void)updateDockMenuBookmarkFolder;
 - (void)updateBookmarkMenuStateIncludingBookmarks:(BOOL)includeBookmarks;
 - (void)adjustTextEncodingMenu;
@@ -545,6 +545,15 @@ const int kZoomActionsTag = 108;
   }
 }
 
+- (void)addNoServicesFoundMenuItem
+{
+  NSMenuItem* newItem = [mServersSubmenu addItemWithTitle:NSLocalizedString(@"NoServicesFound", @"") 
+                                                   action:nil
+                                            keyEquivalent:@""];
+
+  [newItem setTarget:self];
+}
+
 - (void)setupRendezvous // aka "Bonjour"
 {
   if ([[PreferenceManager sharedInstance] getBooleanPref:kGeckoPrefDisableBonjour withSuccess:NULL]) {
@@ -555,6 +564,10 @@ const int kZoomActionsTag = 108;
 
     return;
   }
+
+  // We won't know of any Bonjour services until we receive
+  // a NetworkServicesAvailableServicesChanged notification.
+  [self addNoServicesFoundMenuItem];
 
   NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
   [notificationCenter addObserver:self selector:@selector(availableServicesChanged:) name:NetworkServicesAvailableServicesChanged object:nil];
@@ -2232,23 +2245,19 @@ static int SortByProtocolAndName(NSDictionary* item1, NSDictionary* item2, void*
     [servicesArray addObject:serviceDict];
   }
 
-  if ([servicesArray count] == 0) {
-    // add a separator
-    [mServersSubmenu addItem:[NSMenuItem separatorItem]];
+  [mServersSubmenu addItem:[NSMenuItem separatorItem]];
 
-    NSMenuItem* newItem = [mServersSubmenu addItemWithTitle:NSLocalizedString(@"NoServicesFound", @"") action:nil keyEquivalent:@""];
-    [newItem setTag:-1];
-    [newItem setTarget:self];
+  unsigned int serviceCount = [servicesArray count];
+
+  if (serviceCount == 0) {
+    // The last known Bonjour service just disappeared.
+    [self addNoServicesFoundMenuItem];
   }
   else {
-    // add a separator
-    [mServersSubmenu addItem:[NSMenuItem separatorItem]];
-
     // sort on protocol, then name
     [servicesArray sortUsingFunction:SortByProtocolAndName context:NULL];
 
-    unsigned count = [servicesArray count];
-    for (unsigned int i = 0; i < count; i++) {
+    for (unsigned int i = 0; i < serviceCount; i++) {
       NSDictionary* serviceDict = [servicesArray objectAtIndex:i];
       NSString* itemName = [[serviceDict objectForKey:@"name"] stringByAppendingString:NSLocalizedString([serviceDict objectForKey:@"protocol"], @"")];
 
