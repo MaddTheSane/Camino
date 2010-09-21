@@ -1878,8 +1878,16 @@ public:
       // Let the BookmarkViewController validate based on selection.
       return [[self bookmarkViewControllerForCurrentTab] validateMenuItem:aMenuItem];
     }
-    else
-      [aMenuItem setTitle:NSLocalizedString(@"Page Info", nil)];
+
+    [aMenuItem setTitle:NSLocalizedString(@"Page Info", nil)];
+
+    BrowserWrapper* browser = [self browserWrapper];
+    if ([[browser currentURI] hasPrefix:@"about:"] ||
+        [browser isBlockedErrorOverlayShowing] ||
+        [browser isPageLoadErrorOverlayShowing])
+    {
+      return NO;
+    }
   }
 
   if (action == @selector(manageHistory:)) {
@@ -1956,8 +1964,10 @@ public:
     return ([self bookmarkManagerIsVisible] ||
             [[[self browserWrapper] browserView] isTextBasedContent]);
   }
-  if (action == @selector(sendURL:))
-    return (![[self browserWrapper] isInternalURI] && ![[self browserWrapper] isBlockedErrorOverlayShowing]);
+  if (action == @selector(sendURL:)) {
+    BrowserWrapper* browser = [self browserWrapper];
+    return (![browser isInternalURI] && ![browser isBlockedErrorOverlayShowing]);
+  }
   if (action == @selector(viewSource:) ||
       action == @selector(viewPageSource:) ||
       action == @selector(fillForm:))
@@ -1968,13 +1978,23 @@ public:
   }
   if (action == @selector(savePage:))
   {
-    return (![self bookmarkManagerIsVisible] && ![[self browserWrapper] isBlockedErrorOverlayShowing] &&
-            ![[self browserWrapper] isPageLoadErrorOverlayShowing]);
+    BrowserWrapper* browser = [self browserWrapper];
+    NSString* currentURI = [[browser currentURI] lowercaseString];
+    return (![self bookmarkManagerIsVisible] &&
+            ![browser isBlockedErrorOverlayShowing] &&
+            ![browser isPageLoadErrorOverlayShowing] &&
+            ![currentURI isBlankURL] &&
+            ![currentURI isEqualToString:@"about:config"]);
   }
   if (action == @selector(printDocument:) ||
       action == @selector(pageSetup:))
   {
-    return (![self bookmarkManagerIsVisible] && ![[self browserWrapper] isBlockedErrorOverlayShowing]);
+    BrowserWrapper* browser = [self browserWrapper];
+    NSString* currentURI = [[browser currentURI] lowercaseString];
+    return (![self bookmarkManagerIsVisible] &&
+            ![browser isBlockedErrorOverlayShowing] &&
+            ![currentURI isBlankURL] &&
+            ![currentURI isEqualToString:@"about:config"]);
   }
 
   if (action == @selector(manageHistory:)) {
