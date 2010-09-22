@@ -7604,7 +7604,7 @@
 					../dist/include/xpcom,
 				);
 				INFOPLIST_FILE = "Info-HistoryPrefPane.plist";
-				LIBRARY_SEARCH_PATHS = ../dist/lib;
+				LIBRARY_SEARCH_PATHS = ../dist/bin;
 				OTHER_CFLAGS = (
 					"-fshort-wchar",
 					"-DDEBUG",
@@ -7640,7 +7640,7 @@
 					../dist/include/places,
 				);
 				INFOPLIST_FILE = "Info-HistoryPrefPane.plist";
-				LIBRARY_SEARCH_PATHS = ../dist/lib;
+				LIBRARY_SEARCH_PATHS = ../dist/bin;
 				OTHER_CFLAGS = "-fshort-wchar";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CPLUSPLUSFLAGS)",
@@ -7659,13 +7659,8 @@
 			baseConfigurationReference = 332377970C4D0FBD00A34879 /* Camino.xcconfig */;
 			buildSettings = {
 				LIBRARY_SEARCH_PATHS = (
-					../embedding/base,
-					../dist/bin,
-					../dist/lib,
-					../dist/bin/components,
-					../profile/dirserviceprovider/src,
-					../db/morkreader,
-					../staticlib/components,
+					"$(COMMON_LIBRARY_SEARCH_PATHS)",
+					"$(SHARED_LIBRARY_SEARCH_PATHS)",
 				);
 				OTHER_CFLAGS = (
 					"$(OTHER_CFLAGS)",
@@ -7681,13 +7676,8 @@
 			baseConfigurationReference = 332377970C4D0FBD00A34879 /* Camino.xcconfig */;
 			buildSettings = {
 				LIBRARY_SEARCH_PATHS = (
-					../embedding/base,
-					../dist/bin,
-					../dist/lib,
-					../dist/bin/components,
-					../profile/dirserviceprovider/src,
-					../db/morkreader,
-					../staticlib/components,
+					"$(COMMON_LIBRARY_SEARCH_PATHS)",
+					"$(SHARED_LIBRARY_SEARCH_PATHS)",
 				);
 			};
 			name = Release;
@@ -7701,19 +7691,8 @@
 					_BUILD_STATIC_BIN,
 				);
 				LIBRARY_SEARCH_PATHS = (
-					"$(LIBRARY_SEARCH_PATHS)",
-					../staticlib,
-					../staticlib/components,
-					../embedding/base,
-					../js/src/liveconnect,
-					../js/src/xpconnect/loader,
-					../jpeg,
-					../modules/libimg/png,
-					../gfx/cairo/cairo/src,
-					../gfx/cairo/libpixman/src,
-					../profile/dirserviceprovider/src,
-					../dist/bin/components,
-					../db/morkreader,
+					"$(COMMON_LIBRARY_SEARCH_PATHS)",
+					"$(STATIC_LIBRARY_SEARCH_PATHS)",
 				);
 				OTHER_CFLAGS = (
 					"$(OTHER_CFLAGS)",
@@ -7733,20 +7712,8 @@
 					_BUILD_STATIC_BIN,
 				);
 				LIBRARY_SEARCH_PATHS = (
-					"$(LIBRARY_SEARCH_PATHS)",
-					../staticlib,
-					../staticlib/components,
-					../embedding/base,
-					../js/src/liveconnect,
-					../js/src/xpconnect/loader,
-					../jpeg,
-					../modules/libimg/png,
-					../gfx/cairo/cairo/src,
-					../gfx/cairo/libpixman/src,
-					../profile/dirserviceprovider/src,
-					../dist/bin/components,
-					../db/morkreader,
-					../dist/lib,
+					"$(COMMON_LIBRARY_SEARCH_PATHS)",
+					"$(STATIC_LIBRARY_SEARCH_PATHS)",
 				);
 			};
 			name = Release;
