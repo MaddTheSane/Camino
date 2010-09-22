@@ -12,6 +12,10 @@ toolkit.jar:
 +  content/global/plugins.css                              (content/global/plugins.css)
 # Uh, yeah.  On 1.9.3, this can move to classic.jar, though; see bug 520364.
 +  content/global/aboutMemory.css                          (skin/classic/global/aboutMemory.css)
+# Stop shipping the useless comm.jar.  This can be removed in Gecko 2, which does the same thing.
+%  content xbl-marquee %content/xbl-marquee/ xpcnativewrappers=yes
+   content/xbl-marquee/xbl-marquee.xml                     (/layout/style/xbl-marquee/xbl-marquee.xml)
+   content/xbl-marquee/xbl-marquee.css                     (/layout/style/xbl-marquee/xbl-marquee.css)
 
 classic.jar:
 # Override Firefox-styled theme files with those appropriate for Camino

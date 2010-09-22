@@ -1111,16 +1111,12 @@
 		DE40448D0ED09D1E00057E17 /* global_locale_xslt_xslt_properties.strings in Resources */ = {isa = PBXBuildFile; fileRef = DE4044420ED09D1E00057E17 /* global_locale_xslt_xslt_properties.strings */; };
 		DE482A3A114DEC540039D61B /* dom_threads.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = DE482A39114DEC540039D61B /* dom_threads.xpt */; };
 		DE482A3B114DEC540039D61B /* dom_threads.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = DE482A39114DEC540039D61B /* dom_threads.xpt */; };
-		DE482A46114DEDA90039D61B /* comm.jar in Copy Chrome */ = {isa = PBXBuildFile; fileRef = DE482A40114DEDA90039D61B /* comm.jar */; };
 		DE482A47114DEDA90039D61B /* classic.jar in Copy Chrome */ = {isa = PBXBuildFile; fileRef = DE482A41114DEDA90039D61B /* classic.jar */; };
 		DE482A48114DEDA90039D61B /* flashblock.manifest in Copy Chrome */ = {isa = PBXBuildFile; fileRef = DE482A42114DEDA90039D61B /* flashblock.manifest */; };
-		DE482A49114DEDA90039D61B /* comm.manifest in Copy Chrome */ = {isa = PBXBuildFile; fileRef = DE482A43114DEDA90039D61B /* comm.manifest */; };
 		DE482A4A114DEDA90039D61B /* en-US.manifest in Copy Chrome */ = {isa = PBXBuildFile; fileRef = DE482A44114DEDA90039D61B /* en-US.manifest */; };
 		DE482A4B114DEDA90039D61B /* classic.manifest in Copy Chrome */ = {isa = PBXBuildFile; fileRef = DE482A45114DEDA90039D61B /* classic.manifest */; };
-		DE482A4C114DEDA90039D61B /* comm.jar in Copy Chrome */ = {isa = PBXBuildFile; fileRef = DE482A40114DEDA90039D61B /* comm.jar */; };
 		DE482A4D114DEDA90039D61B /* classic.jar in Copy Chrome */ = {isa = PBXBuildFile; fileRef = DE482A41114DEDA90039D61B /* classic.jar */; };
 		DE482A4E114DEDA90039D61B /* flashblock.manifest in Copy Chrome */ = {isa = PBXBuildFile; fileRef = DE482A42114DEDA90039D61B /* flashblock.manifest */; };
-		DE482A4F114DEDA90039D61B /* comm.manifest in Copy Chrome */ = {isa = PBXBuildFile; fileRef = DE482A43114DEDA90039D61B /* comm.manifest */; };
 		DE482A50114DEDA90039D61B /* en-US.manifest in Copy Chrome */ = {isa = PBXBuildFile; fileRef = DE482A44114DEDA90039D61B /* en-US.manifest */; };
 		DE482A51114DEDA90039D61B /* classic.manifest in Copy Chrome */ = {isa = PBXBuildFile; fileRef = DE482A45114DEDA90039D61B /* classic.manifest */; };
 		DE482A84114DF54E0039D61B /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE482A83114DF54E0039D61B /* AudioUnit.framework */; };
@@ -2028,8 +2024,6 @@
 			files = (
 				DE482A4D114DEDA90039D61B /* classic.jar in Copy Chrome */,
 				DE482A51114DEDA90039D61B /* classic.manifest in Copy Chrome */,
-				DE482A4C114DEDA90039D61B /* comm.jar in Copy Chrome */,
-				DE482A4F114DEDA90039D61B /* comm.manifest in Copy Chrome */,
 				3F44AD7005BDFB9F00CB4B08 /* en-US.jar in Copy Chrome */,
 				DE482A50114DEDA90039D61B /* en-US.manifest in Copy Chrome */,
 				3F44AD5805BDFB9F00CB4B18 /* flashblock.jar in Copy Chrome */,
@@ -2300,8 +2294,6 @@
 			files = (
 				DE482A47114DEDA90039D61B /* classic.jar in Copy Chrome */,
 				DE482A4B114DEDA90039D61B /* classic.manifest in Copy Chrome */,
-				DE482A46114DEDA90039D61B /* comm.jar in Copy Chrome */,
-				DE482A49114DEDA90039D61B /* comm.manifest in Copy Chrome */,
 				3F44AF7F05BDFBA000CB4B08 /* en-US.jar in Copy Chrome */,
 				DE482A4A114DEDA90039D61B /* en-US.manifest in Copy Chrome */,
 				3F44AF7305BDFBA000CB4B18 /* flashblock.jar in Copy Chrome */,
@@ -2939,10 +2931,8 @@
 		DE4044390ED09D1E00057E17 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = "generated/resources/localized/English.lproj/global-platform_locale_intl_properties.strings"; sourceTree = "<group>"; };
 		DE4044430ED09D1E00057E17 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = generated/resources/localized/English.lproj/global_locale_xslt_xslt_properties.strings; sourceTree = "<group>"; };
 		DE482A39114DEC540039D61B /* dom_threads.xpt */ = {isa = PBXFileReference; lastKnownFileType = file; name = dom_threads.xpt; path = ../dist/bin/components/dom_threads.xpt; sourceTree = SOURCE_ROOT; };
-		DE482A40114DEDA90039D61B /* comm.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; name = comm.jar; path = ../dist/bin/chrome/comm.jar; sourceTree = SOURCE_ROOT; };
 		DE482A41114DEDA90039D61B /* classic.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; name = classic.jar; path = ../dist/bin/chrome/classic.jar; sourceTree = SOURCE_ROOT; };
 		DE482A42114DEDA90039D61B /* flashblock.manifest */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = flashblock.manifest; path = ../dist/bin/chrome/flashblock.manifest; sourceTree = SOURCE_ROOT; };
-		DE482A43114DEDA90039D61B /* comm.manifest */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = comm.manifest; path = ../dist/bin/chrome/comm.manifest; sourceTree = SOURCE_ROOT; };
 		DE482A44114DEDA90039D61B /* en-US.manifest */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "en-US.manifest"; path = "../dist/bin/chrome/en-US.manifest"; sourceTree = SOURCE_ROOT; };
 		DE482A45114DEDA90039D61B /* classic.manifest */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = classic.manifest; path = ../dist/bin/chrome/classic.manifest; sourceTree = SOURCE_ROOT; };
 		DE482A83114DF54E0039D61B /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = /System/Library/Frameworks/AudioUnit.framework; sourceTree = "<absolute>"; };
@@ -5149,8 +5139,6 @@
 			children = (
 				DE482A41114DEDA90039D61B /* classic.jar */,
 				DE482A45114DEDA90039D61B /* classic.manifest */,
-				DE482A40114DEDA90039D61B /* comm.jar */,
-				DE482A43114DEDA90039D61B /* comm.manifest */,
 				F54EF7ED022A2F9C01A80165 /* en-US.jar */,
 				DE482A44114DEDA90039D61B /* en-US.manifest */,
 				F6BD650001B3184301A96307 /* flashblock.jar */,
