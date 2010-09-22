@@ -48,8 +48,8 @@ include $(DEPTH)/config/autoconf.mk
 DIRS = \
 	feedhandlers \
 	flashblock \
+	geckochrome \
 	idl \
-	pinstripe \
 	striptease \
 	safebrowsing \
 	$(NULL)
@@ -393,7 +393,7 @@ $(CM_REPO_FILE): FORCE
 	  (mkdir -p $(dir $@) && echo "$(CM_REPO)" > $@)
 
 # In a real auto-generate system, $(GENERATED_GECKO_STRINGS_FILES) would need
-# to be called after making in pinstripe (which would itself be followed by a
+# to be called after making in geckochrome (which would itself be followed by a
 # .properties extraction rule).
 libs:: \
   generated/resources/application/all-camino.js \
