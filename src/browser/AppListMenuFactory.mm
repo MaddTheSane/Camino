@@ -117,7 +117,7 @@ static AppListMenuFactory* sAppListMenuFactoryInstance = nil;
   [menu addItem:[NSMenuItem separatorItem]];
   
   BOOL insertedDefaultApp = NO;
-  BOOL shouldInsertSeperatorAtEnd = NO;
+  BOOL shouldInsertSeparatorAtEnd = NO;
   NSEnumerator* feedAppsEnum = [feedApps objectEnumerator];
   NSString* curBundleID = nil;
   while ((curBundleID = [feedAppsEnum nextObject])) {
@@ -137,7 +137,7 @@ static AppListMenuFactory* sAppListMenuFactoryInstance = nil;
     }
     else {
       [menu addItem:menuItem];
-      shouldInsertSeperatorAtEnd = YES;
+      shouldInsertSeparatorAtEnd = YES;
     }
   }
   
@@ -165,7 +165,7 @@ static AppListMenuFactory* sAppListMenuFactoryInstance = nil;
   }
   
   // allow the user to select a feed application
-  if (shouldInsertSeperatorAtEnd)
+  if (shouldInsertSeparatorAtEnd)
     [menu addItem:[NSMenuItem separatorItem]];
   NSMenuItem* selectItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Select...", nil)
                                                       action:inSelectAction 

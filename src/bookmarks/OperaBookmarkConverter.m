@@ -48,6 +48,7 @@
 static NSString* const kFolderStartMarker = @"#FOLDER";
 static NSString* const kFolderEndMarker = @"-";
 static NSString* const kBookmarkStartMarker = @"#URL";
+// note Opera's spelling: SEPERATOR (instead of SEPARATOR)
 static NSString* const kSeparatorMarker = @"#SEPERATOR";
 static NSString* const kTitleKey = @"NAME";
 static NSString* const kURLKey = @"URL";

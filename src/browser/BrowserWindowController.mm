@@ -5256,7 +5256,7 @@ public:
   // (i.e., loadableItemIndex == inIndex), we've gotten there and |item| is the bookmark we want to load.
   for (i = 0; i < bookmarkBarCount; ++i) {
     item = [bookmarkBarChildren objectAtIndex:i];
-    // Only real (non-seperator) bookmarks and tab groups count
+    // Only real (non-separator) bookmarks and tab groups count
     if (([item isKindOfClass:[Bookmark class]] && ![(Bookmark *)item isSeparator]) || 
         ([item isKindOfClass:[BookmarkFolder class]] && [(BookmarkFolder *)item isGroup]))
     {
