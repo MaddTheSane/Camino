@@ -142,25 +142,36 @@ enum {
   return [NSString stringWithFormat:NSLocalizedString(@"AboutHours", nil), seconds];
 }
 
+static
+NSString *FormatFractionalSize(float bytes, int bytesPerUnit, NSString *unitsKey)
+{
+  float fractionalSize = bytes / bytesPerUnit;
+  NSString *units = NSLocalizedString(unitsKey, nil);
+  return [NSString stringWithFormat:@"%.1f %@", fractionalSize, units];
+}
+
 +(NSString*)formatBytes:(float)bytes
 {
-  // if bytes are negative, we return question marks.
-  if (bytes < 0)
-    return [NSString stringWithString:@"?"];
-  // bytes first.
-  if (bytes < 1024)
-    return [NSString stringWithFormat:@"%.1f bytes",bytes];
-  // kb
-  bytes = bytes/1024;
-  if (bytes < 1024)
-    return [NSString stringWithFormat:@"%.1f KB",bytes];
-  // mb
-  bytes = bytes/1024;
-  if (bytes < 1024)
-    return [NSString stringWithFormat:@"%.1f MB",bytes];
-  // gb
-  bytes = bytes/1024;
-  return [NSString stringWithFormat:@"%.1f GB",bytes];
+  const int bytesPerKB = 1024;
+  const int bytesPerMB = 1024 * bytesPerKB;
+  const int bytesPerGB = 1024 * bytesPerMB;
+
+  if (bytes >= bytesPerGB)
+    return FormatFractionalSize(bytes, bytesPerGB, @"GigabytesDownloadLabel");
+
+  if (bytes >= bytesPerMB)
+    return FormatFractionalSize(bytes, bytesPerMB, @"MegabytesDownloadLabel");
+
+  if (bytes >= bytesPerKB)
+    return FormatFractionalSize(bytes, bytesPerKB, @"KilobytesDownloadLabel");
+
+  NSString* bytesDownloadLabel = NSLocalizedString(@"BytesDownloadLabel", nil);
+
+  if (bytes >= 0)
+    return [NSString stringWithFormat:@"%d %@", (int)bytes, bytesDownloadLabel];
+
+  // If bytes are negative, we return question marks.
+  return [NSString stringWithString:@"?"];
 }
 
 +(unsigned int)getNextIdentifier

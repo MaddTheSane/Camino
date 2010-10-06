@@ -163,6 +163,11 @@
 "AboutHours" = "Over %d hours";
 "LabelString" = "%@ of %@ (at %@/sec)";
 
+"BytesDownloadLabel" = "bytes";
+"KilobytesDownloadLabel" = "KB";
+"MegabytesDownloadLabel" = "MB";
+"GigabytesDownloadLabel" = "GB";
+
 /* Downloading errors */
 "DownloadErrorMsgFmt" = "There was an error downloading the file “%@”";
 "DownloadErrorNoDiskSpaceOnVolumeFmt" = "The download failed because the volume “%@” has run out of disk space.";
