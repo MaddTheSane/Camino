@@ -46,7 +46,7 @@
 
   NSRect        mOldFrameRect;
   int           mOldRows;
-  BOOL          mDelegateTooltipStringForItem;
+  BOOL          mDelegateImplementsTooltipStringForItem;
 
   int           mRowToBeEdited, mColumnToBeEdited;
   BOOL          mAllowsEditing;

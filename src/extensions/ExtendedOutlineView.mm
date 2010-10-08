@@ -104,7 +104,7 @@ static NSString* const kAutosaveSortDirectionKey        = @"sort_descending";
 -(void)setDelegate:(id)anObject
 {
   [super setDelegate:anObject];
-  mDelegateTooltipStringForItem = [anObject respondsToSelector:@selector(outlineView:tooltipStringForItem:)];
+  mDelegateImplementsTooltipStringForItem = [anObject respondsToSelector:@selector(outlineView:tooltipStringForItem:)];
 }
 
 - (NSArray*)selectedItems
@@ -268,7 +268,7 @@ static NSString* const kAutosaveSortDirectionKey        = @"sort_descending";
     id delegate = [self delegate];
     id item = [self itemAtRow:rowIndex];
     
-    if (item && mDelegateTooltipStringForItem)
+    if (item && mDelegateImplementsTooltipStringForItem)
       result = [delegate outlineView:self tooltipStringForItem:item];
   }
   return result;
@@ -620,7 +620,7 @@ static NSString* const kAutosaveSortDirectionKey        = @"sort_descending";
   int rows;
   
   // Only set tooltip rects if the delegate implements outlineView:tooltipStringForItem:
-  if (!mDelegateTooltipStringForItem)
+  if (!mDelegateImplementsTooltipStringForItem)
     return;
 
   frameRect = [self frame];
