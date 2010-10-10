@@ -1120,10 +1120,8 @@
 		DE482A50114DEDA90039D61B /* en-US.manifest in Copy Chrome */ = {isa = PBXBuildFile; fileRef = DE482A44114DEDA90039D61B /* en-US.manifest */; };
 		DE482A51114DEDA90039D61B /* classic.manifest in Copy Chrome */ = {isa = PBXBuildFile; fileRef = DE482A45114DEDA90039D61B /* classic.manifest */; };
 		DE482A84114DF54E0039D61B /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE482A83114DF54E0039D61B /* AudioUnit.framework */; };
-		DE579FFE0D43FB790057C437 /* BloglinesFeedHandler.app in Copy Feed Handlers */ = {isa = PBXBuildFile; fileRef = DE579FFB0D43FB790057C437 /* BloglinesFeedHandler.app */; };
 		DE579FFF0D43FB790057C437 /* GoogleFeedHandler.app in Copy Feed Handlers */ = {isa = PBXBuildFile; fileRef = DE579FFC0D43FB790057C437 /* GoogleFeedHandler.app */; };
 		DE57A0000D43FB790057C437 /* MyYahooFeedHandler.app in Copy Feed Handlers */ = {isa = PBXBuildFile; fileRef = DE579FFD0D43FB790057C437 /* MyYahooFeedHandler.app */; };
-		DE57A0010D43FB790057C437 /* BloglinesFeedHandler.app in Copy Feed Handlers */ = {isa = PBXBuildFile; fileRef = DE579FFB0D43FB790057C437 /* BloglinesFeedHandler.app */; };
 		DE57A0020D43FB790057C437 /* GoogleFeedHandler.app in Copy Feed Handlers */ = {isa = PBXBuildFile; fileRef = DE579FFC0D43FB790057C437 /* GoogleFeedHandler.app */; };
 		DE57A0030D43FB790057C437 /* MyYahooFeedHandler.app in Copy Feed Handlers */ = {isa = PBXBuildFile; fileRef = DE579FFD0D43FB790057C437 /* MyYahooFeedHandler.app */; };
 		DE581AB511865B1A00BAEA05 /* pluginGlue.js in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = DE581AB411865B1A00BAEA05 /* pluginGlue.js */; };
@@ -1793,7 +1791,6 @@
 			dstPath = FeedHandlers;
 			dstSubfolderSpec = 7;
 			files = (
-				DE579FFE0D43FB790057C437 /* BloglinesFeedHandler.app in Copy Feed Handlers */,
 				DE579FFF0D43FB790057C437 /* GoogleFeedHandler.app in Copy Feed Handlers */,
 				DE57A0000D43FB790057C437 /* MyYahooFeedHandler.app in Copy Feed Handlers */,
 			);
@@ -1806,7 +1803,6 @@
 			dstPath = FeedHandlers;
 			dstSubfolderSpec = 7;
 			files = (
-				DE57A0010D43FB790057C437 /* BloglinesFeedHandler.app in Copy Feed Handlers */,
 				DE57A0020D43FB790057C437 /* GoogleFeedHandler.app in Copy Feed Handlers */,
 				DE57A0030D43FB790057C437 /* MyYahooFeedHandler.app in Copy Feed Handlers */,
 			);
@@ -2936,7 +2932,6 @@
 		DE482A44114DEDA90039D61B /* en-US.manifest */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "en-US.manifest"; path = "../dist/bin/chrome/en-US.manifest"; sourceTree = SOURCE_ROOT; };
 		DE482A45114DEDA90039D61B /* classic.manifest */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = classic.manifest; path = ../dist/bin/chrome/classic.manifest; sourceTree = SOURCE_ROOT; };
 		DE482A83114DF54E0039D61B /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = /System/Library/Frameworks/AudioUnit.framework; sourceTree = "<absolute>"; };
-		DE579FFB0D43FB790057C437 /* BloglinesFeedHandler.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = BloglinesFeedHandler.app; path = generated/feedhandlers/BloglinesFeedHandler.app; sourceTree = SOURCE_ROOT; };
 		DE579FFC0D43FB790057C437 /* GoogleFeedHandler.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = GoogleFeedHandler.app; path = generated/feedhandlers/GoogleFeedHandler.app; sourceTree = SOURCE_ROOT; };
 		DE579FFD0D43FB790057C437 /* MyYahooFeedHandler.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = MyYahooFeedHandler.app; path = generated/feedhandlers/MyYahooFeedHandler.app; sourceTree = SOURCE_ROOT; };
 		DE581AB411865B1A00BAEA05 /* pluginGlue.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = pluginGlue.js; path = ../dist/bin/components/pluginGlue.js; sourceTree = SOURCE_ROOT; };
@@ -4373,7 +4368,6 @@
 		DE579FFA0D43FB3D0057C437 /* Feed Handlers */ = {
 			isa = PBXGroup;
 			children = (
-				DE579FFB0D43FB790057C437 /* BloglinesFeedHandler.app */,
 				DE579FFC0D43FB790057C437 /* GoogleFeedHandler.app */,
 				DE579FFD0D43FB790057C437 /* MyYahooFeedHandler.app */,
 			);
