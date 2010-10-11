@@ -134,7 +134,7 @@ static KeychainService *sInstance = nil;
     mFormSubmitObserver = new KeychainFormSubmitObserver();
     if (mFormSubmitObserver && svc) {
       NS_ADDREF(mFormSubmitObserver);
-      svc->AddObserver(mFormSubmitObserver, NS_FORMSUBMIT_SUBJECT, PR_FALSE);
+      svc->AddObserver(mFormSubmitObserver, NS_EARLYFORMSUBMIT_SUBJECT, PR_FALSE);
     }
   
     // Register for the cocoa notification posted when XPCOM shuts down so we
