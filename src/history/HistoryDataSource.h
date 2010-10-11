@@ -51,15 +51,27 @@ extern NSString* const kHistoryViewByDate;      // grouped by last visit date
 extern NSString* const kHistoryViewBySite;      // grouped by site
 extern NSString* const kHistoryViewFlat;        // flat
 
-// notification object is the data source.
+// Notification object is the data source.
 extern NSString* const kNotificationNameHistoryDataSourceChanged;
-// if not nil, this userInfo object is the changed item
+// The type of change that occured.
+extern NSString* const kNotificationHistoryDataSourceChangedUserInfoChangeType;
+// If present, this is the changed item.
 extern NSString* const kNotificationHistoryDataSourceChangedUserInfoChangedItem;
-// if true, this indicates that just the item changed, not its children (it's an NSNumber with bool)
-extern NSString* const kNotificationHistoryDataSourceChangedUserInfoChangedItemOnly;
+// If present, this is the root of the change (e.g., the parent of an added or
+// removed item). If this is not present, the whole history tree has changed.
+extern NSString* const kNotificationHistoryDataSourceChangedUserInfoChangedRoot;
 
 // Sent when history is cleared. Notification object is the data source.
 extern NSString* const kNotificationNameHistoryDataSourceCleared;
+
+typedef enum {
+  kHistoryChangeItemAdded,
+  kHistoryChangeItemRemoved,
+  kHistoryChangeItemModified,
+  kHistoryChangeIconLoaded,
+  kHistoryChangeRebuilt,
+  kHistoryChangeSorted
+} HistoryChangeType;
 
 @class HistoryTreeBuilder;
 

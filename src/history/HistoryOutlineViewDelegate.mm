@@ -536,11 +536,14 @@ static NSString* const kExpandedHistoryStatesDefaultsKey = @"history_expand_stat
 {
   if (mUpdatesDisabled) return;
 
-  id rootChangedItem   = [[notification userInfo] objectForKey:kNotificationHistoryDataSourceChangedUserInfoChangedItem];
-  BOOL itemOnlyChanged = [[[notification userInfo] objectForKey:kNotificationHistoryDataSourceChangedUserInfoChangedItemOnly] boolValue];
+  id changeRoot =
+      [[notification userInfo] objectForKey:kNotificationHistoryDataSourceChangedUserInfoChangedRoot];
+  id changedItem =
+      [[notification userInfo] objectForKey:kNotificationHistoryDataSourceChangedUserInfoChangedItem];
+  BOOL onlyItemChanged = (changeRoot == changedItem);
 
-  if (rootChangedItem)
-    [mHistoryOutlineView reloadItem:rootChangedItem reloadChildren:!itemOnlyChanged];
+  if (changeRoot)
+    [mHistoryOutlineView reloadItem:changeRoot reloadChildren:!onlyItemChanged];
   else
   {
     [mHistoryOutlineView reloadData];

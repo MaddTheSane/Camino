@@ -70,8 +70,9 @@ NSString* const kHistoryViewFlat      = @"flat";
 
 
 NSString* const kNotificationNameHistoryDataSourceChanged                     = @"history_changed";
+NSString* const kNotificationHistoryDataSourceChangedUserInfoChangeType       = @"change_type";
 NSString* const kNotificationHistoryDataSourceChangedUserInfoChangedItem      = @"changed_item";
-NSString* const kNotificationHistoryDataSourceChangedUserInfoChangedItemOnly  = @"item_only";
+NSString* const kNotificationHistoryDataSourceChangedUserInfoChangedRoot      = @"changed_root";
 NSString* const kNotificationNameHistoryDataSourceCleared                     = @"history_cleared";
 
 struct SortData
@@ -153,7 +154,9 @@ static int HistoryItemSort(id firstItem, id secondItem, void* context)
 - (void)itemRemoved:(HistorySiteItem*)item;
 - (void)itemChanged:(HistorySiteItem*)item;
 
-- (void)notifyChanged:(HistoryItem*)changeRoot itemOnly:(BOOL)itemOnly;
+- (void)notifyChange:(HistoryChangeType)type
+                item:(HistorySiteItem *)item
+                root:(HistoryItem *)root;
 - (SEL)selectorForSortColumn;
 
 - (void)rebuildSearchResults;
@@ -838,7 +841,7 @@ NS_IMPL_ISUPPORTS1(nsNavHistoryObserver, nsINavHistoryObserver);
   
   [mTreeBuilder buildTree];
   
-  [self notifyChanged:nil itemOnly:NO];
+  [self notifyChange:kHistoryChangeRebuilt item:nil root:nil];
 }
 
 - (void)startBatching
@@ -858,17 +861,18 @@ NS_IMPL_ISUPPORTS1(nsNavHistoryObserver, nsINavHistoryObserver);
   HistoryItem* parentCategory = [mTreeBuilder addItem:item];
 
   [self rebuildSearchResults];
-  [self notifyChanged:parentCategory itemOnly:NO];
+  [self notifyChange:kHistoryChangeItemAdded item:item root:parentCategory];
 }
 
 - (void)itemRemoved:(HistorySiteItem*)item
 {
   HistoryItem* parentCategory = [mTreeBuilder removeItem:item];
+  [[item retain] autorelease];  // Extend lifetime to construct the notification.
   [mHistoryItems removeObject:item];
   [mHistoryItemsDictionary removeObjectForKey:[item identifier]];
 
   [self rebuildSearchResults];
-  [self notifyChanged:parentCategory itemOnly:NO];
+  [self notifyChange:kHistoryChangeItemRemoved item:item root:parentCategory];
 }
 
 - (void)itemChanged:(HistorySiteItem*)item
@@ -879,9 +883,15 @@ NS_IMPL_ISUPPORTS1(nsNavHistoryObserver, nsINavHistoryObserver);
   
   [self rebuildSearchResults];
 
-  [self notifyChanged:oldParent itemOnly:NO];
-  if (oldParent != newParent)
-    [self notifyChanged:newParent itemOnly:NO];
+  if (oldParent == newParent) {
+    // TODO: In cases where the change doesn't affect the sort order, root could
+    // be |item|, so observers could make more efficient updates.
+    [self notifyChange:kHistoryChangeItemModified item:item root:oldParent];
+  }
+  else {
+    [self notifyChange:kHistoryChangeItemRemoved item:item root:oldParent];
+    [self notifyChange:kHistoryChangeItemAdded item:item root:newParent];
+  }
 }
 
 - (void)loadLazily
@@ -946,34 +956,33 @@ NS_IMPL_ISUPPORTS1(nsNavHistoryObserver, nsINavHistoryObserver);
   return mShowSiteIcons;
 }
 
-- (void)notifyChanged:(HistoryItem*)changeRoot itemOnly:(BOOL)itemOnly
+- (void)notifyChange:(HistoryChangeType)type
+                item:(HistorySiteItem *)item
+                root:(HistoryItem *)root
 {
   // if we are displaying search results, make sure that updates
   // display any new results
   if (mSearchResultsArray)
-  {
-    changeRoot = nil;
-    itemOnly = NO;
+    root = nil;
+
+  if (root == [mTreeBuilder rootItem])
+    root = nil;
+
+  NSMutableDictionary* userInfoDict = [NSMutableDictionary
+      dictionaryWithObject:[NSNumber numberWithInt:type]
+                    forKey:kNotificationHistoryDataSourceChangedUserInfoChangeType];
+  if (item) {
+    [userInfoDict setObject:item
+                     forKey:kNotificationHistoryDataSourceChangedUserInfoChangedItem];
+  }
+  if (root) {
+    [userInfoDict setObject:root
+                     forKey:kNotificationHistoryDataSourceChangedUserInfoChangedRoot];
   }
 
-  if (changeRoot == [mTreeBuilder rootItem])
-  {
-    changeRoot = nil;
-    itemOnly = NO;
-  }
-  
-  NSDictionary* userInfoDict = nil;
-  if (changeRoot || itemOnly)
-  {
-    userInfoDict = [NSDictionary dictionaryWithObjectsAndKeys:
-                             changeRoot, kNotificationHistoryDataSourceChangedUserInfoChangedItem,
-     [NSNumber numberWithBool:itemOnly], kNotificationHistoryDataSourceChangedUserInfoChangedItemOnly,
-                                         nil];
-  }
-  
   [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationNameHistoryDataSourceChanged
-        object:self
-        userInfo:userInfoDict];
+                                                      object:self
+                                                    userInfo:userInfoDict];
 }
 
 - (void)setHistoryView:(NSString*)inView
@@ -1000,7 +1009,7 @@ NS_IMPL_ISUPPORTS1(nsNavHistoryObserver, nsINavHistoryObserver);
   [mTreeBuilder resortWithSelector:[self selectorForSortColumn] descending:mSortDescending];
   [self sortSearchResults];
   
-  [self notifyChanged:nil itemOnly:NO];
+  [self notifyChange:kHistoryChangeSorted item:nil root:nil];
 }
 
 - (NSString*)sortColumnIdentifier
@@ -1021,7 +1030,7 @@ NS_IMPL_ISUPPORTS1(nsNavHistoryObserver, nsINavHistoryObserver);
     [mTreeBuilder resortWithSelector:[self selectorForSortColumn] descending:mSortDescending];
     [self sortSearchResults];
 
-    [self notifyChanged:nil itemOnly:NO];
+    [self notifyChange:kHistoryChangeSorted item:nil root:nil];
   }
 }
 
@@ -1066,11 +1075,11 @@ NS_IMPL_ISUPPORTS1(nsNavHistoryObserver, nsINavHistoryObserver);
   if (![theItem isKindOfClass:[HistorySiteItem class]] || [theItem dataSource] != self)
     return;
 
+  HistorySiteItem* siteItem = (HistorySiteItem*)theItem;
   NSImage* iconImage = [[inNotification userInfo] objectForKey:SiteIconLoadImageKey];
-  if (iconImage)
-  {
-    [(HistorySiteItem*)theItem setSiteIcon:iconImage];
-    [self notifyChanged:theItem itemOnly:YES];
+  if (iconImage) {
+    [siteItem setSiteIcon:iconImage];
+    [self notifyChange:kHistoryChangeIconLoaded item:siteItem root:siteItem];
   }
 }
 

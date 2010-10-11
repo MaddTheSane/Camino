@@ -220,10 +220,8 @@ static const unsigned int kMaxTitleLength = 50;
 
 - (void)historyChanged:(NSNotification*)inNotification
 {
-  id rootChangedItem = [[inNotification userInfo] objectForKey:kNotificationHistoryDataSourceChangedUserInfoChangedItem];
-  // We could optimize by only changing single menu items if itemOnlyChanged is true. Normally this will also be a visit
-  // date change, which we can ignore.
-  //BOOL itemOnlyChanged = [[[inNotification userInfo] objectForKey:kNotificationHistoryDataSourceChangedUserInfoChangedItemOnly] boolValue];
+  id rootChangedItem = [[inNotification userInfo] objectForKey:kNotificationHistoryDataSourceChangedUserInfoChangedRoot];
+  // TODO: We could optimize by only changing single menu items for certain change types.
 
   // If rootChangedItem is nil, the whole history tree is being rebuilt.
   // We need to clear our root item, because it will become invalid. We'll set it again when we rebuild.
