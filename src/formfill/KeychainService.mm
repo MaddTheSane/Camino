@@ -117,10 +117,13 @@ static NSWindow* GetNSWindow(nsIDOMWindow* inWindow);
 
 @implementation KeychainService
 
+static BOOL sAlreadyDestroyed = NO;
 static KeychainService *sInstance = nil;
 
 + (KeychainService*)instance
 {
+  if (sAlreadyDestroyed)
+    return nil;
   return sInstance ? sInstance : sInstance = [[self alloc] init];
 }
 
@@ -195,6 +198,7 @@ static KeychainService *sInstance = nil;
 - (void)shutdown:(id)unused
 {
   [sInstance release];
+  sAlreadyDestroyed = YES;
 }
 
 - (BOOL)formPasswordFillIsEnabled
