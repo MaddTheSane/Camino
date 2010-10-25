@@ -172,15 +172,34 @@ const long kOpenInTabsTag = 0xBEEF;
   }
 }
 
+static NSString* GetMenuItemTitleForBookmark(BookmarkItem* item)
+{
+  NSString* title = [item title];
+  if ([title length] > 0)
+    return [title stringByTruncatingTo:MENU_TRUNCATION_CHARS at:kTruncateAtMiddle];
+
+  if ([item isKindOfClass:[Bookmark class]]) {
+    Bookmark* bookmark = (Bookmark*)item;
+    NSString* url = [bookmark url];
+    if ([url length] > 0)
+      return [url stringByTruncatingTo:MENU_TRUNCATION_CHARS at:kTruncateAtEnd];
+  }
+
+  // Where did we get a bookmark without a title, description, or URL?
+  // Return "Untitled" title like we do for empty tabs.
+  return @"";
+}
+
 - (void)appendBookmarkItem:(BookmarkItem *)inItem buildingSubmenus:(BOOL)buildSubmenus
 {
-  NSString *title = [[inItem title] stringByTruncatingTo:MENU_TRUNCATION_CHARS at:kTruncateAtMiddle];
   NSMenuItem *menuItem;
 
-  if ([(Bookmark *)inItem isSeparator])
+  if ([(Bookmark *)inItem isSeparator]) {
     menuItem = [[NSMenuItem separatorItem] retain];
-  else
-    menuItem = [[NSMenuItem alloc] initWithTitle:title action:NULL keyEquivalent:@""];
+  } else {
+    NSString* menuItemTitle = GetMenuItemTitleForBookmark(inItem);
+    menuItem = [[NSMenuItem alloc] initWithTitle:menuItemTitle action:NULL keyEquivalent:@""];
+  }
 
   [menuItem setRepresentedObject:inItem];
   [self addItem:menuItem];
@@ -197,7 +216,9 @@ const long kOpenInTabsTag = 0xBEEF;
     if (![curFolder isGroup]) {  // normal folder
       [menuItem setImage:[inItem icon]];
 
-      BookmarkMenu* subMenu = [[BookmarkMenu alloc] initWithTitle:title bookmarkFolder:curFolder];
+      NSString* menuItemTitle = GetMenuItemTitleForBookmark(inItem);
+      BookmarkMenu* subMenu = [[BookmarkMenu alloc] initWithTitle:menuItemTitle bookmarkFolder:curFolder];
+
       // if building "deep", build submenu; otherwise it will get built lazily on display
       if (buildSubmenus)
         [subMenu rebuildMenuIncludingSubmenus:buildSubmenus];
@@ -216,7 +237,6 @@ const long kOpenInTabsTag = 0xBEEF;
 
   [menuItem release];
 }
-
 
 - (void)addLastItems
 {
