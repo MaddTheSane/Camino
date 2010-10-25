@@ -186,7 +186,6 @@ static NSString* GetMenuItemTitleForBookmark(BookmarkItem* item)
   }
 
   // Where did we get a bookmark without a title, description, or URL?
-  // Return "Untitled" title like we do for empty tabs.
   return @"";
 }
 
