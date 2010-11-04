@@ -1120,6 +1120,7 @@
 		DE482A50114DEDA90039D61B /* en-US.manifest in Copy Chrome */ = {isa = PBXBuildFile; fileRef = DE482A44114DEDA90039D61B /* en-US.manifest */; };
 		DE482A51114DEDA90039D61B /* classic.manifest in Copy Chrome */ = {isa = PBXBuildFile; fileRef = DE482A45114DEDA90039D61B /* classic.manifest */; };
 		DE482A84114DF54E0039D61B /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE482A83114DF54E0039D61B /* AudioUnit.framework */; };
+		DE5275C9128336B000F610F4 /* libmozots.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE5275C8128336B000F610F4 /* libmozots.a */; };
 		DE579FFF0D43FB790057C437 /* GoogleFeedHandler.app in Copy Feed Handlers */ = {isa = PBXBuildFile; fileRef = DE579FFC0D43FB790057C437 /* GoogleFeedHandler.app */; };
 		DE57A0000D43FB790057C437 /* MyYahooFeedHandler.app in Copy Feed Handlers */ = {isa = PBXBuildFile; fileRef = DE579FFD0D43FB790057C437 /* MyYahooFeedHandler.app */; };
 		DE57A0020D43FB790057C437 /* GoogleFeedHandler.app in Copy Feed Handlers */ = {isa = PBXBuildFile; fileRef = DE579FFC0D43FB790057C437 /* GoogleFeedHandler.app */; };
@@ -2932,6 +2933,7 @@
 		DE482A44114DEDA90039D61B /* en-US.manifest */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "en-US.manifest"; path = "../dist/bin/chrome/en-US.manifest"; sourceTree = SOURCE_ROOT; };
 		DE482A45114DEDA90039D61B /* classic.manifest */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = classic.manifest; path = ../dist/bin/chrome/classic.manifest; sourceTree = SOURCE_ROOT; };
 		DE482A83114DF54E0039D61B /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = /System/Library/Frameworks/AudioUnit.framework; sourceTree = "<absolute>"; };
+		DE5275C8128336B000F610F4 /* libmozots.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmozots.a; path = ../gfx/ots/src/libmozots.a; sourceTree = SOURCE_ROOT; };
 		DE579FFC0D43FB790057C437 /* GoogleFeedHandler.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = GoogleFeedHandler.app; path = generated/feedhandlers/GoogleFeedHandler.app; sourceTree = SOURCE_ROOT; };
 		DE579FFD0D43FB790057C437 /* MyYahooFeedHandler.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = MyYahooFeedHandler.app; path = generated/feedhandlers/MyYahooFeedHandler.app; sourceTree = SOURCE_ROOT; };
 		DE581AB411865B1A00BAEA05 /* pluginGlue.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = pluginGlue.js; path = ../dist/bin/components/pluginGlue.js; sourceTree = SOURCE_ROOT; };
@@ -3522,6 +3524,7 @@
 				005C999711B3FCBD002FAA43 /* Breakpad.framework in Frameworks */,
 				005C999911B3FCCF002FAA43 /* Growl.framework in Frameworks */,
 				005C999A11B3FCD9002FAA43 /* Sparkle.framework in Frameworks */,
+				DE5275C9128336B000F610F4 /* libmozots.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4894,6 +4897,7 @@
 				33B777E10C5588E500A6D67F /* libmozqcms.a */,
 				DE2AC6EC0F33EB8F009C0A42 /* libcaminosafebrowsing.a */,
 				DE19C72E1121F350007A57E0 /* libplaces.a */,
+				DE5275C8128336B000F610F4 /* libmozots.a */,
 			);
 			name = "Gecko Static Components";
 			sourceTree = "<group>";
