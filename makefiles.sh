@@ -41,9 +41,9 @@ camino/Makefile
 camino/IBPalette/Makefile
 camino/feedhandlers/Makefile
 camino/flashblock/Makefile
+camino/geckochrome/Makefile
 camino/idl/Makefile
 camino/installer/Makefile
-camino/pinstripe/Makefile
 camino/striptease/Makefile
 camino/safebrowsing/Makefile
 "
