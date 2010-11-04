@@ -65,3 +65,6 @@ enum
   eSaveFormatHTMLSource,
   eSaveFormatPlainText
 };
+
+// Help menu
+const int kHelpMenuItemTag = 7000;

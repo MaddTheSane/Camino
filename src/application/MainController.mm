@@ -97,7 +97,7 @@
 
 extern const nsModuleComponentInfo* GetAppComponents(unsigned int* outNumComponents);
 
-static const char* ioServiceContractID = "@mozilla.org/network/io-service;1";
+static const char ioServiceContractID[] = "@mozilla.org/network/io-service;1";
 
 // Key in the defaults system used to determine if we crashed last time.
 NSString* const kPreviousSessionTerminatedNormallyKey = @"PreviousSessionTerminatedNormally";
@@ -116,8 +116,9 @@ const int kZoomActionsTag = 108;
 - (void)ensureGeckoInitted;
 - (void)ensureInitializationCompleted;
 - (void)setInitialized:(BOOL)flag;
-- (void)setupStartpage;
-- (void)setupRendezvous;
+- (void)setUpSpotlightForHelp;
+- (void)setUpStartpage;
+- (void)setUpRendezvous;
 - (void)addNoServicesFoundMenuItem;
 - (void)checkDefaultBrowser;
 - (void)checkForProblemAddOns;
@@ -260,7 +261,7 @@ const int kZoomActionsTag = 108;
   // listen for the Show Certificates notification (which is send from the Security prefs panel)
   [notificationCenter addObserver:self selector:@selector(showCertificatesNotification:) name:@"ShowCertificatesNotification" object:nil];
 
-  [self setupStartpage];
+  [self setUpStartpage];
 
   // Initialize offline mode.
   mOffline = NO;
@@ -279,7 +280,7 @@ const int kZoomActionsTag = 108;
   if ([prefManager getBooleanPref:kGeckoPrefLogJSToConsole withSuccess:NULL])
     [JSConsole sharedJSConsole];
 
-  [self setupRendezvous];
+  [self setUpRendezvous];
 
   // Get the text zoom preference.
   BOOL textZoomOnly = ![prefManager getBooleanPref:kGeckoPrefFullContentZoom
@@ -350,17 +351,7 @@ const int kZoomActionsTag = 108;
 
 - (void)applicationDidFinishLaunching:(NSNotification*)aNotification
 {
-  // Make sure the help menu is identified correctly, since it may be localized.
-  // TODO: Add a reference to the Help menu once we aren't nib-frozen, rather
-  // than getting it by position.
-  if ([NSApp respondsToSelector:@selector(setHelpMenu:)]) {
-    NSMenu* mainMenu = [NSApp mainMenu];
-    unsigned int helpMenuIndex =
-        [mainMenu indexOfItemWithSubmenu:[NSApp windowsMenu]] + 1;
-    if (helpMenuIndex < [[mainMenu itemArray] count])
-      [NSApp setHelpMenu:[[mainMenu itemAtIndex:helpMenuIndex] submenu]];
-  }
-
+  [self setUpSpotlightForHelp];
   [self ensureInitializationCompleted];
 
   [self checkForProblemAddOns];
@@ -378,6 +369,19 @@ const int kZoomActionsTag = 108;
 
   // delay the default browser check to give the first page time to load
   [self performSelector:@selector(checkDefaultBrowser) withObject:nil afterDelay:2.0f];
+}
+
+- (void)setUpSpotlightForHelp
+{
+  // Mac OS X 10.5 automatically adds the "Spotlight for Help" menu item to the
+  // Help menu, but 10.6 will only add it if the Help menu is actually named
+  // "Help". This breaks localized Help menus, so we must find our Help menu by
+  // its nib tag and setHelpMenu to activate the "Spotlight for Help" menu item.
+  if ([NSApp respondsToSelector:@selector(setHelpMenu:)]) {
+    NSMenu* mainMenu = [NSApp mainMenu];
+    NSMenu* helpMenu = [[mainMenu itemWithTag:kHelpMenuItemTag] submenu];
+    [NSApp setHelpMenu:helpMenu];
+  }
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication*)sender
@@ -534,7 +538,7 @@ const int kZoomActionsTag = 108;
   [self autorelease];
 }
 
-- (void)setupStartpage
+- (void)setUpStartpage
 {
   // only do this if no url was specified in the command-line
   if (mStartURL)
@@ -567,7 +571,7 @@ const int kZoomActionsTag = 108;
   [newItem setTarget:self];
 }
 
-- (void)setupRendezvous // aka "Bonjour"
+- (void)setUpRendezvous // aka "Bonjour"
 {
   if ([[PreferenceManager sharedInstance] getBooleanPref:kGeckoPrefDisableBonjour withSuccess:NULL]) {
     // remove rendezvous items
