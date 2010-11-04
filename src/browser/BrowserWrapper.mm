@@ -126,6 +126,7 @@ static const NSTimeInterval kTimeIntervalToConsiderSiteBlockingStatusValid = 900
 
 - (NSString*)displayTitleForPageURL:(NSString*)inURL title:(NSString*)inTitle;
 
+- (void)updateDNSPrefetchEnabledState;
 - (void)updatePluginsEnabledState;
 
 - (void)checkForCustomViewOnLoad:(NSString*)inURL;
@@ -196,6 +197,7 @@ static const NSTimeInterval kTimeIntervalToConsiderSiteBlockingStatusValid = 900
     mProgress = 0.0;
     mFeedList = nil;
 
+    [self updateDNSPrefetchEnabledState];
     [self updatePluginsEnabledState];
 
     mToolTip = [[ToolTip alloc] init];
@@ -853,6 +855,22 @@ static const NSTimeInterval kTimeIntervalToConsiderSiteBlockingStatusValid = 900
   }
 
   return NSLocalizedString(@"UntitledPageTitle", @"");
+}
+
+- (void)updateDNSPrefetchEnabledState
+{
+  BOOL gotPref;
+  BOOL disablePrefetch = [[PreferenceManager sharedInstance]
+                          getBooleanPref:"network.dns.disablePrefetch"
+                          withSuccess:&gotPref];
+
+  // Firefox enables DNS prefetch by default, but (to preserve backwards
+  // compatibility) the Gecko embedding API does not. Camino must explicitly
+  // enable DNS prefetch. The "network.dns.disablePrefetchFromHTTPS" pref is
+  // handled internally by Gecko.
+  BOOL enablePrefetch = !(gotPref && disablePrefetch);
+
+  [mBrowserView setProperty:nsIWebBrowserSetup::SETUP_ALLOW_DNS_PREFETCH toValue:enablePrefetch];
 }
 
 - (void)updatePluginsEnabledState

@@ -134,6 +134,10 @@ pref("network.protocol-handler.warn-external.nntp", false);
 // cookies: 0 = accept all, 1 = don't accept third-party, 2 = don't accept any
 pref("network.cookie.cookieBehavior", 0);
 
+// Enable DNS prefetch by default for both http and https resources
+pref("network.dns.disablePrefetch", false);
+pref("network.dns.disablePrefetchFromHTTPS", false);
+
 // default to opening tabs instead of windows for command-click
 pref("browser.tabs.opentabfor.middleclick", true);
 // ... and default to opening new tabs in the foreground
