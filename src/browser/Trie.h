@@ -52,7 +52,8 @@
 
 // Trie implementation for storing objects keyed by strings, for doing fast
 // prefix searching.
-@interface Trie : NSObject {
+@interface Trie : NSObject
+{
  @private
   TrieNode*                         mRoot;
   NSSortDescriptor*                 mSortOrder;

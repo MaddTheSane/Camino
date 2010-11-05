@@ -91,7 +91,7 @@
 - (void)storeItem:(id)item withSortOrder:(NSSortDescriptor*)sortOrder;
 
 // Helper for itemsForKey:; if |index| is the end of |key|, returns the item
-// array, otherwise recurses.
+// array, otherwise recurses. May return duplicates.
 - (NSArray*)itemsForKey:(NSString*)key charIndex:(unsigned int)index;
 
 @end
@@ -151,8 +151,9 @@
 
 - (void)storeItem:(id)item withSortOrder:(NSSortDescriptor*)sortOrder
 {
-  if ([mItems indexOfObjectIdenticalTo:item] != NSNotFound)
-    return;
+  // Note: we explicitly don't do full duplicate detection here, since it is
+  // incredibly expensive. We check for dups where it's easy, but it's not
+  // intended to be robust; the real checking is done at query time.
   unsigned index = 0;
   unsigned maxIndex = [mItems count];
   while (index < maxIndex) {
@@ -160,6 +161,8 @@
     id testItem = [mItems objectAtIndex:midIndex];
     if ([sortOrder compareObject:item toObject:testItem] == NSOrderedDescending)
       index = midIndex + 1;
+    else if (item == testItem)  // deliberately a pointer compare; dup check.
+      return;
     else
       maxIndex = midIndex;
   }
@@ -200,7 +203,7 @@
   }
   NSEnumerator* itemEnumerator = [mItems objectEnumerator];
   id item;
-  while((item = [itemEnumerator nextObject])) {
+  while ((item = [itemEnumerator nextObject])) {
     NSLog(@"%@%@", padding, [item description]);
   }
   depth++;
@@ -221,7 +224,7 @@
 
 // Returns everything from the trie for the given term, without doing any
 // extra filtering. That means that for terms longer than mMaxDepth,
-// not all of the returned items are necessarily matches.
+// not all of the returned items are necessarily matches. May return duplicates.
 - (NSArray*)potentialMatchesForTerm:(NSString*)term;
 
 // Returns a list of the potential matches for each term. See
@@ -324,16 +327,17 @@
   NSArray* termsRequiringValidation = [self termsNeedingExtendedValidation:cleanTerms];
 
   // Now walk one of the lists--the first is chosen arbitrarily--to find actual
-  // matches, by first making sure an item appears in every potential match list
-  // (which is relatively cheap), and if so that it actually matches every
-  // search term (which is expensive).
+  // matches, by first making sure an item is not a dup and appears in every
+  // potential match list (which is relatively cheap), and if so that it
+  // actually matches every search term (which is expensive).
   NSArray* candidateList = [[[potentialMatchLists firstObject] retain] autorelease];
   [potentialMatchLists removeObjectAtIndex:0];
   NSMutableArray* matchingItems = [NSMutableArray arrayWithCapacity:limit];
   NSEnumerator* candidateEnumerator = [candidateList objectEnumerator];
   id item;
   while ((item = [candidateEnumerator nextObject])) {
-    if (([potentialMatchLists count] > 0 &&
+    if (([matchingItems indexOfObjectIdenticalTo:item] != NSNotFound) ||
+        ([potentialMatchLists count] > 0 &&
          ![self object:item existsInEveryArray:potentialMatchLists]) ||
         ([termsRequiringValidation count] > 0 &&
          ![self item:item matchesTerms:termsRequiringValidation]))
