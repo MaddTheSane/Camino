@@ -146,7 +146,7 @@ const unsigned int kNumberOfItemsPerChunk = 100;
   [historyDataSource setHistoryView:kHistoryViewFlat];
   [historyDataSource setSortColumnIdentifier:@"visit_count"];
   [historyDataSource setSortDescending:YES];
-  [historyDataSource loadLazily];
+  [historyDataSource loadSynchronously];
   HistoryItem *rootHistoryItem = [historyDataSource rootItem];
   NSEnumerator *historyEnum = [[rootHistoryItem children] objectEnumerator];
   HistoryItem *curChild;

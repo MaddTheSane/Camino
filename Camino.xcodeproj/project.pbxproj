@@ -2513,6 +2513,7 @@
 		008115470B1811F0001CB3F0 /* libgkgfxthebes.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; name = libgkgfxthebes.dylib; path = ../dist/bin/components/libgkgfxthebes.dylib; sourceTree = SOURCE_ROOT; };
 		0095FAC70D9C99880039B3D8 /* CHBrowserView+Spelling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CHBrowserView+Spelling.h"; path = "src/embedding/CHBrowserView+Spelling.h"; sourceTree = "<group>"; };
 		0095FAC80D9C99880039B3D8 /* CHBrowserView+Spelling.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "CHBrowserView+Spelling.mm"; path = "src/embedding/CHBrowserView+Spelling.mm"; sourceTree = "<group>"; };
+		009637FF126605A500049329 /* HistoryLoadListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HistoryLoadListener.h; path = src/history/HistoryLoadListener.h; sourceTree = "<group>"; };
 		0098B11D0CAEA75700DA0F2F /* nsHandlerService.js */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.javascript; name = nsHandlerService.js; path = ../dist/bin/components/nsHandlerService.js; sourceTree = SOURCE_ROOT; };
 		0098B17F0CAEA9CF00DA0F2F /* XPCOMUtils.jsm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = XPCOMUtils.jsm; path = ../dist/bin/modules/XPCOMUtils.jsm; sourceTree = SOURCE_ROOT; };
 		0098B19E0CAEAAE800DA0F2F /* exthandler.xpt */ = {isa = PBXFileReference; lastKnownFileType = file; name = exthandler.xpt; path = ../dist/bin/components/exthandler.xpt; sourceTree = SOURCE_ROOT; };
@@ -4141,6 +4142,7 @@
 				F52F87CD027D75C301A80165 /* HistoryDataSource.mm */,
 				3F7C6CB905B4819E002FFFD3 /* HistoryItem.h */,
 				3F7C6CBA05B4819E002FFFD3 /* HistoryItem.mm */,
+				009637FF126605A500049329 /* HistoryLoadListener.h */,
 			);
 			name = Backend;
 			sourceTree = "<group>";

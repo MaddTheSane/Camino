@@ -75,6 +75,22 @@ NSString* const kNotificationHistoryDataSourceChangedUserInfoChangedItem      = 
 NSString* const kNotificationHistoryDataSourceChangedUserInfoChangedRoot      = @"changed_root";
 NSString* const kNotificationNameHistoryDataSourceCleared                     = @"history_cleared";
 
+// Internal change queueing constants.
+static NSString* const kChangeTypeKey = @"change_type";
+enum {
+  kChangeTypeVisit,
+  kChangeTypeRemoval,
+  kChangeTypeTitleChange
+};
+static NSString* const kChangeIdentifierKey = @"identifier";
+static NSString* const kChangeNewTitleKey = @"new_title";
+static NSString* const kChangeVisitItemKey = @"item";
+
+// Amount of time to pause between chunks when loading history asynchronously.
+static const NSTimeInterval kLoadNextChunkDelay = 0.05;
+// Number of history items to load in each chunk.
+static const unsigned int kNumberOfItemsPerChunk = 500;
+
 struct SortData
 {
   SEL       mSortSelector;
@@ -144,11 +160,57 @@ static int HistoryItemSort(id firstItem, id secondItem, void* context)
 
 @interface HistoryDataSource(Private)
 
+// The overall flow for a load in the simple case where no load is already in
+// progress is as follows:
+// - A client calls either loadSynchronously or loadAsynchronouslyWithListener.
+// - startLoading is called.
+// - loadNextChunkOfSize: is called either with a chunk size (async) or nil
+//   (sync) to start (and in the sync case, finish) the loading.
+// - If everything is loaded, allItemsLoaded is called.
+//   - If loading is canceled first, cancelLoading will be called.
+// - Either way, loadingDone is called.
+// - Any loading listeners are called to inform them that loading is done.
+// - If loading wasn't canceled, processPendingChanges is called to handle
+//   any changes that came in from the Gecko side while loading was in progress.
+//
+// In the case where an asynchronous load is already in progress, another async
+// load call is essentially a no-op. A sync call when a load is in progress
+// works as normal, except that startLoading is skipped since the in-progress
+// load is used instead of creating a new one.
+
+// Opens a history query in preparation for reading history items.
+- (void)startLoading;
+// Loads the next chunkSize history items. If |chunkSize| is nil, loads all
+// remaining items.
+- (void)loadNextChunkOfSize:(NSNumber*)chunkSize;
+// Called when all the history items have been loaded.
+- (void)allItemsLoaded;
+// Returns true if an asynchronous history load is in progress.
+- (BOOL)loadingInProgress;
+// Cancels any asynchronous that is in progress.
+- (void)cancelLoading;
+// Called whenever loading stops, no matter what the cause.
+- (void)loadingDone;
+// Processes any change events that came in during an asyncronous load.
+- (void)processPendingChanges;
+
 - (void)cleanupHistory;
 - (void)rebuildHistory;
 
-- (void)startBatching;
-- (void)endBatching;
+- (void)batchingStarted;
+- (void)batchingFinished;
+
+// Callbacks for use by the Gecko history listener. These differ from
+// the itemAdded/Removed/Changed calls in that they correctly handle being
+// called during an asynchronous load, by queueing the change to be processed
+// later (after loading is complete) so that ordering of operations is preserved
+// (e.g., if a history item is removed, that can't be processed on the Cocoa
+// side until that item has been loaded).
+- (void)visitedItem:(HistorySiteItem*)item withIdentifier:(NSString*)identifier;
+- (void)visitedItemWithIdentifier:(NSString*)identifier atDate:(NSDate*)date;
+- (void)removedItemWithIdentifier:(NSString*)identifier;
+- (void)changedTitleForItemWithIdentifier:(NSString*)identifier
+                                       to:(NSString*)newTitle;
 
 - (void)itemAdded:(HistorySiteItem*)item;
 - (void)itemRemoved:(HistorySiteItem*)item;
@@ -162,7 +224,6 @@ static int HistoryItemSort(id firstItem, id secondItem, void* context)
 - (void)rebuildSearchResults;
 - (void)sortSearchResults;
 
-- (NSArray*)historyItems;
 - (void)removeAllObjects;
 - (HistorySiteItem*)itemWithIdentifier:(NSString*)identifier;
 
@@ -546,12 +607,11 @@ public:
 
 protected:
 
-  HistorySiteItem* HistoryItemFromURI(nsIURI* inURI)
+  NSString* IdentifierForURI(nsIURI* inURI)
   {
     nsCAutoString url;
     if (inURI && NS_SUCCEEDED(inURI->GetSpec(url))) {
-      NSString* identifierString = [NSString stringWith_nsACString:url];
-      return [mDataSource itemWithIdentifier:identifierString];
+      return [NSString stringWith_nsACString:url];
     }
 
     return nil;
@@ -580,14 +640,18 @@ public:
       return NS_OK;
 
     @try { // make sure we don't throw out into gecko
-      HistorySiteItem* item = HistoryItemFromURI(aURI);
+      NSString* identifier = IdentifierForURI(aURI);
+      BOOL currentlyLoading = [mDataSource loadingInProgress];
+
+      // If loading is still in progress, we have no way of knowing whether
+      // there will be an item when loading is done, so we need to make one and
+      // sort it out later.
+      HistorySiteItem* item = currentlyLoading ?
+          nil : [mDataSource itemWithIdentifier:identifier];
 
       if (item) {
         NSDate* newDate = [NSDate dateWithPRTime:aTime];
-        if (![[item lastVisit] isEqual:newDate]) {
-          [item setLastVisitDate:newDate];
-          [mDataSource itemChanged:item];
-        }
+        [mDataSource visitedItemWithIdentifier:identifier atDate:newDate];
       }
       else {
         nsresult rv;
@@ -604,15 +668,25 @@ public:
         rv = query->SetUri(aURI);
         NS_ENSURE_SUCCESS(rv, rv);
 
-        rv = query->SetMinVisits(1);
-        NS_ENSURE_SUCCESS(rv, rv);
+        if (!currentlyLoading) {
+          rv = query->SetMinVisits(1);
+          NS_ENSURE_SUCCESS(rv, rv);
 
-        rv = query->SetMaxVisits(1);
-        NS_ENSURE_SUCCESS(rv, rv);
+          rv = query->SetMaxVisits(1);
+          NS_ENSURE_SUCCESS(rv, rv);
+        }
 
         nsCOMPtr<nsINavHistoryQueryOptions> options;
         rv = histSvc->GetNewQueryOptions(getter_AddRefs(options));
         NS_ENSURE_SUCCESS(rv, rv);
+
+        if (currentlyLoading) {
+          rv = options->SetSortingMode(nsINavHistoryQueryOptions::SORT_BY_DATE_DESCENDING);
+          NS_ENSURE_SUCCESS(rv, rv);
+
+          rv = options->SetMaxResults(1);
+          NS_ENSURE_SUCCESS(rv, rv);
+        }
 
         nsCOMPtr<nsINavHistoryResult> result;
         rv = histSvc->ExecuteQuery(query, options, getter_AddRefs(result));
@@ -627,10 +701,16 @@ public:
         rootNode->SetContainerOpen(PR_TRUE);
 
         // There should be 1 and only 1 result node returned from our query,
-        // since this is the first visit.
+        // since either this is the first visit, or we restricted the search.
         PRUint32 childCount = 0;
         rv = rootNode->GetChildCount(&childCount);
         NS_ENSURE_SUCCESS(rv, rv);
+#if DEBUG
+        if (childCount != 1) {
+          NSLog(@"%d result nodes in OnVisit for '%@' (currentlyLoading = %d)",
+                childCount, identifier, currentlyLoading);
+        }
+#endif
         NS_ENSURE_TRUE(childCount == 1, NS_ERROR_UNEXPECTED);
 
         nsCOMPtr<nsINavHistoryResultNode> resultNode;
@@ -638,9 +718,9 @@ public:
         NS_ENSURE_SUCCESS(rv, rv);
         NS_ENSURE_TRUE(resultNode, NS_ERROR_UNEXPECTED);
 
-        item = [[HistorySiteItem alloc] initWithDataSource:mDataSource resultNode:resultNode];
-
-        [mDataSource itemAdded:item];
+        item = [[HistorySiteItem alloc] initWithDataSource:mDataSource
+                                                resultNode:resultNode];
+        [mDataSource visitedItem:item withIdentifier:identifier];
         [item release];
       }
     }
@@ -653,13 +733,13 @@ public:
 
   NS_IMETHOD OnBeginUpdateBatch()
   {
-    [mDataSource startBatching];
+    [mDataSource batchingStarted];
     return NS_OK;
   }
 
   NS_IMETHOD OnEndUpdateBatch()
   {
-    [mDataSource endBatching];
+    [mDataSource batchingFinished];
     return NS_OK;
   }
 
@@ -667,15 +747,12 @@ public:
   {
     NS_ENSURE_ARG_POINTER(aURI);
 
-    HistorySiteItem* item = HistoryItemFromURI(aURI);
-    NS_ENSURE_TRUE(item, NS_ERROR_UNEXPECTED);
-
     @try { // make sure we don't throw out into gecko
-      NSString* newTitle = [NSString stringWith_nsAString:aPageTitle];
-      BOOL titleChanged = ![newTitle isEqualToString:[item title]];
-      if (titleChanged) {
-        [item setTitle:newTitle];
-        [mDataSource itemChanged:item];
+      NSString* identifier = IdentifierForURI(aURI);
+      if (identifier) {
+        NSString* newTitle = [NSString stringWith_nsAString:aPageTitle];
+        [mDataSource changedTitleForItemWithIdentifier:identifier
+                                                    to:newTitle];
       }
     }
     @catch (id exception) {
@@ -694,9 +771,9 @@ public:
     NS_ENSURE_ARG_POINTER(aURI);
 
     @try { // make sure we don't throw out into gecko
-      HistorySiteItem* item = HistoryItemFromURI(aURI);
-      if (item)
-        [mDataSource itemRemoved:item];
+      NSString* identifier = IdentifierForURI(aURI);
+      if (identifier)
+        [mDataSource removedItemWithIdentifier:identifier];
     }
     @catch (id exception) {
       NSLog(@"Exception caught in OnDeleteURI: %@", exception);
@@ -844,14 +921,92 @@ NS_IMPL_ISUPPORTS1(nsNavHistoryObserver, nsINavHistoryObserver);
   [self notifyChange:kHistoryChangeRebuilt item:nil root:nil];
 }
 
-- (void)startBatching
+#pragma mark -
+
+- (void)batchingStarted
 {
 }
 
-- (void)endBatching
+- (void)batchingFinished
 {
-  [self loadLazily];
+  [self loadSynchronously];
 }
+
+- (void)visitedItem:(HistorySiteItem*)item withIdentifier:(NSString*)identifier
+{
+  if ([self loadingInProgress]) {
+    [mPendingChangeQueue addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+        [NSNumber numberWithInt:kChangeTypeVisit], kChangeTypeKey,
+                                       identifier, kChangeIdentifierKey,
+                                             item, kChangeVisitItemKey,
+                                                   nil]];
+    return;
+  }
+
+  [self itemAdded:item];
+}
+
+- (void)visitedItemWithIdentifier:(NSString*)identifier atDate:(NSDate*)date
+{
+  if ([self loadingInProgress]) {
+#if DEBUG
+    NSLog(@"visitedItemWithIdentifier:atDate: called during asynchronous loading");
+#endif
+    return;
+  }
+
+  HistorySiteItem* item = [self itemWithIdentifier:identifier];
+  if (!item)
+    return;
+
+  if ([[item lastVisit] isEqual:date])
+    return;
+
+  [item setLastVisitDate:date];
+  [self itemChanged:item];
+}
+
+- (void)removedItemWithIdentifier:(NSString*)identifier
+{
+  if ([self loadingInProgress]) {
+    [mPendingChangeQueue addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+        [NSNumber numberWithInt:kChangeTypeRemoval], kChangeTypeKey,
+                                         identifier, kChangeIdentifierKey,
+                                                     nil]];
+    return;
+  }
+
+  HistorySiteItem* item = [self itemWithIdentifier:identifier];
+  if (!item)
+    return;
+
+  [self itemRemoved:item];
+}
+
+- (void)changedTitleForItemWithIdentifier:(NSString*)identifier
+                                       to:(NSString*)newTitle
+{
+  if ([self loadingInProgress]) {
+    [mPendingChangeQueue addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+        [NSNumber numberWithInt:kChangeTypeTitleChange], kChangeTypeKey,
+                                             identifier, kChangeIdentifierKey,
+                                               newTitle, kChangeNewTitleKey,
+                                                         nil]];
+    return;
+  }
+
+  HistorySiteItem* item = [self itemWithIdentifier:identifier];
+  if (!item)
+    return;
+
+  if ([newTitle isEqualToString:[item title]])
+    return;
+
+  [item setTitle:newTitle];
+  [self itemChanged:item];
+}
+
+#pragma mark -
 
 - (void)itemAdded:(HistorySiteItem*)item
 {
@@ -894,8 +1049,54 @@ NS_IMPL_ISUPPORTS1(nsNavHistoryObserver, nsINavHistoryObserver);
   }
 }
 
-- (void)loadLazily
+#pragma mark -
+
+- (void)loadSynchronously
 {
+  // If loading is already in progress, just finish it synchronously.
+  if ([self loadingInProgress])
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+  else
+    [self startLoading];
+
+  // If there's no node, something went wrong.
+  if (!mRootNode)
+    return;
+
+  [self loadNextChunkOfSize:nil];
+}
+
+- (void)loadAsynchronouslyWithListener:(id<HistoryLoadListener>)listener
+{
+  if ([self loadingInProgress]) {
+    [mLoadListeners addObject:listener];
+    return;
+  }
+
+  mLoadListeners = [[NSMutableArray arrayWithObject:listener] retain];
+  mPendingChangeQueue = [[NSMutableArray alloc] init];
+
+  [self startLoading];
+
+  // If there's no node, something went wrong.
+  if (!mRootNode) {
+    [listener historyLoadingComplete];
+    [mLoadListeners removeAllObjects];
+    return;
+  }
+
+  [self loadNextChunkOfSize:[NSNumber numberWithUnsignedInt:kNumberOfItemsPerChunk]];
+}
+
+- (BOOL)isLoaded
+{
+  return mHistoryLoaded;
+}
+
+- (void)startLoading
+{
+  [self cancelLoading];
+
   nsCOMPtr<nsINavHistoryQuery> query;
   nsresult rv;
   rv = mNavHistoryService->GetNewQuery(getter_AddRefs(query));
@@ -922,29 +1123,125 @@ NS_IMPL_ISUPPORTS1(nsNavHistoryObserver, nsINavHistoryObserver);
   rv = rootNode->GetChildCount(&childCount);
   NS_ENSURE_SUCCESS(rv, /* void */);
 
-  if (!mHistoryItems)
-    mHistoryItems = [[NSMutableArray alloc] initWithCapacity:childCount];
-  else
-    [mHistoryItems removeAllObjects];
+  mRootNode = rootNode.get();
+  NS_ADDREF(mRootNode);
+  mResultCount = childCount;
+  mCurrentIndex = 0;
 
-  if (!mHistoryItemsDictionary)
-    mHistoryItemsDictionary = [[NSMutableDictionary alloc] initWithCapacity:childCount];
-  else
-    [mHistoryItemsDictionary removeAllObjects];
+  mHistoryLoaded = NO;
+  [mHistoryItems release];
+  mHistoryItems = [[NSMutableArray alloc] initWithCapacity:mResultCount];
+  [mHistoryItemsDictionary release];
+  mHistoryItemsDictionary = [[NSMutableDictionary alloc] initWithCapacity:childCount];
+}
 
-  for (unsigned int i = 0; i < childCount; i++) {
+- (void)loadNextChunkOfSize:(NSNumber*)chunkSize
+{
+  unsigned int stopIndex = mResultCount;
+  if (chunkSize) {
+    unsigned int chunkMax = mCurrentIndex + [chunkSize unsignedIntValue];
+    if (chunkMax < mResultCount)
+      stopIndex = chunkMax;
+  }
+
+  for (; mCurrentIndex < stopIndex; ++mCurrentIndex) {
     nsCOMPtr<nsINavHistoryResultNode> child;
-    rootNode->GetChild(i, getter_AddRefs(child));
+    mRootNode->GetChild(mCurrentIndex, getter_AddRefs(child));
     if (!child)
       continue;
-    HistorySiteItem* item = [[HistorySiteItem alloc] initWithDataSource:self resultNode:child];
+    HistorySiteItem* item = [[HistorySiteItem alloc] initWithDataSource:self
+                                                             resultNode:child];
     [mHistoryItems addObject:item];
     [mHistoryItemsDictionary setObject:item forKey:[item identifier]];
     [item release];
   }
 
+  if (mCurrentIndex == mResultCount) {
+    [self allItemsLoaded];
+    return;
+  }
+
+  [self performSelector:@selector(loadNextChunkOfSize:)
+             withObject:chunkSize
+             afterDelay:kLoadNextChunkDelay];
+}
+
+- (BOOL)loadingInProgress
+{
+  return mRootNode != NULL;
+}
+
+- (void)allItemsLoaded
+{
+  [self loadingDone];
   [self rebuildHistory];
 }
+
+- (void)cancelLoading
+{
+  if ([self loadingInProgress]) {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [self loadingDone];
+  }
+}
+
+- (void)loadingDone
+{
+  NS_IF_RELEASE(mRootNode);
+  mHistoryLoaded = YES;
+
+  NSEnumerator* listenerEnumerator = [mLoadListeners objectEnumerator];
+  id<HistoryLoadListener> listener;
+  while ((listener = [listenerEnumerator nextObject])) {
+    [listener historyLoadingComplete];
+  }
+  [mLoadListeners release];
+  mLoadListeners = nil;
+
+  [self processPendingChanges];
+}
+
+- (void)processPendingChanges
+{
+  NSEnumerator* changeEnumerator = [mPendingChangeQueue objectEnumerator];
+  NSDictionary* changeInfo;
+  while ((changeInfo = [changeEnumerator nextObject])) {
+    int changeType = [[changeInfo objectForKey:kChangeTypeKey] intValue];
+    NSString* identifier = [changeInfo objectForKey:kChangeIdentifierKey];
+    switch (changeType) {
+      case kChangeTypeVisit: {
+        HistorySiteItem* existingItem = [self itemWithIdentifier:identifier];
+        HistorySiteItem* newItem = [changeInfo objectForKey:kChangeVisitItemKey];
+        if (existingItem) {
+          [self visitedItemWithIdentifier:identifier
+                                   atDate:[newItem lastVisit]];
+        } else {
+          [self visitedItem:newItem withIdentifier:identifier];
+        }
+        break;
+      }
+      case kChangeTypeRemoval: {
+        [self removedItemWithIdentifier:identifier];
+        break;
+      }
+      case kChangeTypeTitleChange: {
+        NSString* title = [changeInfo objectForKey:kChangeNewTitleKey];
+        [self changedTitleForItemWithIdentifier:identifier
+                                             to:title];
+        break;
+      }
+      default:
+#if DEBUG
+        NSLog(@"Uh-oh, unknown history change type in queue");
+#endif
+        break;
+    }
+  }
+  [mPendingChangeQueue release];
+  mPendingChangeQueue = nil;
+}
+
+#pragma mark -
 
 - (HistoryItem*)rootItem
 {
@@ -1159,6 +1456,9 @@ NS_IMPL_ISUPPORTS1(nsNavHistoryObserver, nsINavHistoryObserver);
 
 - (void)removeAllObjects
 {
+  [self cancelLoading];
+  [mPendingChangeQueue release];
+  mPendingChangeQueue = nil;
   [mHistoryItems removeAllObjects];
   [mHistoryItemsDictionary removeAllObjects];
 

@@ -487,7 +487,7 @@ static const unsigned int kMaxTitleLength = 50;
     // the root item is nil at launch, and if the history gets totally rebuilt
     if (!mRootItem) {
       HistoryDataSource* dataSource = [HistoryMenuDataSourceOwner sharedHistoryDataSource];
-      [dataSource loadLazily];
+      [dataSource loadSynchronously];
 
       mRootItem = [[dataSource rootItem] retain];
     }

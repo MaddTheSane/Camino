@@ -40,11 +40,14 @@
 
 #import <AppKit/AppKit.h>
 
+#import "HistoryLoadListener.h";
+
 @class BrowserWindowController;
 @class HistoryItem;
 @class HistorySiteItem;
 
 class nsNavHistoryObserver;
+class nsINavHistoryContainerResultNode;
 class nsINavHistoryService;
 
 extern NSString* const kHistoryViewByDate;      // grouped by last visit date
@@ -88,6 +91,7 @@ typedef enum {
 
   NSMutableArray*         mHistoryItems;              // this array owns all the history items
   NSMutableDictionary*    mHistoryItemsDictionary;    // history items indexed by url (strong)
+  BOOL                    mHistoryLoaded;
 
   NSMutableArray*         mSearchResultsArray;
 
@@ -100,13 +104,41 @@ typedef enum {
   
   NSTimer*                mRefreshTimer;
   int                     mLastDayOfCommonEra;
+
+  // Used only during the history loading process.
+  nsINavHistoryContainerResultNode* mRootNode;  // owned
+  unsigned int                      mResultCount;
+  unsigned int                      mCurrentIndex;
+  NSMutableArray*                   mLoadListeners;
+  NSMutableArray*                   mPendingChangeQueue;
 }
 
 - (void)setHistoryView:(NSString*)inView;
 - (NSString*)historyView;
 
-// XXX remove?
-- (void)loadLazily;
+// Synchronously loads history.
+// If history has alread been loaded, this reloads it from scratch, so when
+// dealing with a shared history source clients will generally want to call this
+// only if isLoaded is false.
+// If an asynchronous load is already in progress, calling this will cause
+// the remaining history to be loaded synchronously, so from the client's
+// perspective it's seamless.
+- (void)loadSynchronously;
+// Asynchronously loads history, calling the HistoryLoadListener callback when
+// loading has completed. |listener| is retained until then.
+// The listener should not make any calls that modify the history source until
+// loading is complete.
+// If history is already being loaded asyrchonously, this just adds the new
+// listener to the existing asynchronous load.
+// As with the synchronous version, calling this once loading is complete will
+// reload from scratch.
+- (void)loadAsynchronouslyWithListener:(id<HistoryLoadListener>)listener;
+// Returns YES if history has already been loaded.
+- (BOOL)isLoaded;
+
+// Returns a flat array of all history items, ignoring sort and search.
+- (NSArray*)historyItems;
+
 - (HistoryItem*)rootItem;
 
 - (BOOL)showSiteIcons;

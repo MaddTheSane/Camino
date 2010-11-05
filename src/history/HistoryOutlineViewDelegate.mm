@@ -148,7 +148,7 @@ static NSString* const kExpandedHistoryStatesDefaultsKey = @"history_expand_stat
       if (historyView)
         [[self historyDataSource] setHistoryView:historyView];
 
-      [[self historyDataSource] loadLazily];
+      [[self historyDataSource] loadSynchronously];
       
       if (![mHistoryOutlineView sortColumnIdentifier])
       {
