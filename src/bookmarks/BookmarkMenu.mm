@@ -57,9 +57,10 @@ const long kOpenInTabsTag = 0xBEEF;
 
 @interface BookmarkMenu(Private)
 
-- (void)setupBookmarkMenu;
+- (void)setUpBookmarkMenu;
 - (void)appendBookmarkItem:(BookmarkItem *)inItem buildingSubmenus:(BOOL)buildSubmenus;
 - (void)addLastItems;
+- (void)bookmarkListChanged:(NSNotification *)inNotification;
 
 @end
 
@@ -70,12 +71,11 @@ const long kOpenInTabsTag = 0xBEEF;
 - (id)initWithTitle:(NSString *)inTitle bookmarkFolder:(BookmarkFolder*)inFolder
 {
   if ((self = [super initWithTitle:inTitle])) {
-    mFolder = [inFolder retain];
-    mDirty  = YES;
+    [self setBookmarkFolder:inFolder];
     mAppendTabsItem = YES;
-    [self setupBookmarkMenu];
+    [self setUpBookmarkMenu];
     // Set us up to receive menuNeedsUpdate: callbacks. We do this here rather
-    // than setupBookmarkMenu because we don't want to change the delegate
+    // than setUpBookmarkMenu because we don't want to change the delegate
     // for the top-level bookmark menu (which comes from the nib)
     [self setDelegate:self];
   }
@@ -95,17 +95,19 @@ const long kOpenInTabsTag = 0xBEEF;
   mDirty = YES;
   // default to not appending the tabs item for nib-based menus
   mAppendTabsItem = NO;
-  [self setupBookmarkMenu];
+  [self setUpBookmarkMenu];
 }
 
-- (void)setupBookmarkMenu
+- (void)setUpBookmarkMenu
 {
   [self setAutoenablesItems:NO];
 
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-  [nc addObserver:self selector:@selector(bookmarkAdded:)   name:BookmarkFolderAdditionNotification object:nil];
-  [nc addObserver:self selector:@selector(bookmarkRemoved:) name:BookmarkFolderDeletionNotification object:nil];
-  [nc addObserver:self selector:@selector(bookmarkChanged:) name:BookmarkItemChangedNotification object:nil];
+  // TODO: Move this once the boomark notifications are refactored.
+  [nc addObserver:self
+         selector:@selector(bookmarkChanged:)
+             name:BookmarkItemChangedNotification
+           object:nil];
 }
 
 
@@ -114,6 +116,20 @@ const long kOpenInTabsTag = 0xBEEF;
   [mFolder autorelease];
   mFolder = [inFolder retain];
   mDirty = YES;
+
+  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+  [nc removeObserver:self name:BookmarkFolderAdditionNotification object:nil];
+  [nc removeObserver:self name:BookmarkFolderDeletionNotification object:nil];
+  if (mFolder) {
+    [nc addObserver:self
+           selector:@selector(bookmarkListChanged:)
+               name:BookmarkFolderAdditionNotification
+             object:mFolder];
+    [nc addObserver:self
+           selector:@selector(bookmarkListChanged:)
+               name:BookmarkFolderDeletionNotification
+             object:mFolder];
+  }
 }
 
 - (BookmarkFolder*)bookmarkFolder
@@ -278,18 +294,9 @@ static NSString* GetMenuItemTitleForBookmark(BookmarkItem* item)
 
 #pragma mark -
 
-- (void)bookmarkAdded:(NSNotification *)inNotification
+- (void)bookmarkListChanged:(NSNotification *)inNotification
 {
-  BookmarkFolder* parentFolder = [inNotification object];
-  if (parentFolder == mFolder)
-    mDirty = YES;
-}
-
-- (void)bookmarkRemoved:(NSNotification *)inNotification
-{
-  BookmarkFolder* parentFolder = [inNotification object];
-  if (parentFolder == mFolder)
-    mDirty = YES;
+  mDirty = YES;
 }
 
 - (void)bookmarkChanged:(NSNotification *)inNotification
