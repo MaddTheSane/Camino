@@ -43,7 +43,7 @@
 #import "Bookmark.h"
 #import "BookmarkFolder.h"
 #import "BookmarkManager.h"
-#import "BookmarksClient.h"
+#import "BookmarkNotifications.h"
 #import "NSString+Utils.h"
 #import "SiteIconProvider.h"
 #import "SpotlightFileKeys.h"

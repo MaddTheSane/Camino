@@ -37,13 +37,15 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+#import "BookmarkFolder.h"
+
 #import "NSString+Utils.h"
 #import "NSArray+Utils.h"
 #import "NSImage+Utils.h"
 #import "NSWorkspace+Utils.h"
 
 #import "BookmarkManager.h"
-#import "BookmarkFolder.h"
+#import "BookmarkNotifications.h"
 #import "Bookmark.h"
 
 // Notification definitions

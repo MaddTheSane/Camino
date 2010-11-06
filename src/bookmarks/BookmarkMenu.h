@@ -38,12 +38,10 @@
 
 #import <AppKit/AppKit.h>
 
-#import "BookmarksClient.h"
-
 @class BookmarkFolder;
 
 // XXX share some of this code with HistoryMenu
-@interface BookmarkMenu : NSMenu<BookmarksClient>
+@interface BookmarkMenu : NSMenu
 {
   IBOutlet NSMenuItem*  mItemBeforeCustomItems;    // the item after which we add our items. Not retained.
 

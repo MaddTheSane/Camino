@@ -37,14 +37,6 @@
  * ***** END LICENSE BLOCK ***** */
 #import <Foundation/Foundation.h>
 
-@protocol BookmarksClient
-
-- (void)bookmarkAdded:(NSNotification *)note;
-- (void)bookmarkRemoved:(NSNotification *)note;
-- (void)bookmarkChanged:(NSNotification *)note;
-
-@end
-
 // Notification keys
 // defined in Bookmark.h
 extern NSString* const URLLoadNotification;                     // object is NSString of URL, userinfo has NSNum of success/fail
@@ -59,5 +51,5 @@ extern NSString* const BookmarkFolderDockMenuChangeNotificaton; // self is NEW d
 
 // Defined in BookmarkItem.h
 extern NSString* const BookmarkItemChangedNotification;         // self is object, userInfo contains change flags
-  extern NSString* const BookmarkItemChangedFlagsKey;
+extern NSString* const BookmarkItemChangedFlagsKey;
 

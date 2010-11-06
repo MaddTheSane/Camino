@@ -39,12 +39,10 @@
 
 #import <AppKit/AppKit.h>
 
-#import "BookmarksClient.h"
-
 @class BookmarkButton;
 @class BookmarkItem;
 
-@interface BookmarkToolbar : NSView<BookmarksClient>
+@interface BookmarkToolbar : NSView
 {
   NSMutableArray* mButtons;
   BookmarkButton* mDragInsertionButton;

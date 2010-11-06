@@ -38,7 +38,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 #import <AppKit/AppKit.h>
-#import "BookmarksClient.h"
+#import "BookmarkNotifications.h"
 
 @class BookmarkItem;
 @class BookmarkFolder;
@@ -56,7 +56,7 @@ extern NSString* const kBookmarkImportNewFolderNameIdentifier;
 const int kBookmarksContextMenuArrangeSeparatorTag = 100;
 
 
-@interface BookmarkManager : NSObject <BookmarksClient>
+@interface BookmarkManager : NSObject
 {
   BookmarkFolder*                 mBookmarkRoot;           // root bookmark object
   KindaSmartFolderManager*        mSmartFolderManager;      // brains behind 4 smart folders

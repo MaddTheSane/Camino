@@ -43,7 +43,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "BookmarksClient.h"
 #import "BrowserWrapper.h"    // for ContentViewProvider
 
 @class ExtendedTableView;

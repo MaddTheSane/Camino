@@ -72,7 +72,7 @@
 #import "HistoryDataSource.h"
 #import "HistoryItem.h"
 
-#import "BookmarksClient.h"
+#import "BookmarkNotifications.h"
 #import "NetworkServices.h"
 #import "UserDefaults.h"
 
@@ -97,7 +97,7 @@ const int kOutlineViewLeftMargin = 19; // determined empirically, since it doesn
 
 #pragma mark -
 
-@interface BookmarkViewController (Private) <BookmarksClient, NetworkServicesClient>
+@interface BookmarkViewController (Private) <NetworkServicesClient>
 
 - (void)ensureNibLoaded;
 - (void)completeSetup;
@@ -1898,9 +1898,6 @@ const int kOutlineViewLeftMargin = 19; // determined empirically, since it doesn
 
 
 #pragma mark -
-//
-// BookmarksClient protocol
-//
 - (void)bookmarkAdded:(NSNotification *)note
 {
   BookmarkItem* addedItem = [note object];

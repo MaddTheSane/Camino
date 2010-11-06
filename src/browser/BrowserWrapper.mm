@@ -40,7 +40,7 @@
 #import "PreferenceManager.h"
 #import "BrowserWrapper.h"
 #import "BrowserWindowController.h"
-#import "BookmarksClient.h"
+#import "BookmarkNotifications.h"
 #import "SiteIconProvider.h"
 #import "BrowserTabView.h"
 #import "BrowserTabViewItem.h"

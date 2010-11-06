@@ -49,6 +49,7 @@
 #import "BrowserWindow.h"
 #import "Bookmark.h"
 #import "BookmarkFolder.h"
+#import "BookmarkNotifications.h"
 #import "CHGradient.h"
 #import "NSPasteboard+Utils.h"
 #import "NSBezierPath+Utils.h"

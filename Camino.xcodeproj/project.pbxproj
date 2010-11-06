@@ -2748,7 +2748,7 @@
 		3FB2BA8A0545EA80002B9691 /* BookmarkMenu.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = BookmarkMenu.mm; path = src/bookmarks/BookmarkMenu.mm; sourceTree = "<group>"; };
 		3FB2BA8B0545EA80002B9691 /* BookmarkOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = BookmarkOutlineView.h; path = src/bookmarks/BookmarkOutlineView.h; sourceTree = "<group>"; };
 		3FB2BA8C0545EA80002B9691 /* BookmarkOutlineView.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = BookmarkOutlineView.mm; path = src/bookmarks/BookmarkOutlineView.mm; sourceTree = "<group>"; };
-		3FB2BA8D0545EA80002B9691 /* BookmarksClient.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = BookmarksClient.h; path = src/bookmarks/BookmarksClient.h; sourceTree = "<group>"; };
+		3FB2BA8D0545EA80002B9691 /* BookmarkNotifications.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = BookmarkNotifications.h; path = src/bookmarks/BookmarkNotifications.h; sourceTree = "<group>"; };
 		3FB2BA8E0545EA80002B9691 /* BookmarkToolbar.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = BookmarkToolbar.h; path = src/bookmarks/BookmarkToolbar.h; sourceTree = "<group>"; };
 		3FB2BA8F0545EA80002B9691 /* BookmarkToolbar.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = BookmarkToolbar.mm; path = src/bookmarks/BookmarkToolbar.mm; sourceTree = "<group>"; };
 		3FB2BA900545EA80002B9691 /* BookmarkViewController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = BookmarkViewController.h; path = src/bookmarks/BookmarkViewController.h; sourceTree = "<group>"; };
@@ -4973,7 +4973,7 @@
 		F5A3669402CCFAF601DC3354 /* Bookmarks */ = {
 			isa = PBXGroup;
 			children = (
-				3FB2BA8D0545EA80002B9691 /* BookmarksClient.h */,
+				3FB2BA8D0545EA80002B9691 /* BookmarkNotifications.h */,
 				335639B10C84E60D00DC4D06 /* UI */,
 				335639AF0C84E59700DC4D06 /* Backend */,
 				336234450E6BC2C700DD5373 /* Import and Export */,
@@ -5415,6 +5415,7 @@
 			isa = PBXProject;
 			buildConfigurationList = 3323778E0C4D0F9600A34879 /* Build configuration list for PBXProject "Camino" */;
 			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,

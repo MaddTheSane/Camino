@@ -38,7 +38,6 @@
  * ***** END LICENSE BLOCK ***** */
 
 #import "BookmarkItem.h"
-#import "BookmarksClient.h"
 
 //Special flags
 enum {

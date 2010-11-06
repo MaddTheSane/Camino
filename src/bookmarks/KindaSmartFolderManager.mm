@@ -46,9 +46,9 @@
 #import "BookmarkManager.h"
 #import "AddressBookManager.h"
 #import "NetworkServices.h"
-#import "BookmarksClient.h"
+#import "BookmarkNotifications.h"
 
-@interface KindaSmartFolderManager (Private) <NetworkServicesClient, BookmarksClient>
+@interface KindaSmartFolderManager (Private) <NetworkServicesClient>
 - (void)addBookmark:(Bookmark *)aBookmark toSmartFolder:(BookmarkFolder *)aFolder;
 - (void)removeBookmark:(Bookmark *)aBookmark fromSmartFolder:(BookmarkFolder *)aFolder;
 - (void)checkForNewTop10:(Bookmark *)aBookmark;

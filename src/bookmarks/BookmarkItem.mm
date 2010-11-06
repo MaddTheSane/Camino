@@ -39,12 +39,12 @@
 #import "NSString+Utils.h"
 
 #import "BookmarkManager.h"
-#import "BookmarksClient.h"
+#import "BookmarkNotifications.h"
 #import "BookmarkItem.h"
 
 // Notifications
 NSString* const BookmarkItemChangedNotification = @"bookmark_changed";
-  NSString* const BookmarkItemChangedFlagsKey = @"change_flags";
+NSString* const BookmarkItemChangedFlagsKey = @"change_flags";
 
 // Camino plist keys
 NSString* const BMTitleKey = @"Title";

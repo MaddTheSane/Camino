@@ -43,6 +43,7 @@
 #import "BookmarkInfoController.h"
 #import "Bookmark.h"
 #import "BookmarkFolder.h"
+#import "BookmarkNotifications.h"
 
 // determined through weeks of trial and error
 #define kMaxLengthOfWindowTitle 49

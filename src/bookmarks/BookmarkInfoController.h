@@ -39,11 +39,10 @@
  * ***** END LICENSE BLOCK ***** */
 
 #import <AppKit/AppKit.h>
-#import "BookmarksClient.h"
 
 @class BookmarkItem;
 
-@interface BookmarkInfoController : NSWindowController<BookmarksClient>
+@interface BookmarkInfoController : NSWindowController
 {
   IBOutlet NSView*      mBookmarkView;
   IBOutlet NSView*      mFolderView;

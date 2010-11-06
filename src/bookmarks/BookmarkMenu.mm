@@ -36,8 +36,10 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-#import "BookmarkManager.h"
 #import "BookmarkMenu.h"
+
+#import "BookmarkManager.h"
+#import "BookmarkNotifications.h"
 #import "BookmarkFolder.h"
 #import "Bookmark.h"
 
