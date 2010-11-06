@@ -50,7 +50,10 @@ class NeckoCacheHelper;
 @interface SiteIconProvider : NSObject<RemoteLoadListener>
 {
   NeckoCacheHelper*       mIconsCacheHelper;
-  NSMutableDictionary*    mRequestDict;   // dict of favicon url -> request url
+  // Dict of favicon url -> request url.
+  NSMutableDictionary*    mRequestDict;
+  // Set of URIs for which we've explicitly registered images to be icons.
+  NSMutableSet*           mURIsWithRegisteredIcons;
 }
 
 + (SiteIconProvider*)sharedFavoriteIconProvider;

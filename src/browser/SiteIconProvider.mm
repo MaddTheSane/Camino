@@ -279,7 +279,8 @@ NeckoCacheHelper::ClearCache()
 {
   if ((self = [super init]))
   {
-    mRequestDict    = [[NSMutableDictionary alloc] initWithCapacity:5];
+    mRequestDict = [[NSMutableDictionary alloc] initWithCapacity:5];
+    mURIsWithRegisteredIcons = [[NSMutableSet alloc] init];
 
     mIconsCacheHelper = new NeckoCacheHelper();
     nsresult rv = mIconsCacheHelper->Init("MissedIconsCache");
@@ -297,6 +298,7 @@ NeckoCacheHelper::ClearCache()
   delete mIconsCacheHelper;
 
   [mRequestDict release];
+  [mURIsWithRegisteredIcons release];
   
   [super dealloc];
 }
@@ -488,6 +490,10 @@ NeckoCacheHelper::ClearCache()
                                             forURL:inURI
                                     withExpiration:[NSDate distantFuture]
                                         memoryOnly:YES];
+
+  // Keep track of URIs which have local images that been registered as icons,
+  // so that we can opt out of checking the network for the icons.
+  [mURIsWithRegisteredIcons addObject:inURI];
 }
 
 - (BOOL)fetchFavoriteIconForPage:(NSString*)inPageURI
@@ -516,6 +522,9 @@ NeckoCacheHelper::ClearCache()
   if ([iconTargetURL length] == 0)
     return NO;
   
+  if([mURIsWithRegisteredIcons containsObject:inPageURI])
+    return NO;
+
   // is this uri already in the missing icons cache?
   if ([self inMissedIconsCache:iconTargetURL])
   {
