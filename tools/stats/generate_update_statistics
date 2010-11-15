@@ -88,6 +88,7 @@ grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c
 grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.2(I|&)"
 grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6\.1(I|&)"
 grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "1\.6(I|&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0\.6(I|&)"
 grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0\.5(I|&)"
 grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0\.4(I|&)"
 grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0\.3(I|&)"
