@@ -62,13 +62,15 @@ extern NSString* const kWillShowFeedMenu;
   AutoCompleteDataSource*   mDataSource;
   NSString*                 mSearchString;
   
-  // used to remember if backspace was pressed in complete: so we can check this in controlTextDidChange
+  // Remembers if backspace was pressed in complete so we can check this in controlTextDidChange.
   BOOL mBackspaced;
-  // determines if the search currently pending should complete the default result when it is ready
+  // Determines if the search currently pending should complete the default result when it is ready.
   BOOL mCompleteResult;
-  // should the autocomplete fill in the default completion into the text field? The default
+  // Should the autocomplete fill in the default completion into the text field? The default
   // is no, but this can be set with a hidden Gecko pref.
   BOOL mCompleteWhileTyping;
+  // Should we autocomplete? The default is yes, but this can be set with a hidden Gecko pref.
+  BOOL mShouldAutocomplete;
 }
 
 - (void)searchResultsAvailable;

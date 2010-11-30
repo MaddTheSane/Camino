@@ -78,6 +78,8 @@ NSString* const kWillShowFeedMenu = @"WillShowFeedMenu";
 
 - (NSTableView*)tableView;
 
+- (BOOL)checkGeckoAutocompletePref;
+
 - (void)startSearch:(NSString*)aString complete:(BOOL)aComplete;
 - (void)performSearch;
 - (void)searchTimer:(NSTimer*)aTimer;
@@ -414,11 +416,15 @@ NSString* const kWillShowFeedMenu = @"WillShowFeedMenu";
   // "traditional" (pick from a dropdown list) autocomplete.
   mCompleteWhileTyping = [[PreferenceManager sharedInstance] getBooleanPref:kGeckoPrefInlineLocationBarAutocomplete withSuccess:NULL];
 
+  // Don't autocomplete if the hidden Gecko pref is set to false.
+  mShouldAutocomplete = [self checkGeckoAutocompletePref];
+
   // We need to register a Gecko pref observer and then register an
   // NSNotificationCenter observer for the pref change notification
   [[PreferenceManager sharedInstance] addObserver:self forPref:kGeckoPrefInlineLocationBarAutocomplete];
+  [[PreferenceManager sharedInstance] addObserver:self forPref:kGeckoPrefLocationBarAutocompleteEnabled];
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(inlineLocationBarAutocompletePrefChanged:)
+                                           selector:@selector(locationBarAutocompletePrefChanged:)
                                                name:kPrefChangedNotificationName
                                              object:self]; // since we added ourself as the Gecko pref observer
 
@@ -429,7 +435,7 @@ NSString* const kWillShowFeedMenu = @"WillShowFeedMenu";
 - (void)dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  [[PreferenceManager sharedInstanceDontCreate] removeObserver:self forPref:kGeckoPrefInlineLocationBarAutocomplete];
+  [[PreferenceManager sharedInstanceDontCreate] removeObserver:self];
   [self cancelSearch];
   [self cleanup];
   [super dealloc];
@@ -491,10 +497,29 @@ NSString* const kWillShowFeedMenu = @"WillShowFeedMenu";
   [self revertText];
 }
 
-// makes sure mCompleteWhileTyping doesn't get stale
-- (void)inlineLocationBarAutocompletePrefChanged:(NSNotification*)aNotification
+static const int kStringComparisonEqual = 0;
+
+// Make sure mCompleteWhileTyping and mShouldAutocomplete don't get stale.
+- (void)locationBarAutocompletePrefChanged:(NSNotification*)aNotification
 {
-  mCompleteWhileTyping = [[PreferenceManager sharedInstance] getBooleanPref:kGeckoPrefInlineLocationBarAutocomplete withSuccess:NULL];
+  const char *changedPrefKey = [[[aNotification userInfo] objectForKey:kPrefChangedPrefNameUserInfoKey] UTF8String];
+
+  if (strcmp(changedPrefKey, kGeckoPrefInlineLocationBarAutocomplete) == kStringComparisonEqual)
+    mCompleteWhileTyping = [[PreferenceManager sharedInstance] getBooleanPref:kGeckoPrefInlineLocationBarAutocomplete withSuccess:NULL];
+  else if (strcmp(changedPrefKey, kGeckoPrefLocationBarAutocompleteEnabled) == kStringComparisonEqual)
+    mShouldAutocomplete = [self checkGeckoAutocompletePref];
+}
+
+- (BOOL)checkGeckoAutocompletePref
+{
+  BOOL gotPref;
+  BOOL geckoAutocompletePrefState = [[PreferenceManager sharedInstance] getBooleanPref:kGeckoPrefLocationBarAutocompleteEnabled
+                                                                      withSuccess:&gotPref];
+  // If we can't get the pref, ensure we leave autocomplete enabled.
+  if (!gotPref)
+    geckoAutocompletePrefState = YES;
+    
+  return geckoAutocompletePrefState;
 }
 
 #pragma mark -
@@ -503,6 +528,9 @@ NSString* const kWillShowFeedMenu = @"WillShowFeedMenu";
 
 - (void)startSearch:(NSString*)aString complete:(BOOL)aComplete
 {
+  if (!mShouldAutocomplete)
+    return;
+
   if (mSearchString)
     [mSearchString release];
   mSearchString = [aString retain];

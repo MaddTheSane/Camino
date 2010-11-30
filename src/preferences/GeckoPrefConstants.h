@@ -186,6 +186,9 @@ extern const char* const kGeckoPrefCheckDefaultBrowserAtLaunch;        // bool
 // Controls whether autocomplete is done in a list or in-line
 extern const char* const kGeckoPrefInlineLocationBarAutocomplete;      // bool
 
+// Controls whether autocomplete is enabled
+extern const char* const kGeckoPrefLocationBarAutocompleteEnabled;     // bool
+
 // Controls whether full content zoom is used, or text scaling
 extern const char* const kGeckoPrefFullContentZoom;                    // bool
 
