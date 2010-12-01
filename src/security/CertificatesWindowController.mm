@@ -428,7 +428,7 @@ static CertificatesWindowController* gCertificatesWindowController;
                                              object:nil];
   
   [mSplitter setAutosaveSplitterPosition:YES];
-  [mSplitter setAutosaveName:@"CategoriesSplitter"];
+  [mSplitter setAutosaveName:@"CertificateCategoriesSplitter"];
 
   [mCertsOutlineView setDoubleAction:@selector(viewSelectedCertificates:)];
   [mCertsOutlineView setDeleteAction:@selector(deleteSelectedCertificates:)];

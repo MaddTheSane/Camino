@@ -127,7 +127,7 @@
 
 - (NSString*)defaultsKey
 {
-  return [NSString stringWithFormat:@"ExtendedSplitView Sizes ", mAutosaveName];
+  return [NSString stringWithFormat:@"ExtendedSplitView Sizes %@", mAutosaveName];
 }
 
 - (void)restoreSplitterPosition
