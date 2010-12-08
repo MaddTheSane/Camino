@@ -38,10 +38,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-#include <sys/resource.h>
-#include <sys/types.h>
-#include <time.h>
-
 #import "BreakpadWrapper.h"
 
 static void SetupRuntimeOptions(int argc, const char *argv[])
@@ -50,19 +46,6 @@ static void SetupRuntimeOptions(int argc, const char *argv[])
     printf("stdout and stderr unbuffered\n");
     setbuf(stdout, 0);
     setbuf(stderr, 0);
-  }
-}
-
-static void SetMaxFileDescriptors(unsigned int target)
-{
-  struct rlimit rl;
-  if (getrlimit(RLIMIT_NOFILE, &rl) == 0) {
-    if (rl.rlim_max > 0 && rl.rlim_max < target)
-      target = rl.rlim_max;
-    if (target > rl.rlim_cur) {
-      rl.rlim_cur = target;
-      setrlimit(RLIMIT_NOFILE, &rl);
-    }
   }
 }
 
@@ -77,11 +60,6 @@ int main(int argc, const char *argv[])
   [pool release];
 
   SetupRuntimeOptions(argc, argv);
-
-  // Because of a nasty file descriptor leak when viewing Flash
-  // (bug 397053), bump up our limit up to 1024 so that it takes longer for
-  // the world to end.
-  SetMaxFileDescriptors(1024);
 
   int rv = NSApplicationMain(argc, argv);
 
