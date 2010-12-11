@@ -547,7 +547,7 @@
 "MalwareLongDescText" = "<p>Malware sites try to install programs that steal private information, use your computer to attack others, or damage your system.</p><p>Some malware sites intentionally distribute harmful software, but many are compromised without the knowledge or permission of their owners.</p><p>Your computer can be infected just by proceeding to this site, without any further action on your part.</p>";
 "MoreInformationFormat" = "For more information about why this site was blocked, see Camino’s <a href='%@'>Safe Browsing Documentation</a>.";
 "GetMeOutButtonLabel" = "Close Page";
-"IgnoreWarningButtonLabel" = "Ignore this warning";
+"IgnoreWarningButtonLabel" = "Ignore This Warning";
 "PhishReportingDisabledToolTip" = "“Warn me when visiting potentially malicious sites” must be enabled to report phishing pages.";
 
 /* Gecko Print Dialog; only needed for Gecko 1.9.2 */
