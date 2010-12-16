@@ -26,6 +26,7 @@ classic.jar:
 +  skin/classic/global/dirListing/folder.png               (skin/classic/global/dirListing/folder.png)
 +  skin/classic/global/dirListing/local.png                (skin/classic/global/dirListing/folder.png)
 +  skin/classic/global/dirListing/remote.png               (skin/classic/global/dirListing/remote.png)
++  skin/classic/global/dirListing/symlink.png              (skin/classic/global/dirListing/symlink.png)
 +  skin/classic/global/dirListing/up.png                   (skin/classic/global/dirListing/up.png)
 +  skin/classic/global/icons/blacklist.png                 (skin/classic/global/icons/blacklist.png)
 +  skin/classic/global/icons/warning.png                   (skin/classic/global/icons/warning.png)

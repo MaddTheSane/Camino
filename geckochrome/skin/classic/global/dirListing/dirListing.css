@@ -151,5 +151,21 @@ td:not(:first-child) {
 }
 
 .dir::before {
+  padding-top: 4px; /* visually center the image on the base line of the text */
   content: url(chrome://global/skin/dirListing/folder.png);
+}
+
+/* nsIndexedToHTML.cpp fails to include styles for .symlink::before to match
+ * styles for .dir::before and .file::before
+ */
+.symlink::before {
+  -moz-margin-end: 4px;
+  -moz-margin-start: -20px;
+  padding-top: 2px; /* visually center the image on the base line of the text */
+  vertical-align: middle;
+  content: url(chrome://global/skin/dirListing/symlink.png);
+}
+
+.file > img {
+  vertical-align: bottom; /* visually center the image on the base line of the text */
 }
