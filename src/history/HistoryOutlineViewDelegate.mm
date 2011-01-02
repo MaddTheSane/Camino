@@ -41,6 +41,7 @@
 
 #import "HistoryItem.h"
 #import "HistoryDataSource.h"
+#import "HistoryTree.h"
 
 #import "ExtendedOutlineView.h"
 #import "PreferenceManager.h"
@@ -83,7 +84,7 @@ static NSString* const kExpandedHistoryStatesDefaultsKey = @"history_expand_stat
 @interface HistoryOutlineViewDelegate(Private)
 
 - (void)historyChanged:(NSNotification *)notification;
-- (HistoryDataSource*)historyDataSource;
+- (HistoryTree*)historyTree;
 - (void)recursiveDeleteItem:(HistoryItem*)item;
 - (void)saveViewToPrefs;
 - (void)updateSortMenuState;
@@ -121,11 +122,12 @@ static NSString* const kExpandedHistoryStatesDefaultsKey = @"history_expand_stat
 
 - (void)awakeFromNib
 {
-  // register for history change notifications. note that we only observe our data
-  // source, as there may be more than one.
+  // Register for history change notifications. note that we only observe our
+  // tree, as there may be more than one.
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                        selector:@selector(historyChanged:)
-                                        name:kNotificationNameHistoryDataSourceChanged object:[self historyDataSource]];
+                                           selector:@selector(historyChanged:)
+                                               name:kNotificationNameHistoryTreeChanged
+                                             object:[self historyTree]];
 
   // Set up the date column formatting
   RelativeDateFormatter* dateFormatter = [[[RelativeDateFormatter alloc] init] autorelease];
@@ -146,10 +148,10 @@ static NSString* const kExpandedHistoryStatesDefaultsKey = @"history_expand_stat
     {
       NSString* historyView = [[NSUserDefaults standardUserDefaults] stringForKey:@"History View"];
       if (historyView)
-        [[self historyDataSource] setHistoryView:historyView];
+        [[self historyTree] setHistoryView:historyView];
 
-      [[self historyDataSource] loadSynchronously];
-      
+      [[self historyTree] buildTree];
+
       if (![mHistoryOutlineView sortColumnIdentifier])
       {
         // these forward to the data source
@@ -173,13 +175,13 @@ static NSString* const kExpandedHistoryStatesDefaultsKey = @"history_expand_stat
 
 - (void)searchFor:(NSString*)searchString inFieldWithTag:(int)tag
 {
-  [[self historyDataSource] searchFor:searchString inFieldWithTag:tag];
+  [[self historyTree] searchFor:searchString inFieldWithTag:tag];
 }
 
 - (void)clearSearchResults
 {
   [mBookmarksViewController resetSearchField];
-  [[self historyDataSource] clearSearchResults];
+  [[self historyTree] clearSearchResults];
   [mHistoryOutlineView reloadData];
   [self restoreFolderExpandedStates];
 }
@@ -334,7 +336,7 @@ static NSString* const kExpandedHistoryStatesDefaultsKey = @"history_expand_stat
 - (IBAction)groupByDate:(id)sender
 {
   [self clearSearchResults];
-  [[self historyDataSource] setHistoryView:kHistoryViewByDate];
+  [[self historyTree] setHistoryView:kHistoryViewByDate];
   [self updateSortMenuState];
   [self saveViewToPrefs];
 }
@@ -342,7 +344,7 @@ static NSString* const kExpandedHistoryStatesDefaultsKey = @"history_expand_stat
 - (IBAction)groupBySite:(id)sender
 {
   [self clearSearchResults];
-  [[self historyDataSource] setHistoryView:kHistoryViewBySite];
+  [[self historyTree] setHistoryView:kHistoryViewBySite];
   [self updateSortMenuState];
   [self saveViewToPrefs];
 }
@@ -350,7 +352,7 @@ static NSString* const kExpandedHistoryStatesDefaultsKey = @"history_expand_stat
 - (IBAction)setNoGrouping:(id)sender
 {
   [self clearSearchResults];
-  [[self historyDataSource] setHistoryView:kHistoryViewFlat];
+  [[self historyTree] setHistoryView:kHistoryViewFlat];
   [self updateSortMenuState];
   [self saveViewToPrefs];
 }
@@ -537,15 +539,14 @@ static NSString* const kExpandedHistoryStatesDefaultsKey = @"history_expand_stat
   if (mUpdatesDisabled) return;
 
   id changeRoot =
-      [[notification userInfo] objectForKey:kNotificationHistoryDataSourceChangedUserInfoChangedRoot];
-  id changedItem =
-      [[notification userInfo] objectForKey:kNotificationHistoryDataSourceChangedUserInfoChangedItem];
-  BOOL onlyItemChanged = (changeRoot == changedItem);
+      [[notification userInfo] objectForKey:kHistoryTreeChangeRootKey];
 
-  if (changeRoot)
-    [mHistoryOutlineView reloadItem:changeRoot reloadChildren:!onlyItemChanged];
-  else
-  {
+  if (changeRoot) {
+    NSNumber* childrenChanged =
+        [[notification userInfo] objectForKey:kHistoryTreeChangedChildrenKey];
+    [mHistoryOutlineView reloadItem:changeRoot
+                     reloadChildren:[childrenChanged boolValue]];
+  } else {
     [mHistoryOutlineView reloadData];
     [self restoreFolderExpandedStates];
   }
@@ -555,7 +556,7 @@ static NSString* const kExpandedHistoryStatesDefaultsKey = @"history_expand_stat
 {
   if ([item isKindOfClass:[HistorySiteItem class]])
   {
-    [[self historyDataSource] removeItem:(HistorySiteItem*)item];
+    [[HistoryDataSource sharedHistoryDataSource] removeItem:(HistorySiteItem*)item];
   }
   else if ([item isKindOfClass:[HistoryCategoryItem class]])
   {
@@ -592,15 +593,14 @@ static NSString* const kExpandedHistoryStatesDefaultsKey = @"history_expand_stat
   [aPasteboard setURLs:urlList withTitles:nil];
 }
 
-
-- (HistoryDataSource*)historyDataSource
+- (HistoryTree*)historyTree
 {
-  return (HistoryDataSource*)[mHistoryOutlineView dataSource];
+  return (HistoryTree*)[mHistoryOutlineView dataSource];
 }
 
 - (void)saveViewToPrefs
 {
-  NSString* historyView = [[self historyDataSource] historyView];
+  NSString* historyView = [[self historyTree] historyView];
   [[NSUserDefaults standardUserDefaults] setObject:historyView forKey:@"History View"];
 }
 
@@ -621,16 +621,16 @@ static NSString* const kExpandedHistoryStatesDefaultsKey = @"history_expand_stat
 
 - (void)updateSortMenuState
 {
-  HistoryDataSource* dataSource = [self historyDataSource];
+  HistoryTree* historyTree = [self historyTree];
   
   // grouping items
-  [mHistorySortMenu checkItemWithTag:[self tagForGrouping:[dataSource historyView]] inGroupWithMask:kGroupingItemsTagMask];
+  [mHistorySortMenu checkItemWithTag:[self tagForGrouping:[historyTree historyView]] inGroupWithMask:kGroupingItemsTagMask];
 
   // sorting items
-  [mHistorySortMenu checkItemWithTag:[self tagForSortColumnIdentifier:[dataSource sortColumnIdentifier]] inGroupWithMask:kSortByItemsTagMask];
+  [mHistorySortMenu checkItemWithTag:[self tagForSortColumnIdentifier:[historyTree sortColumnIdentifier]] inGroupWithMask:kSortByItemsTagMask];
 
   // ascending/descending
-  [mHistorySortMenu checkItemWithTag:[self tagForSortOrder:[dataSource sortDescending]] inGroupWithMask:kSortOrderItemsTagMask];
+  [mHistorySortMenu checkItemWithTag:[self tagForSortOrder:[historyTree sortDescending]] inGroupWithMask:kSortOrderItemsTagMask];
 }
 
 

@@ -109,6 +109,8 @@
 		00BC696F114B68D1000A0508 /* CaminoImporter.mdimporter in Copy Spotlight Importer */ = {isa = PBXBuildFile; fileRef = 00BC6874114B5EA3000A0508 /* CaminoImporter.mdimporter */; };
 		00BC6971114B68E0000A0508 /* CaminoImporter.mdimporter in Copy Spotlight Importer */ = {isa = PBXBuildFile; fileRef = 00BC6874114B5EA3000A0508 /* CaminoImporter.mdimporter */; };
 		00BC6D6D114B6FA4000A0508 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00BC6CD8114B6F9C000A0508 /* CoreServices.framework */; };
+		00C1D4831285DF14009C4DC3 /* HistoryTree.mm in Sources */ = {isa = PBXBuildFile; fileRef = 00C1D4821285DF14009C4DC3 /* HistoryTree.mm */; };
+		00C1D4841285DF14009C4DC3 /* HistoryTree.mm in Sources */ = {isa = PBXBuildFile; fileRef = 00C1D4821285DF14009C4DC3 /* HistoryTree.mm */; };
 		00C6890710560B110082D80F /* BreakpadWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 00C6890610560B110082D80F /* BreakpadWrapper.m */; };
 		00C6890810560B110082D80F /* BreakpadWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 00C6890610560B110082D80F /* BreakpadWrapper.m */; };
 		00F79F591075B622006688AC /* OperaBookmarkConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 00F79F581075B622006688AC /* OperaBookmarkConverter.m */; };
@@ -2533,6 +2535,8 @@
 		00BC68A5114B5F99000A0508 /* schema.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = schema.xml; path = "resources/spotlight-importer/schema.xml"; sourceTree = "<group>"; };
 		00BC6981114B6E77000A0508 /* SpotlightFileKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpotlightFileKeys.h; path = "src/spotlight-importer/SpotlightFileKeys.h"; sourceTree = "<group>"; };
 		00BC6CD8114B6F9C000A0508 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
+		00C1D4811285DF14009C4DC3 /* HistoryTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HistoryTree.h; path = src/history/HistoryTree.h; sourceTree = "<group>"; };
+		00C1D4821285DF14009C4DC3 /* HistoryTree.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = HistoryTree.mm; path = src/history/HistoryTree.mm; sourceTree = "<group>"; };
 		00C6890510560B110082D80F /* BreakpadWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BreakpadWrapper.h; path = src/application/BreakpadWrapper.h; sourceTree = SOURCE_ROOT; };
 		00C6890610560B110082D80F /* BreakpadWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BreakpadWrapper.m; path = src/application/BreakpadWrapper.m; sourceTree = SOURCE_ROOT; };
 		00F79F571075B622006688AC /* OperaBookmarkConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OperaBookmarkConverter.h; path = src/bookmarks/OperaBookmarkConverter.h; sourceTree = "<group>"; };
@@ -3083,7 +3087,7 @@
 		F52D5CDB027D412A01A80166 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		F52D5CDC027D412A01A80166 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
 		F52D5CDD027D412A01A80166 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
-		F52F87CB027D75C301A80165 /* HistoryDataSource */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = HistoryDataSource; path = src/history/HistoryDataSource.h; sourceTree = "<group>"; };
+		F52F87CB027D75C301A80165 /* HistoryDataSource.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = HistoryDataSource.h; path = src/history/HistoryDataSource.h; sourceTree = "<group>"; };
 		F52F87CD027D75C301A80165 /* HistoryDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = HistoryDataSource.mm; path = src/history/HistoryDataSource.mm; sourceTree = "<group>"; };
 		F53849040349779901A80166 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = generated/PreferencePanes/Appearance/English.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
 		F538DFAF023B3739010001CA /* fileHtml.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = fileHtml.icns; path = resources/images/app/fileHtml.icns; sourceTree = SOURCE_ROOT; };
@@ -4138,11 +4142,13 @@
 		33563A520C84ED2700DC4D06 /* Backend */ = {
 			isa = PBXGroup;
 			children = (
-				F52F87CB027D75C301A80165 /* HistoryDataSource */,
+				F52F87CB027D75C301A80165 /* HistoryDataSource.h */,
 				F52F87CD027D75C301A80165 /* HistoryDataSource.mm */,
 				3F7C6CB905B4819E002FFFD3 /* HistoryItem.h */,
 				3F7C6CBA05B4819E002FFFD3 /* HistoryItem.mm */,
 				009637FF126605A500049329 /* HistoryLoadListener.h */,
+				00C1D4811285DF14009C4DC3 /* HistoryTree.h */,
+				00C1D4821285DF14009C4DC3 /* HistoryTree.mm */,
 			);
 			name = Backend;
 			sourceTree = "<group>";
@@ -6494,6 +6500,7 @@
 				00F7A08C1077F255006688AC /* SafariBookmarkConverter.m in Sources */,
 				B386FC3110CF5AF30094DAAB /* NSMenu+Gecko.mm in Sources */,
 				DE2D02D11214E17D000668C5 /* CertErrorAboutModule.mm in Sources */,
+				00C1D4841285DF14009C4DC3 /* HistoryTree.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6693,6 +6700,7 @@
 				00F7A08D1077F255006688AC /* SafariBookmarkConverter.m in Sources */,
 				B386FC3210CF5AF30094DAAB /* NSMenu+Gecko.mm in Sources */,
 				DE2D02D21214E17D000668C5 /* CertErrorAboutModule.mm in Sources */,
+				00C1D4831285DF14009C4DC3 /* HistoryTree.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

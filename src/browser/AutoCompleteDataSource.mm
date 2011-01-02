@@ -142,17 +142,13 @@ const unsigned int kNumberOfItemsPerChunk = 100;
                                                                         ascending:NO] autorelease];
   [mBookmarkData sortUsingDescriptors:[NSArray arrayWithObject:visitCountDescriptor]];
 
-  HistoryDataSource *historyDataSource = [[[HistoryDataSource alloc] init] autorelease];
-  [historyDataSource setHistoryView:kHistoryViewFlat];
-  [historyDataSource setSortColumnIdentifier:@"visit_count"];
-  [historyDataSource setSortDescending:YES];
-  [historyDataSource loadSynchronously];
-  HistoryItem *rootHistoryItem = [historyDataSource rootItem];
-  NSEnumerator *historyEnum = [[rootHistoryItem children] objectEnumerator];
+  HistoryDataSource *historyDataSource = [HistoryDataSource sharedHistoryDataSource];
+  if (![historyDataSource isLoaded])
+    [historyDataSource loadSynchronously];
+  NSEnumerator *historyEnum = [[historyDataSource historyItems] objectEnumerator];
   HistoryItem *curChild;
   while ((curChild = [historyEnum nextObject])) {
-    if ([curChild isKindOfClass:[HistorySiteItem class]])
-      [mHistoryData addObject:curChild];
+    [mHistoryData addObject:curChild];
   }
 }
 

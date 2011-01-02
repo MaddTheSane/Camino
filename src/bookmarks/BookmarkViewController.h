@@ -35,12 +35,6 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-/*
- * Combines old BookmarkController and BookmarkDataSource classes.  When
- * history gets brought in to new Bookmark system, HistoryDataSource will
- * go away, too.
- */
-
 #import <Cocoa/Cocoa.h>
 
 #import "BrowserWrapper.h"    // for ContentViewProvider
@@ -48,7 +42,7 @@
 @class ExtendedTableView;
 @class ExtendedOutlineView;
 
-@class HistoryDataSource;
+@class HistoryTree;
 @class HistoryOutlineViewDelegate;
 
 @class BrowserWindowController;
@@ -150,7 +144,7 @@ enum
 
   BookmarkItem*           mItemToReveal;
 
-  HistoryDataSource*      mHistoryDataSource;
+  HistoryTree*            mHistoryTree;
 
   NSImage*                mSeparatorImage;
 }

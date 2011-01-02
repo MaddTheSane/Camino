@@ -38,42 +38,34 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+#import "HistoryDataSource.h"
+
 #import "NSString+Utils.h"
 #import "NSString+Gecko.h"
-#import "NSPasteboard+Utils.h"
 #import "NSDate+Utils.h"
 
 #import "BrowserWindowController.h"
-#import "HistoryDataSource.h"
+#import "CHBrowserService.h"
 #import "CHBrowserView.h"
 #import "ExtendedOutlineView.h"
-#import "PreferenceManager.h"
 #import "HistoryItem.h"
+#import "PreferenceManager.h"
 #import "SiteIconProvider.h"
 
-#import "BookmarkViewController.h"    // only for +greyStringWithItemCount
-
-#import "nsCOMPtr.h"
-
+#include "nsComponentManagerUtils.h"
+#include "nsCOMPtr.h"
 #include "nsIBrowserHistory.h"
-#include "nsIServiceManager.h"
 #include "nsINavHistoryService.h"
-
+#include "nsIServiceManager.h"
 #include "nsNetUtil.h"
 #include "nsString.h"
 
-#include "nsComponentManagerUtils.h"
 
-NSString* const kHistoryViewByDate    = @"date";
-NSString* const kHistoryViewBySite    = @"site";
-NSString* const kHistoryViewFlat      = @"flat";
+NSString* const kNotificationNameHistoryDataSourceItemChanged            = @"history_item_changed";
+NSString* const kNotificationHistoryDataSourceChangedUserInfoChangeType  = @"change_type";
 
-
-NSString* const kNotificationNameHistoryDataSourceChanged                     = @"history_changed";
-NSString* const kNotificationHistoryDataSourceChangedUserInfoChangeType       = @"change_type";
-NSString* const kNotificationHistoryDataSourceChangedUserInfoChangedItem      = @"changed_item";
-NSString* const kNotificationHistoryDataSourceChangedUserInfoChangedRoot      = @"changed_root";
-NSString* const kNotificationNameHistoryDataSourceCleared                     = @"history_cleared";
+NSString* const kNotificationNameHistoryDataSourceCleared = @"history_cleared";
+NSString* const kNotificationNameHistoryDataSourceRebuilt = @"history_rebuilt";
 
 // Internal change queueing constants.
 static NSString* const kChangeTypeKey = @"change_type";
@@ -90,71 +82,6 @@ static NSString* const kChangeVisitItemKey = @"item";
 static const NSTimeInterval kLoadNextChunkDelay = 0.05;
 // Number of history items to load in each chunk.
 static const unsigned int kNumberOfItemsPerChunk = 500;
-
-struct SortData
-{
-  SEL       mSortSelector;
-  NSNumber* mReverseSort;
-};
-
-static int HistoryItemSort(id firstItem, id secondItem, void* context)
-{
-  SortData* sortData = (SortData*)context;
-  int comp = (int)[firstItem performSelector:sortData->mSortSelector withObject:secondItem withObject:sortData->mReverseSort];
-  return comp;
-}
-
-
-#pragma mark -
-
-// base class for a 'builder' object. This one just builds a flat list
-@interface HistoryTreeBuilder : NSObject
-{
-  HistoryDataSource*    mDataSource;    // not retained (it owns us)
-  HistoryCategoryItem*  mRootItem;      // retained
-  SEL                   mSortSelector;
-  BOOL                  mSortDescending;
-}
-
-// sets up the tree and sorts it
-- (id)initWithDataSource:(HistoryDataSource*)inDataSource sortSelector:(SEL)sortSelector descending:(BOOL)descending;
-- (void)buildTree;
-
-- (HistoryItem*)rootItem;
-- (HistoryItem*)addItem:(HistorySiteItem*)item;
-- (HistoryItem*)removeItem:(HistorySiteItem*)item;
-
-- (void)resortWithSelector:(SEL)sortSelector descending:(BOOL)descending;
-
-// for internal use
-- (void)buildTreeWithItems:(NSArray*)items;
-- (void)resortFromItem:(HistoryItem*)item;
-
-@end
-
-#pragma mark -
-
-@interface HistoryBySiteTreeBuilder : HistoryTreeBuilder
-{
-  NSMutableDictionary*    mSiteDictionary;
-}
-
-- (HistoryCategoryItem*)ensureHostCategoryForItem:(HistorySiteItem*)inItem;
-- (void)removeSiteCategory:(HistoryCategoryItem*)item forHostname:(NSString*)hostname;
-
-@end
-
-#pragma mark -
-
-@interface HistoryByDateTreeBuilder : HistoryTreeBuilder
-{
-  NSMutableArray*         mDateCategories;        // array of HistoryCategoryItems ordered recent -> old
-}
-
-- (void)setupDateCategories;
-- (HistoryCategoryItem*)categoryItemForDate:(NSDate*)date;
-
-@end
 
 #pragma mark -
 
@@ -194,9 +121,6 @@ static int HistoryItemSort(id firstItem, id secondItem, void* context)
 // Processes any change events that came in during an asyncronous load.
 - (void)processPendingChanges;
 
-- (void)cleanupHistory;
-- (void)rebuildHistory;
-
 - (void)batchingStarted;
 - (void)batchingFinished;
 
@@ -216,379 +140,17 @@ static int HistoryItemSort(id firstItem, id secondItem, void* context)
 - (void)itemRemoved:(HistorySiteItem*)item;
 - (void)itemChanged:(HistorySiteItem*)item;
 
-- (void)notifyChange:(HistoryChangeType)type
-                item:(HistorySiteItem *)item
-                root:(HistoryItem *)root;
-- (SEL)selectorForSortColumn;
-
-- (void)rebuildSearchResults;
-- (void)sortSearchResults;
+- (void)sendChangeNotification:(HistoryChangeType)type
+                       forItem:(HistorySiteItem *)item;
+- (void)sendHistoryRebuildNotification;
 
 - (void)removeAllObjects;
 - (HistorySiteItem*)itemWithIdentifier:(NSString*)identifier;
 
 - (void)siteIconLoaded:(NSNotification*)inNotification;
-- (void)checkForNewDay;
 
 @end
 
-#pragma mark -
-
-// this little object exists simply to avoid a ref cycle between the refresh
-// timer and the data source.
-@interface HistoryTimerProxy : NSObject
-{
-  HistoryDataSource*    mHistoryDataSource;   // NOT owned
-}
-
-- (void)refreshTimerFired:(NSTimer*)timer;
-
-@end
-
-@implementation HistoryTimerProxy
-
-- (id)initWithHistoryDataSource:(HistoryDataSource*)inDataSource
-{
-  if ((self = [super init]))
-  {
-    mHistoryDataSource = inDataSource;
-  }
-  return self;
-}
-
-- (void)refreshTimerFired:(NSTimer*)timer
-{
-  [mHistoryDataSource checkForNewDay];
-}
-
-@end // HistoryTimerProxy
-
-
-#pragma mark -
-#pragma mark --HistoryTreeBuilder--
-
-@implementation HistoryTreeBuilder
-
-- (id)initWithDataSource:(HistoryDataSource*)inDataSource sortSelector:(SEL)sortSelector descending:(BOOL)descending
-{
-  if ((self = [super init]))
-  {
-    mDataSource     = inDataSource;    // not retained
-    mSortSelector   = sortSelector;
-    mSortDescending = descending;
-  }
-  return self;
-}
-
-- (void)dealloc
-{
-  [mRootItem release];
-  [super dealloc];
-}
-
-- (void)buildTree
-{
-  [self buildTreeWithItems:[mDataSource historyItems]];
-}
-
-- (HistoryItem*)rootItem
-{
-  return mRootItem;
-}
-
-- (HistoryItem*)addItem:(HistorySiteItem*)item
-{
-  [mRootItem addChild:item];
-  [self resortFromItem:mRootItem];
-  return mRootItem;
-}
-
-- (HistoryItem*)removeItem:(HistorySiteItem*)item
-{
-  [mRootItem removeChild:item];
-  // no need to resort
-  return mRootItem;
-}
-
-- (void)buildTreeWithItems:(NSArray*)items
-{
-  mRootItem = [[HistoryCategoryItem alloc] initWithDataSource:mDataSource title:@"" childCapacity:[items count]];
-
-  [mRootItem addChildren:items];
-  [self resortFromItem:mRootItem];
-}
-
-- (void)resortWithSelector:(SEL)sortSelector descending:(BOOL)descending
-{
-  mSortSelector = sortSelector;
-  mSortDescending = descending;
-  [self resortFromItem:nil];
-}
-
-// recursive sort
-- (void)resortFromItem:(HistoryItem*)item
-{
-  SortData sortData;
-  sortData.mSortSelector = mSortSelector;
-  sortData.mReverseSort = [NSNumber numberWithBool:mSortDescending];
-  
-  if (!item)
-    item = mRootItem;
-    
-  NSMutableArray* itemChildren = [item children];
-  [itemChildren sortUsingFunction:HistoryItemSort context:&sortData];
-
-  unsigned int numChildren = [itemChildren count];
-  for (unsigned int i = 0; i < numChildren; i ++)
-  {
-    HistoryItem* curItem = [itemChildren objectAtIndex:i];
-    if ([curItem isKindOfClass:[HistoryCategoryItem class]])
-      [self resortFromItem:curItem];
-  }
-}
-
-@end
-
-#pragma mark -
-#pragma mark --HistoryBySiteTreeBuilder--
-
-@implementation HistoryBySiteTreeBuilder
-
-- (id)initWithDataSource:(HistoryDataSource*)inDataSource sortSelector:(SEL)sortSelector descending:(BOOL)descending
-{
-  if ((self = [super initWithDataSource:inDataSource sortSelector:sortSelector descending:descending]))
-  {
-  }
-  return self;
-}
-
-- (void)dealloc
-{
-  [mSiteDictionary release];
-  [super dealloc];
-}
-
-- (HistoryCategoryItem*)ensureHostCategoryForItem:(HistorySiteItem*)inItem
-{
-  NSString* itemHostname = [inItem hostname];
-  HistoryCategoryItem* hostCategory = [mSiteDictionary objectForKey:itemHostname];
-  if (!hostCategory)
-  {
-    NSString* itemTitle = itemHostname;
-    if ([itemHostname isEqualToString:@"local_file"])
-      itemTitle = NSLocalizedString(@"LocalFilesCategoryTitle", @"");
-    
-    hostCategory = [[HistorySiteCategoryItem alloc] initWithDataSource:mDataSource site:itemHostname title:itemTitle childCapacity:10];
-    [mSiteDictionary setObject:hostCategory forKey:itemHostname];
-    [mRootItem addChild:hostCategory];
-    [hostCategory release];
-  }
-  return hostCategory;
-}
-
-- (void)removeSiteCategory:(HistoryCategoryItem*)item forHostname:(NSString*)hostname
-{
-  [mSiteDictionary removeObjectForKey:hostname];
-  [mRootItem removeChild:item];
-}
-
-- (HistoryItem*)addItem:(HistorySiteItem*)item
-{
-  HistoryCategoryItem* hostCategory = [mSiteDictionary objectForKey:[item hostname]];
-  BOOL newHost = (hostCategory == nil);
-
-  if (!hostCategory)
-    hostCategory = [self ensureHostCategoryForItem:item];
-
-  [hostCategory addChild:item];
-
-  [self resortFromItem:newHost ? mRootItem : hostCategory];
-  return hostCategory;
-}
-
-- (HistoryItem*)removeItem:(HistorySiteItem*)item
-{
-  NSString* itemHostname = [item hostname];
-  HistoryCategoryItem* hostCategory = [mSiteDictionary objectForKey:itemHostname];
-  [hostCategory removeChild:item];
-
-  // is the category is now empty, remove it
-  if ([hostCategory numberOfChildren] == 0)
-  {
-    [self removeSiteCategory:hostCategory forHostname:itemHostname];
-    return mRootItem;
-  }
-  
-  return hostCategory;
-}
-
-- (void)buildTreeWithItems:(NSArray*)items
-{
-  if (!mSiteDictionary)
-    mSiteDictionary = [[NSMutableDictionary alloc] initWithCapacity:100];
-  else
-    [mSiteDictionary removeAllObjects];
-  
-  [mRootItem release];
-  mRootItem = [[HistoryCategoryItem alloc] initWithDataSource:mDataSource title:@"" childCapacity:100];
-
-  NSEnumerator* itemsEnum = [items objectEnumerator];
-  HistorySiteItem* item;
-  while ((item = [itemsEnum nextObject]))
-  {
-    HistoryCategoryItem* hostCategory = [self ensureHostCategoryForItem:item];
-    [hostCategory addChild:item];
-  }
-
-  [self resortFromItem:mRootItem];
-}
-
-@end
-
-#pragma mark -
-#pragma mark --HistoryByDateTreeBuilder--
-
-@implementation HistoryByDateTreeBuilder
-
-- (id)initWithDataSource:(HistoryDataSource*)inDataSource sortSelector:(SEL)sortSelector descending:(BOOL)descending
-{
-  if ((self = [super initWithDataSource:inDataSource sortSelector:sortSelector descending:descending]))
-  {
-    [self setupDateCategories];
-  }
-  return self;
-}
-
-- (void)dealloc
-{
-  [mDateCategories release];
-  [super dealloc];
-}
-
-- (void)setupDateCategories
-{
-  if (!mDateCategories)
-    mDateCategories =  [[NSMutableArray alloc] initWithCapacity:9];
-  else
-    [mDateCategories removeAllObjects];  
-
-  static const int kOlderThanAWeek = 7;
-  static const int kDefaultExpireDays = 9;
-
-  // Read the history cutoff so that we don't create too many folders
-  BOOL gotPref = NO;
-  int expireDays = [[PreferenceManager sharedInstance] getIntPref:kGeckoPrefHistoryLifetimeDays
-                                                      withSuccess:&gotPref];
-  if (!gotPref)
-    expireDays = kDefaultExpireDays;
-  else if (expireDays == 0) {
-    // Return with an empty array, there is no history
-    return;
-  }
-
-  NSDictionary* curCalendarLocale = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
-  NSString* dateFormat = NSLocalizedString(@"HistoryMenuDateFormat", @"");
-  
-  NSCalendarDate* nowDate      = [NSCalendarDate calendarDate];
-  NSCalendarDate* lastMidnight = [NSCalendarDate dateWithYear:[nowDate yearOfCommonEra]
-                                                    month:[nowDate monthOfYear]
-                                                      day:[nowDate dayOfMonth]
-                                                     hour:0
-                                                   minute:0
-                                                   second:0
-                                                 timeZone:[nowDate timeZone]];
-
-  int dayLimit = (expireDays < kOlderThanAWeek ? expireDays : kOlderThanAWeek);
-  for (int ageDays = 0; ageDays <= dayLimit; ++ageDays)
-  {
-    NSDate* dayStartDate;
-    if (ageDays < kOlderThanAWeek) {
-      dayStartDate = [lastMidnight dateByAddingYears:0
-                                              months:0
-                                                days:(-1)*ageDays
-                                               hours:0
-                                             minutes:0
-                                             seconds:0];
-    } else
-      dayStartDate = [NSDate distantPast];
-    
-    NSString* itemTitle;
-    int childCapacity = 10;
-    int ageInDays = ageDays;
-    if (ageDays == 0)
-      itemTitle = NSLocalizedString(@"Today", @"");
-    else if (ageDays == 1 )
-      itemTitle = NSLocalizedString(@"Yesterday", @"");
-    else if (ageDays == kOlderThanAWeek) {
-      itemTitle = NSLocalizedString(@"HistoryMoreThanAWeek", @"");
-      ageInDays = -1;
-      childCapacity = 100;
-    } else {
-      itemTitle = [dayStartDate descriptionWithCalendarFormat:dateFormat
-                                                     timeZone:nil
-                                                       locale:curCalendarLocale];
-    }
-
-    HistoryCategoryItem* newItem = [[HistoryDateCategoryItem alloc] initWithDataSource:mDataSource
-                                                                             startDate:dayStartDate
-                                                                             ageInDays:ageInDays
-                                                                                 title:itemTitle
-                                                                         childCapacity:childCapacity];
-    [mDateCategories addObject:newItem];
-    [newItem release];
-  }
-}
-
-- (HistoryCategoryItem*)categoryItemForDate:(NSDate*)date
-{
-  // find the first category whose start date is older  
-  unsigned int numDateCategories = [mDateCategories count];
-  for (unsigned int i = 0; i < numDateCategories; i ++)
-  {
-    HistoryDateCategoryItem* curItem = [mDateCategories objectAtIndex:i];
-    NSComparisonResult comp = [date compare:[curItem startDate]];
-    if (comp == NSOrderedDescending)
-      return curItem;
-  }
-  
-  // in theory we should never get here, because the last item has a date of 'distant past'
-  return nil;
-}
-
-- (HistoryItem*)addItem:(HistorySiteItem*)item
-{
-  HistoryCategoryItem* dateCategory = [self categoryItemForDate:[item lastVisit]];
-  [dateCategory addChild:item];
-
-  [self resortFromItem:dateCategory];
-  return dateCategory;
-}
-
-- (HistoryItem*)removeItem:(HistorySiteItem*)item
-{
-  HistoryCategoryItem* dateCategory = [self categoryItemForDate:[item lastVisit]];
-  [dateCategory removeChild:item];
-  // no need to resort
-  return dateCategory;
-}
-
-- (void)buildTreeWithItems:(NSArray*)items
-{
-  NSEnumerator* itemsEnum = [items objectEnumerator];
-  HistorySiteItem* item;
-  while ((item = [itemsEnum nextObject]))
-  {
-    HistoryCategoryItem* dateCategory = [self categoryItemForDate:[item lastVisit]];
-    [dateCategory addChild:item];
-  }
-
-  mRootItem = [[HistoryCategoryItem alloc] initWithDataSource:mDataSource title:@"" childCapacity:[mDateCategories count]];
-  [mRootItem addChildren:mDateCategories];
-
-  [self resortFromItem:mRootItem];
-}
-
-@end
 
 #pragma mark -
 
@@ -786,7 +348,6 @@ public:
     // Rather than calling |itemRemoved| for every item, just remove
     // all the items at once and rebuild.
     [mDataSource removeAllObjects];
-    [mDataSource rebuildHistory];
     return NS_OK;
   }
 
@@ -809,16 +370,22 @@ NS_IMPL_ISUPPORTS1(nsNavHistoryObserver, nsINavHistoryObserver);
 
 #pragma mark -
 
+static HistoryDataSource* sSharedDataSource = nil;
+
 @implementation HistoryDataSource
 
 - (id)init
 {
-  if ((self = [super init]))
-  {
+  if ((self = [super init])) {
+    // register for xpcom shutdown
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(xpcomShutdownNotification:)
+                                                 name:XPCOMShutDownNotificationName
+                                               object:nil];
+
     nsCOMPtr<nsINavHistoryService> histSvc = do_GetService("@mozilla.org/browser/nav-history-service;1");
     mNavHistoryService = histSvc;
-    if (!mNavHistoryService)
-    {
+    if (!mNavHistoryService) {
       NSLog(@"Failed to initialize HistoryDataSource (couldn't get global history)");
       [self autorelease];
       return nil;
@@ -828,28 +395,6 @@ NS_IMPL_ISUPPORTS1(nsNavHistoryObserver, nsINavHistoryObserver);
     mNavHistoryObserver = new nsNavHistoryObserver(self);
     NS_ADDREF(mNavHistoryObserver);
     mNavHistoryService->AddObserver(mNavHistoryObserver, PR_FALSE);
-    
-    mCurrentViewIdentifier = [kHistoryViewByDate retain];
-    
-    mSortColumn = [[NSString stringWithString:@"last_visit"] retain];    // save last settings in prefs?
-    mSortDescending = YES;
-
-    mSearchString = nil;
-    
-    mLastDayOfCommonEra = [[NSCalendarDate calendarDate] dayOfCommonEra];
-    
-    // Set up a timer to fire every 30 secs, to refresh the dates when midnight rolls around.
-    // You might think it would be better to set up a timer to fire just after midnight,
-    // but that might not be robust to clock adjustments.
-
-    // the proxy avoids a ref cycle between the timer and self.
-    // the timer retains its target, thus owning the proxy.
-    HistoryTimerProxy* timerProxy = [[[HistoryTimerProxy alloc] initWithHistoryDataSource:self] autorelease];
-    mRefreshTimer = [[NSTimer scheduledTimerWithTimeInterval:30.0
-                                                      target:timerProxy   // takes ownership
-                                                    selector:@selector(refreshTimerFired:)
-                                                    userInfo:nil
-                                                     repeats:YES] retain];
 
     // register for site icon loads
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -859,6 +404,12 @@ NS_IMPL_ISUPPORTS1(nsNavHistoryObserver, nsINavHistoryObserver);
 
     mShowSiteIcons = [[PreferenceManager sharedInstance] getBooleanPref:kGeckoPrefEnableFavicons
                                                             withSuccess:NULL];
+
+    // register for xpcom shutdown
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(xpcomShutdownNotification:)
+                                                 name:XPCOMShutDownNotificationName
+                                               object:nil];
   }
 
   return self;
@@ -866,59 +417,32 @@ NS_IMPL_ISUPPORTS1(nsNavHistoryObserver, nsINavHistoryObserver);
 
 - (void)dealloc
 {
-  [self cleanupHistory];
-  
-  [mCurrentViewIdentifier release];
-  [mSearchString release];
-
-  [super dealloc];
-}
-
-- (void)cleanupHistory
-{
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-  if (mNavHistoryObserver)
-  {
+  if (mNavHistoryObserver) {
     if (mNavHistoryService)
       mNavHistoryService->RemoveObserver(mNavHistoryObserver);
     NS_RELEASE(mNavHistoryObserver);
   }
-
   NS_IF_RELEASE(mNavHistoryService);
-  
-  [mHistoryItems release];
-  mHistoryItems = nil;
 
+  [mHistoryItems release];
   [mHistoryItemsDictionary release];
-  mHistoryItemsDictionary = nil;
-  
-  [mSearchResultsArray release];
-  mSearchResultsArray = nil;
-  
-  [mTreeBuilder release];
-  mTreeBuilder = nil;
-  
-  [mRefreshTimer invalidate];
-  [mRefreshTimer release];
-  mRefreshTimer = nil;
+
+  [super dealloc];
 }
 
-- (void)rebuildHistory
++ (HistoryDataSource*)sharedHistoryDataSource
 {
-  [mTreeBuilder release];
-  mTreeBuilder = nil;
+  if (!sSharedDataSource)
+    sSharedDataSource = [[self alloc] init];
+  return sSharedDataSource;
+}
 
-  if ([mCurrentViewIdentifier isEqualToString:kHistoryViewFlat])
-    mTreeBuilder = [[HistoryTreeBuilder alloc] initWithDataSource:self sortSelector:[self selectorForSortColumn] descending:mSortDescending];
-  else if ([mCurrentViewIdentifier isEqualToString:kHistoryViewBySite])
-    mTreeBuilder = [[HistoryBySiteTreeBuilder alloc] initWithDataSource:self sortSelector:[self selectorForSortColumn] descending:mSortDescending];
-  else    // default to by date
-    mTreeBuilder = [[HistoryByDateTreeBuilder alloc] initWithDataSource:self sortSelector:[self selectorForSortColumn] descending:mSortDescending];
-  
-  [mTreeBuilder buildTree];
-  
-  [self notifyChange:kHistoryChangeRebuilt item:nil root:nil];
+- (void)xpcomShutdownNotification:(NSNotification*)inNotification
+{
+  [sSharedDataSource release];
+  sSharedDataSource = nil;
 }
 
 #pragma mark -
@@ -930,6 +454,7 @@ NS_IMPL_ISUPPORTS1(nsNavHistoryObserver, nsINavHistoryObserver);
 - (void)batchingFinished
 {
   [self loadSynchronously];
+  [self sendHistoryRebuildNotification];
 }
 
 - (void)visitedItem:(HistorySiteItem*)item withIdentifier:(NSString*)identifier
@@ -1013,40 +538,21 @@ NS_IMPL_ISUPPORTS1(nsNavHistoryObserver, nsINavHistoryObserver);
   [mHistoryItems addObject:item];
   [mHistoryItemsDictionary setObject:item forKey:[item identifier]];
 
-  HistoryItem* parentCategory = [mTreeBuilder addItem:item];
-
-  [self rebuildSearchResults];
-  [self notifyChange:kHistoryChangeItemAdded item:item root:parentCategory];
+  [self sendChangeNotification:kHistoryChangeItemAdded forItem:item];
 }
 
 - (void)itemRemoved:(HistorySiteItem*)item
 {
-  HistoryItem* parentCategory = [mTreeBuilder removeItem:item];
   [[item retain] autorelease];  // Extend lifetime to construct the notification.
   [mHistoryItems removeObject:item];
   [mHistoryItemsDictionary removeObjectForKey:[item identifier]];
 
-  [self rebuildSearchResults];
-  [self notifyChange:kHistoryChangeItemRemoved item:item root:parentCategory];
+  [self sendChangeNotification:kHistoryChangeItemRemoved forItem:item];
 }
 
 - (void)itemChanged:(HistorySiteItem*)item
 {
-  // we remove then re-add it
-  HistoryItem* oldParent = [mTreeBuilder removeItem:item];
-  HistoryItem* newParent = [mTreeBuilder addItem:item];
-  
-  [self rebuildSearchResults];
-
-  if (oldParent == newParent) {
-    // TODO: In cases where the change doesn't affect the sort order, root could
-    // be |item|, so observers could make more efficient updates.
-    [self notifyChange:kHistoryChangeItemModified item:item root:oldParent];
-  }
-  else {
-    [self notifyChange:kHistoryChangeItemRemoved item:item root:oldParent];
-    [self notifyChange:kHistoryChangeItemAdded item:item root:newParent];
-  }
+  [self sendChangeNotification:kHistoryChangeItemModified forItem:item];
 }
 
 #pragma mark -
@@ -1174,7 +680,6 @@ NS_IMPL_ISUPPORTS1(nsNavHistoryObserver, nsINavHistoryObserver);
 - (void)allItemsLoaded
 {
   [self loadingDone];
-  [self rebuildHistory];
 }
 
 - (void)cancelLoading
@@ -1243,115 +748,32 @@ NS_IMPL_ISUPPORTS1(nsNavHistoryObserver, nsINavHistoryObserver);
 
 #pragma mark -
 
-- (HistoryItem*)rootItem
+- (void)sendChangeNotification:(HistoryChangeType)type
+                       forItem:(HistorySiteItem *)item
 {
-  return [mTreeBuilder rootItem];
+  NSMutableDictionary* userInfoDict = [NSMutableDictionary
+      dictionaryWithObject:[NSNumber numberWithInt:type]
+                    forKey:kNotificationHistoryDataSourceChangedUserInfoChangeType];
+
+  [[NSNotificationCenter defaultCenter]
+      postNotificationName:kNotificationNameHistoryDataSourceItemChanged
+                    object:item
+                  userInfo:userInfoDict];
 }
+
+- (void)sendHistoryRebuildNotification
+{
+  [[NSNotificationCenter defaultCenter]
+      postNotificationName:kNotificationNameHistoryDataSourceRebuilt
+                    object:self
+                  userInfo:nil];
+}
+
+#pragma mark -
 
 - (BOOL)showSiteIcons
 {
   return mShowSiteIcons;
-}
-
-- (void)notifyChange:(HistoryChangeType)type
-                item:(HistorySiteItem *)item
-                root:(HistoryItem *)root
-{
-  // if we are displaying search results, make sure that updates
-  // display any new results
-  if (mSearchResultsArray)
-    root = nil;
-
-  if (root == [mTreeBuilder rootItem])
-    root = nil;
-
-  NSMutableDictionary* userInfoDict = [NSMutableDictionary
-      dictionaryWithObject:[NSNumber numberWithInt:type]
-                    forKey:kNotificationHistoryDataSourceChangedUserInfoChangeType];
-  if (item) {
-    [userInfoDict setObject:item
-                     forKey:kNotificationHistoryDataSourceChangedUserInfoChangedItem];
-  }
-  if (root) {
-    [userInfoDict setObject:root
-                     forKey:kNotificationHistoryDataSourceChangedUserInfoChangedRoot];
-  }
-
-  [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationNameHistoryDataSourceChanged
-                                                      object:self
-                                                    userInfo:userInfoDict];
-}
-
-- (void)setHistoryView:(NSString*)inView
-{
-  if (![mCurrentViewIdentifier isEqualToString:inView])
-  {
-    [mCurrentViewIdentifier release];
-    mCurrentViewIdentifier = [inView retain];
-    [self rebuildHistory];
-  } 
-}
-
-- (NSString*)historyView
-{
-  return mCurrentViewIdentifier;
-}
-
-- (void)setSortColumnIdentifier:(NSString*)sortColumnIdentifier
-{
-  NSString* oldSortColumn = mSortColumn;
-  mSortColumn = [sortColumnIdentifier retain];
-  [oldSortColumn release];
-
-  [mTreeBuilder resortWithSelector:[self selectorForSortColumn] descending:mSortDescending];
-  [self sortSearchResults];
-  
-  [self notifyChange:kHistoryChangeSorted item:nil root:nil];
-}
-
-- (NSString*)sortColumnIdentifier
-{
-  return mSortColumn;
-}
-
-- (BOOL)sortDescending
-{
-  return mSortDescending;
-}
-
-- (void)setSortDescending:(BOOL)inDescending
-{
-  if (inDescending != mSortDescending)
-  {
-    mSortDescending = inDescending;
-    [mTreeBuilder resortWithSelector:[self selectorForSortColumn] descending:mSortDescending];
-    [self sortSearchResults];
-
-    [self notifyChange:kHistoryChangeSorted item:nil root:nil];
-  }
-}
-
-- (SEL)selectorForSortColumn
-{
-  if ([mSortColumn isEqualToString:@"url"])
-    return @selector(compareURL:sortDescending:);
-
-  if ([mSortColumn isEqualToString:@"title"])
-    return @selector(compareTitle:sortDescending:);
-
-  if ([mSortColumn isEqualToString:@"first_visit"])
-    return @selector(compareFirstVisitDate:sortDescending:);
-
-  if ([mSortColumn isEqualToString:@"last_visit"])
-    return @selector(compareLastVisitDate:sortDescending:);
-
-  if ([mSortColumn isEqualToString:@"visit_count"])
-    return @selector(compareVisitCount:sortDescending:);
-
-  if ([mSortColumn isEqualToString:@"hostname"])
-    return @selector(compareHostname:sortDescending:);
-
-  return @selector(compareLastVisitDate:sortDescending:);
 }
 
 - (NSArray*)historyItems
@@ -1376,69 +798,8 @@ NS_IMPL_ISUPPORTS1(nsNavHistoryObserver, nsINavHistoryObserver);
   NSImage* iconImage = [[inNotification userInfo] objectForKey:SiteIconLoadImageKey];
   if (iconImage) {
     [siteItem setSiteIcon:iconImage];
-    [self notifyChange:kHistoryChangeIconLoaded item:siteItem root:siteItem];
+    [self sendChangeNotification:kHistoryChangeIconLoaded forItem:siteItem];
   }
-}
-
-- (void)checkForNewDay
-{
-  int curDayOfCommonEra = [[NSCalendarDate calendarDate] dayOfCommonEra];
-  // it's a brand new day...
-  if (curDayOfCommonEra != mLastDayOfCommonEra)
-  {
-    [self rebuildHistory];
-    mLastDayOfCommonEra = curDayOfCommonEra;
-  }
-}
-
-- (void)searchFor:(NSString*)searchString inFieldWithTag:(int)tag
-{
-  [mSearchString autorelease];
-  mSearchString = [searchString retain];
-
-  mSearchFieldTag = tag;
-
-  if (!mSearchResultsArray)
-    mSearchResultsArray = [[NSMutableArray alloc] initWithCapacity:100];
-
-  [self rebuildSearchResults];
-}
-
-- (void)rebuildSearchResults
-{
-  // if mSearchResultsArray is null, we're not showing search results
-  if (!mSearchResultsArray) return;
-  
-  [mSearchResultsArray removeAllObjects];
-
-  NSEnumerator* itemsEnumerator = [mHistoryItems objectEnumerator];
-  id obj;
-  while ((obj = [itemsEnumerator nextObject]))
-  {
-    if ([obj matchesString:mSearchString inFieldWithTag:mSearchFieldTag])
-      [mSearchResultsArray addObject:obj];
-  }
-  
-  [self sortSearchResults];
-}
-
-- (void)sortSearchResults
-{
-  if (!mSearchResultsArray) return;
-
-  SortData sortData;
-  sortData.mSortSelector = [self selectorForSortColumn];
-  sortData.mReverseSort = [NSNumber numberWithBool:mSortDescending];
-
-  [mSearchResultsArray sortUsingFunction:HistoryItemSort context:&sortData];
-}
-
-- (void)clearSearchResults
-{
-  [mSearchResultsArray release];
-  mSearchResultsArray = nil;
-  [mSearchString release];
-  mSearchString = nil;
 }
 
 - (void)removeItem:(HistorySiteItem*)item
@@ -1466,103 +827,9 @@ NS_IMPL_ISUPPORTS1(nsNavHistoryObserver, nsINavHistoryObserver);
       postNotificationName:kNotificationNameHistoryDataSourceCleared
                     object:self
                   userInfo:nil];
-}
-
-#pragma mark -
-
-// Implementation of NSOutlineViewDataSource protocol
-
-- (id)outlineView:(NSOutlineView*)aOutlineView child:(int)aIndex ofItem:(id)item
-{
-  if (mSearchResultsArray)
-  {
-    if (!item)
-      return [mSearchResultsArray objectAtIndex:aIndex];
-    return nil;
-  }
-
-  if (!item)
-    item = [mTreeBuilder rootItem];
-  return [item childAtIndex:aIndex];
-}
-
-- (int)outlineView:(NSOutlineView*)outlineView numberOfChildrenOfItem:(id)item
-{
-  if (mSearchResultsArray)
-  {
-    if (!item)
-      return [mSearchResultsArray count];
-    return 0;
-  }
-
-  if (!item)
-    item = [mTreeBuilder rootItem];
-  return [item numberOfChildren];
-}
-
-- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
-{
-  return [item isKindOfClass:[HistoryCategoryItem class]];
-}
-
-// identifiers: title url last_visit first_visit
-- (id)outlineView:(NSOutlineView*)outlineView objectValueForTableColumn:(NSTableColumn*)aTableColumn byItem:(id)item
-{
-  if ([[aTableColumn identifier] isEqualToString:@"title"])
-    return [item title];
-
-  if ([item isKindOfClass:[HistorySiteItem class]])
-  {
-    if ([[aTableColumn identifier] isEqualToString:@"url"])
-      return [item url];
-
-    if ([[aTableColumn identifier] isEqualToString:@"last_visit"])
-      return [item lastVisit];
-
-    if ([[aTableColumn identifier] isEqualToString:@"first_visit"])
-      return [item firstVisit];
-  }
-
-  if ([item isKindOfClass:[HistoryCategoryItem class]])
-  {
-    if ([[aTableColumn identifier] isEqualToString:@"url"])
-      return [BookmarkViewController greyStringWithItemCount:[item numberOfChildren]];
-  }
-  
-  return nil;
-
-// TODO truncate string
-//  - (void)truncateToWidth:(float)maxWidth at:kTruncateAtMiddle withAttributes:(NSDictionary *)attributes
-}
-
-- (BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray*)items toPasteboard:(NSPasteboard*)pboard
-{
-  //Need to filter out folders from the list, only allow the urls to be dragged
-  NSMutableArray* urlsArray   = [[[NSMutableArray alloc] init] autorelease];
-  NSMutableArray* titlesArray = [[[NSMutableArray alloc] init] autorelease];
-
-  NSEnumerator *enumerator = [items objectEnumerator];
-  id curItem;
-  while ((curItem = [enumerator nextObject]))
-  {
-    if ([curItem isSiteItem])
-    {
-      NSString* itemURL = [curItem url];
-      NSString* cleanedTitle = [[curItem title] stringByReplacingCharactersInSet:[NSCharacterSet controlCharacterSet] withString:@" "];
-
-      [urlsArray addObject:itemURL];
-      [titlesArray addObject:cleanedTitle];
-    }
-  }
-
-  if ([urlsArray count] > 0)
-  {
-    [pboard declareURLPasteboardWithAdditionalTypes:[NSArray array] owner:self];
-    [pboard setURLs:urlsArray withTitles:titlesArray];
-    return YES;
-  }
-  
-  return NO;
+  // Send a rebuild notification as well so that clients that just care about
+  // the raw items don't have to listen for both.
+  [self sendHistoryRebuildNotification];
 }
 
 @end

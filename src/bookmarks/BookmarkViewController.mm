@@ -71,6 +71,7 @@
 #import "HistoryOutlineViewDelegate.h"
 #import "HistoryDataSource.h"
 #import "HistoryItem.h"
+#import "HistoryTree.h"
 
 #import "BookmarkNotifications.h"
 #import "NetworkServices.h"
@@ -210,7 +211,7 @@ const int kOutlineViewLeftMargin = 19; // determined empirically, since it doesn
   [mBookmarkRoot release];
   [mSearchResultArray release];
 
-  [mHistoryDataSource release];
+  [mHistoryTree release];
 
   [mSeparatorImage release];
 
@@ -259,8 +260,9 @@ const int kOutlineViewLeftMargin = 19; // determined empirically, since it doesn
   [mHistoryOutlineView setAutoresizesOutlineColumn:NO];
 
   // set up history outliner
-  mHistoryDataSource = [[HistoryDataSource alloc] init];
-  [mHistoryOutlineView setDataSource:mHistoryDataSource];
+  HistoryDataSource* historyDataSource = [HistoryDataSource sharedHistoryDataSource];
+  mHistoryTree = [[HistoryTree alloc] initWithDataSource:historyDataSource];
+  [mHistoryOutlineView setDataSource:mHistoryTree];
   [mHistoryOutlineViewDelegate setBrowserWindowController:mBrowserWindowController];
   [mHistoryOutlineView setTarget:mHistoryOutlineViewDelegate];
   [mHistoryOutlineView setDoubleAction:@selector(openHistoryItem:)];

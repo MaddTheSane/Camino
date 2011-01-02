@@ -52,6 +52,7 @@
 
 #import "HistoryItem.h"
 #import "HistoryDataSource.h"
+#import "HistoryTree.h"
 
 #include <algorithm>
 
@@ -68,35 +69,35 @@ static const unsigned int kMaxRecentlyClosedItems = 20;
 // the maximum number of characters in a menu title before cropping it
 static const unsigned int kMaxTitleLength = 50;
 
-// this little class manages the singleton history data source, and takes
+// this little class manages the singleton history tree, and takes
 // care of shutting it down at XPCOM shutdown time.
-@interface HistoryMenuDataSourceOwner : NSObject
+@interface HistoryTreeOwner : NSObject
 {
-  HistoryDataSource*    mHistoryDataSource;
+  HistoryTree* mHistoryTree;
 }
 
-+ (HistoryMenuDataSourceOwner*)sharedHistoryMenuDataSourceOwner;
-+ (HistoryDataSource*)sharedHistoryDataSource;    // just a shortcut
++ (HistoryTreeOwner*)sharedHistoryTreeOwner;
++ (HistoryTree*)sharedHistoryTree;
 
-- (HistoryDataSource*)historyDataSource;
+- (HistoryTree*)historyTree;
 
 @end
 
 
-@implementation HistoryMenuDataSourceOwner
+@implementation HistoryTreeOwner
 
-+ (HistoryMenuDataSourceOwner*)sharedHistoryMenuDataSourceOwner
++ (HistoryTreeOwner*)sharedHistoryTreeOwner
 {
-  static HistoryMenuDataSourceOwner* sHistoryOwner = nil;
+  static HistoryTreeOwner* sHistoryOwner = nil;
   if (!sHistoryOwner)
-    sHistoryOwner = [[HistoryMenuDataSourceOwner alloc] init];
+    sHistoryOwner = [[HistoryTreeOwner alloc] init];
 
   return sHistoryOwner;
 }
 
-+ (HistoryDataSource*)sharedHistoryDataSource
++ (HistoryTree*)sharedHistoryTree
 {
-  return [[HistoryMenuDataSourceOwner sharedHistoryMenuDataSourceOwner] historyDataSource];
+  return [[HistoryTreeOwner sharedHistoryTreeOwner] historyTree];
 }
 
 - (id)init
@@ -114,28 +115,29 @@ static const unsigned int kMaxTitleLength = 50;
 - (void)dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  [mHistoryDataSource release];
+  [mHistoryTree release];
   [super dealloc];
 }
 
 - (void)xpcomShutdownNotification:(NSNotification*)inNotification
 {
-  [mHistoryDataSource release];
-  mHistoryDataSource = nil;
+  [mHistoryTree release];
+  mHistoryTree = nil;
 }
 
-- (HistoryDataSource*)historyDataSource
+- (HistoryTree*)historyTree
 {
-  if (!mHistoryDataSource) {
-    mHistoryDataSource = [[HistoryDataSource alloc] init];
-    [mHistoryDataSource setHistoryView:kHistoryViewByDate];
-    [mHistoryDataSource setSortColumnIdentifier:@"last_visit"]; // always sort by last visit
-    [mHistoryDataSource setSortDescending:YES];
+  if (!mHistoryTree) {
+    HistoryDataSource* dataSource = [HistoryDataSource sharedHistoryDataSource];
+    mHistoryTree = [[HistoryTree alloc] initWithDataSource:dataSource];
+    [mHistoryTree setHistoryView:kHistoryViewByDate];
+    [mHistoryTree setSortColumnIdentifier:@"last_visit"];
+    [mHistoryTree setSortDescending:YES];
   }
-  return mHistoryDataSource;
+  return mHistoryTree;
 }
 
-@end // HistoryMenuDataSourceOwner
+@end // HistoryTreeOwner
 
 
 #pragma mark -
@@ -183,8 +185,8 @@ static const unsigned int kMaxTitleLength = 50;
   // set ourselves up to listen for history changes
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(historyChanged:)
-                                               name:kNotificationNameHistoryDataSourceChanged
-                                             object:[HistoryMenuDataSourceOwner sharedHistoryDataSource]];
+                                               name:kNotificationNameHistoryTreeChanged
+                                             object:[HistoryTreeOwner sharedHistoryTree]];
 
   // Set us up to receive menuNeedsUpdate: callbacks
   [self setDelegate:self];
@@ -220,19 +222,15 @@ static const unsigned int kMaxTitleLength = 50;
 
 - (void)historyChanged:(NSNotification*)inNotification
 {
-  id rootChangedItem = [[inNotification userInfo] objectForKey:kNotificationHistoryDataSourceChangedUserInfoChangedRoot];
-  // TODO: We could optimize by only changing single menu items for certain change types.
+  id rootChangedItem = [[inNotification userInfo] objectForKey:kHistoryTreeChangeRootKey];
 
   // If rootChangedItem is nil, the whole history tree is being rebuilt.
-  // We need to clear our root item, because it will become invalid. We'll set it again when we rebuild.
   if (!rootChangedItem) {
+    // Clear the now-invalid root item; it will be set again during rebuild.
     [self setRootHistoryItem:nil];
     [self setNeedsRebuild:YES];
   }
-  else if (mRootItem == rootChangedItem ||
-           [mRootItem isDescendentOfItem:rootChangedItem] ||
-           [rootChangedItem isDescendentOfItem:mRootItem])
-  {
+  else if (mRootItem == rootChangedItem) {
     [self setNeedsRebuild:YES];
   }
 }
@@ -433,7 +431,7 @@ static const unsigned int kMaxTitleLength = 50;
       addObserver:self
          selector:@selector(historyCleared:)
              name:kNotificationNameHistoryDataSourceCleared
-           object:[HistoryMenuDataSourceOwner sharedHistoryDataSource]];
+           object:nil];
 
   [super setUpHistoryMenu];
 }
@@ -486,10 +484,11 @@ static const unsigned int kMaxTitleLength = 50;
   if (mAppLaunchDone) {
     // the root item is nil at launch, and if the history gets totally rebuilt
     if (!mRootItem) {
-      HistoryDataSource* dataSource = [HistoryMenuDataSourceOwner sharedHistoryDataSource];
-      [dataSource loadSynchronously];
+      HistoryTree* historyTree = [HistoryTreeOwner sharedHistoryTree];
+      if (![historyTree rootItem])
+        [historyTree buildTree];
 
-      mRootItem = [[dataSource rootItem] retain];
+      mRootItem = [[historyTree rootItem] retain];
     }
   }
 
@@ -594,16 +593,15 @@ static const unsigned int kMaxTitleLength = 50;
 
 - (void)historyChanged:(NSNotification*)inNotification
 {
-  id rootChangedItem = [[inNotification userInfo] objectForKey:kNotificationHistoryDataSourceChangedUserInfoChangedItem];
+  id rootChangedItem =
+      [[inNotification userInfo] objectForKey:kHistoryTreeChangeRootKey];
 
   // If rootChangedItem is nil, the whole history tree is being rebuilt.
   if (!rootChangedItem) {
     [mTodayItem release];
     mTodayItem = nil;
   }
-  else if (mTodayItem == rootChangedItem ||
-           mTodayItem == [rootChangedItem parentItem])
-  {
+  else if (!mTodayItem || mTodayItem == rootChangedItem) {
     [self setNeedsRebuild:YES];
   }
 

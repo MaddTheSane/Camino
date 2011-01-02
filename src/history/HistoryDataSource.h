@@ -42,41 +42,30 @@
 
 #import "HistoryLoadListener.h";
 
-@class BrowserWindowController;
-@class HistoryItem;
 @class HistorySiteItem;
 
 class nsNavHistoryObserver;
 class nsINavHistoryContainerResultNode;
 class nsINavHistoryService;
 
-extern NSString* const kHistoryViewByDate;      // grouped by last visit date
-extern NSString* const kHistoryViewBySite;      // grouped by site
-extern NSString* const kHistoryViewFlat;        // flat
-
-// Notification object is the data source.
-extern NSString* const kNotificationNameHistoryDataSourceChanged;
+// Sent when a history item changes. Notification object is the changed item.
+extern NSString* const kNotificationNameHistoryDataSourceItemChanged;
 // The type of change that occured.
 extern NSString* const kNotificationHistoryDataSourceChangedUserInfoChangeType;
-// If present, this is the changed item.
-extern NSString* const kNotificationHistoryDataSourceChangedUserInfoChangedItem;
-// If present, this is the root of the change (e.g., the parent of an added or
-// removed item). If this is not present, the whole history tree has changed.
-extern NSString* const kNotificationHistoryDataSourceChangedUserInfoChangedRoot;
 
 // Sent when history is cleared. Notification object is the data source.
 extern NSString* const kNotificationNameHistoryDataSourceCleared;
+
+// Sent when history is rebuilt from scratch (after initial load). Notification
+// object is the data source.
+extern NSString* const kNotificationNameHistoryDataSourceRebuilt;
 
 typedef enum {
   kHistoryChangeItemAdded,
   kHistoryChangeItemRemoved,
   kHistoryChangeItemModified,
   kHistoryChangeIconLoaded,
-  kHistoryChangeRebuilt,
-  kHistoryChangeSorted
 } HistoryChangeType;
-
-@class HistoryTreeBuilder;
 
 @interface HistoryDataSource : NSObject
 {
@@ -84,26 +73,10 @@ typedef enum {
   nsNavHistoryObserver*   mNavHistoryObserver;        // owned
   
   BOOL                    mShowSiteIcons;
-  NSString*               mCurrentViewIdentifier;
-  
-  NSString*               mSortColumn;
-  BOOL                    mSortDescending;
 
   NSMutableArray*         mHistoryItems;              // this array owns all the history items
   NSMutableDictionary*    mHistoryItemsDictionary;    // history items indexed by url (strong)
   BOOL                    mHistoryLoaded;
-
-  NSMutableArray*         mSearchResultsArray;
-
-  // the tree builder encapsulates the logic to build and update different history views
-  // (e.g. by date, by site etc), and supply the root object.  
-  HistoryTreeBuilder*     mTreeBuilder;
- 
-  NSString*               mSearchString;
-  int                     mSearchFieldTag;
-  
-  NSTimer*                mRefreshTimer;
-  int                     mLastDayOfCommonEra;
 
   // Used only during the history loading process.
   nsINavHistoryContainerResultNode* mRootNode;  // owned
@@ -113,8 +86,8 @@ typedef enum {
   NSMutableArray*                   mPendingChangeQueue;
 }
 
-- (void)setHistoryView:(NSString*)inView;
-- (NSString*)historyView;
+// Returns the single shared history data source.
++ (HistoryDataSource*)sharedHistoryDataSource;
 
 // Synchronously loads history.
 // If history has alread been loaded, this reloads it from scratch, so when
@@ -133,27 +106,17 @@ typedef enum {
 // As with the synchronous version, calling this once loading is complete will
 // reload from scratch.
 - (void)loadAsynchronouslyWithListener:(id<HistoryLoadListener>)listener;
+
 // Returns YES if history has already been loaded.
 - (BOOL)isLoaded;
 
-// Returns a flat array of all history items, ignoring sort and search.
+// Returns all history items.
 - (NSArray*)historyItems;
 
-- (HistoryItem*)rootItem;
-
-- (BOOL)showSiteIcons;
-
-// ideally sorting would be on the view, not the data source, but this keeps thing simpler
-- (void)setSortColumnIdentifier:(NSString*)sortColumnIdentifier;
-- (NSString*)sortColumnIdentifier;
-
-- (BOOL)sortDescending;
-- (void)setSortDescending:(BOOL)inDescending;
-
-// quicksearch support
-- (void)searchFor:(NSString*)searchString inFieldWithTag:(int)tag;
-- (void)clearSearchResults;
-
+// Removes the given item from history.
 - (void)removeItem:(HistorySiteItem*)item;
+
+// Returns whether or not site icons should be displayed for history items.
+- (BOOL)showSiteIcons;
 
 @end
