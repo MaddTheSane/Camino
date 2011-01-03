@@ -39,37 +39,42 @@
 
 #import <AppKit/AppKit.h>
 
+#import "HistoryLoadListener.h"
+#import "Trie.h"
 
+@class AsynchronousTrieUpdater;
 @class HistoryItem;
 
 //
 // This class is in charge of retrieving/sorting the history and bookmark results
 // for the location bar autocomplete, and is also the datasource for the table view
-// in the autocomplete popup window. All of the work is performed on the main thread
-// using a chunked asynchronous method, which should allow everything to run smoothly 
-// even with large number of bookmark/history items.
+// in the autocomplete popup window.
 //
-@interface AutoCompleteDataSource : NSObject
+@interface AutoCompleteDataSource: NSObject<HistoryLoadListener,
+                                            TrieKeywordGenerationDelegate>
 {
-  id                      mDelegate;
+  id                       mDelegate;
 
-  NSRange                 mChunkRange;
-  NSPredicate*            mURLRegexTest;                // owned
-  NSPredicate*            mTitleRegexTest;              // owned
-  unsigned int            mSearchStringLength;
+  unsigned int             mSearchStringLength;
 
-  NSMutableArray*         mBookmarkData;                // owned
-  NSMutableArray*         mHistoryData;                 // owned
-  NSMutableArray*         mBookmarkResultsInProgress;   // owned
-  NSMutableArray*         mHistoryResultsInProgress;    // owned
-  NSMutableArray*         mResults;                     // owned
+  NSMutableArray*          mBookmarkData;              // owned
+  Trie*                    mHistoryTrie;               // owned
+  Trie*                    mBookmarkTrie;              // owned
+  NSMutableArray*          mBookmarkResults;           // owned
+  NSMutableArray*          mHistoryResults;            // owned
+  NSMutableArray*          mResults;                   // owned
+  NSMutableArray*          mHistoryItemsToLoad;        // owned
+  NSMutableArray*          mBookmarksToLoad;           // owned
+  AsynchronousTrieUpdater* mHistoryTrieUpdater;        // owned
+  AsynchronousTrieUpdater* mBookmarkTrieUpdater;       // owned
+  NSMutableDictionary*     mSchemeToPlaceholderMap;    // owned
 
-  NSImage*                mGenericSiteIcon;             // owned
-  NSImage*                mGenericFileIcon;             // owned
+  NSImage*                 mGenericSiteIcon;           // owned
+  NSImage*                 mGenericFileIcon;           // owned
 }
 
-// Pulls bookmarks and history items and puts them into mBookmarkData and mHistoryData.
-- (void)loadSearchableData;
+// Returns the single shared autocomplete data source.
++ (AutoCompleteDataSource *)sharedDataSource;
 
 // Starts the search for matching bookmarks/history items using the string passed
 // from AutoCompleteTextField. This is an asynchronous method--when the search is

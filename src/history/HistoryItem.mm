@@ -804,5 +804,9 @@ enum
   return NO;    
 }
 
+- (NSString*)description
+{
+  return [NSString stringWithFormat:@"<HistoryItem %08p, url '%@', title '%@'>", self, [self url], [self title]];
+}
 
 @end

@@ -38,18 +38,21 @@
 #import <Foundation/Foundation.h>
 
 // Notification keys
-// defined in Bookmark.h
+// Defined in Bookmark.
 extern NSString* const URLLoadNotification;                     // object is NSString of URL, userinfo has NSNum of success/fail
 extern NSString* const URLLoadSuccessKey;                       // key for bool of load success/fail
 
-// defined in BookmarkFolder.h
+// Defined in BookmarkFolder.
 extern NSString* const BookmarkFolderAdditionNotification;      // self is obj, userinfo has added item/index
 extern NSString* const BookmarkFolderDeletionNotification;      // self is obj, userinfo dict has removed item
 extern NSString* const BookmarkFolderChildKey;                  // key for added/removed object in userinfo dict
 extern NSString* const BookmarkFolderChildIndexKey;             // key for added object index in userinfo dict
 extern NSString* const BookmarkFolderDockMenuChangeNotificaton; // self is NEW dock menu OR nil
 
-// Defined in BookmarkItem.h
+// Defined in BookmarkItem.
 extern NSString* const BookmarkItemChangedNotification;         // self is object, userInfo contains change flags
 extern NSString* const BookmarkItemChangedFlagsKey;
 
+// Defined in BookmarkManager.
+extern NSString* const BookmarkItemsAddedNotification;          // object is array of added bookmarks
+extern NSString* const BookmarkItemsRemovedNotification;        // object is array of removed bookmarks

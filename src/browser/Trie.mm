@@ -293,6 +293,12 @@
   [mRoot removeItem:item];
 }
 
+- (void)removeAllItems
+{
+  [mRoot release];
+  mRoot = [[TrieNode alloc] init];
+}
+
 - (NSMutableArray*)potentialMatchListsForTerms:(NSArray*)terms
 {
   NSMutableArray* potentialMatchLists =

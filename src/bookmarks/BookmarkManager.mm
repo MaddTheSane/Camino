@@ -70,6 +70,9 @@
 
 NSString* const kBookmarkManagerStartedNotification = @"BookmarkManagerStartedNotification";
 
+NSString* const BookmarkItemsAddedNotification      = @"BookmarkItemAddedNotification";
+NSString* const BookmarkItemsRemovedNotification    = @"BookmarkItemRemovedNotification";
+
 // root bookmark folder identifiers (must be unique!)
 NSString* const kBookmarksToolbarFolderIdentifier              = @"BookmarksToolbarFolder";
 NSString* const kBookmarksMenuFolderIdentifier                 = @"BookmarksMenuFolder";
@@ -554,6 +557,9 @@ static BookmarkManager* gBookmarkManager = nil;
       [self registerBookmarkForLoads:bookmark];
     }
   }
+
+  [[NSNotificationCenter defaultCenter] postNotificationName:BookmarkItemsAddedNotification
+                                                      object:bookmarks];
 }
 
 - (void)bookmarkItemsWillBeRemoved:(NSArray*)bookmarks
@@ -570,6 +576,9 @@ static BookmarkManager* gBookmarkManager = nil;
       [self unregisterBookmarkForLoads:bookmark ignoringURL:YES];
     }
   }
+
+  [[NSNotificationCenter defaultCenter] postNotificationName:BookmarkItemsRemovedNotification
+                                                      object:bookmarks];
 }
 
 - (void)startSuppressingChangeNotifications

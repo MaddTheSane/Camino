@@ -77,6 +77,9 @@
 // Removes the given item from the trie.
 - (void)removeItem:(id)item;
 
+// Removes all items from the trie.
+- (void)removeAllItems;
+
 // Returns up to |limit| items matching all of the given search terms, using
 // prefix matching. If |limit| is 0, all matching items will be returned.
 - (NSArray*)itemsForTerms:(NSArray*)terms withLimit:(unsigned int)limit;

@@ -387,7 +387,7 @@ NSString* const kWillShowFeedMenu = @"WillShowFeedMenu";
   [mPopupWin setHasArrow:NO];
 
   // construct the datasource
-  mDataSource = [[AutoCompleteDataSource alloc] init];
+  mDataSource = [AutoCompleteDataSource sharedDataSource];
   [mTableView setDataSource: mDataSource];
 
   [[NSNotificationCenter defaultCenter] addObserver:self
@@ -448,9 +448,6 @@ NSString* const kWillShowFeedMenu = @"WillShowFeedMenu";
 
   [mPopupWin release];
   mPopupWin = nil;
-
-  [mDataSource release];
-  mDataSource = nil;
 
   [mSecureBackgroundColor release];
   mSecureBackgroundColor = nil;
@@ -537,10 +534,6 @@ static const int kStringComparisonEqual = 0;
 
   mCompleteResult = aComplete;
 
-  if (![self isOpen]) {
-    // Reload search data.
-    [mDataSource loadSearchableData];
-  }
   [self performSearch];
 }
 

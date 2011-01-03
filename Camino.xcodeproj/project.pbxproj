@@ -48,6 +48,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		000CE53C121A2E12006B4153 /* Trie.mm in Sources */ = {isa = PBXBuildFile; fileRef = 000CE53B121A2E06006B4153 /* Trie.mm */; };
+		000CE53D121A2E12006B4153 /* Trie.mm in Sources */ = {isa = PBXBuildFile; fileRef = 000CE53B121A2E06006B4153 /* Trie.mm */; };
 		000D0A9C0ED9BD8100A6C2F0 /* tabOverview.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 000D0A980ED9BD7000A6C2F0 /* tabOverview.tiff */; };
 		000D0A9D0ED9BD8100A6C2F0 /* tabOverview.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 000D0A980ED9BD7000A6C2F0 /* tabOverview.tiff */; };
 		001D4A260D75B0B100464BE4 /* MoveCommand.mm in Sources */ = {isa = PBXBuildFile; fileRef = 001D4A250D75B0B100464BE4 /* MoveCommand.mm */; };
@@ -2497,6 +2499,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		000CE53A121A2E06006B4153 /* Trie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Trie.h; path = src/browser/Trie.h; sourceTree = "<group>"; };
+		000CE53B121A2E06006B4153 /* Trie.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Trie.mm; path = src/browser/Trie.mm; sourceTree = "<group>"; };
 		000D0A980ED9BD7000A6C2F0 /* tabOverview.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = tabOverview.tiff; path = resources/images/toolbar/tabOverview.tiff; sourceTree = "<group>"; };
 		0017874B0E6B3BFB00583A98 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = English; path = resources/localized/English.lproj/Localizable.strings.in; sourceTree = "<group>"; };
 		0017874E0E6B3C7500583A98 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = English; path = resources/localized/English.lproj/CertificateDialogs.strings.in; sourceTree = "<group>"; };
@@ -4999,6 +5003,8 @@
 		F5A3669702CCFAF601DC3354 /* Toolbar */ = {
 			isa = PBXGroup;
 			children = (
+				000CE53A121A2E06006B4153 /* Trie.h */,
+				000CE53B121A2E06006B4153 /* Trie.mm */,
 				F52D5CD3027A88C601A80166 /* AutoCompleteDataSource.h */,
 				F52D5CD4027A88C601A80166 /* AutoCompleteDataSource.mm */,
 				F52D5CCF027A887001A80166 /* AutoCompleteTextField.h */,
@@ -6501,6 +6507,7 @@
 				B386FC3110CF5AF30094DAAB /* NSMenu+Gecko.mm in Sources */,
 				DE2D02D11214E17D000668C5 /* CertErrorAboutModule.mm in Sources */,
 				00C1D4841285DF14009C4DC3 /* HistoryTree.mm in Sources */,
+				000CE53C121A2E12006B4153 /* Trie.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6701,6 +6708,7 @@
 				B386FC3210CF5AF30094DAAB /* NSMenu+Gecko.mm in Sources */,
 				DE2D02D21214E17D000668C5 /* CertErrorAboutModule.mm in Sources */,
 				00C1D4831285DF14009C4DC3 /* HistoryTree.mm in Sources */,
+				000CE53D121A2E12006B4153 /* Trie.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
