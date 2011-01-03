@@ -1282,7 +1282,7 @@ const int kZoomActionsTag = 108;
   if (!homePage || [homePage isBlankURL])
     [controller focusURLBar];
   else
-    [[[controller browserWrapper] browserView] setActive:YES];
+    [[controller browserWrapper] setBrowserActive:YES];
 
   // Only load the command-line specified URL for the first window we open
   if (mStartURL) {

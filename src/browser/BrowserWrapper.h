@@ -210,6 +210,8 @@ typedef enum {
   IBOutlet NSTextField*     mSafeBrowsingBarLabel;
   NSMutableDictionary*      mIgnoredBlockedSites; // strong
 
+  BOOL                      mPendingActivation;
+
   KeychainBrowserListener*  mPasswordAutofillListener;  // strong
 }
 

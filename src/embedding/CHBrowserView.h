@@ -212,7 +212,6 @@ extern const char* const kHTMLMIMEType;
 
   nsIPrintSettings*     mPrintSettings; // we own this
   BOOL                  mUseGlobalPrintSettings;
-  BOOL                  mHasPendingActivation;
 }
 
 // class method to get at the browser view for a given nsIDOMWindow
@@ -316,7 +315,10 @@ extern const char* const kHTMLMIMEType;
 - (void)doBeforePromptDisplay;
 - (void)doAfterPromptDismissal;
 
-- (void)setActive: (BOOL)aIsActive;
+// Makes Gecko active. If this is called before Gecko is capable of becoming
+// active, then this will return NO to indicate that the client should try again
+// later in the loading process.
+- (BOOL)setActive:(BOOL)aIsActive;
 
 - (NSMenu*)contextMenu;
 - (NSWindow*)nativeWindow;

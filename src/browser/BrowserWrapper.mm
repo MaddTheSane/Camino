@@ -422,7 +422,9 @@ static const NSTimeInterval kTimeIntervalToConsiderSiteBlockingStatusValid = 900
 
 - (void)setBrowserActive:(BOOL)inActive
 {
-  [mBrowserView setActive:inActive];
+  BOOL succeeded = [mBrowserView setActive:inActive];
+  if (inActive && !succeeded)
+    mPendingActivation = YES;
 }
 
 - (BOOL)isBusy
@@ -694,6 +696,18 @@ static const NSTimeInterval kTimeIntervalToConsiderSiteBlockingStatusValid = 900
 
 - (void)onLocationChange:(NSString*)urlSpec isNewPage:(BOOL)newPage requestStatus:(ERequestStatus)requestStatus
 {
+  if (mPendingActivation) {
+    if ([[self window] firstResponder] == mBrowserView) {
+      BOOL succeeded = [mBrowserView setActive:YES];
+      if (!succeeded) {
+#if DEBUG
+        NSLog(@"Handling of pending activation in onLocationChange: failed.");
+#endif
+      }
+    }
+    mPendingActivation = NO;
+  }
+
   if (newPage) {
     // Defer hiding of extra views until we've loaded the new page.
     // If we are being called from within a history navigation, then core code

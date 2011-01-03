@@ -459,9 +459,6 @@ const char* const kHTMLMIMEType = "text/html";
   if (NS_FAILED(rv)) {
     // XXX need to throw
   }
-
-  if (mHasPendingActivation && ([[self window] firstResponder] == self))
-    [self setActive:YES];
 }
 
 - (void)reload:(unsigned int)flags
@@ -1515,7 +1512,7 @@ const char* const kHTMLMIMEType = "text/html";
   [[self browserContainer] didDismissPrompt];
 }
 
-- (void)setActive:(BOOL)aIsActive
+- (BOOL)setActive:(BOOL)aIsActive
 {
   nsCOMPtr<nsIWebBrowserFocus> wbf(do_QueryInterface(_webBrowser));
   if (wbf) {
@@ -1526,17 +1523,15 @@ const char* const kHTMLMIMEType = "text/html";
       nsCOMPtr<nsIPresShell> presShell;
       if (docShell)
         docShell->GetPresShell(getter_AddRefs(presShell));
-      if (!presShell) {
-        mHasPendingActivation = YES;
-        return;
-      }
+      if (!presShell)
+        return NO;
 
       wbf->Activate();
-      mHasPendingActivation = NO;
     } else {
       wbf->Deactivate();
     }
   }
+  return YES;
 }
 
 -(NSMenu*)contextMenu
