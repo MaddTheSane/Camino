@@ -98,6 +98,10 @@ extern NSString* const kDownloadNotificationTimeElapsedKey;
   BOOL            mIsBeingRemoved;
   BOOL            mIsSelected;
 
+  NSColor*        mFilenameLabelUnselectedColor;
+  NSColor*        mStatusLabelUnselectedColor;
+  NSColor*        mTimeLabelUnselectedColor;
+
   NSTimeInterval  mDownloadTime; // only set when done
 
   long long       mCurrentProgress; // if progress bar is indeterminate, can still calc stats.

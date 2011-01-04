@@ -38,7 +38,6 @@
 
 
 #import "ProgressView.h"
-
 #import "ProgressViewController.h"
 
 @implementation ProgressView
@@ -52,10 +51,10 @@
 -(void)drawRect:(NSRect)rect
 {
   if ([mProgressController isSelected]) {
-    [[NSColor selectedTextBackgroundColor] set];
+    [[NSColor alternateSelectedControlColor] set];
   }
   else {
-    [[NSColor whiteColor] set];
+    [[NSColor controlBackgroundColor] set];
   }
   [NSBezierPath fillRect:[self bounds]];
 }

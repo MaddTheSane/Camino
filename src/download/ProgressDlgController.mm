@@ -355,6 +355,15 @@ static id gSharedProgressController = nil;
   }
 }
 
+-(void)mouseDown:(NSEvent*)theEvent
+{
+  // If the user clicks in the empty space below the download item rows, then
+  // unselect any selected rows.
+  NSPoint mousePoint = [theEvent locationInWindow];
+  if (NSMouseInRect(mousePoint, [mScrollView frame], YES))
+    [self deselectDownloads:[self selectedProgressViewControllers]];
+}
+
 -(void)keyDown:(NSEvent *)theEvent
 {
   // we don't care about anything if no downloads exist

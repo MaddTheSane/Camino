@@ -75,11 +75,13 @@ enum {
 @interface ProgressViewController(ProgressViewControllerPrivate)
 
 +(unsigned int)getNextIdentifier;
+-(NSColor*)labelColorForTag:(int)labelTag;
 -(void)viewDidLoad;
 -(void)setupFileSystemNotification;
 -(void)unsubscribeFileSystemNotification;
 -(void)checkFileExists;
 -(void)refreshDownloadInfo;
+-(void)refreshLabelColors;
 -(void)launchFileIfAppropriate;
 -(void)setProgressViewFromDictionary:(NSDictionary*)aDict;
 -(BOOL)shouldRemoveFromDownloadList;
@@ -186,6 +188,11 @@ NSString *FormatFractionalSize(float bytes, int bytesPerUnit, NSString *unitsKey
   return toReturn;
 }
 
+-(NSColor*)labelColorForTag:(int)labelTag
+{
+  return [[[self view] viewWithTag:labelTag] textColor];
+}
+
 #pragma mark -
 
 -(id)init
@@ -194,6 +201,11 @@ NSString *FormatFractionalSize(float bytes, int bytesPerUnit, NSString *unitsKey
   {
     [NSBundle loadNibNamed:@"ProgressView" owner:self];
     mUniqueIdentifier = [ProgressViewController getNextIdentifier];
+
+    // Cache the labels' unselected text color specified in IB.
+    mFilenameLabelUnselectedColor = [[self labelColorForTag:kLabelTagFilename] retain];
+    mStatusLabelUnselectedColor   = [[self labelColorForTag:kLabelTagStatus] retain];
+    mTimeLabelUnselectedColor     = [[self labelColorForTag:kLabelTagTimeRemaining] retain];
   }
   return self;
 }
@@ -238,7 +250,11 @@ NSString *FormatFractionalSize(float bytes, int bytesPerUnit, NSString *unitsKey
   // the views might outlive us, so clear refs to us
   [mCompletedView setController:nil];
   [mProgressView setController:nil];
-  
+
+  [mFilenameLabelUnselectedColor release];
+  [mStatusLabelUnselectedColor release];
+  [mTimeLabelUnselectedColor release];
+
   [mStartTime release];
   [mSourceURL release];
   [mDestPath release];
@@ -569,6 +585,29 @@ NSString *FormatFractionalSize(float bytes, int bytesPerUnit, NSString *unitsKey
       }
     }
   }
+
+  [self refreshLabelColors];
+}
+
+-(void)refreshLabelColors
+{
+  NSView* curView = [self view];
+  NSTextField* filenameLabel = [curView viewWithTag:kLabelTagFilename];
+  NSTextField* statusLabel = [curView viewWithTag:kLabelTagStatus];
+  NSTextField* timeLabel = [curView viewWithTag:kLabelTagTimeRemaining];
+
+  if (mIsSelected) {
+    NSColor* selectedLabelColor = [NSColor alternateSelectedControlTextColor];
+    [filenameLabel setTextColor:selectedLabelColor];
+    [statusLabel setTextColor:selectedLabelColor];
+    [timeLabel setTextColor:selectedLabelColor];
+  }
+  else {
+    // Use the labels' unselected text color specified in IB.
+    [filenameLabel setTextColor:mFilenameLabelUnselectedColor];
+    [statusLabel setTextColor:mStatusLabelUnselectedColor];
+    [timeLabel setTextColor:mTimeLabelUnselectedColor];
+  }
 }
 
 -(BOOL)isActive
@@ -591,6 +630,7 @@ NSString *FormatFractionalSize(float bytes, int bytesPerUnit, NSString *unitsKey
   if (mIsSelected != inSelected)
   {
     mIsSelected = inSelected;
+    [self refreshLabelColors];
     [[self view] setNeedsDisplay:YES];
   }
 }
