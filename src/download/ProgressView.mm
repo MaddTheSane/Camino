@@ -48,7 +48,7 @@
   [super dealloc];
 }
 
--(void)drawRect:(NSRect)rect
+- (void)drawRect:(NSRect)rect
 {
   if ([mProgressController isSelected]) {
     [[NSColor alternateSelectedControlColor] set];
@@ -59,7 +59,7 @@
   [NSBezierPath fillRect:[self bounds]];
 }
 
--(void)mouseDown:(NSEvent*)theEvent
+- (void)mouseDown:(NSEvent*)theEvent
 {
   unsigned int mods = [theEvent modifierFlags];
   DownloadSelectionBehavior selectionBehavior;
@@ -153,17 +153,17 @@
     [mProgressController remove:self];
 }
 
--(void)setController:(ProgressViewController*)controller
+- (void)setController:(ProgressViewController*)controller
 {
   mProgressController = controller;
 }
 
--(ProgressViewController*)controller
+- (ProgressViewController*)controller
 {
   return mProgressController;
 }
 
--(NSMenu*)menuForEvent:(NSEvent*)theEvent
+- (NSMenu*)menuForEvent:(NSEvent*)theEvent
 {  
   // if the item is unselected, select it and deselect everything else before displaying the contextual menu
   if (![mProgressController isSelected]) {
@@ -173,7 +173,7 @@
   return [[self controller] contextualMenu];
 }
 
--(BOOL)performKeyEquivalent:(NSEvent*)theEvent
+- (BOOL)performKeyEquivalent:(NSEvent*)theEvent
 {
   if (([theEvent type] == NSKeyDown && 
       ([theEvent modifierFlags] & NSCommandKeyMask) != 0)) 
@@ -194,7 +194,7 @@
   return [super performKeyEquivalent:theEvent];
 }
 
--(NSView*)hitTest:(NSPoint)aPoint
+- (NSView*)hitTest:(NSPoint)aPoint
 {
   if (NSMouseInRect(aPoint, [self frame], YES)) {
     return self;
