@@ -55,10 +55,21 @@
   IBOutlet NSImageView*   mFileIconView;
   ProgressViewController* mProgressController;     // WEAK reference
   NSEvent*                mFileIconMouseDownEvent; // STRONG reference
+
+  NSColor*                mFilenameLabelUnselectedColor;
+  NSColor*                mStatusLabelUnselectedColor;
+  NSColor*                mTimeLabelUnselectedColor;
 }
 
+- (void)selectionChanged;
+
+- (void)updateStatus:(NSString*)status;
+- (void)updateFilename:(NSString*)filename;
+- (void)updateTimeRemaining:(NSString*)timeRemaining;
+- (void)updateFileIcon:(NSImage*)fileIcon;
+
 // get/set our owning controller, to which we maintain a weak link
--(void)setController:(ProgressViewController*)controller;
--(ProgressViewController*)controller;
+- (void)setController:(ProgressViewController*)controller;
+- (ProgressViewController*)controller;
 
 @end

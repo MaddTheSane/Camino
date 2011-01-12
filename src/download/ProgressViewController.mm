@@ -75,13 +75,11 @@ enum {
 @interface ProgressViewController(ProgressViewControllerPrivate)
 
 +(unsigned int)getNextIdentifier;
--(NSColor*)labelColorForTag:(int)labelTag;
 -(void)viewDidLoad;
 -(void)setupFileSystemNotification;
 -(void)unsubscribeFileSystemNotification;
 -(void)checkFileExists;
 -(void)refreshDownloadInfo;
--(void)refreshLabelColors;
 -(void)launchFileIfAppropriate;
 -(void)setProgressViewFromDictionary:(NSDictionary*)aDict;
 -(BOOL)shouldRemoveFromDownloadList;
@@ -188,11 +186,6 @@ NSString *FormatFractionalSize(float bytes, int bytesPerUnit, NSString *unitsKey
   return toReturn;
 }
 
--(NSColor*)labelColorForTag:(int)labelTag
-{
-  return [[[self view] viewWithTag:labelTag] textColor];
-}
-
 #pragma mark -
 
 -(id)init
@@ -201,11 +194,6 @@ NSString *FormatFractionalSize(float bytes, int bytesPerUnit, NSString *unitsKey
   {
     [NSBundle loadNibNamed:@"ProgressView" owner:self];
     mUniqueIdentifier = [ProgressViewController getNextIdentifier];
-
-    // Cache the labels' unselected text color specified in IB.
-    mFilenameLabelUnselectedColor = [[self labelColorForTag:kLabelTagFilename] retain];
-    mStatusLabelUnselectedColor   = [[self labelColorForTag:kLabelTagStatus] retain];
-    mTimeLabelUnselectedColor     = [[self labelColorForTag:kLabelTagTimeRemaining] retain];
   }
   return self;
 }
@@ -250,10 +238,6 @@ NSString *FormatFractionalSize(float bytes, int bytesPerUnit, NSString *unitsKey
   // the views might outlive us, so clear refs to us
   [mCompletedView setController:nil];
   [mProgressView setController:nil];
-
-  [mFilenameLabelUnselectedColor release];
-  [mStatusLabelUnselectedColor release];
-  [mTimeLabelUnselectedColor release];
 
   [mStartTime release];
   [mSourceURL release];
@@ -489,15 +473,12 @@ NSString *FormatFractionalSize(float bytes, int bytesPerUnit, NSString *unitsKey
 {
   // note that the view you get here depends on whether we're paused/done or not,
   // so we have to be sure to refresh the info if our state changes.
-  NSView* curView = [self view];
+  ProgressView* curView = [self view];
   NSString* filename = [mDestPath lastPathComponent];
   
-  id filenameLabel = [curView viewWithTag:kLabelTagFilename];
-  if (![[filenameLabel stringValue] isEqualToString:filename])
-    [filenameLabel setStringValue:filename];
+  [curView updateFilename:filename];
   
-  NSImageView* iconImageView = [curView viewWithTag:kLabelTagIcon];
-  if (iconImageView && mRefreshIcon) { // update the icon image
+  if (mRefreshIcon) { // update the icon image
     NSImage* iconImage = nil;
     if (mDownloadDone && !mFileExists)
     {
@@ -515,22 +496,20 @@ NSString *FormatFractionalSize(float bytes, int bytesPerUnit, NSString *unitsKey
     // sometimes the finder doesn't have an icon for us (rarely)
     // when that happens just leave it at what it was before
     if (iconImage)
-      [iconImageView setImage:iconImage];
+      [curView updateFileIcon:iconImage];
     
     mRefreshIcon = NO; // dont change unless status changes
   }
   
   if (mDownloadDone) { // just update the status field
-    id statusLabel = [curView viewWithTag:kLabelTagStatus];
-    if (statusLabel) {
-      NSString* statusString;
-      if (mUserCancelled) {
-        statusString = NSLocalizedString(@"DownloadCancelled", nil);
-      }
-      else if (mDownloadFailed) {
-        statusString = NSLocalizedString(@"DownloadInterrupted", nil);
-      }
-      else {
+    NSString* statusString = nil;
+    if (mUserCancelled) {
+      statusString = NSLocalizedString(@"DownloadCancelled", nil);
+    }
+    else if (mDownloadFailed) {
+      statusString = NSLocalizedString(@"DownloadInterrupted", nil);
+    }
+    else {
         // If the download size was not known then lookup size from the file we downloaded
         if (mDownloadSize < 0) {
           [self checkFileExists];
@@ -542,71 +521,40 @@ NSString *FormatFractionalSize(float bytes, int bytesPerUnit, NSString *unitsKey
         }
 
         statusString = [NSString stringWithFormat:NSLocalizedString(@"DownloadCompleted", nil),
-          [[self class] formatTime:(int)mDownloadTime], [[self class] formatBytes:mDownloadSize]];
+            [[self class] formatTime:(int)mDownloadTime], [[self class] formatBytes:mDownloadSize]];
       }
-      
-      if (![[statusLabel stringValue] isEqualToString:statusString])
-        [statusLabel setStringValue:statusString];
-    }
+    
+    [curView updateStatus:statusString];
   }
 	
   else if ([self isPaused]) { // update the status field
-    id statusLabel = [curView viewWithTag:kLabelTagStatus];
-    if (statusLabel) {
-      NSString* statusString = NSLocalizedString(@"DownloadPausedStatusString", nil);
-      [statusLabel setStringValue:[NSString stringWithFormat:statusString,
+    NSString* statusString = [NSString stringWithFormat:NSLocalizedString(@"DownloadPausedStatusString", nil),
         [[self class] formatBytes:mCurrentProgress],
-        (mDownloadSize > 0 ? [[self class] formatBytes:mDownloadSize] : @"?")]];
-    }
+        (mDownloadSize > 0 ? [[self class] formatBytes:mDownloadSize] : @"?")];
+      
+    [curView updateStatus:statusString];
   }
 	
   else {
     NSTimeInterval elapsedTime = -[mStartTime timeIntervalSinceNow];
     
     // update status field
-    id statusLabel = [curView viewWithTag:kLabelTagStatus];
-    if (statusLabel) {
-      NSString *statusLabelString = NSLocalizedString(@"DownloadStatusString", nil);
-      float byteSec = mCurrentProgress / elapsedTime;
-      [statusLabel setStringValue:[NSString stringWithFormat:statusLabelString, 
-                   [[self class] formatBytes:mCurrentProgress],
-                   (mDownloadSize > 0 ? [[self class] formatBytes:mDownloadSize] : @"?"),
-                   [[self class] formatBytes:byteSec]]];
-    }
+    float byteSec = mCurrentProgress / elapsedTime;
+
+    NSString* statusString = [NSString stringWithFormat:NSLocalizedString(@"DownloadStatusString", nil), 
+        [[self class] formatBytes:mCurrentProgress],
+        (mDownloadSize > 0 ? [[self class] formatBytes:mDownloadSize] : @"?"),
+        [[self class] formatBytes:byteSec]];
+
+    [curView updateStatus:statusString];
     
-    id timeLabel = [curView viewWithTag:kLabelTagTimeRemaining];
-    if (timeLabel) {
-      if (mDownloadSize > 0) {
-        int secToGo = (int)ceil((elapsedTime * mDownloadSize / mCurrentProgress) - elapsedTime);
-        [timeLabel setStringValue:[[self class] formatFuzzyTime:secToGo]];
-      }
-      else { // mDownloadSize is undetermined.  Set remaining time to question marks.
-        [timeLabel setStringValue:NSLocalizedString(@"DownloadCalculatingString", nil)];
-      }
+    if (mDownloadSize > 0) {
+      int secToGo = (int)ceil((elapsedTime * mDownloadSize / mCurrentProgress) - elapsedTime);
+      [curView updateTimeRemaining:[[self class] formatFuzzyTime:secToGo]];
     }
-  }
-
-  [self refreshLabelColors];
-}
-
--(void)refreshLabelColors
-{
-  NSView* curView = [self view];
-  NSTextField* filenameLabel = [curView viewWithTag:kLabelTagFilename];
-  NSTextField* statusLabel = [curView viewWithTag:kLabelTagStatus];
-  NSTextField* timeLabel = [curView viewWithTag:kLabelTagTimeRemaining];
-
-  if (mIsSelected) {
-    NSColor* selectedLabelColor = [NSColor alternateSelectedControlTextColor];
-    [filenameLabel setTextColor:selectedLabelColor];
-    [statusLabel setTextColor:selectedLabelColor];
-    [timeLabel setTextColor:selectedLabelColor];
-  }
-  else {
-    // Use the labels' unselected text color specified in IB.
-    [filenameLabel setTextColor:mFilenameLabelUnselectedColor];
-    [statusLabel setTextColor:mStatusLabelUnselectedColor];
-    [timeLabel setTextColor:mTimeLabelUnselectedColor];
+    else { // mDownloadSize is undetermined.  Set remaining time to question marks.
+      [curView updateTimeRemaining:NSLocalizedString(@"DownloadCalculatingString", nil)];
+    }
   }
 }
 
@@ -630,8 +578,7 @@ NSString *FormatFractionalSize(float bytes, int bytesPerUnit, NSString *unitsKey
   if (mIsSelected != inSelected)
   {
     mIsSelected = inSelected;
-    [self refreshLabelColors];
-    [[self view] setNeedsDisplay:YES];
+    [[self view] selectionChanged];
   }
 }
 

@@ -40,18 +40,100 @@
 #import "ProgressView.h"
 #import "ProgressViewController.h"
 
+enum {
+  kLabelTagFilename = 1000,
+  kLabelTagStatus,
+  kLabelTagTimeRemaining,
+  kLabelTagIcon
+};
+
+@interface ProgressView(ProgressViewPrivate)
+
+- (NSColor*)labelColorForTag:(int)labelTag;
+- (void)refreshLabelColors;
+
+@end
+
 @implementation ProgressView
+
+- (NSColor*)labelColorForTag:(int)labelTag
+{
+  return [[self viewWithTag:labelTag] textColor];
+}
+
+- (void)awakeFromNib
+{
+  // Cache the labels' unselected text color specified in IB.
+  mFilenameLabelUnselectedColor = [[self labelColorForTag:kLabelTagFilename] retain];
+  mStatusLabelUnselectedColor   = [[self labelColorForTag:kLabelTagStatus] retain];
+  mTimeLabelUnselectedColor     = [[self labelColorForTag:kLabelTagTimeRemaining] retain];
+
+}
 
 - (void)dealloc
 {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
   [mFileIconMouseDownEvent release];
+  [mFilenameLabelUnselectedColor release];
+  [mStatusLabelUnselectedColor release];
+  [mTimeLabelUnselectedColor release];
   [super dealloc];
+}
+
+- (void)viewDidMoveToWindow
+{
+  if ([self window]) {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(windowKeyStatusChanged:)
+                                                 name:NSWindowDidBecomeKeyNotification
+                                               object:[self window]];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(windowKeyStatusChanged:)
+                                                 name:NSWindowDidResignKeyNotification
+                                               object:[self window]];
+    [self refreshLabelColors];
+  }
+}
+
+- (void)windowKeyStatusChanged:(NSNotification *)aNotification
+{
+  [self refreshLabelColors];
+  [self setNeedsDisplay:YES];
+}
+
+- (void)selectionChanged
+{
+  [self refreshLabelColors];
+  [self setNeedsDisplay:YES];
+}
+
+- (void)refreshLabelColors
+{
+  NSTextField* filenameLabel = [self viewWithTag:kLabelTagFilename];
+  NSTextField* statusLabel = [self viewWithTag:kLabelTagStatus];
+  NSTextField* timeLabel = [self viewWithTag:kLabelTagTimeRemaining];
+
+  if ([mProgressController isSelected] && [[self window] isKeyWindow]) {
+    NSColor* selectedLabelColor = [NSColor alternateSelectedControlTextColor];
+    [filenameLabel setTextColor:selectedLabelColor];
+    [statusLabel setTextColor:selectedLabelColor];
+    [timeLabel setTextColor:selectedLabelColor];
+  }
+  else {
+    // Use the labels' unselected text color specified in IB.
+    [filenameLabel setTextColor:mFilenameLabelUnselectedColor];
+    [statusLabel setTextColor:mStatusLabelUnselectedColor];
+    [timeLabel setTextColor:mTimeLabelUnselectedColor];
+  }
 }
 
 - (void)drawRect:(NSRect)rect
 {
   if ([mProgressController isSelected]) {
-    [[NSColor alternateSelectedControlColor] set];
+    if ([[self window] isKeyWindow])
+      [[NSColor alternateSelectedControlColor] set];
+    else
+      [[NSColor secondarySelectedControlColor] set];
   }
   else {
     [[NSColor controlBackgroundColor] set];
@@ -151,6 +233,43 @@
   }
   if (operation == NSDragOperationMove)
     [mProgressController remove:self];
+}
+
+- (void)updateFilename:(NSString*)filename
+{
+  NSTextField* filenameLabelView = [self viewWithTag:kLabelTagFilename];
+  if ([[filenameLabelView stringValue] isEqualToString:filename])
+    return;
+  
+  [filenameLabelView setStringValue:filename];
+  [filenameLabelView setNeedsDisplay:YES];
+}
+
+- (void)updateFileIcon:(NSImage*)fileIcon
+{
+  NSImageView* fileIconView = [self viewWithTag:kLabelTagIcon];
+  [fileIconView setImage:fileIcon];
+  [fileIconView setNeedsDisplay:YES];
+}
+
+- (void)updateStatus:(NSString*)status
+{
+  NSTextField* statusLabelView = [self viewWithTag:kLabelTagStatus];
+  if ([[statusLabelView stringValue] isEqualToString:status])
+    return;
+  
+  [statusLabelView setStringValue:status];
+  [statusLabelView setNeedsDisplay:YES];
+}
+
+- (void)updateTimeRemaining:(NSString*)timeRemaining
+{
+  NSTextField* timeLabelView = [self viewWithTag:kLabelTagTimeRemaining];
+  if ([[timeLabelView stringValue] isEqualToString:timeRemaining])
+    return;
+
+  [timeLabelView setStringValue:timeRemaining];
+  [timeLabelView setNeedsDisplay:YES];
 }
 
 - (void)setController:(ProgressViewController*)controller
