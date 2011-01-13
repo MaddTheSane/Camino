@@ -691,7 +691,8 @@ enum SourceChangeType {
   [self resetSearch];
   mDelegate = delegate;
 
-  NSArray *searchTerms = [searchString componentsSeparatedByString:@" "];
+  NSArray *searchTerms =
+      [[searchString lowercaseString] componentsSeparatedByString:@" "];
 
   // If it is likely a URL with a scheme, use the placeholder version.
   // This uses a conservative heuristic based on whether or not the scheme
