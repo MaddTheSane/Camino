@@ -96,40 +96,18 @@ CM_APP_VERSION_CFBUNDLE := $(shell echo $(CM_APP_VERSION)@$(PLATFORM_BUILD_ID) |
 # to append "or" regex clauses to.
 GREP_V_PATTERN = __dummy__
 
-# If a CVS tag (or branch) can be determined, use it as the CVS tag name in
+# If an Hg tag (or branch) can be determined, use it as the Hg tag name in
 # Info.plist.  If no tag can be found, set up to remove the relevant key from
 # Info.plist.
-CVS_TAG_FILE = generated/cvs_tag
-CVS_TAG := $(shell if [ -d $(srcdir)/CVS ] ; then \
-                     if [ -f $(srcdir)/CVS/Tag ] ; then \
-                       sed -e 's/^D.*/HEAD/' -e 's/^[NT]//' $(srcdir)/CVS/Tag ; \
-                     else \
-                       echo HEAD ; \
-                     fi \
-                   fi)
-ifdef CVS_TAG
-SED_ARGS += -e "s/%CVS_TAG%/$(CVS_TAG)/"
-else  # CVS_TAG
+HG_TAG_FILE = generated/hg_tag
+HG_TAG := $(MOZ_HG_TAG)
+ifdef HG_TAG
+SED_ARGS += -e "s/%HG_TAG%/$(HG_TAG)/"
+else  # HG_TAG
 # Add the extra dummy pattern to ensure that make can't add whitespace to the
 # strings we care about.
-GREP_V_PATTERN += \|MozillaCVSTag\|%CVS_TAG%\|__dummy__
-endif  # CVS_TAG
-
-# If MOZ_CO_DATE is set, use it as the CVS time in Info.plist.  If it doesn't
-# exist, set up to remove the relevant key from Info.plist.
-CVS_TIME_FILE = generated/cvs_time
-ifdef MOZ_CO_DATE
-CVS_TIME := $(shell $(PERL) $(srcdir)/config/mozcodate2iso8601 "$(MOZ_CO_DATE)")
-ifndef CVS_TIME
-# Fail if the MOZ_CO_DATE format ever changes.
-CVS_TIME := $(error mozcodate2iso8601)
-endif  # !CVS_TIME
-SED_ARGS += -e "s/%CVS_TIME%/$(CVS_TIME)/"
-else  # MOZ_CO_DATE
-# Add the extra dummy pattern to ensure that make can't add whitespace to the
-# strings we care about.
-GREP_V_PATTERN += \|MozillaCVSTime\|%CVS_TIME%\|__dummy__
-endif  # MOZ_CO_DATE
+GREP_V_PATTERN += \|MozillaHgTag\|%HG_TAG%\|__dummy__
+endif  # HG_TAG
 
 # Generate the Gecko and Camino changeset and repository names
 # make+shell+sed = awful
@@ -327,8 +305,7 @@ generated/Info-Camino.plist: \
   $(PLATFORM_REPO_FILE) \
   $(CM_CHANGESET_FILE) \
   $(CM_REPO_FILE) \
-  $(CVS_TAG_FILE) \
-  $(CVS_TIME_FILE)
+  $(HG_TAG_FILE)
 	mkdir -p $(dir $@)
 	sed -e "s/%CM_APP_VERSION%/$(CM_APP_VERSION)/" \
 	    -e "s/%CM_APP_VERSION_CFBUNDLE%/$(CM_APP_VERSION_CFBUNDLE)/" \
@@ -371,13 +348,9 @@ $(GENERATED_GECKO_STRINGS_FILES): \
 # contents are changing.  The file's timestamp will be preserved when the
 # contents aren't changing, reducing unnecessary build activity.
 
-$(CVS_TAG_FILE): FORCE
-	grep -lFx "$(CVS_TAG)" $@ >& /dev/null || \
-	  (mkdir -p $(dir $@) && echo "$(CVS_TAG)" > $@)
-
-$(CVS_TIME_FILE): FORCE
-	grep -lFx "$(CVS_TIME)" $@ >& /dev/null || \
-	  (mkdir -p $(dir $@) && echo "$(CVS_TIME)" > $@)
+$(HG_TAG_FILE): FORCE
+	grep -lFx "$(HG_TAG)" $@ >& /dev/null || \
+	  (mkdir -p $(dir $@) && echo "$(HG_TAG)" > $@)
 
 $(PLATFORM_CHANGESET_FILE): FORCE
 	grep -lFx "$(PLATFORM_CHANGESET)" $@ >& /dev/null || \

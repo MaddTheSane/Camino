@@ -203,10 +203,8 @@
 	<string>10.4</string>
 	<key>MozillaBuildID</key>
 	<string>%PLATFORM_BUILD_ID%</string>
-	<key>MozillaCVSTag</key>
-	<string>%CVS_TAG%</string>
-	<key>MozillaCVSTime</key>
-	<date>%CVS_TIME%</date>
+	<key>MozillaHgTag</key>
+	<string>%HG_TAG%</string>
 	<key>MozillaChangeset</key>
 	<string>%PLATFORM_CHANGESET%</string>
 	<key>MozillaGeckoVersion</key>
