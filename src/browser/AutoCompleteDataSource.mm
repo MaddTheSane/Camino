@@ -630,7 +630,20 @@ enum SourceChangeType {
     // ignored since we don't want to match to it. However, currently
     // we just ignore the final part of the URL after the last dot, so we'll
     // over-match for two-part TLDs such as co.uk.
-    NSString *restOfURL = [lowercaseURL substringFromIndex:NSMaxRange([lowercaseURL rangeOfString:host])];
+    NSRange rangeOfHost = [lowercaseURL rangeOfString:host];
+    if (rangeOfHost.location == NSNotFound) {
+      // If there's no match, it's probably because |host| is unescaped but
+      // lowercaseURL isn't; try again with an escaped version of the host.
+      NSString* escapedHost =
+          [[host stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+              lowercaseString];
+      rangeOfHost = [lowercaseURL rangeOfString:escapedHost];
+    }
+    // If we really can't figure out where the host is, just use the host
+    // without the rest of the URL, so it will at least match short
+    // search strings.
+    NSString *restOfURL = rangeOfHost.location != NSNotFound ?
+        [lowercaseURL substringFromIndex:NSMaxRange(rangeOfHost)] : @"";
     NSRange nextDot;
     while ((nextDot = [host rangeOfString:@"."]).location != NSNotFound) {
       [urls addObject:[host stringByAppendingString:restOfURL]];
