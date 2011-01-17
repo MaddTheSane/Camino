@@ -49,6 +49,7 @@
 #import "AutoCompleteTextField.h"
 #import "AutoCompleteDataSource.h"
 #import "BrowserWindowController.h"
+#import "LocationBarPartitionView.h"
 #import "PageProxyIcon.h"
 #import "PreferenceManager.h"
 #import "CHBrowserService.h"
@@ -58,21 +59,10 @@
 
 #include "nsIWebProgressListener.h"
 
-static const int kFrameMargin = 1;
-
-const float kSecureIconRightOffset = 19.0;  // offset from right side of url bar
-const float kSecureIconYOrigin = 3.0;
-const float kSecureIconSize = 16.0;
-
-const float kFeedIconRightOffest = 17.0;
-const float kFeedIconYOrigin = 5.0;
-const float kFeedIconWidth = 14.0;
-const float kFeedIconHeight = 13.0;
+const int kLocationFieldFrameMargin = 1;
 
 // stole this from NSPasteboard+Utils.mm
 static NSString* kCorePasteboardFlavorType_url = @"CorePasteboardFlavorType 0x75726C20";  // 'url '  url
-// posted when the feed icon's menu is about to be drawn
-NSString* const kWillShowFeedMenu = @"WillShowFeedMenu";
 
 @interface AutoCompleteTextField(Private)
 
@@ -105,19 +95,6 @@ NSString* const kWillShowFeedMenu = @"WillShowFeedMenu";
 - (void)onResize:(NSNotification*)aNote;
 - (void)onUndoOrRedo:(NSNotification*)aNote;
 
-- (void)positionFeedIcon;
-
-@end
-
-#pragma mark -
-
-@implementation AutoCompleteWindow
-
-- (BOOL)isKeyWindow
-{
-  return YES;
-}
-
 @end
 
 #pragma mark -
@@ -125,104 +102,35 @@ NSString* const kWillShowFeedMenu = @"WillShowFeedMenu";
 //
 // AutoCompleteTextCell
 //
-// Text cell subclass used to make room for the proxy icon inside the textview
+// Text cell subclass used to make room for the proxy icon and partition view
+// inside the textview.
 //
 @interface AutoCompleteTextCell : NSTextFieldCell
 {
-  BOOL mDisplaySecureIcon;    // YES if currently displaying the security icon
-  BOOL mDisplayFeedIcon;      // YES if currently displaying the feed icon
 }
-
-- (void)calcControlViewSizeForSecureIcon:(BOOL)inIsVisible;
-- (void)calcControlViewSizeForFeedIcon:(BOOL)inIsVisible;
-
-- (BOOL)isSecureIconDisplayed;
-- (BOOL)isFeedIconDisplayed;
-
 @end
 
 @implementation AutoCompleteTextCell
 
 //
-// -initTextCell:
-//
-// Handles initializing our members, start out assuming we're not showing a
-// secure icon.
-//
-- (id)initTextCell:(NSString*)inStr
-{
-  if ((self = [super initTextCell:inStr])) {
-    mDisplaySecureIcon = NO;
-    mDisplayFeedIcon = NO;
-  }
-  return self;
-}
-
-//
 // -drawingRectForBounds:
 //
 // Overridden to adjust the bounds we draw into inside the full rectangle. The
-// proxy icon takes away space on the left side (always) and the secure icon
-// (if visible) takes away space on the right side. The remainder in the 
-// middle is where we're allowed to draw the text of the text field.
+// proxy icon takes away space on the left side (always) and the partition view
+// (if visible) takes away space on the right side. The remainder in the middle
+// is where we're allowed to draw the text of the text field.
 //
 - (NSRect)drawingRectForBounds:(NSRect)theRect
 {
   const float kProxyIconOffset = 19.0;
-
   theRect.origin.x += kProxyIconOffset;
   theRect.size.width -= kProxyIconOffset;
-  if ([self isSecureIconDisplayed])
-    theRect.size.width -= kSecureIconRightOffset;
-  if ([self isFeedIconDisplayed])
-    theRect.size.width -= kFeedIconRightOffest;
+  LocationBarPartitionView* partitionView =
+      [[self controlView] viewWithTag:kPartitionViewTag];
+  if (partitionView)
+    theRect.size.width -= [partitionView opaqueWidth];
 
   return [super drawingRectForBounds:theRect];
-}
-
-//
-// -calcControlViewSizeForSecureIcon:
-//
-// Indicates whether or not we need to take away space on the right side for
-// the security icon. Causes the cell's drawing rect to be recalculated.
-//
-- (void)calcControlViewSizeForSecureIcon:(BOOL)inIsVisible
-{
-  mDisplaySecureIcon = inIsVisible;
-  [(NSControl*)[self controlView] calcSize];
-}
-
-//
-// -calcControlViewSizeForFeedIcon:
-//
-// Return the feed icons visibility state.
-//
-- (void)calcControlViewSizeForFeedIcon:(BOOL)inIsVisible
-{
-  mDisplayFeedIcon = inIsVisible;
-  [(NSControl*)[self controlView] calcSize];
-}
-
-//
-// -isSecureIconDisplayed:
-//
-// Return the secure icons visibility state.
-//
-- (BOOL)isSecureIconDisplayed
-{
-  return mDisplaySecureIcon;
-}
-
-//
-// -isFeedIconDisplayed:
-//
-// Accessor method to help the layout the feed icon to the left of the
-// security icon. This method is used when |displaySecureIcon:| is called to
-// determine if the feed icon has been displayed before the security icon.
-//
-- (BOOL)isFeedIconDisplayed
-{
-  return mDisplayFeedIcon;
 }
 
 @end
@@ -336,26 +244,14 @@ NSString* const kWillShowFeedMenu = @"WillShowFeedMenu";
     [mProxyIcon setFrameOrigin: NSMakePoint(3, 3)];
   }
 
-  // Cache the background color for secure pages. Create a secure icon view
-  // which we'll display at the far right of the URL bar. We hold onto a
-  // strong reference so that it doesn't get destroyed when we remove it from
-  // the view hierarchy (for non-secure pages). Set its resize mask so that it
-  // moves as you resize the window and mark this view that it needs to resize
-  // its subviews so it will automagically move the secure icon when it's
-  // visible.
+  // Cache the background color for secure pages.
   mSecureBackgroundColor = [[NSColor colorWithDeviceRed:1.0 green:1.0 blue:0.777 alpha:1.0] retain];
-  mLock = [[ClickMenuImageView alloc] initWithFrame:NSMakeRect([self bounds].size.width - kSecureIconRightOffset,
-                                                          kSecureIconYOrigin, kSecureIconSize, kSecureIconSize)];  // we own this
-  [mLock setAutoresizingMask:(NSViewNotSizable | NSViewMinXMargin)];
-  [mLock setMenu:mLockIconContextMenu];
 
-  mFeedIcon = [[ClickMenuImageView alloc] initWithFrame:NSMakeRect([self bounds].size.width - kFeedIconRightOffest,
-                                                              kFeedIconYOrigin, kFeedIconWidth, kFeedIconHeight)];  // we own this
-  [mFeedIcon setMenuNotificationName:kWillShowFeedMenu];
-  [mFeedIcon setAutoresizingMask:(NSViewNotSizable | NSViewMinXMargin)];
-  [mFeedIcon setToolTip:NSLocalizedString(@"FeedDetected", nil)];
-  [mFeedIcon setImage:[NSImage imageNamed:@"feed"]];
-
+  // Create the partition view.
+  mPartitionView = [[LocationBarPartitionView alloc] initWithFrame:NSZeroRect];
+  [mPartitionView setAutoresizingMask:(NSViewNotSizable | NSViewMinXMargin)];
+  [mPartitionView setSecureIconContextMenu:mLockIconContextMenu];
+  [self addSubview:mPartitionView];
   [self setAutoresizesSubviews:YES];
 
   // create the main column
@@ -438,6 +334,8 @@ NSString* const kWillShowFeedMenu = @"WillShowFeedMenu";
   [[PreferenceManager sharedInstanceDontCreate] removeObserver:self];
   [self cancelSearch];
   [self cleanup];
+  [mSecureBackgroundColor release];
+  [mPartitionView release];
   [super dealloc];
 }
 
@@ -448,14 +346,6 @@ NSString* const kWillShowFeedMenu = @"WillShowFeedMenu";
 
   [mPopupWin release];
   mPopupWin = nil;
-
-  [mSecureBackgroundColor release];
-  mSecureBackgroundColor = nil;
-
-  [mLock release];
-  mLock = nil;
-  [mFeedIcon release];
-  mFeedIcon = nil;
 }
 
 - (void)shutdown:(NSNotification*)aNotification
@@ -608,7 +498,7 @@ static const int kStringComparisonEqual = 0;
   int tableHeight = (int)([mTableView rowHeight] + [mTableView intercellSpacing].height) * [mDataSource rowCount];
   NSRect tableViewFrame = NSZeroRect;
   tableViewFrame.size.height = tableHeight;
-  tableViewFrame.size.width = locationFrame.size.width - (2 * kFrameMargin);
+  tableViewFrame.size.width = locationFrame.size.width - (2 * kLocationFieldFrameMargin);
   tableViewFrame.origin.y = kHorizontalPadding;
   NSRect containerViewFrame = tableViewFrame;
   containerViewFrame.size.height += kHorizontalPadding * 2.0;
@@ -643,60 +533,39 @@ static const int kStringComparisonEqual = 0;
 
 #pragma mark -
 
-// Handle feed detection and opening
+- (void)displaySecureIcon:(BOOL)inShouldDisplay
+{
+  [mPartitionView setDisplaySecureIcon:inShouldDisplay];
+}
 
-//
-// -displayFeedIcon:
-//
-// Called when BrowserWindowController wants us to show the RSS icon.
-//
+- (void)setSecureState:(unsigned char)inState
+{
+  NSColor* urlBarColor = [NSColor whiteColor];
+  BOOL isSecure = NO;
+  switch (inState) {
+    case nsIWebProgressListener::STATE_IS_SECURE:
+      [mPartitionView setSecureImage:[BrowserWindowController secureIcon]];
+      urlBarColor = mSecureBackgroundColor;
+      isSecure = YES;
+      break;
+    case nsIWebProgressListener::STATE_IS_BROKEN:
+      [mPartitionView setSecureImage:[BrowserWindowController brokenIcon]];
+      urlBarColor = mSecureBackgroundColor;
+      isSecure = YES;
+      break;
+    }
+  [self setBackgroundColor:urlBarColor];
+  [self displaySecureIcon:isSecure];
+}
+
 - (void)displayFeedIcon:(BOOL)inDisplay
 {
-  if (inDisplay) {
-    if (![mFeedIcon superview]) {
-      // Showing the icon. The user may have resized the window (and thus this
-      // view) while the view was hidden (and thus not part of the view
-      // hierarchy) so we have to reposition it manually before we add it.
-      [[self cell] calcControlViewSizeForFeedIcon:YES];
-      [self addSubview:mFeedIcon];
-    }
-    [self positionFeedIcon];
-    [self setNeedsDisplay:YES];
-  }
-  else if ([mFeedIcon superview]) {
-    // Hiding the icon. We don't have to do anything more than remove it from
-    // the view.
-    [[self cell] calcControlViewSizeForFeedIcon:NO];
-    [mFeedIcon removeFromSuperview];
-    [self setNeedsDisplay:YES];
-  }
+  [mPartitionView setDisplayFeedIcon:inDisplay];
 }
 
-//
-// -positionFeedIcon
-//
-// Called when the position of the feed icon in the text field needs to be
-// checked.
-//
--(void)positionFeedIcon
-{
-  // position the feed icon to the left of the security icon
-  if ([[self cell] isSecureIconDisplayed])
-    [mFeedIcon setFrameOrigin:NSMakePoint([self bounds].size.width - (kFeedIconWidth + kSecureIconRightOffset), kFeedIconYOrigin)];
-  // position the feed icon to the furthest right of the url bar
-  else
-    [mFeedIcon setFrameOrigin:NSMakePoint([self bounds].size.width - kFeedIconRightOffest, kFeedIconYOrigin)];
-}
-
-//
-// -setFeedIconContextMenu:
-//
-// Set the context menu for the feed icon with a menu that has been built for
-// the feeds found on the page.
-//
 - (void)setFeedIconContextMenu:(NSMenu*)inMenu
 {
-  [mFeedIcon setMenu:inMenu];
+  [mPartitionView setMenu:inMenu];
 }
 
 #pragma mark -
@@ -791,69 +660,6 @@ static const int kStringComparisonEqual = 0;
 }
 
 #pragma mark -
-
-//
-// -displaySecureIcon:
-//
-// Shows or hides the security icon depending on |inShouldDisplay|.
-//
-- (void)displaySecureIcon:(BOOL)inShouldDisplay
-{
-  if (inShouldDisplay && ![mLock superview]) {
-    // Showing the icon. The user may have resized the window (and thus this
-    // view) while the view was hidden (and thus not part of the view
-    // hierarchy) so we have to reposition it manually before we add it.
-    [[self cell] calcControlViewSizeForSecureIcon:YES];
-    [mLock setFrameOrigin:NSMakePoint([self bounds].size.width - kSecureIconRightOffset, kSecureIconYOrigin)];
-    [self addSubview:mLock];
-
-    // If the feed icon needs to be displayed, and it was drawn before the
-    // secure icon, move the feed icon to the left hand side of the secure
-    // icon.
-    if ([[self cell] isFeedIconDisplayed])
-      [self positionFeedIcon];
-    [self setNeedsDisplay:YES];
-  }
-  else if (!inShouldDisplay && [mLock superview]) {
-    // Hiding the icon. We don't have to do anything more than remove it from
-    // the view.
-    [[self cell] calcControlViewSizeForSecureIcon:NO];
-    [mLock removeFromSuperview];
-
-    if ([[self cell] isFeedIconDisplayed])
-      [self positionFeedIcon];
-    [self setNeedsDisplay:YES];
-  }
-}
-
-//
-// -setSecureState:
-//
-// Changes the display of the text field to indicate whether the page
-// is secure or not.
-//
-- (void)setSecureState:(unsigned char)inState
-{
-  NSColor* urlBarColor = [NSColor whiteColor];
-  BOOL isSecure = NO;
-  switch (inState) {
-    case nsIWebProgressListener::STATE_IS_INSECURE:
-      [mLock setImage:[BrowserWindowController insecureIcon]];
-      break;
-    case nsIWebProgressListener::STATE_IS_SECURE:
-      [mLock setImage:[BrowserWindowController secureIcon]];
-      urlBarColor = mSecureBackgroundColor;
-      isSecure = YES;
-      break;
-    case nsIWebProgressListener::STATE_IS_BROKEN:
-      [mLock setImage:[BrowserWindowController brokenIcon]];
-      urlBarColor = mSecureBackgroundColor;
-      isSecure = YES;
-      break;
-  }
-  [self setBackgroundColor:urlBarColor];
-  [self displaySecureIcon:isSecure];
-}
 
 //
 // -setURI

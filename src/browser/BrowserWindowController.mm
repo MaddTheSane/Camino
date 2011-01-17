@@ -75,6 +75,7 @@
 #import "UserDefaults.h"
 #import "PageProxyIcon.h"
 #import "AutoCompleteTextField.h"
+#import "LocationBarPartitionView.h"
 #import "DraggableImageAndTextCell.h"
 #import "MVPreferencesController.h"
 #import "ViewCertificateDialogController.h"
@@ -1019,7 +1020,7 @@ public:
     // Listen to the context menu events from the URL bar for the feed icon
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(buildFeedsDetectedListMenu:)
-                                                 name:kWillShowFeedMenu
+                                                 name:kWillShowFeedMenuNotification
                                                object:nil];
 
     // set the size of the search bar to the width it was last time and hide it

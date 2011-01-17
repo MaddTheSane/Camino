@@ -42,23 +42,22 @@
 
 @class MAAttachedWindow;
 @class AutoCompleteDataSource;
-@class ClickMenuImageView;
+@class LocationBarPartitionView;
 @class PageProxyIcon;
 
-extern NSString* const kWillShowFeedMenu;
+extern const int kLocationFieldFrameMargin;
 
 @interface AutoCompleteTextField : NSTextField
 {
   IBOutlet PageProxyIcon*   mProxyIcon;
   IBOutlet NSMenu*          mLockIconContextMenu;
-  
+
   MAAttachedWindow*         mPopupWin;
   NSTableView*              mTableView;
-  
-  ClickMenuImageView*       mLock;                  // STRONG, lock that shows when a page is secure, hidden otherwise
-  ClickMenuImageView*       mFeedIcon;              // STRONG, feed icon that shows when a page discovers a feed
-  NSColor*                  mSecureBackgroundColor; // STRONG, yellow color for bg when on a secure page, cached for perf
-  
+
+  LocationBarPartitionView* mPartitionView;
+  NSColor*                  mSecureBackgroundColor;
+
   AutoCompleteDataSource*   mDataSource;
   NSString*                 mSearchString;
   
@@ -90,12 +89,10 @@ extern NSString* const kWillShowFeedMenu;
 // is secure or not.
 - (void)setSecureState:(unsigned char)inState;
 
-// Change the display to show the feed icon
+// Shows or hides the feed icon.
 - (void)displayFeedIcon:(BOOL)inDisplay;
+
+// Sets the menu for the feed icon.
 - (void)setFeedIconContextMenu:(NSMenu*)inMenu;
 
-@end
-
-@interface AutoCompleteWindow : NSWindow
-- (BOOL)isKeyWindow;
 @end
