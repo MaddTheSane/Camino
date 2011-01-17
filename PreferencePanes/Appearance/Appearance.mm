@@ -144,8 +144,6 @@
   BOOL gotPref;
   [mUnderlineLinksCheckbox setState:
       [self getBooleanPref:kGeckoPrefUnderlineLinks withSuccess:&gotPref]];
-  [mUseMyColorsCheckbox setState:
-      ![self getBooleanPref:kGeckoPrefUsePageColors withSuccess:&gotPref]];
 
   [mBackgroundColorWell     setColor:[self getColorPref:kGeckoPrefPageBackgroundColor  withSuccess:&gotPref]];
   [mTextColorWell           setColor:[self getColorPref:kGeckoPrefPageForegroundColor  withSuccess:&gotPref]];
@@ -171,7 +169,7 @@
 {
   NSControl* bottomControl = nil;
   if ([[tabViewItem identifier] isEqualToString:@"colors"])
-    bottomControl = mUseMyColorsCheckbox;
+    bottomControl = mUnderlineLinksCheckbox;
   else if ([[tabViewItem identifier] isEqualToString:@"fonts"])
     bottomControl = mUseMyFontsCheckbox;
 
@@ -212,8 +210,6 @@
 {
   if (sender == mUnderlineLinksCheckbox)
     [self setPref:kGeckoPrefUnderlineLinks toBoolean:[sender state]];
-  else if (sender == mUseMyColorsCheckbox)
-    [self setPref:kGeckoPrefUsePageColors toBoolean:![sender state]];
 }
 
 - (IBAction)colorChanged:(id)sender
@@ -743,7 +739,6 @@ const int kDefaultFontSansSerifTag = 1;
 - (IBAction)resetColorsToDefaults:(id)sender
 {
   [self clearPref:kGeckoPrefUnderlineLinks];
-  [self clearPref:kGeckoPrefUsePageColors];
   [self clearPref:kGeckoPrefPageBackgroundColor];
   [self clearPref:kGeckoPrefPageForegroundColor];
   [self clearPref:kGeckoPrefLinkColor];
@@ -753,8 +748,6 @@ const int kDefaultFontSansSerifTag = 1;
   int state;
   state = [self getBooleanPref:kGeckoPrefUnderlineLinks withSuccess:NULL] ? NSOnState : NSOffState;
   [mUnderlineLinksCheckbox setState:state];
-  state = [self getBooleanPref:kGeckoPrefUsePageColors withSuccess:NULL] ? NSOffState : NSOnState;
-  [mUseMyColorsCheckbox setState:state];
   
   [mBackgroundColorWell setColor:[self getColorPref:kGeckoPrefPageBackgroundColor withSuccess:NULL]];
   [mTextColorWell setColor:[self getColorPref:kGeckoPrefPageForegroundColor withSuccess:NULL]];

@@ -51,7 +51,6 @@
   IBOutlet NSColorWell*   mUnvisitedLinksColorWell;
 
   IBOutlet NSButton*      mUnderlineLinksCheckbox;
-  IBOutlet NSButton*      mUseMyColorsCheckbox;
 
   // fonts tab
   IBOutlet NSButton*      mChooseProportionalFontButton;

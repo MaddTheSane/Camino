@@ -45,7 +45,6 @@ asm(".no_dead_strip _kGeckoPrefLinkColor");
 asm(".no_dead_strip _kGeckoPrefPageBackgroundColor");
 asm(".no_dead_strip _kGeckoPrefPageForegroundColor");
 asm(".no_dead_strip _kGeckoPrefUnderlineLinks");
-asm(".no_dead_strip _kGeckoPrefUsePageColors");
 asm(".no_dead_strip _kGeckoPrefUsePageFonts");
 asm(".no_dead_strip _kGeckoPrefVisitedLinkColor");
 asm(".no_dead_strip _kGeckoPrefCookieLifetimePolicy");
@@ -203,7 +202,6 @@ const char* const kGeckoPrefDownloadToDefaultLocation = "browser.download.useDow
 
 const char* const kGeckoPrefUnderlineLinks = "browser.underline_anchors";
 const char* const kGeckoPrefUsePageFonts = "browser.display.use_document_fonts";
-const char* const kGeckoPrefUsePageColors = "browser.display.use_document_colors";
 const char* const kGeckoPrefPageBackgroundColor = "browser.display.background_color";
 const char* const kGeckoPrefPageForegroundColor = "browser.display.foreground_color";
 const char* const kGeckoPrefLinkColor = "browser.anchor_color";

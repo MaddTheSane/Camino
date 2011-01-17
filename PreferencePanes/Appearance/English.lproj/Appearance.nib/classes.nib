@@ -55,17 +55,6 @@
 			<string>NSPreferencePane</string>
 			<key>LANGUAGE</key>
 			<string>ObjC</string>
-			<key>OUTLETS</key>
-			<dict>
-				<key>_firstKeyView</key>
-				<string>id</string>
-				<key>_initialKeyView</key>
-				<string>id</string>
-				<key>_lastKeyView</key>
-				<string>id</string>
-				<key>_window</key>
-				<string>id</string>
-			</dict>
 			<key>SUPERCLASS</key>
 			<string>NSObject</string>
 		</dict>
@@ -127,8 +116,6 @@
 				<string>NSButton</string>
 				<key>mUnvisitedLinksColorWell</key>
 				<string>NSColorWell</string>
-				<key>mUseMyColorsCheckbox</key>
-				<string>NSButton</string>
 				<key>mUseMyFontsCheckbox</key>
 				<string>NSButton</string>
 				<key>mVisitedLinksColorWell</key>

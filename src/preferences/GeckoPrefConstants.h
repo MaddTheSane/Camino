@@ -320,9 +320,6 @@ extern const char* const kGeckoPrefUnderlineLinks;                     // bool
 // Controls whether page-specified fonts should be used
 extern const char* const kGeckoPrefUsePageFonts;                       // bool
 
-// Controls whether page-specified colors should be used
-extern const char* const kGeckoPrefUsePageColors;                      // bool
-
 // The default page background color
 extern const char* const kGeckoPrefPageBackgroundColor;                // color
 
