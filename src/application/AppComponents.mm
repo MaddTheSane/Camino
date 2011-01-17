@@ -38,16 +38,18 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "SecurityDialogs.h"
+#import "CertErrorAboutModule.h"
+#import "CHStringBundleOverride.h"
+#import "PluginBlocklistService.h"
 #import "CocoaPromptService.h"
+#import "ContentDispatchChooser.h"
 #import "KeychainService.h"
+#import "nsAboutBookmarks.h"
 #import "nsDownloadListener.h"
 #import "ProgressDlgController.h"
-#import "nsAboutBookmarks.h"
-#import "CHStringBundleOverride.h"
-#import "ContentDispatchChooser.h"
 #import "SafeBrowsingAboutModule.h"
-#import "CertErrorAboutModule.h"
+#import "SecurityDialogs.h"
+
 
 #include "nsIGenericFactory.h"
 
@@ -80,11 +82,12 @@
     "@mozilla.org/content-dispatch-chooser;1"
 
 
-NS_GENERIC_FACTORY_CONSTRUCTOR(SecurityDialogs)
-NS_GENERIC_FACTORY_CONSTRUCTOR(CocoaPromptService)
-NS_GENERIC_FACTORY_CONSTRUCTOR(KeychainPrompt)
 NS_GENERIC_FACTORY_CONSTRUCTOR(CHStringBundleOverride)
+NS_GENERIC_FACTORY_CONSTRUCTOR(CocoaPromptService)
 NS_GENERIC_FACTORY_CONSTRUCTOR(ContentDispatchChooser)
+NS_GENERIC_FACTORY_CONSTRUCTOR(KeychainPrompt)
+NS_GENERIC_FACTORY_CONSTRUCTOR(PluginBlocklistService)
+NS_GENERIC_FACTORY_CONSTRUCTOR(SecurityDialogs)
 
 static nsresult
 nsDownloadListenerConstructor(nsISupports *aOuter, REFNSIID aIID, void **aResult)
@@ -216,6 +219,12 @@ static const nsModuleComponentInfo gAppComponents[] = {
     CH_CERTERROR_ABOUT_MODULE_CID,
     NS_ABOUT_MODULE_CONTRACTID_PREFIX "certerror",
     CHCertErrorAboutModule::CreateCertErrorAboutModule,
+  },
+  {
+    "Plugin Blocklist Module",
+    PLUGIN_BLOCKLIST_SERVICE_CID,
+    "@mozilla.org/extensions/blocklist;1",
+    PluginBlocklistServiceConstructor
   },
 };
 

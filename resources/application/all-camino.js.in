@@ -54,7 +54,10 @@ pref("chimera.store_passwords_with_keychain", true);
 // set this pref to false if you want to specify proxy settings by hand.
 pref("camino.use_system_proxy_settings", true);
 
+// Plugin defaults
 pref("camino.enable_plugins", true);
+pref("camino.enable_java", false);
+pref("camino.disabled_plugin_names", "");
 
 // show warning when closing windows or quitting
 pref("camino.warn_when_closing", true);

@@ -90,6 +90,9 @@ extern NSString* const kPrefChangedPrefNameUserInfoKey;   // NSString
 
 - (void)clearPref:(const char*)prefName;
 
+// Returns YES if the user has disabled the given plugin.
+- (BOOL)pluginShouldBeDisabled:(const char*)pluginName;
+
 // the path to the user profile's root folder
 - (NSString*)profilePath;
 // the path to Camino's cache root folder

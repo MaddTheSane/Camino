@@ -114,8 +114,9 @@ const char* const kGeckoPrefLastAddOnWarningVersion = "camino.last_addon_check_v
 #pragma mark Content Control
 
 const char* const kGeckoPrefEnableJavascript = "javascript.enabled";
-const char* const kGeckoPrefEnableJava = "security.enable_java";
+const char* const kGeckoPrefEnableJava = "camino.enable_java";
 const char* const kGeckoPrefEnablePlugins = "camino.enable_plugins";
+const char* const kGeckoPrefDisabledPluginPrefixes = "camino.disabled_plugin_names";
 const char* const kGeckoPrefBlockPopups = "dom.disable_open_during_load";
 const char* const kGeckoPrefBlockAds = "camino.enable_ad_blocking";
 const char* const kGeckoPrefBlockFlash = "camino.enable_flashblock";

@@ -98,6 +98,8 @@
 		009A854C0F892F1D00C9892B /* CHCertificateOverrideManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 009A854B0F892F1200C9892B /* CHCertificateOverrideManager.mm */; };
 		009A854D0F892F1D00C9892B /* CHCertificateOverrideManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 009A854B0F892F1200C9892B /* CHCertificateOverrideManager.mm */; };
 		009A861E0F89527B00C9892B /* action_button.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 0FA9712F092AF9A0005C1CA6 /* action_button.tiff */; };
+		009EE0E412E024C400A8C0AD /* PluginBlocklistService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 009EE0E212E024C400A8C0AD /* PluginBlocklistService.mm */; };
+		009EE0E512E024C400A8C0AD /* PluginBlocklistService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 009EE0E212E024C400A8C0AD /* PluginBlocklistService.mm */; };
 		00A29E870BC9AA5B00BF313F /* tab_menu_button.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 00A29E860BC9AA5B00BF313F /* tab_menu_button.tiff */; };
 		00A29E880BC9AA5B00BF313F /* tab_menu_button.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 00A29E860BC9AA5B00BF313F /* tab_menu_button.tiff */; };
 		00BBBC850D66C13400C2D916 /* CHGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 00BBBC840D66C13400C2D916 /* CHGradient.m */; };
@@ -2531,6 +2533,8 @@
 		0098B2980CAECEBA00DA0F2F /* necko_file.xpt */ = {isa = PBXFileReference; lastKnownFileType = file; name = necko_file.xpt; path = ../dist/bin/components/necko_file.xpt; sourceTree = SOURCE_ROOT; };
 		009A854A0F892F1200C9892B /* CHCertificateOverrideManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHCertificateOverrideManager.h; path = src/embedding/CHCertificateOverrideManager.h; sourceTree = "<group>"; };
 		009A854B0F892F1200C9892B /* CHCertificateOverrideManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CHCertificateOverrideManager.mm; path = src/embedding/CHCertificateOverrideManager.mm; sourceTree = "<group>"; };
+		009EE0E212E024C400A8C0AD /* PluginBlocklistService.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = PluginBlocklistService.mm; path = src/application/PluginBlocklistService.mm; sourceTree = "<group>"; };
+		009EE0E312E024C400A8C0AD /* PluginBlocklistService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PluginBlocklistService.h; path = src/application/PluginBlocklistService.h; sourceTree = "<group>"; };
 		00A29E860BC9AA5B00BF313F /* tab_menu_button.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = tab_menu_button.tiff; path = resources/images/chrome/tab_menu_button.tiff; sourceTree = SOURCE_ROOT; };
 		00BBBC830D66C13400C2D916 /* CHGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHGradient.h; path = src/extensions/CHGradient.h; sourceTree = "<group>"; };
 		00BBBC840D66C13400C2D916 /* CHGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHGradient.m; path = src/extensions/CHGradient.m; sourceTree = "<group>"; };
@@ -4594,6 +4598,8 @@
 				00C6890610560B110082D80F /* BreakpadWrapper.m */,
 				F58DB2D20381FD3301A9666E /* JSConsole.h */,
 				F58DB2D30381FD3301A9666E /* JSConsole.mm */,
+				009EE0E312E024C400A8C0AD /* PluginBlocklistService.h */,
+				009EE0E212E024C400A8C0AD /* PluginBlocklistService.mm */,
 				F52D5CD7027D3D5001A80166 /* PreferenceManager.h */,
 				F52D5CD8027D3D5001A80166 /* PreferenceManager.mm */,
 				DEE9EBA30AF5C379002BC511 /* SessionManager.h */,
@@ -6515,6 +6521,7 @@
 				00C1D4841285DF14009C4DC3 /* HistoryTree.mm in Sources */,
 				000CE53C121A2E12006B4153 /* Trie.mm in Sources */,
 				001E5C1212D24AC9003E82A3 /* LocationBarPartitionView.mm in Sources */,
+				009EE0E412E024C400A8C0AD /* PluginBlocklistService.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6717,6 +6724,7 @@
 				00C1D4831285DF14009C4DC3 /* HistoryTree.mm in Sources */,
 				000CE53D121A2E12006B4153 /* Trie.mm in Sources */,
 				001E5C1112D24AC9003E82A3 /* LocationBarPartitionView.mm in Sources */,
+				009EE0E512E024C400A8C0AD /* PluginBlocklistService.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

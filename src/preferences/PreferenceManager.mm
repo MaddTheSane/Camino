@@ -41,6 +41,7 @@
 
 #import "NSArray+Utils.h"
 #import "NSString+Gecko.h"
+#import "NSString+Utils.h"
 #import "NSWorkspace+Utils.h"
 
 #import "PreferenceManager.h"
@@ -62,6 +63,8 @@
 #include "nsProfileDirServiceProvider.h"
 #include "nsIPrefService.h"
 #include "nsIPrefBranch2.h"
+#include "nsIPluginHost.h"
+#include "nsIPluginTag.h"
 #include "nsEmbedAPI.h"
 #include "nsAppDirectoryServiceDefs.h"
 #include "nsIStyleSheetService.h"
@@ -81,6 +84,9 @@ NSString* const kPrefChangedPrefNameUserInfoKey = @"pref_name";
 
 static NSString* const AdBlockingChangedNotificationName = @"AdBlockingChanged";
 static NSString* const kFlashblockChangedNotificationName = @"FlashblockChanged";
+
+static NSString* const kJEPName = @"Java Embedding Plugin";
+static NSString* const kAppleJavaName = @"Java Plug-In 2";
 
 // This is an arbitrary version stamp that gets written to the prefs file.
 // It can be used to detect when a new version of Camino is run that needs
@@ -221,6 +227,7 @@ WriteVersion(nsIFile* aProfileDir, const nsACString& aVersion,
 - (void)refreshFlashblockStyleSheet:(BOOL)inLoad;
 - (void)refreshAquaSelectStyleSheet:(BOOL)inLoad;
 - (void)refreshStyleSheet:(nsIURI *)cssFileURI load:(BOOL)inLoad;
+- (void)updatePluginEnableState;
 - (BOOL)isFlashblockAllowed;
 
 - (NSString*)pathForSpecialDirectory:(const char*)specialDirectory;
@@ -861,8 +868,10 @@ static BOOL gMadePrefManager;
   // automatically cleans up the Gecko pref observer, and |-dealloc:| 
   // automatically cleans up the NSNotificationCenter observer.
   [self addObserver:self forPref:kGeckoPrefForceAquaSelects];
+  [self addObserver:self forPref:kGeckoPrefEnableJava];
+  [self addObserver:self forPref:kGeckoPrefDisabledPluginPrefixes];
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(aquaSelectPrefChanged:)
+                                           selector:@selector(internallyObservedPrefChanged:)
                                                name:kPrefChangedNotificationName
                                              object:self];
 
@@ -1172,10 +1181,21 @@ typedef enum EProxyConfig {
   [self refreshFlashblockStyleSheet:flashblockEnabled];
 }
 
-- (void)aquaSelectPrefChanged:(NSNotification*)inNotification
+- (void)internallyObservedPrefChanged:(NSNotification*)inNotification
 {
-  BOOL aquaSelectEnabled = [self getBooleanPref:kGeckoPrefForceAquaSelects withSuccess:NULL];
-  [self refreshAquaSelectStyleSheet:aquaSelectEnabled];
+  const char *changedPref = [[[inNotification userInfo]
+      objectForKey:kPrefChangedPrefNameUserInfoKey] UTF8String];
+
+  if (strcmp(changedPref, kGeckoPrefForceAquaSelects) == 0) {
+    BOOL aquaSelectEnabled = [self getBooleanPref:kGeckoPrefForceAquaSelects
+                                      withSuccess:NULL];
+    [self refreshAquaSelectStyleSheet:aquaSelectEnabled];
+  }
+  else if ((strcmp(changedPref, kGeckoPrefEnableJava) == 0) ||
+           (strcmp(changedPref, kGeckoPrefDisabledPluginPrefixes) == 0))
+  {
+    [self updatePluginEnableState];
+  }
 }
 
 // This will reload the ad-blocking style sheet if it's already registered, or unload it if the
@@ -1254,6 +1274,50 @@ typedef enum EProxyConfig {
 
   if (inLoad)
     ssService->LoadAndRegisterSheet(cssFileURI, nsIStyleSheetService::USER_SHEET);
+}
+
+- (void)updatePluginEnableState
+{
+  nsCOMPtr<nsIPluginHost> pluginHost = do_GetService(MOZ_PLUGIN_HOST_CONTRACTID);
+  if (!pluginHost)
+    return;
+  nsIPluginTag** plugins = NULL;
+  PRUint32 pluginCount = 0;
+  pluginHost->GetPluginTags(&pluginCount, &plugins);
+  for (unsigned i = 0; i < pluginCount; i++) {
+    nsCAutoString name;
+    plugins[i]->GetName(name);
+    plugins[i]->SetDisabled([self pluginShouldBeDisabled:name.get()] ?
+        PR_TRUE : PR_FALSE);
+    NS_RELEASE(plugins[i]);
+  }
+  nsMemory::Free(plugins);
+}
+
+- (BOOL)pluginShouldBeDisabled:(const char*)pluginName
+{
+  NSString* name = [NSString stringWithUTF8String:pluginName];
+  if ([name hasPrefix:kJEPName] || [name hasPrefix:kAppleJavaName]) {
+    // Java has a UI pref, so handle it specially.
+    // Ideally Java would be detected by MIME type, but nsIPluginTag doesn't
+    // expose MIME types, making it more trouble than it's worth.
+    return ![self getBooleanPref:kGeckoPrefEnableJava withSuccess:NULL];
+  }
+  // The hidden disable pref is interpreted as a ;-separated set of name
+  // prefixes of plugins to disable. Prefixes are used because some plugins
+  // append version info to their name.
+  NSString* prefixList = [self getStringPref:kGeckoPrefDisabledPluginPrefixes
+                                 withSuccess:NULL];
+  NSEnumerator* prefixEnumerator =
+      [[prefixList componentsSeparatedByString:@";"] objectEnumerator];
+  NSString* prefix;
+  while ((prefix = [prefixEnumerator nextObject])) {
+    NSString* trimmedPrefix = [prefix stringByTrimmingWhitespace];
+    if ([prefix length] && [name hasPrefix:trimmedPrefix]) {
+      return YES;
+    }
+  }
+  return NO;
 }
 
 #pragma mark -

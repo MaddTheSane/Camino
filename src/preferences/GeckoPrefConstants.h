@@ -101,8 +101,11 @@ extern const char* const kGeckoPrefEnableJavascript;                   // bool
 // Controls whether Java is enabled
 extern const char* const kGeckoPrefEnableJava;                         // bool
 
-// Controls whether Plugins are enabled
+// Controls whether plugins are enabled
 extern const char* const kGeckoPrefEnablePlugins;                      // bool
+
+// Controls which plugins are disabled overall
+extern const char* const kGeckoPrefDisabledPluginPrefixes;             // bool
 
 // Controls whether the popup blocker is enabled
 extern const char* const kGeckoPrefBlockPopups;                        // bool
