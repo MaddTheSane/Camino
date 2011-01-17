@@ -147,7 +147,7 @@ static CHGradient *CreateGreyGradientWithValues(int startValue, int endValue)
 
 - (void)setSecureIconContextMenu:(NSMenu *)aMenu
 {
-  [aMenu autorelease];
+  [mSecureIconContextMenu autorelease];
   mSecureIconContextMenu = [aMenu retain];
 }
 
@@ -231,6 +231,7 @@ static CHGradient *CreateGreyGradientWithValues(int startValue, int endValue)
 
 - (void)setSecureImage:(NSImage *)image
 {
+  [mSecureImage autorelease];
   mSecureImage = [image retain];
 }
 
