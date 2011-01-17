@@ -591,6 +591,7 @@ public:
 - (void)performSearch:(WebSearchField*)inSearchField inView:(EOpenDestination)inDest inBackground:(BOOL)inLoadInBG;
 - (int)historyIndexOfPageBeforeBookmarkManager;
 - (void)goToLocationFromToolbarURLField:(AutoCompleteTextField *)inURLField inView:(EOpenDestination)inDest inBackground:(BOOL)inLoadInBG;
+- (void)setLoadingActive:(BOOL)active;
 
 - (BrowserTabViewItem*)tabForBrowser:(BrowserWrapper*)inWrapper;
 - (void)closeTab:(NSTabViewItem *)tab;
@@ -2019,6 +2020,7 @@ public:
 
 - (void)loadingStarted
 {
+  [self setLoadingActive:YES];
 }
 
 - (void)loadingDone:(BOOL)activateContent
@@ -2044,6 +2046,7 @@ public:
     [[PageInfoWindowController visiblePageInfoWindowController] updateFromBrowserView:[self activeBrowserView]];
 
   [[SessionManager sharedInstance] windowStateChanged];
+  [self setLoadingActive:NO];
 }
 
 - (void)setLoadingActive:(BOOL)active

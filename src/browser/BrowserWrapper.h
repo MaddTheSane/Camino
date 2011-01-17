@@ -69,7 +69,6 @@ typedef enum {
 - (void)loadingStarted;
 - (void)loadingDone:(BOOL)activateContent;
 
-- (void)setLoadingActive:(BOOL)active;
 // a progress value of 0.0 will set the meter to its indeterminate state
 - (void)setLoadingProgress:(float)progress;
 

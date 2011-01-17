@@ -616,7 +616,6 @@ static const NSTimeInterval kTimeIntervalToConsiderSiteBlockingStatusValid = 900
   mIsBusy = YES;
 
   [mDelegate loadingStarted];
-  [mDelegate setLoadingActive:YES];
   [mDelegate setLoadingProgress:mProgress];
 
   [mLoadingResources removeAllObjects];
@@ -634,8 +633,6 @@ static const NSTimeInterval kTimeIntervalToConsiderSiteBlockingStatusValid = 900
   mActivateOnLoad = NO;
   mIsBusy = NO;
   [self setPendingURI:nil];
-
-  [mDelegate setLoadingActive:NO];
 
   [self updateStatusString:nil withPriority:eStatusProgress];
 
