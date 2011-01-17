@@ -46,4 +46,5 @@ camino/idl/Makefile
 camino/installer/Makefile
 camino/striptease/Makefile
 camino/safebrowsing/Makefile
+camino/typeaheadfind/Makefile
 "

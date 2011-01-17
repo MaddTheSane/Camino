@@ -82,6 +82,7 @@
     MODULE(application) \
     MODULE(nsCookieModule) \
     MODULE(nsUniversalCharDetModule) \
+    MODULE(nsTypeAheadFind) \
     MODULE(nsPermissionsModule) \
     MODULE(nsComposerModule) \
     MODULE(mozSpellCheckerModule) \

@@ -52,6 +52,7 @@ DIRS = \
 	idl \
 	striptease \
 	safebrowsing \
+	typeaheadfind \
 	$(NULL)
 
 APP_NAME	= Camino

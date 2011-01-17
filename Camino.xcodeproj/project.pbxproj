@@ -518,6 +518,8 @@
 		3F44AD2605BDFB9F00CB4B08 /* liboji.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F53A902202C1127A01A967F3 /* liboji.dylib */; };
 		3F44AD2705BDFB9F00CB4B08 /* nsProxyAutoConfig.js in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F5461CBB03AAC25C01A96660 /* nsProxyAutoConfig.js */; };
 		3F44AD2905BDFB9F00CB4B08 /* libi18n.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = A708E74103FB9041003C038B /* libi18n.dylib */; };
+		3F44AD2B05BDFB9F00CB4B08 /* libsuitetypeaheadfind.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = A7D88E680465D94000A80196 /* libsuitetypeaheadfind.dylib */; };
+		3F44AD2C05BDFB9F00CB4B08 /* suitetypeaheadfind.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = A7D88E6A0465D9F800A80196 /* suitetypeaheadfind.xpt */; };
 		3F44AD2E05BDFB9F00CB4B08 /* charsetalias.properties in Copy Gecko Resources */ = {isa = PBXBuildFile; fileRef = F6BD64B801B316DA01A962F7 /* charsetalias.properties */; };
 		3F44AD2F05BDFB9F00CB4B08 /* charsetData.properties in Copy Gecko Resources */ = {isa = PBXBuildFile; fileRef = F6BD64B901B316DA01A962F7 /* charsetData.properties */; };
 		3F44AD3005BDFB9F00CB4B08 /* langGroups.properties in Copy Gecko Resources */ = {isa = PBXBuildFile; fileRef = F6BD64BA01B316DA01A962F7 /* langGroups.properties */; };
@@ -768,6 +770,7 @@
 		3F44AF4205BDFBA000CB4B08 /* imglib2.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD644E01B315FA01A962F7 /* imglib2.xpt */; };
 		3F44AF4305BDFBA000CB4B08 /* xuldoc.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F517941F027F3F2901A967DF /* xuldoc.xpt */; };
 		3F44AF4405BDFBA000CB4B08 /* nsProxyAutoConfig.js in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F5461CBB03AAC25C01A96660 /* nsProxyAutoConfig.js */; };
+		3F44AF4705BDFBA000CB4B08 /* suitetypeaheadfind.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = A7D88E6A0465D9F800A80196 /* suitetypeaheadfind.xpt */; };
 		3F44AF4905BDFBA000CB4B08 /* charsetalias.properties in Copy Gecko Resources */ = {isa = PBXBuildFile; fileRef = F6BD64B801B316DA01A962F7 /* charsetalias.properties */; };
 		3F44AF4A05BDFBA000CB4B08 /* charsetData.properties in Copy Gecko Resources */ = {isa = PBXBuildFile; fileRef = F6BD64B901B316DA01A962F7 /* charsetData.properties */; };
 		3F44AF4B05BDFBA000CB4B08 /* langGroups.properties in Copy Gecko Resources */ = {isa = PBXBuildFile; fileRef = F6BD64BA01B316DA01A962F7 /* langGroups.properties */; };
@@ -832,6 +835,7 @@
 		3F44AFB405BDFBA000CB4B08 /* libunicharutil_s.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F5C2CDA702383CE601A967DF /* libunicharutil_s.a */; };
 		3F44AFB505BDFBA000CB4B08 /* liboji.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F54AD84402C115D901A967F3 /* liboji.a */; };
 		3F44AFB605BDFBA000CB4B08 /* libuniversalchardet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F5E47654030C5FD501A967F3 /* libuniversalchardet.a */; };
+		3F44AFB705BDFBA000CB4B08 /* libsuitetypeaheadfind.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FD31C90466004E00A80196 /* libsuitetypeaheadfind.a */; };
 		3F44AFB805BDFBA000CB4B08 /* libi18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E5D960041A07C900A967F8 /* libi18n.a */; };
 		3F44AFB905BDFBA000CB4B08 /* libjar50.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C1276F0495618300A967F8 /* libjar50.a */; };
 		3F44AFBB05BDFBA000CB4B08 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -1780,6 +1784,7 @@
 				3F44AD2305BDFB9F00CB4B08 /* libgkplugin.dylib in Copy Component Libraries */,
 				3F44AD2605BDFB9F00CB4B08 /* liboji.dylib in Copy Component Libraries */,
 				3F44AD2905BDFB9F00CB4B08 /* libi18n.dylib in Copy Component Libraries */,
+				3F44AD2B05BDFB9F00CB4B08 /* libsuitetypeaheadfind.dylib in Copy Component Libraries */,
 				0F518833088592020091F3FB /* libpermissions.dylib in Copy Component Libraries */,
 				DEC87B100C2882DC002EB106 /* libstoragecomps.dylib in Copy Component Libraries */,
 				C7DE8E2F0F30D2AD00CD3872 /* libcaminosafebrowsing.dylib in Copy Component Libraries */,
@@ -1917,6 +1922,7 @@
 				3F44AD2105BDFB9F00CB4B08 /* embed_base.xpt in Copy Component XPTs */,
 				3F44AD2205BDFB9F00CB4B08 /* imglib2.xpt in Copy Component XPTs */,
 				3F44AD2405BDFB9F00CB4B08 /* xuldoc.xpt in Copy Component XPTs */,
+				3F44AD2C05BDFB9F00CB4B08 /* suitetypeaheadfind.xpt in Copy Component XPTs */,
 				3F44ADB105BDFB9F00CB4B08 /* layout_printing.xpt in Copy Component XPTs */,
 				33E1EA990D358DFA00910BBD /* caminosearch.xpt in Copy Component XPTs */,
 			);
@@ -2186,6 +2192,7 @@
 				3F44AF4105BDFBA000CB4B08 /* embed_base.xpt in Copy Component XPTs */,
 				3F44AF4205BDFBA000CB4B08 /* imglib2.xpt in Copy Component XPTs */,
 				3F44AF4305BDFBA000CB4B08 /* xuldoc.xpt in Copy Component XPTs */,
+				3F44AF4705BDFBA000CB4B08 /* suitetypeaheadfind.xpt in Copy Component XPTs */,
 				3F44AFF905BDFBA000CB4B08 /* layout_printing.xpt in Copy Component XPTs */,
 				0F66E4A907D6D90500444E2A /* intl.xpt in Copy Component XPTs */,
 				33E1EA9A0D358E0C00910BBD /* caminosearch.xpt in Copy Component XPTs */,
@@ -2870,7 +2877,10 @@
 		82CE28C80736633900B4DE07 /* txmgr.xpt */ = {isa = PBXFileReference; lastKnownFileType = file; name = txmgr.xpt; path = ../dist/bin/components/txmgr.xpt; sourceTree = SOURCE_ROOT; };
 		A708E74103FB9041003C038B /* libi18n.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; name = libi18n.dylib; path = ../dist/bin/components/libi18n.dylib; sourceTree = SOURCE_ROOT; };
 		A7C1276F0495618300A967F8 /* libjar50.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjar50.a; path = ../staticlib/components/libjar50.a; sourceTree = SOURCE_ROOT; };
+		A7D88E680465D94000A80196 /* libsuitetypeaheadfind.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; name = libsuitetypeaheadfind.dylib; path = ../dist/bin/components/libsuitetypeaheadfind.dylib; sourceTree = SOURCE_ROOT; };
+		A7D88E6A0465D9F800A80196 /* suitetypeaheadfind.xpt */ = {isa = PBXFileReference; lastKnownFileType = file; name = suitetypeaheadfind.xpt; path = ../dist/bin/components/suitetypeaheadfind.xpt; sourceTree = SOURCE_ROOT; };
 		A7E5D960041A07C900A967F8 /* libi18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libi18n.a; path = ../staticlib/components/libi18n.a; sourceTree = SOURCE_ROOT; };
+		A7FD31C90466004E00A80196 /* libsuitetypeaheadfind.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libsuitetypeaheadfind.a; path = ../staticlib/components/libsuitetypeaheadfind.a; sourceTree = SOURCE_ROOT; };
 		B328DEF9114ECFBF004D2EDC /* nsPlacesDBFlush.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = nsPlacesDBFlush.js; path = ../dist/bin/components/nsPlacesDBFlush.js; sourceTree = SOURCE_ROOT; };
 		B33032AA10AE15EA002FA0A7 /* nsLivemarkService.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = nsLivemarkService.js; path = ../dist/bin/components/nsLivemarkService.js; sourceTree = SOURCE_ROOT; };
 		B33032AE10AE166F002FA0A7 /* places.xpt */ = {isa = PBXFileReference; lastKnownFileType = file; name = places.xpt; path = ../dist/bin/components/places.xpt; sourceTree = SOURCE_ROOT; };
@@ -3495,6 +3505,7 @@
 				3F44AFB405BDFBA000CB4B08 /* libunicharutil_s.a in Frameworks */,
 				3F44AFB505BDFBA000CB4B08 /* liboji.a in Frameworks */,
 				3F44AFB605BDFBA000CB4B08 /* libuniversalchardet.a in Frameworks */,
+				3F44AFB705BDFBA000CB4B08 /* libsuitetypeaheadfind.a in Frameworks */,
 				3F44AFB805BDFBA000CB4B08 /* libi18n.a in Frameworks */,
 				3F44AFB905BDFBA000CB4B08 /* libjar50.a in Frameworks */,
 				4D29957E0869C44B00E84287 /* libxpcom.dylib in Frameworks */,
@@ -3696,6 +3707,7 @@
 				F6BD644F01B315FA01A962F7 /* libgkplugin.dylib */,
 				F53A902202C1127A01A967F3 /* liboji.dylib */,
 				A708E74103FB9041003C038B /* libi18n.dylib */,
+				A7D88E680465D94000A80196 /* libsuitetypeaheadfind.dylib */,
 				0F5187C308858E620091F3FB /* libpermissions.dylib */,
 				DE62E42F0B72B3D200142851 /* libauth.dylib */,
 				DEC87B0F0C2882DC002EB106 /* libstoragecomps.dylib */,
@@ -3766,6 +3778,7 @@
 				F6BD642001B3156701A962F7 /* shistory.xpt */,
 				E4C7D99E0A32109D00B455AD /* spellchecker.xpt */,
 				DEC87B110C288337002EB106 /* storage.xpt */,
+				A7D88E6A0465D9F800A80196 /* suitetypeaheadfind.xpt */,
 				82CE28C80736633900B4DE07 /* txmgr.xpt */,
 				F6BD63B301B3131201A962F7 /* txtsvc.xpt */,
 				F6BD642101B3156701A962F7 /* uconv.xpt */,
@@ -4906,6 +4919,7 @@
 				A7E5D960041A07C900A967F8 /* libi18n.a */,
 				0FEBFCA1044F989900A96652 /* libucvutil_s.a */,
 				7BB332F30A7E99BC0075521C /* libspellchecker.a */,
+				A7FD31C90466004E00A80196 /* libsuitetypeaheadfind.a */,
 				0F518834088593F30091F3FB /* libpermissions.a */,
 				A7C1276F0495618300A967F8 /* libjar50.a */,
 				3FECC8E505D1FE800068E7ED /* libprofdirserviceprovider_s.a */,

@@ -35,6 +35,8 @@ en-US.jar:
 # Replace generic files with ones appropriate for Camino
 +  locale/en-US/global/config.dtd                          (locale/en-US/global/config.dtd)
 +  locale/en-US/global/netError.dtd                        (locale/en-US/global/netError.dtd)
+# Find-As-You-Type
++  locale/en-US/global/typeaheadfind.properties            (locale/en-US/global/typeaheadfind.properties)
 # Branding
 %  locale branding en-US %locale/branding/
    locale/branding/brand.dtd                               (locale/branding/brand.dtd)
