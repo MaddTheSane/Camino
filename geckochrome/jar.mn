@@ -16,6 +16,8 @@ toolkit.jar:
 %  content xbl-marquee %content/xbl-marquee/ xpcnativewrappers=yes
    content/xbl-marquee/xbl-marquee.xml                     (/layout/style/xbl-marquee/xbl-marquee.xml)
    content/xbl-marquee/xbl-marquee.css                     (/layout/style/xbl-marquee/xbl-marquee.css)
+# Plug-ins UI
++  content/mozapps/plugins/pluginProblem.xml               (content/mozapps/plugins/pluginProblem.xml)
 
 classic.jar:
 # Override Firefox-styled theme files with those appropriate for Camino
@@ -41,3 +43,5 @@ en-US.jar:
 %  locale branding en-US %locale/branding/
    locale/branding/brand.dtd                               (locale/branding/brand.dtd)
 *  locale/branding/brand.properties                        (locale/branding/brand.properties)
+# Plug-ins UI
++  locale/en-US/mozapps/plugins/plugins.dtd                (locale/en-US/mozapps/plugins/plugins.dtd)
