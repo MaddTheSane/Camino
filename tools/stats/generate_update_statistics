@@ -68,11 +68,14 @@ cm16_snl=`grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=10\.
 cm20_tig=`grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=10\.4" | grep -E -c "version=2\.0"`
 cm20_lep=`grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=10\.5" | grep -E -c "version=2\.0"`
 cm20_snl=`grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=10\.6" | grep -E -c "version=2\.0"`
+cm21_tig=`grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=10\.4" | grep -E -c "version=2\.1"`
+cm21_lep=`grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=10\.5" | grep -E -c "version=2\.1"`
+cm21_snl=`grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=10\.6" | grep -E -c "version=2\.1"`
 # Do math to derive the OS numbers across all versions; this saves us 3 formulas/day in the spreadsheet.
 echo $cm16_pan
-echo `expr $cm16_tig "+" $cm20_tig`
-echo `expr $cm16_lep "+" $cm20_lep`
-echo `expr $cm16_snl "+" $cm20_snl`
+echo `expr $cm16_tig "+" $cm20_tig "+" $cm21_tig`
+echo `expr $cm16_lep "+" $cm20_lep "+" $cm21_lep`
+echo `expr $cm16_snl "+" $cm20_snl "+" $cm21_snl`
 
 echo "=================="
 echo "By Version"
@@ -100,6 +103,7 @@ grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c
 grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0b2(I|&)"
 grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0b1(I|&)"
 grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.0a1(I|&)"
+grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep -E -c "2\.1a1(I|&)"
 
 echo "=================="
 echo "By Version and OS"
@@ -110,6 +114,9 @@ echo $cm16_snl
 echo $cm20_tig
 echo $cm20_lep
 echo $cm20_snl
+echo $cm21_tig
+echo $cm21_lep
+echo $cm21_snl
 
 # echo "=================="
 # echo "1.6 l10n"
