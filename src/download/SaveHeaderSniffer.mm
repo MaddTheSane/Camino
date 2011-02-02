@@ -370,8 +370,15 @@ nsHeaderSniffer::PerformSave(nsIURI* inOriginalURI)
     else
         sourceData = do_QueryInterface(mURL);
 
+    // Validate the final filename to ensure legality.
+    NSCharacterSet* pathDelimiterSet = [NSCharacterSet characterSetWithCharactersInString:@"/:"];
+    NSString* legalFilename = [[[savePanel filename] lastPathComponent]
+        stringByReplacingCharactersInSet:pathDelimiterSet withString:@" "];
+    NSString* filePath = [[savePanel filename] stringByDeletingLastPathComponent];
+    NSString* fileNameWithPath = [filePath stringByAppendingPathComponent:legalFilename];
+
     nsAutoString dstString;
-    [[savePanel filename] assignTo_nsAString:dstString];
+    [fileNameWithPath assignTo_nsAString:dstString];
 
     return InitiateDownload(sourceData, dstString, inOriginalURI);
 }
