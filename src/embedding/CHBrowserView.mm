@@ -725,16 +725,16 @@ const char* const kHTMLMIMEType = "text/html";
   if (!domWindow)
     return nil;
   // GetIntrinsicSize can fail, in which case pageWidth and pageHeight aren't
-  // set, so default to the viewport.
-  int pageWidth = viewportSize.width;
-  int pageHeight = viewportSize.height;
+  // set; if the values remain 0, we'll fall back to the viewport below.
+  int pageWidth = 0;
+  int pageHeight = 0;
   GeckoUtils::GetIntrinsicSize(domWindow, &pageWidth, &pageHeight);
   // Enforce a non-zero size, since Gecko gets very angry with a zero-sized
   // Quartz surface.
   if (pageWidth == 0)
-    pageWidth = 1;
+    pageWidth = viewportSize.width;
   if (pageHeight == 0)
-    pageHeight = 1;
+    pageHeight = viewportSize.height;
   NSSize snapshotSize = NSMakeSize(MIN(pageWidth, viewportSize.width),
                                    viewportSize.height);
 
