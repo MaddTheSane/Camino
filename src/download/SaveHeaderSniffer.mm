@@ -346,9 +346,18 @@ nsHeaderSniffer::PerformSave(nsIURI* inOriginalURI)
         if (filterIndex == eSaveFormatPlainText) {
           file = [file stringByDeletingPathExtension];
           file = [file stringByAppendingPathExtension:@"txt"];
+          // Require the default file extension for HTML-as-text.
+          [savePanel setAllowedFileTypes:[NSArray arrayWithObject:[file pathExtension]]];
+        }
+        else {
+          // Require the default file extension for HTML.
+          [savePanel setAllowedFileTypes:[NSArray arrayWithObjects:[file pathExtension], @"htm", @"html", @"xhtml", nil]];
         }
     }
-    [savePanel setRequiredFileType:[file pathExtension]];
+    else {
+      // For all other file types, allow the user to change the extension.
+      [savePanel setAllowsOtherFileTypes:YES];
+    }
 
     [NSMenu cancelAllTracking];
     if ([savePanel runModalForDirectory: nil file: file] == NSFileHandlingPanelCancelButton)
