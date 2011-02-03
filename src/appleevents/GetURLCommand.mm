@@ -42,6 +42,7 @@
 #import <AppKit/AppKit.h>
 
 #import "MainController.h"
+#import "NSString+Utils.h"
 #import "NSURL+Utils.h"
 
 static NSString* const kMainControllerIsInitializedKey = @"initialized";
@@ -57,6 +58,17 @@ static NSString* const kMainControllerIsInitializedKey = @"initialized";
   if ([mainController isInitialized]) {
     NSString* urlString = [self directParameter];
     NSURL* url = [NSURL URLWithString:urlString];
+    NSString* urlScheme = [url scheme];
+    // Setting Camino as the default app for protocols we do not handle creates
+    // an infinite loop when those URIs are opened; avoid that by only handling
+    // supported protocols.
+    if (urlScheme && !([urlScheme isEqualToStringIgnoringCase:@"http"] ||
+                       [urlScheme isEqualToStringIgnoringCase:@"https"] ||
+                       [urlScheme isEqualToStringIgnoringCase:@"ftp"] ||
+                       [urlScheme isEqualToStringIgnoringCase:@"file"]))
+    {
+      return nil;
+    }
     if ([url isFileURL])
       urlString = [[NSURL decodeLocalFileURL:url] absoluteString];
     [mainController showURL:urlString];
