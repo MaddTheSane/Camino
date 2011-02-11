@@ -17,7 +17,14 @@ toolkit.jar:
    content/xbl-marquee/xbl-marquee.xml                     (/layout/style/xbl-marquee/xbl-marquee.xml)
    content/xbl-marquee/xbl-marquee.css                     (/layout/style/xbl-marquee/xbl-marquee.css)
 # Plug-ins UI
+# In Gecko 2, the CSS and image files change names and locations; see
+# http://mxr.mozilla.org/mozilla1.9.2/source/toolkit/themes/pinstripe/mozapps/plugins/pluginProblem.css
 +  content/mozapps/plugins/pluginProblem.xml               (content/mozapps/plugins/pluginProblem.xml)
++  content/mozapps/plugins/pluginProblemContent.css        (content/mozapps/plugins/pluginProblemContent.css)
++  content/mozapps/plugins/pluginProblemLorentz.css        (content/mozapps/plugins/pluginProblemLorentz.css)
++  content/mozapps/plugins/pluginBlocked.png               (content/mozapps/plugins/pluginBlocked.png)
++  content/mozapps/plugins/pluginDisabled.png              (content/mozapps/plugins/pluginDisabled.png)
++  content/mozapps/plugins/pluginDownload.png              (content/mozapps/plugins/pluginDownload.png)
 
 classic.jar:
 # Override Firefox-styled theme files with those appropriate for Camino
