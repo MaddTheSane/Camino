@@ -51,7 +51,8 @@
   if ([ext isEqualToString:@"url"] || fileType == 'LINK')
     return [NSURL URLFromIEURLFile:urlPathString];
   if ([ext isEqualToString:@"webloc"] || [ext isEqualToString:@"ftploc"] ||
-      fileType == 'ilht' || fileType == 'ilft')
+      [ext isEqualToString:@"fileloc"] || fileType == 'ilht' ||
+      fileType == 'ilft' || fileType == 'ilfi')
   {
     return [NSURL URLFromInetloc:urlPathString];
   }
@@ -69,7 +70,7 @@
 }
 
 //
-// Reads the URL from a .webloc/.ftploc file.
+// Reads the URL from a .webloc/.ftploc/.fileloc file.
 // Returns the URL, or nil on failure.
 //
 +(NSURL*)URLFromInetloc:(NSString*)inFile

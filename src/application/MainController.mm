@@ -1319,9 +1319,10 @@ const int kZoomActionsTag = 108;
   NSArray* fileTypes = [NSArray arrayWithObjects:@"htm",@"html",@"shtml",@"xhtml",@"xml",
                                                  @"txt",@"text",
                                                  @"gif",@"jpg",@"jpeg",@"png",@"bmp",@"svg",@"svgz",
-                                                 @"webloc",@"ftploc",@"url",
+                                                 @"webloc",@"ftploc",@"fileloc",@"url",
                                                  NSFileTypeForHFSTypeCode('ilht'),
                                                  NSFileTypeForHFSTypeCode('ilft'),
+                                                 NSFileTypeForHFSTypeCode('ilfi'),
                                                  NSFileTypeForHFSTypeCode('LINK'),
                                                  NSFileTypeForHFSTypeCode('TEXT'),
                                                  nil];

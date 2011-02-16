@@ -191,8 +191,12 @@ NSString* const kWebURLsWithTitlesPboardType  = @"WebURLsWithTitlesPboardType"; 
       NSString *title = @"";
       OSType fileType = NSHFSTypeCodeFromFileType(NSHFSTypeOfFile(file));
       
-      // Check whether the file is a .webloc, a .ftploc, a .url, or some other kind of file.
-      if ([ext isEqualToString:@"webloc"] || [ext isEqualToString:@"ftploc"] || fileType == 'ilht' || fileType == 'ilft') {
+      // Check whether the file is a .webloc, a .ftploc, a .fileloc, a .url, or
+      // some other kind of file.
+      if ([ext isEqualToString:@"webloc"] || [ext isEqualToString:@"ftploc"] ||
+          [ext isEqualToString:@"fileloc"] || fileType == 'ilht' ||
+          fileType == 'ilft' || fileType == 'ilfi')
+      {
         NSURL* urlFromInetloc = [NSURL URLFromInetloc:file];
         if (urlFromInetloc) {
           urlString = [urlFromInetloc absoluteString];
