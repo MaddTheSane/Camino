@@ -49,7 +49,8 @@ NSString* const kWebURLsWithTitlesPboardType  = @"WebURLsWithTitlesPboardType"; 
 
 @interface NSPasteboard(ChimeraPasteboardURLUtilsPrivate)
 
-- (NSString*)cleanedStringWithPasteboardString:(NSString*)aString;
+- (NSString*)cleanedURLStringFromPasteboardType:(NSString*)aType;
+- (NSString*)cleanedTitleStringFromPasteboardType:(NSString*)aType;
 
 @end
 
@@ -60,9 +61,18 @@ NSString* const kWebURLsWithTitlesPboardType  = @"WebURLsWithTitlesPboardType"; 
 // and |getURLs:andTitles| are free of internal control characters
 // and leading/trailing whitespace
 //
-- (NSString*)cleanedStringWithPasteboardString:(NSString*)aString
+- (NSString*)cleanedURLStringFromPasteboardType:(NSString*)aType
 {
-  NSString* cleanString = [aString stringByRemovingCharactersInSet:[NSCharacterSet controlCharacterSet]];
+  NSString* cleanString = [[self stringForType:aType]
+                           stringByRemovingCharactersInSet:[NSCharacterSet controlCharacterSet]];
+  return [cleanString stringByTrimmingWhitespace];
+}
+
+- (NSString*)cleanedTitleStringFromPasteboardType:(NSString*)aType
+{
+  NSString* cleanString = [[self stringForType:aType]
+                           stringByReplacingCharactersInSet:[NSCharacterSet controlCharacterSet]
+                                                 withString:@" "];
   return [cleanString stringByTrimmingWhitespace];
 }
 
@@ -224,21 +234,21 @@ NSString* const kWebURLsWithTitlesPboardType  = @"WebURLsWithTitlesPboardType"; 
     *outUrls = [NSArray arrayWithObject:[urlFromNSURL absoluteString]];
     NSString* title = nil;
     if ([types containsObject:kCorePasteboardFlavorType_urld])
-      title = [self stringForType:kCorePasteboardFlavorType_urld];
+      title = [self cleanedTitleStringFromPasteboardType:kCorePasteboardFlavorType_urld];
     if (!title && [types containsObject:kCorePasteboardFlavorType_urln])
-      title = [self stringForType:kCorePasteboardFlavorType_urln];
+      title = [self cleanedTitleStringFromPasteboardType:kCorePasteboardFlavorType_urln];
     if (!title && [types containsObject:NSStringPboardType])
-      title = [self stringForType:NSStringPboardType];
+      title = [self cleanedTitleStringFromPasteboardType:NSStringPboardType];
     *outTitles = [NSArray arrayWithObject:(title ? title : @"")];
   } else if ([types containsObject:NSStringPboardType]) {
-    NSString* potentialURLString = [self cleanedStringWithPasteboardString:[self stringForType:NSStringPboardType]];
+    NSString* potentialURLString = [self cleanedURLStringFromPasteboardType:NSStringPboardType];
     if ([potentialURLString isValidURI]) {
       *outUrls = [NSArray arrayWithObject:potentialURLString];
       NSString* title = nil;
       if ([types containsObject:kCorePasteboardFlavorType_urld])
-        title = [self stringForType:kCorePasteboardFlavorType_urld];
+        title = [self cleanedTitleStringFromPasteboardType:kCorePasteboardFlavorType_urld];
       if (!title && [types containsObject:kCorePasteboardFlavorType_urln])
-        title = [self stringForType:kCorePasteboardFlavorType_urln];
+        title = [self cleanedTitleStringFromPasteboardType:kCorePasteboardFlavorType_urln];
       *outTitles = [NSArray arrayWithObject:(title ? title : @"")];
     } else {
       // The string doesn't look like a URL - return empty arrays
@@ -271,7 +281,7 @@ NSString* const kWebURLsWithTitlesPboardType  = @"WebURLsWithTitlesPboardType"; 
   if ([types containsObject:NSStringPboardType]) {
     // Trim whitespace off the ends and newlines out of the middle so we don't reject otherwise-valid URLs;
     // we'll do another cleaning when we set the URLs and titles later, so this is safe.
-    NSString* potentialURLString = [self cleanedStringWithPasteboardString:[self stringForType:NSStringPboardType]];
+    NSString* potentialURLString = [self cleanedURLStringFromPasteboardType:NSStringPboardType];
     return [potentialURLString isValidURI];
   }
   
