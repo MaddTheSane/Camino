@@ -2420,6 +2420,30 @@ nsTypeAheadFind::IsTargetContentOkay(nsIContent *aContent)
       return PR_FALSE;
     }
   }
+  
+  nsCOMPtr<nsIFocusManager> fm = do_GetService(FOCUSMANAGER_CONTRACTID);
+  if (!fm) {
+    return PR_FALSE;
+  }
+
+  // We're focused on a document
+  nsCOMPtr<nsIDOMWindow> domWin;
+  fm->GetFocusedWindow(getter_AddRefs(domWin));
+  if (!domWin) {
+    return PR_FALSE;
+  }
+
+  // Make sure we're not in Midas editing mode
+  nsCOMPtr<nsIDOMDocument> domDoc;
+  domWin->GetDocument(getter_AddRefs(domDoc));
+  nsCOMPtr<nsIDOMNSHTMLDocument> htmlDoc(do_QueryInterface(domDoc));
+  if (htmlDoc) {
+    nsAutoString designMode;
+    htmlDoc->GetDesignMode(designMode);
+    if (designMode.EqualsLiteral("on")) {
+      return PR_FALSE;
+    }
+  }
 
   return PR_TRUE;
 }
