@@ -369,7 +369,7 @@
     [bookmarkLine appendString:@"<HR>"];
   }
   else {
-    [bookmarkLine appendFormat:@"<DT><A HREF=\"%@\"", [bookmark url]];
+    [bookmarkLine appendFormat:@"<DT><A HREF=\"%@\"", [[bookmark url] stringByAddingAmpEscapes]];
     if ([bookmark lastVisit])
       [bookmarkLine appendFormat:@" LAST_VISIT=\"%d\"", [[bookmark lastVisit] timeIntervalSince1970]];
     if ([[bookmark shortcut] length] > 0)
