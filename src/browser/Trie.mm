@@ -335,7 +335,9 @@
 // Iterates through |candidates|, starting at |startIndex|, and adds items that
 // satisfy |validator| to |matches|, until |matches| contains |limit| items.
 // If |limit| is 0, it will be treated as no limit.
-// Returns the last index in |candidates| that was checked for matching.
+// Returns the last index in |candidates| that was checked for matching. Returns
+// NSNotFound if no items were checked during this call (e.g., because the match
+// list was already full, or the start index was past the end of |canditates|).
 - (unsigned int)fillMatchList:(NSMutableArray*)matches
                       toLimit:(unsigned int)limit
             withItemsFromList:(NSArray*)candidates
@@ -482,10 +484,15 @@
                                             fromIndex:startIndex
                                     matchingValidator:validator];
 
-  [self cacheQueryResults:matches
-               candidates:candidateList
-                lastIndex:lastCheckedIndex
-                 forTerms:cleanTerms];
+  // If nothing was checked during the search, then the cached query state
+  // doesn't need to be updated (and shouldn't be, otherwise repeating a search
+  // with a lower limit would destroy useful cache data).
+  if (lastCheckedIndex != NSNotFound) {
+    [self cacheQueryResults:matches
+                 candidates:candidateList
+                  lastIndex:lastCheckedIndex
+                   forTerms:cleanTerms];
+  }
 
   return matches;
 }
@@ -509,8 +516,8 @@
                     fromIndex:(unsigned int)startIndex
             matchingValidator:(TrieQueryItemValidator*)validator
 {
-  if (limit && [matches count] >= limit)
-    return startIndex;
+  if ((limit && [matches count] >= limit) || startIndex >= [candidates count])
+    return NSNotFound;
 
   // Walk the candidate list to find actual matches, eliminating duplicates.
   unsigned int candidateCount = [candidates count];

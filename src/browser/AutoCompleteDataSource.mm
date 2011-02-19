@@ -56,7 +56,7 @@
 #import "HistoryItem.h"
 #import "HistoryDataSource.h"
 
-static const unsigned int kMaxResultsPerHeading = 5;
+static const unsigned int kMaxResultsCount = 10;
 static const unsigned int kMaxTrieDepth = 5;
 
 // Amount of time to pause between chunks when building the trie.
@@ -203,6 +203,67 @@ enum SourceChangeType {
 
 #pragma mark -
 
+// Convenience class to allow efficient enumerator-like access to Trie search
+// results. The search is re-run with a higher limit each time nextResult is
+// called, so that the search runs only as far as is necessary.
+// This is efficient only if the Trie's search result cache is not invaidated,
+// so a TrieSearchEnumerator should not be used across changes to, or other
+// queries on, a given Trie.
+@interface TrieSearchEnumerator : NSObject
+{
+  Trie*        mTrie;
+  NSArray*     mSearchTerms;
+  unsigned int mNextResultIndex;
+}
+
+// Convenience method for returning a new autoreleased search enumerator.
++ (id)enumeratorWithTrie:(Trie *)trie searchTerms:(NSArray *)terms;
+
+// Initializes a new enumerator with the given trie and search terms.
+- (id)initWithTrie:(Trie *)trie searchTerms:(NSArray *)terms;
+
+// Returns the next search result. Returns |nil| if there are no more results.
+- (id)nextResult;
+
+@end
+
+@implementation TrieSearchEnumerator
+
++ (id)enumeratorWithTrie:(Trie *)trie searchTerms:(NSArray *)terms
+{
+  return [[[[self class] alloc ] initWithTrie:trie
+                                  searchTerms:terms] autorelease];
+}
+
+- (id)initWithTrie:(Trie *)trie searchTerms:(NSArray *)terms
+{
+  if ((self = [super init])) {
+    mTrie = [trie retain];
+    mSearchTerms = [terms retain];
+  }
+  return self;
+}
+
+- (void)dealloc
+{
+  [mTrie release];
+  [mSearchTerms release];
+  [super dealloc];
+}
+
+- (id)nextResult
+{
+  NSArray *results = [mTrie itemsForTerms:mSearchTerms
+                                withLimit:(mNextResultIndex + 1)];
+  if ([results count] > mNextResultIndex)
+    return [[[results objectAtIndex:mNextResultIndex++] retain] autorelease];
+  return nil;
+}
+
+@end
+
+#pragma mark -
+
 @interface AutoCompleteDataSource (Private)
 // Clears any internal state from a previous search.
 - (void)resetSearch;
@@ -234,9 +295,9 @@ enum SourceChangeType {
 // all of the data relevant to drawing a cell.
 - (AutoCompleteResult *)autoCompleteResultForItem:(id)item;
 
-// Adds headers to results arrays and consolidates into mResults array,
-// then calls searchResultsAvailable on the delegate.
-- (void)reportResults;
+// Sets mResults to the given results, then calls searchResultsAvailable on
+// the delegate.
+- (void)reportResults:(NSArray *)results;
 
 // Adds the header to the specified results array.
 - (void)addHeader:(NSString *)header toResults:(NSMutableArray *)results;
@@ -290,8 +351,6 @@ enum SourceChangeType {
 -(id)init
 {
   if ((self = [super init])) {
-    mBookmarkResults = [[NSMutableArray alloc] init];
-    mHistoryResults = [[NSMutableArray alloc] init];
     mResults = [[NSMutableArray alloc] init];
     mGenericSiteIcon = [[NSImage imageNamed:@"globe_ico"] retain];
     mGenericFileIcon = [[NSImage imageNamed:@"smallDocument"] retain];
@@ -340,8 +399,6 @@ enum SourceChangeType {
   [mBookmarkTrie release];
   [mHistoryTrie release];
 
-  [mBookmarkResults release];
-  [mHistoryResults release];
   [mResults release];
   [mHistoryItemsToLoad release];
   [mBookmarksToLoad release];
@@ -695,13 +752,11 @@ enum SourceChangeType {
 
 - (void)resetSearch
 {
-  [mBookmarkResults removeAllObjects];
-  [mHistoryResults removeAllObjects];
+  [mResults removeAllObjects];
 }
 
 - (void)performSearchWithString:(NSString *)searchString delegate:(id)delegate
 {
-  [self resetSearch];
   mDelegate = delegate;
 
   NSArray *searchTerms =
@@ -719,28 +774,42 @@ enum SourceChangeType {
       searchTerms = [NSArray arrayWithObject:searchStringWithSchemePlaceholder];
   }
 
-  // TODO: Make the trie searches asynchronous.
+  // Bookmarks are given slightly higher weight, since all else being equal a
+  // bookmark is more likely to be relevant since the user has explicitly
+  // expressed interest in it. The boost shouldn't be too high, however, so
+  // that bookmarks don't drown out commonly visited sites.
+  const double kBookmarkBoostFactor = 1.1;
 
-  // It's possible that there are duplicate bookmarks of the same URL, so we get
-  // more than kMaxResultsPerHeading.
-  // TODO: If we still don't get to kMaxResultsPerHeading, re-run the search
-  // with a higher limit?
-  NSArray *items = [mBookmarkTrie itemsForTerms:searchTerms
-                                      withLimit:(2 * kMaxResultsPerHeading)];
-  for (unsigned int i = 0; [mBookmarkResults count] < kMaxResultsPerHeading && i < [items count]; i++) {
-    AutoCompleteResult *result = [self autoCompleteResultForItem:[items objectAtIndex:i]];
-    if (![mBookmarkResults containsObject:result])
-      [mBookmarkResults addObject:result];
+  // TODO: Make the trie searches asynchronous? That would creates the
+  // possibility of the results being invalidated during iteration though.
+  NSMutableArray *results = [NSMutableArray arrayWithCapacity:kMaxResultsCount];
+  TrieSearchEnumerator *bookmarkEnumerator =
+      [TrieSearchEnumerator enumeratorWithTrie:mBookmarkTrie
+                                   searchTerms:searchTerms];
+  TrieSearchEnumerator *historyEnumerator =
+      [TrieSearchEnumerator enumeratorWithTrie:mHistoryTrie
+                                   searchTerms:searchTerms];
+  Bookmark *nextBookmark = [bookmarkEnumerator nextResult];
+  HistoryItem *nextHistoryItem = [historyEnumerator nextResult];
+  while ([results count] < kMaxResultsCount &&
+         (nextBookmark || nextHistoryItem))
+  {
+    int bookmarkScore =
+        ceil([nextBookmark numberOfVisits] * kBookmarkBoostFactor);
+    int historyScore = [[nextHistoryItem visitCount] intValue];
+    AutoCompleteResult *result = nil;
+    if (nextBookmark && bookmarkScore >= historyScore) {
+      result = [self autoCompleteResultForItem:nextBookmark];
+      nextBookmark = [bookmarkEnumerator nextResult];
+    }
+    else {
+      result = [self autoCompleteResultForItem:nextHistoryItem];
+      nextHistoryItem = [historyEnumerator nextResult];
+    }
+    if (![results containsObject:result])
+      [results addObject:result];
   }
-  items = [mHistoryTrie itemsForTerms:searchTerms
-                            withLimit:(kMaxResultsPerHeading + [mBookmarkResults count])];
-  for (unsigned int i = 0; [mHistoryResults count] < kMaxResultsPerHeading && i < [items count]; i++) {
-    AutoCompleteResult *result = [self autoCompleteResultForItem:[items objectAtIndex:i]];
-    if (![mBookmarkResults containsObject:result] &&
-        ![mHistoryResults containsObject:result])
-      [mHistoryResults addObject:result];
-  }
-  [self reportResults];
+  [self reportResults:results];
 }
 
 - (void)cancelSearch
@@ -769,14 +838,10 @@ enum SourceChangeType {
   return info;
 }
 
-- (void)reportResults
+- (void)reportResults:(NSArray *)results
 {
-  [self addHeader:NSLocalizedString(@"BookmarksWindowTitle", nil) toResults:mBookmarkResults];
-  [self addHeader:NSLocalizedString(@"HistoryWindowTitle", nil) toResults:mHistoryResults];
   [mResults removeAllObjects];
-  [mResults addObjectsFromArray:mBookmarkResults];
-  [mResults addObjectsFromArray:mHistoryResults];
-  [self resetSearch];
+  [mResults addObjectsFromArray:results];
   [mDelegate searchResultsAvailable];
 }
 
