@@ -320,13 +320,24 @@
     [padString appendString:@"\t"];
   [bookmarkLine appendString:padString];
 
-  NSString* attributes = nil;
+  NSMutableString* attributes = [NSMutableString string];
+  NSString* descriptionString = nil;
+  NSString* folderShortcut = [bookmarkFolder shortcut];
+  NSString* folderDescription = [bookmarkFolder itemDescription];
   if ([bookmarkFolder isToolbar])
-    attributes = @" PERSONAL_TOOLBAR_FOLDER=\"true\"";
+    [attributes appendString:@" PERSONAL_TOOLBAR_FOLDER=\"true\""];
   else if ([bookmarkFolder isGroup])
-    attributes = @" FOLDER_GROUP=\"true\"";
-  [bookmarkLine appendFormat:@"<DT><H3%@>%@</H3>\n%@<DL><p>\n",
-    attributes ? attributes : @"", [[bookmarkFolder title] stringByAddingAmpEscapes], padString];
+    [attributes appendString:@" FOLDER_GROUP=\"true\""];
+  if ([folderShortcut length] > 0)
+    [attributes appendFormat:@" SHORTCUTURL=\"%@\"", folderShortcut];
+  if ([folderDescription length] > 0) {
+    descriptionString = [NSString stringWithFormat:@"%@<DD>%@\n", padString,
+        [folderDescription stringByAddingAmpEscapes]];
+  }
+
+  [bookmarkLine appendFormat:@"<DT><H3%@>%@</H3>\n%@%@<DL><p>\n",
+    attributes, [[bookmarkFolder title] stringByAddingAmpEscapes],
+    descriptionString ? descriptionString : @"", padString];
 
   [fileHandle writeData:[bookmarkLine dataUsingEncoding:NSUTF8StringEncoding]];
 
