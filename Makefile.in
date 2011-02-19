@@ -193,6 +193,26 @@ GECKO_STRINGS_FILES = \
 	$(NULL)
 GENERATED_GECKO_STRINGS_FILES = $(patsubst %,generated/%,$(GECKO_STRINGS_FILES))
 
+GECKO_CHROME_FILES = \
+	$(srcdir)/geckochrome/locale/en-US/global/config.dtd \
+	$(srcdir)/../dom/locales/en-US/chrome/global.dtd \
+	$(srcdir)/../toolkit/locales/en-US/chrome/global/mozilla.dtd \
+	$(srcdir)/geckochrome/locale/en-US/global/netError.dtd \
+	$(srcdir)/../dom/locales/en-US/chrome/xml/prettyprint.dtd \
+	$(srcdir)/geckochrome/locale/en-US/mozapps/plugins/plugins.dtd \
+	$(srcdir)/../dom/locales/en-US/chrome/security/caps.properties \
+	$(srcdir)/geckochrome/locale/en-US/global/typeaheadfind.properties \
+	$(NULL)
+GECKO_CHROME_GENERATED_DIR = generated/resources/localized/English.lproj
+GENERATED_GECKO_CHROME_FILES = \
+	$(patsubst %,$(GECKO_CHROME_GENERATED_DIR)/%,$(notdir $(GECKO_CHROME_FILES)))
+
+# Tell make which directories to examine for the GECKO_CHROME_FILES when
+# running the $(GENERATED_GECKO_CHROME_FILES) target.
+GECKO_CHROME_SOURCE_DIRS = $(dir $(GECKO_CHROME_FILES))
+vpath %.dtd $(GECKO_CHROME_SOURCE_DIRS)
+vpath %.properties $(GECKO_CHROME_SOURCE_DIRS)
+
 ifdef MOZ_DEBUG
 BUILDSTYLE	= Debug
 else
@@ -345,6 +365,15 @@ $(GENERATED_GECKO_STRINGS_FILES): \
 	mkdir -p $(dir $@)
 	iconv -f UTF-8 -t UTF-16 $< > $@
 
+# Pull Gecko .dtd and .properties files that are being localized via ChromeML
+# from their source locations (so that they are always up-to-date) and copy 
+# them to generated/ so that the project can easily package them without
+# requiring an extra copy of the files in the source tree.
+$(GENERATED_GECKO_CHROME_FILES): \
+  $(GECKO_CHROME_GENERATED_DIR)/%: %
+	mkdir -p $(dir $@)
+	cp -p $< $@
+
 # The "grep -lFx" construct in these rules will only touch the file if the
 # contents are changing.  The file's timestamp will be preserved when the
 # contents aren't changing, reducing unnecessary build activity.
@@ -377,7 +406,8 @@ libs:: \
   generated/Info-Camino.plist \
   generated/resources/localized/English.lproj/InfoPlist.strings \
   $(GENERATED_STRINGS_FILES) \
-  $(GENERATED_GECKO_STRINGS_FILES)
+  $(GENERATED_GECKO_STRINGS_FILES) \
+  $(GENERATED_GECKO_CHROME_FILES)
 	$(PBBUILD) -project Camino.xcodeproj -target $(TARGET) \
 	  -configuration $(BUILDSTYLE) $(PBBUILD_SETTINGS)
 	$(RSYNC_ALL) --copy-unsafe-links \

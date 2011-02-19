@@ -1053,6 +1053,24 @@
 		C7FF537F0D3528B700194776 /* SearchEngineEditor.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7FF537B0D3528B700194776 /* SearchEngineEditor.mm */; };
 		C7FF53810D3528B700194776 /* SearchEngineManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7FF53790D3528B700194776 /* SearchEngineManager.mm */; };
 		C7FF53830D3528B700194776 /* SearchEngineEditor.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7FF537B0D3528B700194776 /* SearchEngineEditor.mm */; };
+		DE02573612F28D45003F4B1C /* typeaheadfind.properties in Resources */ = {isa = PBXBuildFile; fileRef = DE02572612F28D45003F4B1C /* typeaheadfind.properties */; };
+		DE02573712F28D45003F4B1C /* caps.properties in Resources */ = {isa = PBXBuildFile; fileRef = DE02572812F28D45003F4B1C /* caps.properties */; };
+		DE02573812F28D45003F4B1C /* prettyprint.dtd in Resources */ = {isa = PBXBuildFile; fileRef = DE02572A12F28D45003F4B1C /* prettyprint.dtd */; };
+		DE02573912F28D45003F4B1C /* plugins.dtd in Resources */ = {isa = PBXBuildFile; fileRef = DE02572C12F28D45003F4B1C /* plugins.dtd */; };
+		DE02573A12F28D45003F4B1C /* netError.dtd in Resources */ = {isa = PBXBuildFile; fileRef = DE02572E12F28D45003F4B1C /* netError.dtd */; };
+		DE02573B12F28D45003F4B1C /* mozilla.dtd in Resources */ = {isa = PBXBuildFile; fileRef = DE02573012F28D45003F4B1C /* mozilla.dtd */; };
+		DE02573C12F28D45003F4B1C /* global.dtd in Resources */ = {isa = PBXBuildFile; fileRef = DE02573212F28D45003F4B1C /* global.dtd */; };
+		DE02573D12F28D45003F4B1C /* config.dtd in Resources */ = {isa = PBXBuildFile; fileRef = DE02573412F28D45003F4B1C /* config.dtd */; };
+		DE02573E12F28D45003F4B1C /* typeaheadfind.properties in Resources */ = {isa = PBXBuildFile; fileRef = DE02572612F28D45003F4B1C /* typeaheadfind.properties */; };
+		DE02573F12F28D45003F4B1C /* caps.properties in Resources */ = {isa = PBXBuildFile; fileRef = DE02572812F28D45003F4B1C /* caps.properties */; };
+		DE02574012F28D45003F4B1C /* prettyprint.dtd in Resources */ = {isa = PBXBuildFile; fileRef = DE02572A12F28D45003F4B1C /* prettyprint.dtd */; };
+		DE02574112F28D45003F4B1C /* plugins.dtd in Resources */ = {isa = PBXBuildFile; fileRef = DE02572C12F28D45003F4B1C /* plugins.dtd */; };
+		DE02574212F28D45003F4B1C /* netError.dtd in Resources */ = {isa = PBXBuildFile; fileRef = DE02572E12F28D45003F4B1C /* netError.dtd */; };
+		DE02574312F28D45003F4B1C /* mozilla.dtd in Resources */ = {isa = PBXBuildFile; fileRef = DE02573012F28D45003F4B1C /* mozilla.dtd */; };
+		DE02574412F28D45003F4B1C /* global.dtd in Resources */ = {isa = PBXBuildFile; fileRef = DE02573212F28D45003F4B1C /* global.dtd */; };
+		DE02574512F28D45003F4B1C /* config.dtd in Resources */ = {isa = PBXBuildFile; fileRef = DE02573412F28D45003F4B1C /* config.dtd */; };
+		DE02574812F28D8D003F4B1C /* gecko.manifest in Resources */ = {isa = PBXBuildFile; fileRef = DE02574612F28D8D003F4B1C /* gecko.manifest */; };
+		DE02574912F28D8D003F4B1C /* gecko.manifest in Resources */ = {isa = PBXBuildFile; fileRef = DE02574612F28D8D003F4B1C /* gecko.manifest */; };
 		DE09CD730ACB97C5008A8D9C /* popup_close.tiff in Resources */ = {isa = PBXBuildFile; fileRef = DE09CD6E0ACB97C5008A8D9C /* popup_close.tiff */; };
 		DE09CD740ACB97C5008A8D9C /* popup_close_pressed.tiff in Resources */ = {isa = PBXBuildFile; fileRef = DE09CD6F0ACB97C5008A8D9C /* popup_close_pressed.tiff */; };
 		DE09CD760ACB97C5008A8D9C /* popup_blocked_icon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = DE09CD710ACB97C5008A8D9C /* popup_blocked_icon.tiff */; };
@@ -2916,6 +2934,15 @@
 		C7FF537A0D3528B700194776 /* SearchEngineManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchEngineManager.h; path = src/websearch/SearchEngineManager.h; sourceTree = "<group>"; };
 		C7FF537B0D3528B700194776 /* SearchEngineEditor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = SearchEngineEditor.mm; path = src/websearch/SearchEngineEditor.mm; sourceTree = "<group>"; };
 		C7FF537C0D3528B700194776 /* SearchEngineEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchEngineEditor.h; path = src/websearch/SearchEngineEditor.h; sourceTree = "<group>"; };
+		DE02572712F28D45003F4B1C /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = English; path = generated/resources/localized/English.lproj/typeaheadfind.properties; sourceTree = "<group>"; };
+		DE02572912F28D45003F4B1C /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = English; path = generated/resources/localized/English.lproj/caps.properties; sourceTree = "<group>"; };
+		DE02572B12F28D45003F4B1C /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = English; path = generated/resources/localized/English.lproj/prettyprint.dtd; sourceTree = "<group>"; };
+		DE02572D12F28D45003F4B1C /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = English; path = generated/resources/localized/English.lproj/plugins.dtd; sourceTree = "<group>"; };
+		DE02572F12F28D45003F4B1C /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = English; path = generated/resources/localized/English.lproj/netError.dtd; sourceTree = "<group>"; };
+		DE02573112F28D45003F4B1C /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = English; path = generated/resources/localized/English.lproj/mozilla.dtd; sourceTree = "<group>"; };
+		DE02573312F28D45003F4B1C /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = English; path = generated/resources/localized/English.lproj/global.dtd; sourceTree = "<group>"; };
+		DE02573512F28D45003F4B1C /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = English; path = generated/resources/localized/English.lproj/config.dtd; sourceTree = "<group>"; };
+		DE02574712F28D8D003F4B1C /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = English; path = resources/localized/English.lproj/gecko.manifest; sourceTree = "<group>"; };
 		DE09CD6E0ACB97C5008A8D9C /* popup_close.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = popup_close.tiff; path = resources/images/chrome/popup_close.tiff; sourceTree = SOURCE_ROOT; };
 		DE09CD6F0ACB97C5008A8D9C /* popup_close_pressed.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = popup_close_pressed.tiff; path = resources/images/chrome/popup_close_pressed.tiff; sourceTree = SOURCE_ROOT; };
 		DE09CD710ACB97C5008A8D9C /* popup_blocked_icon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = popup_blocked_icon.tiff; path = resources/images/chrome/popup_blocked_icon.tiff; sourceTree = SOURCE_ROOT; };
@@ -4397,6 +4424,15 @@
 				DE4044360ED09D1E00057E17 /* global_locale_appstrings_properties.strings */,
 				DE4044380ED09D1E00057E17 /* global-platform_locale_intl_properties.strings */,
 				DE4044420ED09D1E00057E17 /* global_locale_xslt_xslt_properties.strings */,
+				DE02572612F28D45003F4B1C /* typeaheadfind.properties */,
+				DE02572812F28D45003F4B1C /* caps.properties */,
+				DE02572A12F28D45003F4B1C /* prettyprint.dtd */,
+				DE02572C12F28D45003F4B1C /* plugins.dtd */,
+				DE02572E12F28D45003F4B1C /* netError.dtd */,
+				DE02573012F28D45003F4B1C /* mozilla.dtd */,
+				DE02573212F28D45003F4B1C /* global.dtd */,
+				DE02573412F28D45003F4B1C /* config.dtd */,
+				DE02574612F28D8D003F4B1C /* gecko.manifest */,
 			);
 			name = "Gecko Strings";
 			sourceTree = "<group>";
@@ -5907,6 +5943,15 @@
 				00450523100A8E140096B649 /* bookmark_group_badge.tiff in Resources */,
 				DE1E1E6211752B6300501E5C /* camino_dsa_pub.pem in Resources */,
 				DE2D03471214E859000668C5 /* certError.xhtml in Resources */,
+				DE02573E12F28D45003F4B1C /* typeaheadfind.properties in Resources */,
+				DE02573F12F28D45003F4B1C /* caps.properties in Resources */,
+				DE02574012F28D45003F4B1C /* prettyprint.dtd in Resources */,
+				DE02574112F28D45003F4B1C /* plugins.dtd in Resources */,
+				DE02574212F28D45003F4B1C /* netError.dtd in Resources */,
+				DE02574312F28D45003F4B1C /* mozilla.dtd in Resources */,
+				DE02574412F28D45003F4B1C /* global.dtd in Resources */,
+				DE02574512F28D45003F4B1C /* config.dtd in Resources */,
+				DE02574912F28D8D003F4B1C /* gecko.manifest in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6127,6 +6172,15 @@
 				00450524100A8E140096B649 /* bookmark_group_badge.tiff in Resources */,
 				DE1E1E6111752B6300501E5C /* camino_dsa_pub.pem in Resources */,
 				DE2D03481214E859000668C5 /* certError.xhtml in Resources */,
+				DE02573612F28D45003F4B1C /* typeaheadfind.properties in Resources */,
+				DE02573712F28D45003F4B1C /* caps.properties in Resources */,
+				DE02573812F28D45003F4B1C /* prettyprint.dtd in Resources */,
+				DE02573912F28D45003F4B1C /* plugins.dtd in Resources */,
+				DE02573A12F28D45003F4B1C /* netError.dtd in Resources */,
+				DE02573B12F28D45003F4B1C /* mozilla.dtd in Resources */,
+				DE02573C12F28D45003F4B1C /* global.dtd in Resources */,
+				DE02573D12F28D45003F4B1C /* config.dtd in Resources */,
+				DE02574812F28D8D003F4B1C /* gecko.manifest in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7132,6 +7186,78 @@
 			);
 			name = WebSearchEngines.plist;
 			sourceTree = "<group>";
+		};
+		DE02572612F28D45003F4B1C /* typeaheadfind.properties */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DE02572712F28D45003F4B1C /* English */,
+			);
+			name = typeaheadfind.properties;
+			sourceTree = SOURCE_ROOT;
+		};
+		DE02572812F28D45003F4B1C /* caps.properties */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DE02572912F28D45003F4B1C /* English */,
+			);
+			name = caps.properties;
+			sourceTree = SOURCE_ROOT;
+		};
+		DE02572A12F28D45003F4B1C /* prettyprint.dtd */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DE02572B12F28D45003F4B1C /* English */,
+			);
+			name = prettyprint.dtd;
+			sourceTree = SOURCE_ROOT;
+		};
+		DE02572C12F28D45003F4B1C /* plugins.dtd */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DE02572D12F28D45003F4B1C /* English */,
+			);
+			name = plugins.dtd;
+			sourceTree = SOURCE_ROOT;
+		};
+		DE02572E12F28D45003F4B1C /* netError.dtd */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DE02572F12F28D45003F4B1C /* English */,
+			);
+			name = netError.dtd;
+			sourceTree = SOURCE_ROOT;
+		};
+		DE02573012F28D45003F4B1C /* mozilla.dtd */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DE02573112F28D45003F4B1C /* English */,
+			);
+			name = mozilla.dtd;
+			sourceTree = SOURCE_ROOT;
+		};
+		DE02573212F28D45003F4B1C /* global.dtd */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DE02573312F28D45003F4B1C /* English */,
+			);
+			name = global.dtd;
+			sourceTree = SOURCE_ROOT;
+		};
+		DE02573412F28D45003F4B1C /* config.dtd */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DE02573512F28D45003F4B1C /* English */,
+			);
+			name = config.dtd;
+			sourceTree = SOURCE_ROOT;
+		};
+		DE02574612F28D8D003F4B1C /* gecko.manifest */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DE02574712F28D8D003F4B1C /* English */,
+			);
+			name = gecko.manifest;
+			sourceTree = SOURCE_ROOT;
 		};
 		DE4025930FF4345D00568817 /* ServicesMenu.strings */ = {
 			isa = PBXVariantGroup;
