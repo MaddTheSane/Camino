@@ -45,6 +45,38 @@
 #include "nsIPluginTag.h"
 #include "nsString.h"
 
+static NSString* const kPluginNameFlash = @"Shockwave Flash";
+static NSString* const kPluginNameFlip4Mac = @"Flip4Mac";
+
+struct VersionStruct {
+  int major;
+  int minor;
+  int bugfix;
+};
+
+// Given a version string, parses it according to the common major.minor.bugfix
+// format. Any component not present (or not parsable) will be set to 0.
+static void ParseVersion(NSString* version, VersionStruct* components)
+{
+  NSArray* versionComponents = [version componentsSeparatedByString:@"."];
+  int count = [versionComponents count];
+  components->major = count > 0 ?
+      [[versionComponents objectAtIndex:0] intValue] : 0;
+  components->minor = count > 1 ?
+      [[versionComponents objectAtIndex:1] intValue] : 0;
+  components->bugfix = count > 2 ?
+      [[versionComponents objectAtIndex:2] intValue] : 0;
+}
+
+// Returns YES if |version| is older than |target|
+static BOOL IsOlder(const VersionStruct& version, const VersionStruct& target)
+{
+  return (version.major < target.major ||
+          (version.major == target.major && version.minor < target.minor) ||
+          (version.major == target.major && version.minor == target.minor &&
+           version.bugfix < target.bugfix));
+}
+
 NS_IMPL_ISUPPORTS1(PluginBlocklistService, nsIBlocklistService)
 
 NS_IMETHODIMP PluginBlocklistService::IsAddonBlocklisted(const nsAString & id,
@@ -74,8 +106,35 @@ NS_IMETHODIMP PluginBlocklistService::GetPluginBlocklistState(nsIPluginTag *plug
 
   nsCAutoString nameAutoString;
   plugin->GetName(nameAutoString);
+  NSString* name = [NSString stringWithUTF8String:nameAutoString.get()];
+  nsCAutoString versionAutoString;
+  plugin->GetVersion(versionAutoString);
+  NSString* versionString =
+      [NSString stringWithUTF8String:versionAutoString.get()];
+  VersionStruct version;
+  ParseVersion(versionString, &version);
 
-  // TODO: Add version-specific blocking of some plugins here.
+  BOOL blocked = NO;
+  if ([name hasPrefix:kPluginNameFlash]) {
+    // Flash 9 leaks file handles on every instantiation.
+    if (version.major == 9)
+      blocked = YES;
+  }
+  else if ([name hasPrefix:kPluginNameFlip4Mac]) {
+    // 2.3.0 - 2.3.5 load content synchronously, causing long hangs.
+    if (version.major == 2 && version.minor == 3 && version.bugfix <= 5)
+      blocked = YES;
+    else {
+      // Pre-2.2.1 moves the graphics origin, corrupting all Gecko drawing.
+      VersionStruct minAllowed = { 2, 2, 1 };
+      blocked = IsOlder(version, minAllowed);
+    }
+  }
+
+  if (blocked) {
+    *_retval = nsIBlocklistService::STATE_BLOCKED;
+    return NS_OK;
+  }
 
   // We are (ab)using blocklist service to work around the fact that we
   // sometimes nuke pluginreg.dat, which stores enable/disable data. When

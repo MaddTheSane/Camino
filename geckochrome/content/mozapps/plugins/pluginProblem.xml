@@ -67,9 +67,9 @@
         <xul:vbox class="mainBox" role="link" flex="1" chromedir="&locale.dir;">
             <xul:spacer flex="1"/>
             <xul:box class="icon"/>
-            <html:div class="msg msgUnsupported">&missingPlugin1.label; <html:a href="http://caminobrowser.org/documentation/setup/#find_plugin" target="_blank">&pluginLink.label;</html:a> &missingPlugin2.label;</html:div>
-            <html:div class="msg msgDisabled">&disabledPlugin1.label; <html:a href="http://caminobrowser.org/documentation/setup/#disable_plugin" target="_blank">&pluginLink.label;</html:a> &disabledPlugin2.label;</html:div>
-            <html:div class="msg msgBlocked">&blockedPlugin.label;</html:div>
+            <html:div class="msg msgUnsupported">&missingPlugin.label; <html:a href="http://caminobrowser.org/documentation/setup/#find_plugin" target="_blank">&pluginLink.label;</html:a>.</html:div>
+            <html:div class="msg msgDisabled">&disabledPlugin.label; <html:a href="http://caminobrowser.org/documentation/setup/#disable_plugin" target="_blank">&pluginLink.label;</html:a>.</html:div>
+            <html:div class="msg msgBlocked">&blockedPlugin.label; <html:a href="http://caminobrowser.org/documentation/setup/#blocked_plugin" target="_blank">&pluginLink.label;</html:a>.</html:div>
             <html:div class="msg msgCrashed"><!-- set at runtime --></html:div>
             <html:div class="submitStatus">
                 <!-- link href set at runtime -->
