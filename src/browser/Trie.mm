@@ -220,6 +220,103 @@
 
 #pragma mark -
 
+// Helper class which encapsulates evaluating possible search matches against
+// the validation requirements.
+@interface TrieQueryItemValidator : NSObject
+{
+  NSArray*                          mPotentialMatchLists;
+  NSArray*                          mMatchTerms;
+  id<TrieKeywordGenerationDelegate> mKeywordDelegate;  // weak
+}
+
+// Initializes a validator.
+// - |lists| is an array of potential term match lists; an item must be in all
+//   of the lists in order to be a match.
+// - |terms| is a list of terms that must all appear in the item's list of
+//   keywords in order for it to be a match. This should only contain terms
+//   for which |lists| is not sufficient to determine a match, since checking
+//   an item against |terms| requires generating keywords, thus is expensive.
+// - |delegate| is used to generate keywords if necessary. It is not retained.
+// |lists| and |terms| may be empty or nil.
+- (id)initWithMatchLists:(NSArray*)lists
+                   terms:(NSArray*)terms
+         keywordDelegate:(id<TrieKeywordGenerationDelegate>)delegate;
+
+// Returs YES if |item| satisfies this validator.
+- (BOOL)matchesItem:(id)item;
+
+@end
+
+@implementation TrieQueryItemValidator
+
+- (id)initWithMatchLists:(NSArray*)lists
+                   terms:(NSArray*)terms
+         keywordDelegate:(id<TrieKeywordGenerationDelegate>)delegate
+{
+  if ((self = [super init])) {
+    mPotentialMatchLists = [lists retain];
+    mMatchTerms = [terms retain];
+    mKeywordDelegate = delegate;
+  }
+  return self;
+}
+
+- (void)dealloc
+{
+  [mPotentialMatchLists release];
+  [mMatchTerms release];
+  [super dealloc];
+}
+
+// Return YES if the given object exists (by pointer equality) in every array
+// in |arrays|.
+- (BOOL)object:(id)object existsInEveryArray:(NSArray*)arrays
+{
+  NSEnumerator* arrayEnumerator = [arrays objectEnumerator];
+  NSArray* array;
+  while ((array = [arrayEnumerator nextObject])) {
+    if ([array indexOfObjectIdenticalTo:object] == NSNotFound)
+      return NO;
+  }
+  return YES;
+}
+
+// Returns YES if the |item| matches all of the given terms. This is an
+// expensive operation, since it requires generating the item's keyword list and
+// doing string comparisons.
+- (BOOL)item:(id)item matchesTerms:(NSArray*)terms
+{
+  // If there are no terms to validate against, it trivially matches.
+  if ([terms count] == 0)
+    return YES;
+
+  NSAutoreleasePool* localPool = [[NSAutoreleasePool alloc] init];
+  NSArray* keys = [mKeywordDelegate keywordsForObject:item];
+  NSEnumerator* termEnumerator = [terms objectEnumerator];
+  NSString* term;
+  BOOL matches = YES;
+  while ((term = [termEnumerator nextObject])) {
+    if (![keys containsStringWithPrefix:term]) {
+      matches = NO;
+      break;
+    }
+  }
+  [localPool release];
+  return matches;
+}
+
+- (BOOL)matchesItem:(id)item
+{
+  // Make sure |item| appears in all potential match lists (which is relatively
+  // cheap), and if so that it actually matches every term (which is expensive).
+  return [self object:item existsInEveryArray:mPotentialMatchLists] &&
+         [self item:item matchesTerms:mMatchTerms];
+}
+
+@end
+
+#pragma mark -
+
 @interface Trie (Private)
 
 // Returns everything from the trie for the given term, without doing any
@@ -229,23 +326,38 @@
 
 // Returns a list of the potential matches for each term. See
 // potentialMatchesForTerm: for details.
-- (NSMutableArray*)potentialMatchListsForTerms:(NSArray*)term;
+- (NSMutableArray*)potentialMatchListsForTerms:(NSArray*)terms;
+
+// Returns YES if the query results for |newTerms| will be a subset of the
+// possible results for the cached query.
+- (BOOL)isQueryRefinementOfCachedQuery:(NSArray*)newTerms;
+
+// Iterates through |candidates|, starting at |startIndex|, and adds items that
+// satisfy |validator| to |matches|, until |matches| contains |limit| items.
+// If |limit| is 0, it will be treated as no limit.
+// Returns the last index in |candidates| that was checked for matching.
+- (unsigned int)fillMatchList:(NSMutableArray*)matches
+                      toLimit:(unsigned int)limit
+            withItemsFromList:(NSArray*)candidates
+                    fromIndex:(unsigned int)startIndex
+            matchingValidator:(TrieQueryItemValidator*)validator;
+
+// Clears the cached query state. Must be called any time the trie changes.
+- (void)invalidateCachedQuery;
+
+// Stores the given query state for potential use in speeding up the next query.
+- (void)cacheQueryResults:(NSArray*)matches
+               candidates:(NSArray*)candidates
+                lastIndex:(unsigned int)lastIndex
+                 forTerms:(NSArray*)terms;
 
 // Returns a term array with any whitespace trimmed, and empty terms discarded.
 - (NSArray*)cleanedTerms:(NSArray*)terms;
 
 // Returns the terms from |terms| that will need extended match validation
-// (i.e., have more characters than mMaxDepth).
+// because potentialMatchesForTerm: won't give a definitive answer
+// (i.e., those that have more characters than mMaxDepth).
 - (NSArray*)termsNeedingExtendedValidation:(NSArray*)terms;
-
-// Return YES if the given object exists (by pointer equality) in every array
-// in |arrays|.
-- (BOOL)object:(id)object existsInEveryArray:(NSArray*)arrays;
-
-// Returns YES if the given item matches all of the given terms. This is an
-// expensive operation, since it requires generating the item's keyword list and
-// doing string comparisons.
-- (BOOL)item:(id)item matchesTerms:(NSArray*)terms;
 
 // Returns YES if the term is longer than mMaxDepth.
 - (BOOL)termExceedsTrieDepth:(NSString*)term;
@@ -270,6 +382,7 @@
 
 - (void)dealloc
 {
+  [self invalidateCachedQuery];
   [mRoot release];
   [mSortOrder release];
   [super dealloc];
@@ -277,6 +390,8 @@
 
 - (void)addItem:(id)item
 {
+  [self invalidateCachedQuery];
+
   NSArray* keys = [mDelegate keywordsForObject:item];
   NSEnumerator* keyEnumerator = [keys objectEnumerator];
   NSString* key;
@@ -290,11 +405,15 @@
 
 - (void)removeItem:(id)item
 {
+  [self invalidateCachedQuery];
+
   [mRoot removeItem:item];
 }
 
 - (void)removeAllItems
 {
+  [self invalidateCachedQuery];
+
   [mRoot release];
   mRoot = [[TrieNode alloc] init];
 }
@@ -328,34 +447,110 @@
   NSMutableArray* potentialMatchLists =
       [self potentialMatchListsForTerms:cleanTerms];
 
-  // Find the terms that will require more validation than just checking to
-  // see if the item was found in the Trie.
-  NSArray* termsRequiringValidation = [self termsNeedingExtendedValidation:cleanTerms];
-
-  // Now walk one of the lists--the first is chosen arbitrarily--to find actual
-  // matches, by first making sure an item is not a dup and appears in every
-  // potential match list (which is relatively cheap), and if so that it
-  // actually matches every search term (which is expensive).
+  // Use the first list (arbitrarily) as a canditate list to walk looking for
+  // actual matches, and use the others in the validator to do fast first pass
+  // check of potential matches.
   NSArray* candidateList = [[[potentialMatchLists firstObject] retain] autorelease];
   [potentialMatchLists removeObjectAtIndex:0];
-  NSMutableArray* matchingItems = [NSMutableArray arrayWithCapacity:limit];
-  NSEnumerator* candidateEnumerator = [candidateList objectEnumerator];
-  id item;
-  while ((item = [candidateEnumerator nextObject])) {
-    if (([matchingItems indexOfObjectIdenticalTo:item] != NSNotFound) ||
-        ([potentialMatchLists count] > 0 &&
-         ![self object:item existsInEveryArray:potentialMatchLists]) ||
-        ([termsRequiringValidation count] > 0 &&
-         ![self item:item matchesTerms:termsRequiringValidation]))
-    {
-      continue;
-    }
 
-    [matchingItems addObject:item];
-    if (limit && [matchingItems count] == limit)
+  // Create a validator for the query.
+  NSArray* termsNeedingValidation = [self termsNeedingExtendedValidation:cleanTerms];
+  TrieQueryItemValidator* validator =
+      [[[TrieQueryItemValidator alloc] initWithMatchLists:potentialMatchLists
+                                                    terms:termsNeedingValidation
+                                          keywordDelegate:mDelegate] autorelease];
+
+  NSMutableArray* matches = [NSMutableArray arrayWithCapacity:limit];
+  unsigned int startIndex = 0;
+  BOOL isRefinement = [self isQueryRefinementOfCachedQuery:cleanTerms];
+  if (isRefinement) {
+    // If the candidate list is the same as the last query, revalidate the
+    // matches and then pick up where the last query left off.
+    if (candidateList == mPreviousCandidateList) {
+      startIndex = mLastCheckedCandidateIndex + 1;
+      [self fillMatchList:matches
+                  toLimit:limit
+        withItemsFromList:mPreviousMatches
+                fromIndex:0
+        matchingValidator:validator];
+    }
+  }
+
+  unsigned int lastCheckedIndex = [self fillMatchList:matches
+                                              toLimit:limit
+                                    withItemsFromList:candidateList
+                                            fromIndex:startIndex
+                                    matchingValidator:validator];
+
+  [self cacheQueryResults:matches
+               candidates:candidateList
+                lastIndex:lastCheckedIndex
+                 forTerms:cleanTerms];
+
+  return matches;
+}
+
+- (BOOL)isQueryRefinementOfCachedQuery:(NSArray*)newTerms
+{
+  if (!mPreviousQueryTerms)
+    return NO;
+  if ([newTerms count] < [mPreviousQueryTerms count])
+    return NO;
+  for (unsigned int i = 0; i < [mPreviousQueryTerms count]; ++i) {
+    if (![[newTerms objectAtIndex:i] hasPrefix:[mPreviousQueryTerms objectAtIndex:i]])
+      return NO;
+  }
+  return YES;
+}
+
+- (unsigned int)fillMatchList:(NSMutableArray*)matches
+                      toLimit:(unsigned int)limit
+            withItemsFromList:(NSArray*)candidates
+                    fromIndex:(unsigned int)startIndex
+            matchingValidator:(TrieQueryItemValidator*)validator
+{
+  if (limit && [matches count] >= limit)
+    return startIndex;
+
+  // Walk the candidate list to find actual matches, eliminating duplicates.
+  unsigned int candidateCount = [candidates count];
+  unsigned int i = startIndex;
+  for (; i < candidateCount; ++i) {
+    id item = [candidates objectAtIndex:i];
+    if ([matches indexOfObjectIdenticalTo:item] != NSNotFound)
+      continue;
+    if (![validator matchesItem:item])
+      continue;
+
+    [matches addObject:item];
+    if (limit && [matches count] >= limit)
       break;
   }
-  return matchingItems;
+  return i;
+}
+
+- (void)invalidateCachedQuery
+{
+  [mPreviousQueryTerms release];
+  mPreviousQueryTerms = nil;
+  [mPreviousCandidateList release];
+  mPreviousCandidateList = nil;
+  [mPreviousMatches release];
+  mPreviousMatches = nil;
+}
+
+- (void)cacheQueryResults:(NSArray*)matches
+               candidates:(NSArray*)candidates
+                lastIndex:(unsigned int)lastIndex
+                 forTerms:(NSArray*)terms
+{
+  [self invalidateCachedQuery];
+  mPreviousMatches = [matches copy];
+  mPreviousQueryTerms = [terms copy];
+  // Retain, rather than copy, because we control this list and will invalidate
+  // mPreviousCandidateList if it changes, so there's no need for an extra copy.
+  mPreviousCandidateList = [candidates retain];
+  mLastCheckedCandidateIndex = lastIndex;
 }
 
 - (NSArray*)cleanedTerms:(NSArray*)terms
@@ -381,34 +576,6 @@
       [longTerms addObject:term];
   }
   return longTerms;
-}
-
-- (BOOL)object:(id)object existsInEveryArray:(NSArray*)arrays
-{
-  NSEnumerator* arrayEnumerator = [arrays objectEnumerator];
-  NSArray* array;
-  while ((array = [arrayEnumerator nextObject])) {
-    if ([array indexOfObjectIdenticalTo:object] == NSNotFound)
-      return NO;
-  }
-  return YES;
-}
-
-- (BOOL)item:(id)item matchesTerms:(NSArray*)terms
-{
-  NSAutoreleasePool* localPool = [[NSAutoreleasePool alloc] init];
-  NSArray* keys = [mDelegate keywordsForObject:item];
-  NSEnumerator* termEnumerator = [terms objectEnumerator];
-  NSString* term;
-  BOOL matches = YES;
-  while ((term = [termEnumerator nextObject])) {
-    if (![keys containsStringWithPrefix:term]) {
-      matches = NO;
-      break;
-    }
-  }
-  [localPool release];
-  return matches;
 }
 
 - (BOOL)termExceedsTrieDepth:(NSString*)term

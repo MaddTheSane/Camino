@@ -660,7 +660,7 @@ enum SourceChangeType {
   NSString *scheme = [nsURL scheme];
   if (!scheme)
     return nil;
-  NSMutableString *schemelessURL = [url mutableCopy];
+  NSMutableString *schemelessURL = [[url mutableCopy] autorelease];
   [schemelessURL deleteCharactersInRange:NSMakeRange(0, [scheme length])];
   if ([schemelessURL hasPrefix:@"://"])
     [schemelessURL deleteCharactersInRange:NSMakeRange(0, 3)];

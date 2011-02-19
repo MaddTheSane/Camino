@@ -57,8 +57,14 @@
  @private
   TrieNode*                         mRoot;
   NSSortDescriptor*                 mSortOrder;
-  id<TrieKeywordGenerationDelegate> mDelegate;
+  id<TrieKeywordGenerationDelegate> mDelegate;  // weak
   unsigned int                      mMaxDepth;
+
+  // Previous query cache.
+  NSMutableArray*                   mPreviousMatches;
+  NSArray*                          mPreviousQueryTerms;
+  NSArray*                          mPreviousCandidateList;
+  unsigned int                      mLastCheckedCandidateIndex;
 }
 
 // Initializes a Trie that uses the given keyword generation delegate, and the
