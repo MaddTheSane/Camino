@@ -45,13 +45,14 @@
 
 #include <Carbon/Carbon.h>
 
+class nsIArray;
 class nsIFile;
 
 //*****************************************************************************
 // class AppDirServiceProvider
 //*****************************************************************************   
 
-class AppDirServiceProvider : public nsIDirectoryServiceProvider
+class AppDirServiceProvider : public nsIDirectoryServiceProvider2
 {
 public:
                             // If |isCustomProfile| is true, we use the passed in string as a path to the custom 
@@ -61,14 +62,15 @@ public:
 
     NS_DECL_ISUPPORTS
     NS_DECL_NSIDIRECTORYSERVICEPROVIDER
+    NS_DECL_NSIDIRECTORYSERVICEPROVIDER2
 
 protected:
     virtual                 ~AppDirServiceProvider();
 
     nsresult                GetProfileDirectory(nsILocalFile** outFolder);
     nsresult                GetParentCacheDirectory(nsILocalFile** outFolder);
-      
     nsresult                GetSystemDirectory(OSType inFolderType, nsILocalFile** outFolder);
+    nsresult                GetChromeManifestDirectories(nsIArray** outManifestDirs);
     static nsresult         EnsureExists(nsILocalFile* inFolder);
   
 protected:

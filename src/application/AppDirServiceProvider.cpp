@@ -41,6 +41,8 @@
 #include "nsAppDirectoryServiceDefs.h"
 #include "nsDirectoryServiceDefs.h"
 #include "nsILocalFileMac.h"
+#include "nsIMutableArray.h"
+#include "nsIToolkitChromeRegistry.h"
 
 #include <Carbon/Carbon.h>
 
@@ -60,14 +62,16 @@ AppDirServiceProvider::~AppDirServiceProvider()
 {
 }
 
-NS_IMPL_ISUPPORTS1(AppDirServiceProvider, nsIDirectoryServiceProvider)
+NS_IMPL_ISUPPORTS2(AppDirServiceProvider,
+                   nsIDirectoryServiceProvider,
+                   nsIDirectoryServiceProvider2)
 
 
 // nsIDirectoryServiceProvider implementation 
 
 NS_IMETHODIMP
 AppDirServiceProvider::GetFile(const char *prop, PRBool *persistent, nsIFile **_retval)
-{    
+{
   nsCOMPtr<nsILocalFile>  localFile;
   nsresult rv = NS_ERROR_FAILURE;
 
@@ -101,6 +105,22 @@ AppDirServiceProvider::GetFile(const char *prop, PRBool *persistent, nsIFile **_
   if (localFile && NS_SUCCEEDED(rv))
     return localFile->QueryInterface(NS_GET_IID(nsIFile), (void**)_retval);
     
+  return rv;
+}
+
+NS_IMETHODIMP
+AppDirServiceProvider::GetFiles(const char *prop, nsISimpleEnumerator **_retval)
+{
+  nsresult rv = NS_ERROR_FAILURE;
+  *_retval = nsnull;
+  nsCOMPtr<nsIArray> files;
+  if (strcmp(prop, NS_CHROME_MANIFESTS_FILE_LIST) == 0) {
+    rv = GetChromeManifestDirectories(getter_AddRefs(files));
+  }
+
+  if (files && NS_SUCCEEDED(rv))
+    files->Enumerate(_retval);
+
   return rv;
 }
 
@@ -183,6 +203,48 @@ AppDirServiceProvider::GetParentCacheDirectory(nsILocalFile** outFolder)
   (*outFolder)->AppendNative(mName);
   rv = EnsureExists(*outFolder);
 
+  return rv;
+}
+
+nsresult
+AppDirServiceProvider::GetChromeManifestDirectories(nsIArray** outManifestDirs)
+{
+  nsresult rv = NS_OK;
+  nsCOMPtr<nsIMutableArray> files =
+      do_CreateInstance(NS_ARRAY_CONTRACTID, &rv);
+  NS_ENSURE_SUCCESS(rv, rv);
+  NS_ENSURE_TRUE(files, rv);
+
+  // Get the localized resources directory by finding a resource that is
+  // guaranteed to be there, then finding its parent.
+  CFURLRef menuNibURL = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
+                                                CFSTR("MainMenu"), CFSTR("nib"),
+                                                NULL);
+  NS_ENSURE_TRUE(menuNibURL, rv);
+  CFURLRef localizedResourcesURL =
+      CFURLCreateCopyDeletingLastPathComponent(kCFAllocatorDefault, menuNibURL);
+  CFRelease(menuNibURL);
+  NS_ENSURE_TRUE(localizedResourcesURL, rv);
+
+  nsCOMPtr<nsILocalFile> localDir;
+  NS_NewLocalFile(EmptyString(), PR_TRUE, getter_AddRefs(localDir));
+  nsCOMPtr<nsILocalFileMac> localizedResourceDir(do_QueryInterface(localDir));
+  NS_ENSURE_TRUE(localizedResourceDir, rv);
+  rv = localizedResourceDir->InitWithCFURL(localizedResourcesURL);
+  CFRelease(localizedResourcesURL);
+  NS_ENSURE_SUCCESS(rv, rv);
+  rv = files->AppendElement(localizedResourceDir, PR_FALSE);
+  NS_ENSURE_SUCCESS(rv, rv);
+
+  nsCOMPtr<nsIFile> appChromeDir;
+  rv = NS_GetSpecialDirectory(NS_APP_CHROME_DIR,
+                              getter_AddRefs(appChromeDir));
+  NS_ENSURE_SUCCESS(rv, rv);
+  rv = files->AppendElement(appChromeDir, PR_FALSE);
+  NS_ENSURE_SUCCESS(rv, rv);
+
+  *outManifestDirs = files;
+  NS_ADDREF(*outManifestDirs);
   return rv;
 }
 
