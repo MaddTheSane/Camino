@@ -47,9 +47,11 @@
 #include <Carbon/Carbon.h>
 
 // Defines
-#define APP_REGISTRY_NAME        NS_LITERAL_CSTRING("Application.regs")
-#define COMPONENT_REGISTRY_NAME  NS_LITERAL_CSTRING("compreg.dat")
-#define XPTI_REGISTRY_NAME       NS_LITERAL_CSTRING("xpti.dat")
+#define APP_REGISTRY_NAME            NS_LITERAL_CSTRING("Application.regs")
+#define COMPONENT_REGISTRY_NAME      NS_LITERAL_CSTRING("compreg.dat")
+#define XPTI_REGISTRY_NAME           NS_LITERAL_CSTRING("xpti.dat")
+#define PROFILE_PLUGIN_DIR_NAME      NS_LITERAL_CSTRING("Internet Plug-Ins")
+#define PROFILE_COMPONENTS_DIR_NAME  NS_LITERAL_CSTRING("components")
 
 
 AppDirServiceProvider::AppDirServiceProvider(const char *inName, PRBool isCustomProfile)
@@ -113,9 +115,16 @@ AppDirServiceProvider::GetFiles(const char *prop, nsISimpleEnumerator **_retval)
 {
   nsresult rv = NS_ERROR_FAILURE;
   *_retval = nsnull;
-  nsCOMPtr<nsIArray> files;
+
+  nsCOMPtr<nsIMutableArray> files = do_CreateInstance(NS_ARRAY_CONTRACTID);
+  NS_ENSURE_TRUE(files, rv);
+
   if (strcmp(prop, NS_CHROME_MANIFESTS_FILE_LIST) == 0) {
-    rv = GetChromeManifestDirectories(getter_AddRefs(files));
+    rv = GetChromeManifestDirectories(files);
+  } else if (strcmp(prop, NS_APP_PLUGINS_DIR_LIST) == 0) {
+    rv = GetProfilePluginsDirectory(files);
+  } else if (strcmp(prop, NS_XPCOM_COMPONENT_DIR_LIST) == 0) {
+    rv = GetProfileComponentsDirectory(files);
   }
 
   if (files && NS_SUCCEEDED(rv))
@@ -207,45 +216,65 @@ AppDirServiceProvider::GetParentCacheDirectory(nsILocalFile** outFolder)
 }
 
 nsresult
-AppDirServiceProvider::GetChromeManifestDirectories(nsIArray** outManifestDirs)
+AppDirServiceProvider::GetChromeManifestDirectories(nsIMutableArray* folderList)
 {
-  nsresult rv = NS_OK;
-  nsCOMPtr<nsIMutableArray> files =
-      do_CreateInstance(NS_ARRAY_CONTRACTID, &rv);
-  NS_ENSURE_SUCCESS(rv, rv);
-  NS_ENSURE_TRUE(files, rv);
-
   // Get the localized resources directory by finding a resource that is
   // guaranteed to be there, then finding its parent.
   CFURLRef menuNibURL = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
                                                 CFSTR("MainMenu"), CFSTR("nib"),
                                                 NULL);
-  NS_ENSURE_TRUE(menuNibURL, rv);
+  NS_ENSURE_TRUE(menuNibURL, NS_ERROR_FAILURE);
   CFURLRef localizedResourcesURL =
       CFURLCreateCopyDeletingLastPathComponent(kCFAllocatorDefault, menuNibURL);
   CFRelease(menuNibURL);
-  NS_ENSURE_TRUE(localizedResourcesURL, rv);
+  NS_ENSURE_TRUE(localizedResourcesURL, NS_ERROR_FAILURE);
 
   nsCOMPtr<nsILocalFile> localDir;
   NS_NewLocalFile(EmptyString(), PR_TRUE, getter_AddRefs(localDir));
   nsCOMPtr<nsILocalFileMac> localizedResourceDir(do_QueryInterface(localDir));
-  NS_ENSURE_TRUE(localizedResourceDir, rv);
-  rv = localizedResourceDir->InitWithCFURL(localizedResourcesURL);
+  NS_ENSURE_TRUE(localizedResourceDir, NS_ERROR_FAILURE);
+  nsresult rv = localizedResourceDir->InitWithCFURL(localizedResourcesURL);
   CFRelease(localizedResourcesURL);
   NS_ENSURE_SUCCESS(rv, rv);
-  rv = files->AppendElement(localizedResourceDir, PR_FALSE);
+  rv = folderList->AppendElement(localizedResourceDir, PR_FALSE);
   NS_ENSURE_SUCCESS(rv, rv);
 
   nsCOMPtr<nsIFile> appChromeDir;
-  rv = NS_GetSpecialDirectory(NS_APP_CHROME_DIR,
-                              getter_AddRefs(appChromeDir));
+  rv = NS_GetSpecialDirectory(NS_APP_CHROME_DIR, getter_AddRefs(appChromeDir));
   NS_ENSURE_SUCCESS(rv, rv);
-  rv = files->AppendElement(appChromeDir, PR_FALSE);
+  rv = folderList->AppendElement(appChromeDir, PR_FALSE);
+
+  return rv;
+}
+
+nsresult
+AppDirServiceProvider::GetProfilePluginsDirectory(nsIMutableArray* folderList)
+{
+  nsCOMPtr<nsILocalFile> pluginDir;
+  nsresult rv = GetProfileDirectory(getter_AddRefs(pluginDir));
+  NS_ENSURE_SUCCESS(rv, rv);
+  pluginDir->AppendNative(PROFILE_PLUGIN_DIR_NAME);
+  rv = EnsureExists(pluginDir);
+  NS_ENSURE_SUCCESS(rv, rv);
+  rv = folderList->AppendElement(pluginDir, PR_FALSE);
   NS_ENSURE_SUCCESS(rv, rv);
 
-  *outManifestDirs = files;
-  NS_ADDREF(*outManifestDirs);
-  return rv;
+  return NS_SUCCESS_AGGREGATE_RESULT;
+}
+
+nsresult
+AppDirServiceProvider::GetProfileComponentsDirectory(nsIMutableArray* folderList)
+{
+  nsCOMPtr<nsILocalFile> componentsDir;
+  nsresult rv = GetProfileDirectory(getter_AddRefs(componentsDir));
+  NS_ENSURE_SUCCESS(rv, rv);
+  componentsDir->AppendNative(PROFILE_COMPONENTS_DIR_NAME);
+  rv = EnsureExists(componentsDir);
+  NS_ENSURE_SUCCESS(rv, rv);
+  rv = folderList->AppendElement(componentsDir, PR_FALSE);
+  NS_ENSURE_SUCCESS(rv, rv);
+
+  return NS_SUCCESS_AGGREGATE_RESULT;
 }
 
 /* static */ 

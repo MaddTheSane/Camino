@@ -45,7 +45,7 @@
 
 #include <Carbon/Carbon.h>
 
-class nsIArray;
+class nsIMutableArray;
 class nsIFile;
 
 //*****************************************************************************
@@ -70,7 +70,9 @@ protected:
     nsresult                GetProfileDirectory(nsILocalFile** outFolder);
     nsresult                GetParentCacheDirectory(nsILocalFile** outFolder);
     nsresult                GetSystemDirectory(OSType inFolderType, nsILocalFile** outFolder);
-    nsresult                GetChromeManifestDirectories(nsIArray** outManifestDirs);
+    nsresult                GetChromeManifestDirectories(nsIMutableArray* folderList);
+    nsresult                GetProfilePluginsDirectory(nsIMutableArray* folderList);
+    nsresult                GetProfileComponentsDirectory(nsIMutableArray* folderList);
     static nsresult         EnsureExists(nsILocalFile* inFolder);
   
 protected:
