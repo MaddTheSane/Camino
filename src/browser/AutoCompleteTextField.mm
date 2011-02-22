@@ -575,7 +575,7 @@ static const int kStringComparisonEqual = 0;
 - (void)completeDefaultResult
 {
   if (mCompleteResult && mCompleteWhileTyping) {
-    PRInt32 defaultRow = 1;
+    PRInt32 defaultRow = 0;
     [self selectRowAt:defaultRow];
     [self completeResult:defaultRow];
   } else {
