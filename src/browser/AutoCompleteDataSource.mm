@@ -496,10 +496,29 @@ enum SourceChangeType {
 
 #pragma mark -
 
+- (void)initialBookmarkLoadComplete:(NSNotification *)notification
+{
+  [[NSNotificationCenter defaultCenter]
+      removeObserver:self
+                name:kBookmarkManagerStartedNotification
+              object:nil];
+  [self startBuildingBookmarkTrie];
+}
+
 - (void)startBuildingBookmarkTrie
 {
-  BookmarkFolder *bookmarkRoot =
-      [[BookmarkManager sharedBookmarkManager] bookmarkRoot];
+  BookmarkManager* bookmarkManager = [BookmarkManager sharedBookmarkManager];
+  // If bookmark loading isn't complete yet, wait until it is.
+  if (![bookmarkManager bookmarksLoaded]) {
+    [[NSNotificationCenter defaultCenter]
+        addObserver:self
+           selector:@selector(initialBookmarkLoadComplete:)
+               name:kBookmarkManagerStartedNotification
+             object:nil];
+    return;
+  }
+
+  BookmarkFolder *bookmarkRoot = [bookmarkManager bookmarkRoot];
   NSArray *allBookmarks = [bookmarkRoot allChildBookmarks];
 
   mBookmarksToLoad =
