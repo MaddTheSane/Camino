@@ -87,14 +87,23 @@
   return ([self hasCaseInsensitivePrefix:@"javascript:"] || [self hasCaseInsensitivePrefix:@"data:"]);
 }
 
+- (BOOL)isBookmarkShortcutURI
+{
+  return (([self hasCaseInsensitivePrefix:@"http:"] ||
+           [self hasCaseInsensitivePrefix:@"https:"]) &&
+          ([self rangeOfString:@"%s"].location != NSNotFound));
+}
+
 - (BOOL)isValidURI
 {
   // This will only return a non-nil object for valid, well-formed URI strings
   NSURL* testURL = [NSURL URLWithString:self];
 
   // |javascript:| and |data:| URIs might not have passed the test,
-  // but spaces will work OK, so evaluate them separately.
-  if ((testURL) || [self isLooselyValidatedURI]) {
+  // but spaces will work OK, so evaluate them separately.  Bookmark shortcut
+  // URLs sent as NSStrings will also fail the test because the percent sign is
+  // not encoded, so they also need to be evaluated separately.
+  if ((testURL) || [self isLooselyValidatedURI] || [self isBookmarkShortcutURI]) {
     return YES;
   }
   return NO;

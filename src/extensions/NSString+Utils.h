@@ -62,6 +62,10 @@ typedef enum
 // These URIs could be used as attack vectors via AppleScript, for example.
 - (BOOL)isPotentiallyDangerousURI;
 
+// URIs containing "%s" are bookmark shortcuts; this method allows us to treat
+// them as real URLs when checking for URL data.
+- (BOOL)isBookmarkShortcutURI;
+
 // Utility method to ensure validity of URI strings. NSURL is used to validate
 // most of them, but the NSURL test may fail for |javascript:| and |data:| URIs
 // because they often contain invalid (per RFC2396) characters such as spaces.
