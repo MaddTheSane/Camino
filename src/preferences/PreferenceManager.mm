@@ -91,7 +91,7 @@ static NSString* const kAppleJavaName = @"Java Plug-In 2";
 // This is an arbitrary version stamp that gets written to the prefs file.
 // It can be used to detect when a new version of Camino is run that needs
 // some prefs to be upgraded.
-static const PRInt32 kCurrentPrefsVersion = 3;
+static const PRInt32 kCurrentPrefsVersion = 4;
 
 // CheckCompatibility and WriteVersion are based on the versions in
 // toolkit/xre/nsAppRunner.cpp.  This is done to provide forward
@@ -819,11 +819,6 @@ static BOOL gMadePrefManager;
   mPrefs->GetIntPref("camino.prefs_version", &lastRunPrefsVersion);
   mLastRunPrefsVersion = lastRunPrefsVersion;
 
-  // Prior to pref version 1, we had the universal charset detector on, but
-  // turned it off since it didn't work well enough.
-  if (mLastRunPrefsVersion < 1)
-    mPrefs->SetCharPref("intl.charset.detector", "");
-
   // Starting with pref version 2, we migrated to the toolkit versions of
   // all our download manager preferences.
   if (mLastRunPrefsVersion < 2)
@@ -834,6 +829,11 @@ static BOOL gMadePrefManager;
   // when they upgrade.
   if (mLastRunPrefsVersion && mLastRunPrefsVersion < 3)
     [self setDownloadDirectoryPath:[self internetConfigDownloadDirectoryPref]];
+
+  // The Java pref flipped in Camino 2.1; ensure that Gecko has the correct
+  // state.
+  if (mLastRunPrefsVersion && mLastRunPrefsVersion < 4)
+    [self updatePluginEnableState];
 
   mPrefs->SetIntPref("camino.prefs_version", kCurrentPrefsVersion);
 
