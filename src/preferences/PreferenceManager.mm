@@ -205,6 +205,8 @@ WriteVersion(nsIFile* aProfileDir, const nsACString& aVersion,
 // Returns the path of the download directory set in Internet Config.
 - (NSString*)internetConfigDownloadDirectoryPref;
 
+- (void)removeProfileURLClassifierDB;
+
 - (void)termEmbedding:(NSNotification*)aNotification;
 - (void)xpcomTerminate:(NSNotification*)aNotification;
 
@@ -509,7 +511,6 @@ static BOOL gMadePrefManager;
     // Based on whether a custom path is set, figure out what the
     // profile path should be.
     const char* profileDirectory;
-    BOOL isCustomProfile = NO;
     if (!customProfilePath) {
       // If it isn't, we then check the 'mozProfileDirName' key in our Info.plist file
       // and use the regular Application Support/<mozProfileDirName>, and Caches/<mozProfileDirName>
@@ -521,17 +522,16 @@ static BOOL gMadePrefManager;
         NSLog(@"mozNewProfileDirName key missing from Info.plist file. Using default profile directory");
         profileDirectory = "Camino";
       }
-      isCustomProfile = NO;
     }
     else {
       // If we have a custom profile path, let's just use that.
       profileDirectory = customProfilePath;
-      isCustomProfile = YES;
+      mIsCustomProfile = YES;
     }
 
     // Supply our own directory service provider, so we can control where
     // the registry and profiles are located.
-    AppDirServiceProvider* provider = new AppDirServiceProvider(profileDirectory, isCustomProfile);
+    AppDirServiceProvider* provider = new AppDirServiceProvider(profileDirectory, mIsCustomProfile);
 
     if (!provider) {
       [self showLaunchFailureAndQuitWithErrorTitle:NSLocalizedString(@"StartupFailureAlert", @"")
@@ -556,6 +556,12 @@ static BOOL gMadePrefManager;
                                       errorMessage:NSLocalizedString(@"StartupFailureProfilePathMsg", @"")];
       // not reached
       return NO;
+    }
+    nsCOMPtr<nsIFile> cacheParentDir;
+    rv = dirProvider->GetFile(NS_APP_USER_PROFILE_LOCAL_50_DIR, &bogus,
+                              getter_AddRefs(cacheParentDir));
+    if (NS_FAILED(rv)) {
+      cacheParentDir = profileDir;
     }
 
     nsCAutoString version;
@@ -641,7 +647,7 @@ static BOOL gMadePrefManager;
     }
     mProfileProvider->Register();
 
-    rv = mProfileProvider->SetProfileDir(profileDir);
+    rv = mProfileProvider->SetProfileDir(profileDir, cacheParentDir);
     if (NS_FAILED(rv)) {
       if (rv == NS_ERROR_FILE_ACCESS_DENIED) {
         [self showLaunchFailureAndQuitWithErrorTitle:NSLocalizedString(@"AlreadyRunningAlert", @"")
@@ -830,10 +836,17 @@ static BOOL gMadePrefManager;
   if (mLastRunPrefsVersion && mLastRunPrefsVersion < 3)
     [self setDownloadDirectoryPath:[self internetConfigDownloadDirectoryPref]];
 
-  // The Java pref flipped in Camino 2.1; ensure that Gecko has the correct
-  // state.
-  if (mLastRunPrefsVersion && mLastRunPrefsVersion < 4)
+  if (mLastRunPrefsVersion && mLastRunPrefsVersion < 4) {
+    // The Java pref flipped in Camino 2.1; ensure that Gecko has the correct
+    // state.
     [self updatePluginEnableState];
+
+    // Starting with Camino 2.1, the url-classifier database moved to the Caches
+    // folder.  Delete the existing database unless Camino is running with a
+    // custom profile, in which case the caches all live in the profile.
+    if (!mIsCustomProfile)
+      [self removeProfileURLClassifierDB];
+  }
 
   mPrefs->SetIntPref("camino.prefs_version", kCurrentPrefsVersion);
 
@@ -1729,6 +1742,14 @@ typedef enum EProxyConfig {
   }
 
   return [oldDownloadDir path];
+}
+
+- (void)removeProfileURLClassifierDB
+{
+  NSString* urlClassifierDB = [[self profilePath] stringByAppendingPathComponent:@"urlclassifier3.sqlite"];
+  NSFileManager* fileMgr = [NSFileManager defaultManager];
+  if ([fileMgr fileExistsAtPath:urlClassifierDB]);
+    [fileMgr removeFileAtPath:urlClassifierDB handler:nil];
 }
 
 - (NSString*)fontNameForGeckoFontName:(NSString*)geckoFontName

@@ -100,7 +100,9 @@ AppDirServiceProvider::GetFile(const char *prop, PRBool *persistent, nsIFile **_
     if (NS_SUCCEEDED(rv))
       rv = localFile->AppendNative(XPTI_REGISTRY_NAME);
   }
-  else if (strcmp(prop, NS_APP_CACHE_PARENT_DIR) == 0) {
+  else if (strcmp(prop, NS_APP_CACHE_PARENT_DIR) == 0 ||
+           strcmp(prop, NS_APP_USER_PROFILE_LOCAL_50_DIR) == 0)
+  {
     rv = GetParentCacheDirectory(getter_AddRefs(localFile));
   }
 

@@ -58,6 +58,7 @@ extern NSString* const kPrefChangedPrefNameUserInfoKey;   // NSString
   NSMutableDictionary*  mPrefChangeObservers; // dict of NSMutableArray of PrefChangeObserverOwner, keyed by pref name.
 
   long                  mLastRunPrefsVersion;
+  BOOL                  mIsCustomProfile;
   NSString*             mProfilePath;
 
   // proxies notification stuff
