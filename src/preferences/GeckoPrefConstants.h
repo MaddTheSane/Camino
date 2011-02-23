@@ -390,4 +390,12 @@ extern const char* const kOldGeckoPrefDownloadToDefaultLocation;       // bool
 // Formerly controlled whether to process downloads with helper apps
 extern const char* const kOldGeckoPrefAutoOpenDownloads;               // bool
 
+#pragma mark Obsolete Tab Behavior
+
+// Controlled the load behavior of URLs loaded from external applications, prior
+// to Camino 2.1.
+extern const char* const kOldGeckoPrefExternalLoadBehavior;            // int
+// Possible values:
+extern const int kOldExternalLoadReusesWindow;
+
 #pragma GCC visibility pop

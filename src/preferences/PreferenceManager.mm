@@ -202,6 +202,7 @@ WriteVersion(nsIFile* aProfileDir, const nsACString& aVersion,
 - (void)initUpdatePrefs;
 - (void)cleanUpObsoletePrefs;
 - (void)migrateOldDownloadPrefs;
+- (void)migrateOldExternalLoadBehaviorPref;
 // Returns the path of the download directory set in Internet Config.
 - (NSString*)internetConfigDownloadDirectoryPref;
 
@@ -841,9 +842,13 @@ static BOOL gMadePrefManager;
     // state.
     [self updatePluginEnableState];
 
-    // Starting with Camino 2.1, the url-classifier database moved to the Caches
-    // folder.  Delete the existing database unless Camino is running with a
-    // custom profile, in which case the caches all live in the profile.
+    // browser.reuse_window pref migrated to browser.link.open_external (and
+    // the default behavior changed).
+    [self migrateOldExternalLoadBehaviorPref];
+
+    // The url-classifier database moved to the Caches folder. Delete the
+    // existing database unless Camino is running with a custom profile, in
+    // which case the caches all live in the profile.
     if (!mIsCustomProfile)
       [self removeProfileURLClassifierDB];
   }
@@ -1671,6 +1676,24 @@ typedef enum EProxyConfig {
   [self clearPref:kOldGeckoPrefLeaveDownloadManagerOpen];
   [self clearPref:kOldGeckoPrefDownloadToDefaultLocation];
   [self clearPref:kOldGeckoPrefAutoOpenDownloads];
+}
+
+//
+// migrateOldExternalLoadBehaviorPref
+//
+// Migrate the old browser.reuse_window pref to browser.link.open_external.
+// Camino 2.1's default is "new tab". Earlier versions defaulted to "new window".
+//
+-(void)migrateOldExternalLoadBehaviorPref
+{
+  int oldExternalLoadPref = [self getIntPref:kOldGeckoPrefExternalLoadBehavior withSuccess:NULL];
+
+  // Migrate "current window" pref value. All other values ("new window", "new
+  // tab", or some unexpected value) are mapped to the new default ("new tab").
+  if (oldExternalLoadPref == kOldExternalLoadReusesWindow)
+    [self setPref:kGeckoPrefExternalLoadBehavior toInt:kExternalLoadReusesWindow];
+
+  [self clearPref:kOldGeckoPrefExternalLoadBehavior];
 }
 
 -(NSString*)internetConfigDownloadDirectoryPref

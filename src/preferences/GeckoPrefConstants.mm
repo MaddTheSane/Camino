@@ -95,7 +95,7 @@ asm(".no_dead_strip _kDownloadsFolderCustom");
 #pragma mark Tab Behavior
 
 const char* const kGeckoPrefAlwaysShowTabBar = "camino.tab_bar_always_visible";
-const char* const kGeckoPrefExternalLoadBehavior = "browser.reuse_window";
+const char* const kGeckoPrefExternalLoadBehavior = "browser.link.open_external";
 const char* const kGeckoPrefOpenTabsForMiddleClick = "browser.tabs.opentabfor.middleclick";
 const char* const kGeckoPrefOpenTabsInBackground = "browser.tabs.loadInBackground";
 const char* const kGeckoPrefSingleWindowModeTargetBehavior = "browser.link.open_newwindow";
@@ -242,13 +242,17 @@ const char* const kOldGeckoPrefDownloadCleanupPolicy = "browser.download.downloa
 const char* const kOldGeckoPrefFocusDownloadManagerOnDownload = "browser.download.progressDnldDialog.bringToFront";
 const char* const kOldGeckoPrefLeaveDownloadManagerOpen = "browser.download.progressDnldDialog.keepAlive";
 
+#pragma mark Obsolete Tab Behavior
+
+const char* const kOldGeckoPrefExternalLoadBehavior = "browser.reuse_window";
+
 #pragma mark -
 #pragma mark Values
 
 // kGeckoPrefExternalLoadBehavior values
-const int kExternalLoadOpensNewWindow = 0;
-const int kExternalLoadOpensNewTab    = 1;
-const int kExternalLoadReusesWindow   = 2;
+const int kExternalLoadReusesWindow   = 1;
+const int kExternalLoadOpensNewWindow = 2;
+const int kExternalLoadOpensNewTab    = 3;
 
 // kGeckoPrefSingleWindowModeTargetBehavior values
 const int kSingleWindowModeUseDefault    = nsIBrowserDOMWindow::OPEN_DEFAULTWINDOW;
@@ -313,3 +317,6 @@ const int kRemoveDownloadsManually = 2;
 const int kOldRemoveDownloadsManually = 0;
 const int kOldRemoveDownloadsOnQuit = 1;
 const int kOldRemoveDownloadsOnSuccess = 2;
+
+// kOldGeckoPrefExternalLoadBehavior values
+const int kOldExternalLoadReusesWindow   = 2;

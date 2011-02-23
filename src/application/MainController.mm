@@ -100,9 +100,9 @@ extern const nsModuleComponentInfo* GetAppComponents(unsigned int* outNumCompone
 static const char ioServiceContractID[] = "@mozilla.org/network/io-service;1";
 
 // Key in the defaults system used to determine if we crashed last time.
-NSString* const kPreviousSessionTerminatedNormallyKey = @"PreviousSessionTerminatedNormally";
+static NSString* const kPreviousSessionTerminatedNormallyKey = @"PreviousSessionTerminatedNormally";
 
-const int kZoomActionsTag = 108;
+static const int kZoomActionsTag = 108;
 
 // Once we are 10.5+ this can use a constant instead of the raw OS value.
 #if MAC_OS_X_VERSION_MAX_ALLOWED <= 1050
@@ -893,9 +893,6 @@ const int kZoomActionsTag = 108;
 // opening a new window or tab (observing the user's pref) if it's not already open
 - (void)showURL:(NSString*)aURL
 {
-  int reuseWindow = [[PreferenceManager sharedInstance] getIntPref:kGeckoPrefExternalLoadBehavior
-                                                       withSuccess:NULL];
-
   // Check to see if we already have the URL somewhere, and just show it if we do.
   NSEnumerator* windowEnumerator = [[NSApp orderedWindows] objectEnumerator];
   NSWindow* window;
@@ -914,16 +911,20 @@ const int kZoomActionsTag = 108;
   }
 
   // If we got here, we didn't find it already open. Open it based on user prefs.
+  int openExternal = [[PreferenceManager sharedInstance] getIntPref:kGeckoPrefExternalLoadBehavior
+                                                        withSuccess:NULL];
+
   BrowserWindowController* controller = (BrowserWindowController*)[[self frontmostBrowserWindow] windowController];
   if (controller) {
     BOOL tabOrWindowIsAvailable = ([[controller browserWrapper] isEmpty] && ![[controller browserWrapper] isBusy]);
 
-    if (tabOrWindowIsAvailable || reuseWindow == kExternalLoadReusesWindow)
+    if (tabOrWindowIsAvailable || openExternal == kExternalLoadReusesWindow)
       [controller loadURL:aURL];
-    else if (reuseWindow == kExternalLoadOpensNewTab)
-      [controller openNewTabWithURL:aURL referrer:nil loadInBackground:NO allowPopups:NO setJumpback:NO];
-    else
+    else if (openExternal == kExternalLoadOpensNewWindow)
       controller = [controller openNewWindowWithURL:aURL referrer:nil loadInBackground:NO allowPopups:NO];
+    else  // kExternalLoadOpensNewTab (or unexpected value)
+      [controller openNewTabWithURL:aURL referrer:nil loadInBackground:NO allowPopups:NO setJumpback:NO];
+    
     [[controller window] makeKeyAndOrderFront:nil];
   }
   else
