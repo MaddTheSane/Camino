@@ -778,8 +778,9 @@ enum SourceChangeType {
 {
   mDelegate = delegate;
 
+  NSString *lowercaseSearchString = [searchString lowercaseString];
   NSArray *searchTerms =
-      [[searchString lowercaseString] componentsSeparatedByString:@" "];
+      [lowercaseSearchString componentsSeparatedByString:@" "];
 
   // If it is likely a URL with a scheme, use the placeholder version.
   // This uses a conservative heuristic based on whether or not the scheme
@@ -787,7 +788,7 @@ enum SourceChangeType {
   // queries containing a ':'.
   if ([searchTerms count] == 1) {
     NSString *searchStringWithSchemePlaceholder =
-        [self urlStringWithSchemePlaceholder:searchString
+        [self urlStringWithSchemePlaceholder:lowercaseSearchString
                     restrictedToKnownSchemes:YES];
     if (searchStringWithSchemePlaceholder)
       searchTerms = [NSArray arrayWithObject:searchStringWithSchemePlaceholder];
