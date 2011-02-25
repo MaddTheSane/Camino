@@ -109,7 +109,7 @@ static int HistoryItemSort(id firstItem, id secondItem, void* context)
 
 @interface HistoryByDateTreeBuilder : HistoryTreeBuilder
 {
-  NSMutableArray*         mDateCategories;        // array of HistoryCategoryItems ordered recent -> old
+  NSMutableArray*         mDateCategories;        // retained. array of HistoryCategoryItems ordered recent -> old
 }
 
 - (void)setUpDateCategories;
@@ -774,13 +774,13 @@ objectValueForTableColumn:(NSTableColumn*)aTableColumn
 
 - (void)setUpDateCategories
 {
-  if (!mDateCategories)
-    mDateCategories =  [[NSMutableArray alloc] initWithCapacity:9];
-  else
-    [mDateCategories removeAllObjects];
-
   static const int kOlderThanAWeek = 7;
   static const int kDefaultExpireDays = 9;
+
+  if (!mDateCategories)
+    mDateCategories = [[NSMutableArray alloc] initWithCapacity:kDefaultExpireDays];
+  else
+    [mDateCategories removeAllObjects];
 
   // Read the history cutoff so that we don't create too many folders
   BOOL gotPref = NO;
@@ -859,7 +859,7 @@ objectValueForTableColumn:(NSTableColumn*)aTableColumn
       return curItem;
   }
 
-  // in theory we should never get here, because the last item has a date of 'distant past'
+  // Category not found. The category for this date must have already been trimmed!
   return nil;
 }
 
@@ -882,6 +882,7 @@ objectValueForTableColumn:(NSTableColumn*)aTableColumn
 
 - (void)buildTreeWithItems:(NSArray*)items
 {
+  // Populate mDateCategories with history items.
   NSEnumerator* itemsEnum = [items objectEnumerator];
   HistorySiteItem* item;
   while ((item = [itemsEnum nextObject])) {
@@ -889,11 +890,21 @@ objectValueForTableColumn:(NSTableColumn*)aTableColumn
     [dateCategory addChild:item];
   }
 
-  mRootItem = [[HistoryCategoryItem alloc] initWithDataSource:mDataSource title:@"" childCapacity:[mDateCategories count]];
-  [mRootItem addChildren:mDateCategories];
+  // Trim old empty categories from mDateCategories.
+  for (int i = [mDateCategories count] - 1; i > 0; i--) {
+    HistoryDateCategoryItem* dateCategory = [mDateCategories objectAtIndex:i];
+    if ([dateCategory numberOfChildren] > 0) {
+      break;
+    }
+    [mDateCategories removeLastObject];
+  }
 
+  // Display the Today category through the oldest non-empty category.
+  mRootItem = [[HistoryCategoryItem alloc] initWithDataSource:mDataSource
+                                                        title:@""
+                                                childCapacity:[mDateCategories count]];
+  [mRootItem addChildren:mDateCategories];
   [self resortFromItem:mRootItem];
 }
 
 @end
-
