@@ -896,13 +896,15 @@ static const int kStringComparisonEqual = 0;
   if (command == @selector(insertNewline:)) {
     [self enterResult:[mTableView selectedRow]];
     [mTableView deselectAll:self];
-  } else if (command == @selector(moveUp:)) {
+  }
+  else if (command == @selector(moveUp:)) {
     if ([self isOpen]) {
       [self selectRowBy:-1];
       [self completeSelectedResult];
       return YES;
     }
-  } else if (command == @selector(moveDown:)) {
+  }
+  else if (command == @selector(moveDown:)) {
     if ([self isOpen]) {
       [self selectRowBy:1];
       [self completeSelectedResult];
@@ -912,22 +914,27 @@ static const int kStringComparisonEqual = 0;
       [self startSearch:[self stringValue] complete:YES];
       return YES;
     }
-  } else if (command == @selector(moveToBeginningOfDocument:)) {
+  }
+  else if (command == @selector(moveToBeginningOfDocument:)) {
     [self selectRowAt:1];
     [self completeSelectedResult];
-  } else if (command == @selector(moveToEndOfDocument:)) {
+  }
+  else if (command == @selector(moveToEndOfDocument:)) {
     [self selectRowAt:[mTableView numberOfRows]-1];
     [self completeSelectedResult];
-  } else if (command == @selector(complete:)) {
+  }
+  else if (command == @selector(complete:)) {
     [self selectRowBy:1];
     [self completeSelectedResult];
     return YES;
-  } else if (command == @selector(insertTab:)) {
+  }
+  else if (command == @selector(insertTab:)) {
     if ([mPopupWin isVisible]) {
       [self selectRowBy:1];
       [self completeSelectedResult];
       return YES;
-    } else {
+    }
+    else {
       // Use the normal key view unless we know more about our siblings and
       // have explicitly nil'd out the next key view. In that case, select the
       // window to break out of the toolbar and tab through the rest of the
@@ -939,8 +946,10 @@ static const int kStringComparisonEqual = 0;
         [wind makeFirstResponder:wind];
       }
     }
-  } else if (command == @selector(deleteBackward:) ||
-             command == @selector(deleteForward:)) {
+  }
+  else if ((command == @selector(deleteBackward:)) ||
+           (command == @selector(deleteForward:)))
+  {
     // If the user deletes characters, we need to know so that
     // we can prevent autocompletion later when search results come in.
     if ([[textView string] length] > 1) {
