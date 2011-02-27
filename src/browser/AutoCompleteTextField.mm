@@ -915,11 +915,15 @@ static const int kStringComparisonEqual = 0;
       return YES;
     }
   }
-  else if (command == @selector(moveToBeginningOfDocument:)) {
-    [self selectRowAt:1];
+  else if ((command == @selector(scrollToBeginningOfDocument:)) ||
+           (command == @selector(scrollPageUp:)))
+  {
+    [self selectRowAt:0];
     [self completeSelectedResult];
   }
-  else if (command == @selector(moveToEndOfDocument:)) {
+  else if ((command == @selector(scrollToEndOfDocument:)) ||
+           (command == @selector(scrollPageDown:)))
+  {
     [self selectRowAt:[mTableView numberOfRows]-1];
     [self completeSelectedResult];
   }
