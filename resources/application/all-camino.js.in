@@ -310,3 +310,9 @@ pref("places.frecency.unvisitedTypedBonus", 200);
 
 // Use in-content missing plug-in UI
 pref("plugin.default_plugin_disabled", true);
+
+// Prefs backported to Camino from Gecko 2.
+// TODO: Remove these pref overrides after Camino upgrades to Gecko 2!
+pref("network.buffer.cache.size", 32768);               // Bug 545334
+pref("network.http.accept-encoding", "gzip, deflate");  // Bug 576033
+
