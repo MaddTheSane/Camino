@@ -81,16 +81,11 @@
   while ([mBrowserListButton numberOfItems] > 2)
     [mBrowserListButton removeItemAtIndex:0];
 
+  // Look for bookmarks in reverse order of likely usefulness so that the most
+  // common browsers' bookmarks are listed at the top of the pop-up.
+  [self tryAddImportFromBrowser:@"Internet Explorer" withBookmarkPath:@"~/Library/Preferences/Explorer/Favorites.html"];
   [self tryAddImportFromBrowser:@"iCab 2" withBookmarkPath:@"~/Library/Preferences/iCab Preferences/Hotlist.html"];
   [self tryAddImportFromBrowser:@"iCab 3" withBookmarkPath:@"~/Library/Preferences/iCab Preferences/Hotlist3.html"];
-  if (![self tryAddImportFromBrowser:@"Opera" withBookmarkPath:@"~/Library/Preferences/Opera Preferences/bookmarks.adr"]) {
-    [self tryAddImportFromBrowser:@"Opera" withBookmarkPath:@"~/Library/Preferences/Opera Preferences/Bookmarks"];
-  }
-  [self tryAddImportFromBrowser:@"OmniWeb 4" withBookmarkPath:@"~/Library/Application Support/Omniweb/Bookmarks.html"];
-  // OmniWeb 5 has between 0 and 3 bookmark files.
-  [self tryOmniWeb5Import];
-  [self tryAddImportFromBrowser:@"Internet Explorer" withBookmarkPath:@"~/Library/Preferences/Explorer/Favorites.html"];
-  [self tryAddImportFromBrowser:@"Safari" withBookmarkPath:@"~/Library/Safari/Bookmarks.plist"];
 
   NSString *mozPath = [self saltedBookmarkPathForProfile:@"~/Library/Mozilla/Profiles/default/"];
   if (mozPath)
@@ -106,8 +101,17 @@
   if (mozPath)
     [self tryAddImportFromBrowser:@"SeaMonkey 2" withBookmarkPath:mozPath];
 
+  if (![self tryAddImportFromBrowser:@"Opera" withBookmarkPath:@"~/Library/Preferences/Opera Preferences/bookmarks.adr"]) {
+    [self tryAddImportFromBrowser:@"Opera" withBookmarkPath:@"~/Library/Preferences/Opera Preferences/Bookmarks"];
+  }
+  [self tryAddImportFromBrowser:@"OmniWeb 4" withBookmarkPath:@"~/Library/Application Support/Omniweb/Bookmarks.html"];
+  // OmniWeb 5 has between 0 and 3 bookmark files.
+  [self tryOmniWeb5Import];
+
   // Firefox has multiple historical profile locations and needs special-casing for Firefox 3/Places.
   [self tryFirefoxImport];
+
+  [self tryAddImportFromBrowser:@"Safari" withBookmarkPath:@"~/Library/Safari/Bookmarks.plist"];
 
   [mBrowserListButton selectItemAtIndex:0];
   [mBrowserListButton synchronizeTitleAndSelectedItem];
