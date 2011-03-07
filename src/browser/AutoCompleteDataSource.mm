@@ -811,6 +811,13 @@ enum SourceChangeType {
                                    searchTerms:searchTerms];
   Bookmark *nextBookmark = [bookmarkEnumerator nextResult];
   HistoryItem *nextHistoryItem = [historyEnumerator nextResult];
+  // Regardless of the scores, don't take more than 70% of the results from one
+  // source (unless the other is out of matches), so that the top results from
+  // both sources always show.
+  const unsigned int kSourceLimit = 0.7 * kMaxResultsCount;
+  unsigned int bookmarksUsed = 0;
+  unsigned int historyItemsUsed = 0;
+
   while ([results count] < kMaxResultsCount &&
          (nextBookmark || nextHistoryItem))
   {
@@ -818,16 +825,25 @@ enum SourceChangeType {
         ceil([nextBookmark numberOfVisits] * kBookmarkBoostFactor);
     int historyScore = [[nextHistoryItem visitCount] intValue];
     AutoCompleteResult *result = nil;
-    if (nextBookmark && bookmarkScore >= historyScore) {
+    unsigned int *sourceCount = NULL;
+    if (nextBookmark && (!nextHistoryItem ||
+                         historyItemsUsed >= kSourceLimit ||
+                         (bookmarksUsed < kSourceLimit &&
+                          bookmarkScore >= historyScore)))
+    {
       result = [self autoCompleteResultForItem:nextBookmark];
       nextBookmark = [bookmarkEnumerator nextResult];
+      sourceCount = &bookmarksUsed;
     }
     else {
       result = [self autoCompleteResultForItem:nextHistoryItem];
       nextHistoryItem = [historyEnumerator nextResult];
+      sourceCount = &historyItemsUsed;
     }
-    if (![results containsObject:result])
+    if (![results containsObject:result]) {
       [results addObject:result];
+      *sourceCount += 1;
+    }
   }
   [self reportResults:results];
 }
