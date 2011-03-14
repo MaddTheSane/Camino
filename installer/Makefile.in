@@ -84,3 +84,16 @@ NO_PKG_FILES=
 
 # Override toolkit/mozapps/installer/package-name.mk.
 PKG_BASENAME=$(MOZ_APP_DISPLAYNAME)
+
+# Obtain the values we need to insert into the MOZ_SOURCESTAMP_FILE.
+CM_APP_VERSION=$(shell cat ../config/version.txt)
+CM_REPO=$(shell cat ../generated/camino_repo)
+CM_CHANGESET=$(shell cat ../generated/camino_changeset)
+
+# Override toolkit/mozapps/installer/package-name.mk to provide a better name
+# for the MOZ_SOURCESTAMP_FILE.
+MOZ_SOURCESTAMP_FILE=$(DIST)/$(PKG_PATH)/$(MOZ_PKG_APPNAME)-$(CM_APP_VERSION).txt
+
+# Add our own changeset information to the MOZ_SOURCESTAMP_FILE
+make-sourcestamp-file::
+	@echo "$(CM_REPO)/rev/$(CM_CHANGESET)" >> $(MOZ_SOURCESTAMP_FILE)
