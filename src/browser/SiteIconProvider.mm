@@ -50,12 +50,11 @@
 #include "nsICacheService.h"
 #include "nsICacheEntryDescriptor.h"
 
-
-NSString* const SiteIconLoadNotificationName = @"siteicon_load_notification";
-NSString* const SiteIconLoadImageKey         = @"siteicon_load_image";
-NSString* const SiteIconLoadURIKey           = @"siteicon_load_uri";
-NSString* const SiteIconLoadUsedNetworkKey   = @"siteicon_network_load";    // NSNumber with bool
-NSString* const SiteIconLoadUserDataKey      = @"siteicon_load_user_data";
+NSString* const kSiteIconLoadNotification   = @"siteicon_load_notification";
+NSString* const kSiteIconLoadImageKey       = @"siteicon_load_image";
+NSString* const kSiteIconLoadURIKey         = @"siteicon_load_uri";
+NSString* const kSiteIconLoadUsedNetworkKey = @"siteicon_network_load";    // NSNumber with bool
+NSString* const kSiteIconLoadUserDataKey    = @"siteicon_load_user_data";
 
 static const char* const kMissingFaviconMetadataKey     = "missing_favicon";
 static const char* const kFaviconURILocationMetadataKey = "favicon_location";
@@ -454,14 +453,14 @@ NeckoCacheHelper::ClearCache()
     // we always send out the notification, so that clients know
     // about failed requests
     NSDictionary*	notificationData = [NSDictionary dictionaryWithObjectsAndKeys:
-                                         inURI, SiteIconLoadURIKey,
-                                    requestURL, SiteIconLoadUserDataKey,
-        [NSNumber numberWithBool:usingNetwork], SiteIconLoadUsedNetworkKey,
-                                  faviconImage, SiteIconLoadImageKey,	// may be nil (so put last!)
+                                         inURI, kSiteIconLoadURIKey,
+                                    requestURL, kSiteIconLoadUserDataKey,
+        [NSNumber numberWithBool:usingNetwork], kSiteIconLoadUsedNetworkKey,
+                                  faviconImage, kSiteIconLoadImageKey,	// may be nil (so put last!)
                                                 nil];
 
     // NSLog(@"siteIconLoad notification, info %@", notificationData);
-    NSNotification *note = [NSNotification notificationWithName: SiteIconLoadNotificationName object:requestor userInfo:notificationData];
+    NSNotification *note = [NSNotification notificationWithName:kSiteIconLoadNotification object:requestor userInfo:notificationData];
     [[NSNotificationQueue defaultQueue] enqueueNotification:note postingStyle:NSPostWhenIdle];
   }
 

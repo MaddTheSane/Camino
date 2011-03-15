@@ -270,13 +270,13 @@ const int kOutlineViewLeftMargin = 19; // determined empirically, since it doesn
 
   // Generic notifications for Bookmark Client
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-  [nc addObserver:self selector:@selector(bookmarkAdded:)   name:BookmarkFolderAdditionNotification object:nil];
-  [nc addObserver:self selector:@selector(bookmarkRemoved:) name:BookmarkFolderDeletionNotification object:nil];
-  [nc addObserver:self selector:@selector(bookmarkChanged:) name:BookmarkItemChangedNotification object:nil];
-  [nc addObserver:self selector:@selector(serviceResolved:) name:NetworkServicesResolutionSuccess object:nil];
+  [nc addObserver:self selector:@selector(bookmarkAdded:)   name:kBookmarkFolderAdditionNotification object:nil];
+  [nc addObserver:self selector:@selector(bookmarkRemoved:) name:kBookmarkFolderDeletionNotification object:nil];
+  [nc addObserver:self selector:@selector(bookmarkChanged:) name:kBookmarkItemChangedNotification object:nil];
+  [nc addObserver:self selector:@selector(serviceResolved:) name:kNetworkServicesResolutionSuccess object:nil];
 
   // get notified when the action button pops up, to set its menu
-  [nc addObserver:self selector:@selector(actionButtonWillDisplay:) name:PopupMenuButtonWillDisplayMenu object:mActionButton];
+  [nc addObserver:self selector:@selector(actionButtonWillDisplay:) name:kPopupMenuButtonWillDisplayMenuNotification object:mActionButton];
 
   // register for notifications of when the BM manager starts up. Since it does it on a separate thread,
   // it can be created after we are and if we don't update ourselves, the bar will be blank. This
@@ -1872,7 +1872,7 @@ const int kOutlineViewLeftMargin = 19; // determined empirically, since it doesn
   if (mOpenActionFlag == eNoOpenAction)
     return;
   NSDictionary *dict = [note userInfo];
-  id aClient = [dict objectForKey:NetworkServicesClientKey];
+  id aClient = [dict objectForKey:kNetworkServicesClientKey];
   if ([aClient isKindOfClass:[Bookmark class]]) {
     switch (mOpenActionFlag) {
       case (eOpenBookmarkAction):
@@ -1905,7 +1905,7 @@ const int kOutlineViewLeftMargin = 19; // determined empirically, since it doesn
   BookmarkItem* addedItem = [note object];
   if ((addedItem == [[BookmarkManager sharedBookmarkManager] bookmarkRoot])) {
     [mContainersTableView reloadData];
-    BookmarkFolder* updatedFolder = [[note userInfo] objectForKey:BookmarkFolderChildKey];
+    BookmarkFolder* updatedFolder = [[note userInfo] objectForKey:kBookmarkFolderChildKey];
     [self selectContainerFolder:updatedFolder];
     return;
   }

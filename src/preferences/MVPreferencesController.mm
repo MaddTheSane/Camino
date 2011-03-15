@@ -48,15 +48,15 @@
 
 static MVPreferencesController *gSharedInstance = nil;
 
-NSString* const MVPreferencesWindowNotification = @"MVPreferencesWindowNotification";
+NSString* const kMVPreferencesWindowNotification = @"MVPreferencesWindowNotification";
 
 static NSString* const kPrefsWindowLocationDefaultsKey  = @"CaminoWindow TopLeftLocation PreferencesWindow";
 static NSString* const kLastUsedPaneKey = @"Last Selected Preference Pane";
 static NSString* const kDefaultPaneIdentifier = @"org.mozilla.camino.preference.general";
 
-static NSString* const CacheInfoPaneImageKey  = @"MVPreferencePaneImage";
-static NSString* const CacheInfoPaneLabelKey  = @"MVPreferencePaneLabel";
-static NSString* const CacheInfoPaneSeenKey   = @"MVPreferencePaneSeen";    // NSNumber with bool
+static NSString* const kCacheInfoPaneImageKey  = @"MVPreferencePaneImage";
+static NSString* const kCacheInfoPaneLabelKey  = @"MVPreferencePaneLabel";
+static NSString* const kCacheInfoPaneSeenKey   = @"MVPreferencePaneSeen";    // NSNumber with bool
 
 @interface NSToolbar (NSToolbarPrivate)
 
@@ -282,7 +282,7 @@ static NSString* const CacheInfoPaneSeenKey   = @"MVPreferencePaneSeen";    // N
 
       [pane didSelect];
       [[NSNotificationCenter defaultCenter]
-        postNotificationName: MVPreferencesWindowNotification
+        postNotificationName: kMVPreferencesWindowNotification
         object: self
         userInfo: [NSDictionary dictionaryWithObjectsAndKeys:mWindow, @"window", nil]];
 
@@ -468,7 +468,7 @@ static NSString* const CacheInfoPaneSeenKey   = @"MVPreferencePaneSeen";    // N
     }
     
     NSString* paneIdentifier = [curBundle bundleIdentifier];
-    if ([[self infoCacheForPane:paneIdentifier] objectForKey:CacheInfoPaneSeenKey])
+    if ([[self infoCacheForPane:paneIdentifier] objectForKey:kCacheInfoPaneSeenKey])
     {
       NSLog(@"%@ not loaded as Camino pref pane: already loaded pane with identifier %@", bundlePath, paneIdentifier);
       continue;
@@ -488,7 +488,7 @@ static NSString* const CacheInfoPaneSeenKey   = @"MVPreferencePaneSeen";    // N
     }
     
     [mPaneBundles addObject:curBundle];   // retains    
-    [[self infoCacheForPane:paneIdentifier] setObject:[NSNumber numberWithBool:YES] forKey:CacheInfoPaneSeenKey];
+    [[self infoCacheForPane:paneIdentifier] setObject:[NSNumber numberWithBool:YES] forKey:kCacheInfoPaneSeenKey];
   }
 }
 
@@ -600,7 +600,7 @@ static NSString* const CacheInfoPaneSeenKey   = @"MVPreferencePaneSeen";    // N
 {
   NSMutableDictionary*  cache = [self infoCacheForPane:paneIdentifier];
   
-  NSImage* paneImage = [cache objectForKey:CacheInfoPaneImageKey];
+  NSImage* paneImage = [cache objectForKey:kCacheInfoPaneImageKey];
   if (!paneImage)
   {
     NSBundle*     bundle = [NSBundle bundleWithIdentifier:paneIdentifier];
@@ -613,7 +613,7 @@ static NSString* const CacheInfoPaneSeenKey   = @"MVPreferencePaneSeen";    // N
 
     if (paneImage)
     {
-      [cache setObject:paneImage forKey:CacheInfoPaneImageKey];
+      [cache setObject:paneImage forKey:kCacheInfoPaneImageKey];
       [paneImage release];
     }
   }
@@ -624,7 +624,7 @@ static NSString* const CacheInfoPaneSeenKey   = @"MVPreferencePaneSeen";    // N
 {
   NSMutableDictionary*  cache = [self infoCacheForPane:paneIdentifier];
   
-  NSString* paneLabel = [cache objectForKey:CacheInfoPaneLabelKey];
+  NSString* paneLabel = [cache objectForKey:kCacheInfoPaneLabelKey];
   if (!paneLabel)
   {
     NSBundle*     bundle = [NSBundle bundleWithIdentifier:paneIdentifier];
@@ -644,7 +644,7 @@ static NSString* const CacheInfoPaneSeenKey   = @"MVPreferencePaneSeen";    // N
       paneLabel = [bundle bundleIdentifier];
 
     if (paneLabel)
-      [cache setObject:paneLabel forKey:CacheInfoPaneLabelKey];
+      [cache setObject:paneLabel forKey:kCacheInfoPaneLabelKey];
   }
   return paneLabel;
 }

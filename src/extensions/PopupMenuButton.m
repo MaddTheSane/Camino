@@ -39,7 +39,7 @@
 #import "PopupMenuButton.h"
 
 
-NSString* const PopupMenuButtonWillDisplayMenu = @"PopupMenuButtonWillDisplayMenu";
+NSString* const kPopupMenuButtonWillDisplayMenuNotification = @"PopupMenuButtonWillDisplayMenu";
 
 
 @implementation PopupMenuButton
@@ -72,7 +72,7 @@ NSString* const PopupMenuButtonWillDisplayMenu = @"PopupMenuButtonWillDisplayMen
   if (![self isEnabled])
     return;
 
-  [[NSNotificationCenter defaultCenter] postNotificationName:PopupMenuButtonWillDisplayMenu object:self];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kPopupMenuButtonWillDisplayMenuNotification object:self];
 
   NSPoint menuLocation = NSMakePoint(0, NSHeight([self frame]) + 4.0);
   // convert to window coords
@@ -105,7 +105,7 @@ NSString* const PopupMenuButtonWillDisplayMenu = @"PopupMenuButtonWillDisplayMen
   if (![self isEnabled])
     return;
 
-  [[NSNotificationCenter defaultCenter] postNotificationName:PopupMenuButtonWillDisplayMenu object:self];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kPopupMenuButtonWillDisplayMenuNotification object:self];
 
   NSPoint menuLocation = NSMakePoint(0, NSHeight([self frame]) + 4.0);
   // convert to window coords

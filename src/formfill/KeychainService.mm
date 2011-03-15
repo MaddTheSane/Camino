@@ -102,7 +102,7 @@ static NSString* const kLoginKeychainEntry = @"kechainEntry";       // KeychainI
 static const int kCacheTimeout = 120;
 
 // from CHBrowserService.h
-extern NSString* const XPCOMShutDownNotificationName;
+extern NSString* const kXPCOMShutDownNotification;
 
 static NSWindow* GetNSWindow(nsIDOMWindow* inWindow);
 
@@ -144,7 +144,7 @@ static KeychainService *sInstance = nil;
     // can deallocate the shared instance.
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(shutdown:)
-                                                 name:XPCOMShutDownNotificationName
+                                                 name:kXPCOMShutDownNotification
                                                object:nil];
     
     // Cache the values of the autofill pref and register for notification if
@@ -155,7 +155,7 @@ static KeychainService *sInstance = nil;
     [prefManager addObserver:self forPref:kGeckoPrefUseKeychain];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(autofillPrefChanged:)
-                                                 name:kPrefChangedNotificationName
+                                                 name:kPrefChangedNotification
                                                object:self];
     
     // load the mapping of hosts to allowed action hosts

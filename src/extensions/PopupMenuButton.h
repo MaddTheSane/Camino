@@ -38,7 +38,7 @@
 
 #import <AppKit/AppKit.h>
 
-extern NSString* const PopupMenuButtonWillDisplayMenu;
+extern NSString* const kPopupMenuButtonWillDisplayMenuNotification;
 
 @interface PopupMenuButton : NSButton
 {

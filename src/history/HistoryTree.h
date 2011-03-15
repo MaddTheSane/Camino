@@ -44,7 +44,7 @@
 @class HistorySiteItem;
 
 // Notification object is the tree.
-extern NSString* const kNotificationNameHistoryTreeChanged;
+extern NSString* const kHistoryTreeChangedNotification;
 // If present, this is the item at the root of the change. If nil, the whole
 // tree is being restructured (e.g., re-sorting).
 // When an item is added or removed, the root is its parent, not the item.

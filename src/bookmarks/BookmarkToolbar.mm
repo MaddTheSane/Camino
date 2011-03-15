@@ -102,9 +102,9 @@ static const int kBMBarScanningStep = 5;
 
     // Generic notifications for Bookmark Client
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(bookmarkAdded:) name:BookmarkFolderAdditionNotification object:nil];
-    [nc addObserver:self selector:@selector(bookmarkRemoved:) name:BookmarkFolderDeletionNotification object:nil];
-    [nc addObserver:self selector:@selector(bookmarkChanged:) name:BookmarkItemChangedNotification object:nil];
+    [nc addObserver:self selector:@selector(bookmarkAdded:) name:kBookmarkFolderAdditionNotification object:nil];
+    [nc addObserver:self selector:@selector(bookmarkRemoved:) name:kBookmarkFolderDeletionNotification object:nil];
+    [nc addObserver:self selector:@selector(bookmarkChanged:) name:kBookmarkItemChangedNotification object:nil];
 
     // register for notifications of when the BM manager starts up. Since it does it on a separate thread,
     // it can be created after we are and if we don't update ourselves, the bar will be blank. This
@@ -830,7 +830,7 @@ static const int kBMBarScanningStep = 5;
     return;
 
   NSDictionary *dict = [aNote userInfo];
-  [self addButton:[dict objectForKey:BookmarkFolderChildKey] atIndex:[[dict objectForKey:BookmarkFolderChildIndexKey] unsignedIntValue]];
+  [self addButton:[dict objectForKey:kBookmarkFolderChildKey] atIndex:[[dict objectForKey:kBookmarkFolderChildIndexKey] unsignedIntValue]];
 }
 
 - (void)bookmarkRemoved:(NSNotification *)aNote
@@ -840,7 +840,7 @@ static const int kBMBarScanningStep = 5;
     return;
 
   NSDictionary *dict = [aNote userInfo];
-  [self removeButton:[dict objectForKey:BookmarkFolderChildKey]];
+  [self removeButton:[dict objectForKey:kBookmarkFolderChildKey]];
 }
 
 - (void)bookmarkChanged:(NSNotification *)aNote

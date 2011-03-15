@@ -160,16 +160,16 @@ enum
 // Bunch of Keys for reading/writing dictionaries.
 
 // Camino plist keys
-extern NSString* const BMTitleKey;
-extern NSString* const BMChildrenKey;
-extern NSString* const BMFolderDescKey;
-extern NSString* const BMFolderTypeKey;
-extern NSString* const BMFolderShortcutKey;
-extern NSString* const BMDescKey;
-extern NSString* const BMStatusKey;
-extern NSString* const BMURLKey;
-extern NSString* const BMUUIDKey;
-extern NSString* const BMShortcutKey;
-extern NSString* const BMLastVisitKey;
-extern NSString* const BMNumberVisitsKey;
-extern NSString* const BMLinkedFaviconURLKey;
+extern NSString* const kBMTitleKey;
+extern NSString* const kBMChildrenKey;
+extern NSString* const kBMFolderDescKey;
+extern NSString* const kBMFolderTypeKey;
+extern NSString* const kBMFolderShortcutKey;
+extern NSString* const kBMDescKey;
+extern NSString* const kBMStatusKey;
+extern NSString* const kBMURLKey;
+extern NSString* const kBMUUIDKey;
+extern NSString* const kBMShortcutKey;
+extern NSString* const kBMLastVisitKey;
+extern NSString* const kBMNumberVisitsKey;
+extern NSString* const kBMLinkedFaviconURLKey;

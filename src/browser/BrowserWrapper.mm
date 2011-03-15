@@ -308,7 +308,7 @@ static const NSTimeInterval kTimeIntervalToConsiderSiteBlockingStatusValid = 900
   [mBrowserView destroyWebBrowser];
 
   // We don't want site icon notifications when the window has gone away
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:SiteIconLoadNotificationName object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:kSiteIconLoadNotification object:nil];
   // We're basically a zombie now. Clear fields which are in an undefined state.
   mDelegate = nil;
   mWindow = nil;
@@ -652,8 +652,8 @@ static const NSTimeInterval kTimeIntervalToConsiderSiteBlockingStatusValid = 900
   // note that this currently fires even when you go Back of Forward to the page,
   // so it's not a great way to count bookmark visits.
   if (urlString && ![urlString isEqualToString:@"about:blank"]) {
-    NSDictionary*   userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:succeeded] forKey:URLLoadSuccessKey];
-    NSNotification* note     = [NSNotification notificationWithName:URLLoadNotification object:urlString userInfo:userInfo];
+    NSDictionary*   userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:succeeded] forKey:kURLLoadSuccessKey];
+    NSNotification* note     = [NSNotification notificationWithName:kURLLoadNotification object:urlString userInfo:userInfo];
     [[NSNotificationQueue defaultQueue] enqueueNotification:note postingStyle:NSPostWhenIdle];
   }
 }
@@ -1473,12 +1473,12 @@ static const NSTimeInterval kTimeIntervalToConsiderSiteBlockingStatusValid = 900
 {
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(imageLoadedNotification:)
-                                               name:SiteIconLoadNotificationName
+                                               name:kSiteIconLoadNotification
                                              object:self];
 
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(xpcomTerminate:)
-                                               name:XPCOMShutDownNotificationName
+                                               name:kXPCOMShutDownNotification
                                              object:nil];
 }
 
@@ -1487,9 +1487,9 @@ static const NSTimeInterval kTimeIntervalToConsiderSiteBlockingStatusValid = 900
 {
   NSDictionary* userInfo = [notification userInfo];
   if (userInfo) {
-  	NSImage*  iconImage     = [userInfo objectForKey:SiteIconLoadImageKey];
-    NSString* siteIconURI   = [userInfo objectForKey:SiteIconLoadURIKey];
-    NSString* pageURI       = [userInfo objectForKey:SiteIconLoadUserDataKey];
+  	NSImage*  iconImage     = [userInfo objectForKey:kSiteIconLoadImageKey];
+    NSString* siteIconURI   = [userInfo objectForKey:kSiteIconLoadURIKey];
+    NSString* pageURI       = [userInfo objectForKey:kSiteIconLoadUserDataKey];
 
     if (iconImage == nil)
       siteIconURI = @"";	// go back to default image

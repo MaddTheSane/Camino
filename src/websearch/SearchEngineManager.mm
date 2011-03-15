@@ -40,7 +40,7 @@
 #import "XMLSearchPluginParser.h"
 #import "NSFileManager+Utils.h"
 
-NSString *const kInstalledSearchEnginesDidChangeNotification = @"InstalledSearchEnginesChangedNotificationName";
+NSString *const kInstalledSearchEnginesDidChangeNotification = @"InstalledSearchEnginesChangedNotification";
 
 NSString *const kWebSearchEngineNameKey = @"SearchEngineName";
 NSString *const kWebSearchEngineURLKey = @"SearchEngineURL";

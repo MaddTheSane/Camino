@@ -374,11 +374,11 @@ enum SourceChangeType {
         [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self
                            selector:@selector(historyChanged:)
-                               name:kNotificationNameHistoryDataSourceItemChanged
+                               name:kHistoryDataSourceItemChangedNotification
                              object:nil];
     [notificationCenter addObserver:self
                            selector:@selector(historyRebuilt:)
-                               name:kNotificationNameHistoryDataSourceRebuilt
+                               name:kHistoryDataSourceRebuiltNotification
                              object:nil];
 
     // Start the process of building the tries. To prevent resource contention,
@@ -459,7 +459,7 @@ enum SourceChangeType {
 
   NSDictionary *notificationInfo = [notification userInfo];
   HistoryChangeType historyChangeType = (HistoryChangeType)[[notificationInfo
-      objectForKey:kNotificationHistoryDataSourceChangedUserInfoChangeType] intValue];
+      objectForKey:kHistoryDataSourceChangedUserInfoChangeType] intValue];
   int internalChangeType;
   switch (historyChangeType) {
     case kHistoryChangeItemAdded:
@@ -545,15 +545,15 @@ enum SourceChangeType {
   NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
   [notificationCenter addObserver:self
                          selector:@selector(bookmarkChanged:)
-                             name:BookmarkItemChangedNotification
+                             name:kBookmarkItemChangedNotification
                            object:nil];
   [notificationCenter addObserver:self
                          selector:@selector(bookmarksAddedOrRemoved:)
-                             name:BookmarkItemsAddedNotification
+                             name:kBookmarkItemsAddedNotification
                            object:nil];
   [notificationCenter addObserver:self
                          selector:@selector(bookmarksAddedOrRemoved:)
-                             name:BookmarkItemsRemovedNotification
+                             name:kBookmarkItemsRemovedNotification
                            object:nil];
 }
 
@@ -591,7 +591,7 @@ enum SourceChangeType {
 {
   NSDictionary *notificationInfo = [notification userInfo];
   unsigned int changeFlags =
-      [[notificationInfo objectForKey:BookmarkItemChangedFlagsKey] unsignedIntValue];
+      [[notificationInfo objectForKey:kBookmarkItemChangedFlagsKey] unsignedIntValue];
   unsigned int interestingFlagsMask = kBookmarkItemTitleChangedMask |
                                       kBookmarkItemShortcutChangedMask |
                                       kBookmarkItemURLChangedMask |
@@ -612,7 +612,7 @@ enum SourceChangeType {
 - (void)bookmarksAddedOrRemoved:(NSNotification *)notification
 {
   SourceChangeType changeType =
-      [[notification name] isEqualToString:BookmarkItemsAddedNotification] ?
+      [[notification name] isEqualToString:kBookmarkItemsAddedNotification] ?
       kSourceItemAdded : kSourceItemRemoved;
   NSEnumerator *bookmarkEnumerator = [[notification object] objectEnumerator];
   BookmarkItem *bookmarkItem;

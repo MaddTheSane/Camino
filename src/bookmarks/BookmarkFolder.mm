@@ -49,12 +49,11 @@
 #import "Bookmark.h"
 
 // Notification definitions
-NSString* const BookmarkFolderAdditionNotification      = @"bf_add";
-NSString* const BookmarkFolderDeletionNotification      = @"bf_del";
-NSString* const BookmarkFolderChildKey                  = @"bf_ck";
-NSString* const BookmarkFolderChildIndexKey             = @"bf_ik";
-NSString* const BookmarkFolderDockMenuChangeNotificaton = @"bf_dmc";
-
+NSString* const kBookmarkFolderAdditionNotification       = @"bf_add";
+NSString* const kBookmarkFolderDeletionNotification       = @"bf_del";
+NSString* const kBookmarkFolderChildKey                   = @"bf_ck";
+NSString* const kBookmarkFolderChildIndexKey              = @"bf_ik";
+NSString* const kBookmarkFolderDockMenuChangeNotification = @"bf_dmc";
 
 struct BookmarkSortData
 {
@@ -439,14 +438,14 @@ static int BookmarkItemSort(id firstItem, id secondItem, void* context)
     // they're no longer it and register for the same notification in
     // case it changes again.
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc postNotificationName:BookmarkFolderDockMenuChangeNotificaton object:self];
-    [nc addObserver:self selector:@selector(dockMenuChanged:) name:BookmarkFolderDockMenuChangeNotificaton object:nil];
+    [nc postNotificationName:kBookmarkFolderDockMenuChangeNotification object:self];
+    [nc addObserver:self selector:@selector(dockMenuChanged:) name:kBookmarkFolderDockMenuChangeNotification object:nil];
   }
   else if ((oldFlag & kBookmarkDockMenuFolder) != 0) {
     // when resigning dock menu, notify
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc removeObserver:self name:BookmarkFolderDockMenuChangeNotificaton object:nil];
-    [nc postNotificationName:BookmarkFolderDockMenuChangeNotificaton object:self];
+    [nc removeObserver:self name:kBookmarkFolderDockMenuChangeNotification object:nil];
+    [nc postNotificationName:kBookmarkFolderDockMenuChangeNotification object:self];
   }
 }
 
@@ -495,7 +494,7 @@ static int BookmarkItemSort(id firstItem, id secondItem, void* context)
     curVal |= kBookmarkDockMenuFolder;
   else {
     curVal &= ~kBookmarkDockMenuFolder;
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:BookmarkFolderDockMenuChangeNotificaton object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kBookmarkFolderDockMenuChangeNotification object:nil];
   }
   [self setSpecialFlag:curVal];
 }
@@ -1081,11 +1080,11 @@ static int BookmarkItemSort(id firstItem, id secondItem, void* context)
     return;
 
   NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
-                                            theItem, BookmarkFolderChildKey,
-           [NSNumber numberWithUnsignedInt:anIndex], BookmarkFolderChildIndexKey,
+                                            theItem, kBookmarkFolderChildKey,
+           [NSNumber numberWithUnsignedInt:anIndex], kBookmarkFolderChildIndexKey,
                                                      nil];
 
-  NSNotification *note = [NSNotification notificationWithName:BookmarkFolderAdditionNotification object:self userInfo:dict];
+  NSNotification *note = [NSNotification notificationWithName:kBookmarkFolderAdditionNotification object:self userInfo:dict];
   [[NSNotificationCenter defaultCenter] postNotification:note];
 }
 
@@ -1094,8 +1093,8 @@ static int BookmarkItemSort(id firstItem, id secondItem, void* context)
   if ([[BookmarkManager sharedBookmarkManager] areChangeNotificationsSuppressed])
     return;
 
-  NSDictionary *dict = [NSDictionary dictionaryWithObject:theItem forKey:BookmarkFolderChildKey];
-  NSNotification *note = [NSNotification notificationWithName:BookmarkFolderDeletionNotification object:self userInfo:dict];
+  NSDictionary *dict = [NSDictionary dictionaryWithObject:theItem forKey:kBookmarkFolderChildKey];
+  NSNotification *note = [NSNotification notificationWithName:kBookmarkFolderDeletionNotification object:self userInfo:dict];
   [[NSNotificationCenter defaultCenter] postNotification:note];
 }
 
@@ -1124,14 +1123,14 @@ static int BookmarkItemSort(id firstItem, id secondItem, void* context)
 
 - (BOOL)readNativeDictionary:(NSDictionary *)aDict
 {
-  [self setTitle:[aDict objectForKey:BMTitleKey]];
-  [self setItemDescription:[aDict objectForKey:BMFolderDescKey]];
-  [self setShortcut:[aDict objectForKey:BMFolderShortcutKey]];
-  [self setUUID:[aDict objectForKey:BMUUIDKey]];
+  [self setTitle:[aDict objectForKey:kBMTitleKey]];
+  [self setItemDescription:[aDict objectForKey:kBMFolderDescKey]];
+  [self setShortcut:[aDict objectForKey:kBMFolderShortcutKey]];
+  [self setUUID:[aDict objectForKey:kBMUUIDKey]];
 
   // iCab has the same key, but with a string value. Bail if we hit that case,
   // since we don't support iCab 4+ (plist) bookmark import.
-  id folderTypeObject = [aDict objectForKey:BMFolderTypeKey];
+  id folderTypeObject = [aDict objectForKey:kBMFolderTypeKey];
   if ([folderTypeObject isKindOfClass:[NSString class]])
     return NO;
   unsigned int flag = [folderTypeObject unsignedIntValue];
@@ -1148,11 +1147,11 @@ static int BookmarkItemSort(id firstItem, id secondItem, void* context)
   }
   [self setSpecialFlag:flag];
 
-  NSEnumerator* enumerator = [[aDict objectForKey:BMChildrenKey] objectEnumerator];
+  NSEnumerator* enumerator = [[aDict objectForKey:kBMChildrenKey] objectEnumerator];
   BOOL success = YES;
   id aKid;
   while ((aKid = [enumerator nextObject]) && success) {
-    if ([aKid objectForKey:BMChildrenKey])
+    if ([aKid objectForKey:kBMChildrenKey])
       success = [self addBookmarkFolderFromNativeDict:(NSDictionary *)aKid];
     else
       success = [self addBookmarkFromNativeDict:(NSDictionary *)aKid];
@@ -1210,21 +1209,21 @@ static int BookmarkItemSort(id firstItem, id secondItem, void* context)
   }
 
   NSMutableDictionary* folderDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                            children, BMChildrenKey,
-                   [self savedTitle], BMTitleKey,
+                            children, kBMChildrenKey,
+                   [self savedTitle], kBMTitleKey,
                                       nil];
 
   if (mSpecialFlag)
-    [folderDict setObject:[self savedSpecialFlag] forKey:BMFolderTypeKey];
+    [folderDict setObject:[self savedSpecialFlag] forKey:kBMFolderTypeKey];
 
   if ([mUUID length])
-    [folderDict setObject:mUUID forKey:BMUUIDKey];
+    [folderDict setObject:mUUID forKey:kBMUUIDKey];
 
   if ([[self itemDescription] length])
-    [folderDict setObject:[self itemDescription] forKey:BMFolderDescKey];
+    [folderDict setObject:[self itemDescription] forKey:kBMFolderDescKey];
 
   if ([[self shortcut] length])
-    [folderDict setObject:[self shortcut] forKey:BMFolderShortcutKey];
+    [folderDict setObject:[self shortcut] forKey:kBMFolderShortcutKey];
 
   return folderDict;
 }

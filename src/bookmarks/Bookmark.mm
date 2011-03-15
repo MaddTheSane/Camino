@@ -48,11 +48,11 @@
 #import "SiteIconProvider.h"
 #import "SpotlightFileKeys.h"
 
-NSString* const kSpotlightMetadataSuffix = @"caminobookmark";
+static NSString* const kSpotlightMetadataSuffix = @"caminobookmark";
 
 // Notification of URL load
-NSString* const URLLoadNotification   = @"url_load";
-NSString* const URLLoadSuccessKey     = @"url_bool";
+NSString* const kURLLoadNotification   = @"url_load";
+NSString* const kURLLoadSuccessKey     = @"url_bool";
 
 //Status Flags
 #define kBookmarkOKStatus 0
@@ -101,17 +101,17 @@ NSString* const URLLoadSuccessKey     = @"url_bool";
 {
   // There used to be more than two possible status states, but now state just
   // indicates whether or not it's a separator.
-  if ([[aDict objectForKey:BMStatusKey] unsignedIntValue] == kBookmarkSpacerStatus)
+  if ([[aDict objectForKey:kBMStatusKey] unsignedIntValue] == kBookmarkSpacerStatus)
     return [self separator];
 
-  Bookmark* bookmark = [self bookmarkWithTitle:[aDict objectForKey:BMTitleKey]
-                                           url:[aDict objectForKey:BMURLKey]
-                                     lastVisit:[aDict objectForKey:BMLastVisitKey]];
-  [bookmark setItemDescription:[aDict objectForKey:BMDescKey]];
-  [bookmark setShortcut:[aDict objectForKey:BMShortcutKey]];
-  [bookmark setUUID:[aDict objectForKey:BMUUIDKey]];
-  [bookmark setNumberOfVisits:[[aDict objectForKey:BMNumberVisitsKey] unsignedIntValue]];
-  [bookmark setFaviconURL:[aDict objectForKey:BMLinkedFaviconURLKey]];
+  Bookmark* bookmark = [self bookmarkWithTitle:[aDict objectForKey:kBMTitleKey]
+                                           url:[aDict objectForKey:kBMURLKey]
+                                     lastVisit:[aDict objectForKey:kBMLastVisitKey]];
+  [bookmark setItemDescription:[aDict objectForKey:kBMDescKey]];
+  [bookmark setShortcut:[aDict objectForKey:kBMShortcutKey]];
+  [bookmark setUUID:[aDict objectForKey:kBMUUIDKey]];
+  [bookmark setNumberOfVisits:[[aDict objectForKey:kBMNumberVisitsKey] unsignedIntValue]];
+  [bookmark setFaviconURL:[aDict objectForKey:kBMLinkedFaviconURLKey]];
 
   return bookmark;
 }
@@ -383,34 +383,34 @@ NSString* const URLLoadSuccessKey     = @"url_bool";
 - (NSDictionary *)writeNativeDictionary
 {
   if ([self isSeparator])
-    return [NSDictionary dictionaryWithObject:[self savedStatus] forKey:BMStatusKey];
+    return [NSDictionary dictionaryWithObject:[self savedStatus] forKey:kBMStatusKey];
 
   NSMutableDictionary* itemDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                [self savedTitle], BMTitleKey,
-                  [self savedURL], BMURLKey,
+                [self savedTitle], kBMTitleKey,
+                  [self savedURL], kBMURLKey,
                                    nil];
 
   if (mLastVisit)
-    [itemDict setObject:mLastVisit forKey:BMLastVisitKey];
+    [itemDict setObject:mLastVisit forKey:kBMLastVisitKey];
 
   if (mNumberOfVisits)
-    [itemDict setObject:[self savedNumberOfVisits] forKey:BMNumberVisitsKey];
+    [itemDict setObject:[self savedNumberOfVisits] forKey:kBMNumberVisitsKey];
 
   // The bookmark is guaranteed not to be a separator at this point, so
   // [self savedStatus] will be 0, and there is no reason to write anything
   // for BMStatusKey.
 
   if ([[self itemDescription] length])
-    [itemDict setObject:[self itemDescription] forKey:BMDescKey];
+    [itemDict setObject:[self itemDescription] forKey:kBMDescKey];
 
   if ([[self shortcut] length])
-    [itemDict setObject:[self shortcut] forKey:BMShortcutKey];
+    [itemDict setObject:[self shortcut] forKey:kBMShortcutKey];
 
   if ([mUUID length])    // don't call -UUID to avoid generating one
-    [itemDict setObject:mUUID forKey:BMUUIDKey];
+    [itemDict setObject:mUUID forKey:kBMUUIDKey];
 
   if ([[self faviconURL] length])
-    [itemDict setObject:[self faviconURL] forKey:BMLinkedFaviconURLKey];
+    [itemDict setObject:[self faviconURL] forKey:kBMLinkedFaviconURLKey];
 
   return itemDict;
 }

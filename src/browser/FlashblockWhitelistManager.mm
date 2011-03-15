@@ -43,7 +43,7 @@
 #import "NSString+Utils.h"
 
 static FlashblockWhitelistManager* sFlashblockWhitelistManager = nil;
-static NSString* const kFlashblockWhitelistChangedNotificationName = @"FlashblockWhitelistChanged";
+static NSString* const kFlashblockWhitelistChangedNotification = @"FlashblockWhitelistChanged";
 
 // Xcode 2.x's ld dead-strips this symbol.  Xcode 3.0's ld is fine.
 asm(".no_dead_strip .objc_class_name_FlashblockWhitelistManager");
@@ -66,7 +66,7 @@ asm(".no_dead_strip .objc_class_name_FlashblockWhitelistManager");
     [[PreferenceManager sharedInstance] addObserver:self forPref:kGeckoPrefFlashblockWhitelist];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loadWhitelistSites)
-                                                 name:kPrefChangedNotificationName
+                                                 name:kPrefChangedNotification
                                                object:self]; // since we added ourself as the Gecko pref observer
   }
   return self;
@@ -137,7 +137,7 @@ asm(".no_dead_strip .objc_class_name_FlashblockWhitelistManager");
 
       [mFlashblockWhitelistSites addObject:prefSite];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:kFlashblockWhitelistChangedNotificationName object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kFlashblockWhitelistChangedNotification object:nil];
   }
 }
 

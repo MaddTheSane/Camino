@@ -63,9 +63,9 @@ typedef enum {
 } DownloadSelectionBehavior;
 
 // Names of notifications we will post on download-related events
-extern NSString* const kDownloadStartedNotificationName;
-extern NSString* const kDownloadFailedNotificationName;
-extern NSString* const kDownloadCompleteNotificationName;
+extern NSString* const kDownloadStartedNotification;
+extern NSString* const kDownloadFailedNotification;
+extern NSString* const kDownloadCompleteNotification;
 
 // Names of keys for objects passed in these notifications
 extern NSString* const kDownloadNotificationFilenameKey;

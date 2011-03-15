@@ -38,11 +38,11 @@
 #import <Foundation/Foundation.h>
 #import "nscore.h"
 
-extern NSString* const RemoteDataLoadRequestNotificationName;
-extern NSString* const RemoteDataLoadRequestURIKey;
-extern NSString* const RemoteDataLoadRequestDataKey;
-extern NSString* const RemoteDataLoadRequestUserDataKey;
-extern NSString* const RemoteDataLoadRequestResultKey;
+extern NSString* const kRemoteDataLoadRequestNotification;
+extern NSString* const kRemoteDataLoadRequestURIKey;
+extern NSString* const kRemoteDataLoadRequestDataKey;
+extern NSString* const kRemoteDataLoadRequestUserDataKey;
+extern NSString* const kRemoteDataLoadRequestResultKey;
 
 // RemoteDataProvider is a class that can be used to do asynchronous loads
 // from URIs using necko, and passing back the result of the load to a
@@ -50,7 +50,7 @@ extern NSString* const RemoteDataLoadRequestResultKey;
 //
 // Clients can either implement the RemoteLoadListener protocol and call
 // loadURI directly, or they can register with the [NSNotification defaultCenter]
-// for 'RemoteDataLoadRequestNotificationName' notifications, and catch all loads
+// for 'RemoteDataLoadRequestNotification' notifications, and catch all loads
 // that happen that way.
 
 @protocol RemoteLoadListener <NSObject>
@@ -80,7 +80,7 @@ class RemoteURILoadManager;
 // specific request to load a remote file. The sender (or any other object), if
 // registered with the notification center, will receive a notification when
 // the load completes. The 'target' becomes the 'object' of the notification.
-// The notification name is given by NSString* RemoteDataLoadRequestNotificationName above.
+// The notification name is given by NSString* kRemoteDataLoadRequestNotification above.
 // If allowNetworking is NO, then this method will just check the cache,
 // and not go to the network
 // This method will return YES if the request was dispatched, or NO otherwise.

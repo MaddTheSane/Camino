@@ -64,8 +64,8 @@ static NSImage* sActiveTabBg = nil;
 static NSImage* sTabMouseOverBg = nil;
 static NSImage* sTabButtonDividerImage = nil;
 
-NSString *const kSlidingTabAnimationFinishedNotification = @"SlidingTabAnimationFinishedNotificationName";
-NSString *const kSlidingTabAnimationFinishedCompletelyKey = @"SlidingTabAnimationDidFinishCompletely";
+NSString* const kSlidingTabAnimationFinishedNotification  = @"SlidingTabAnimationFinishedNotification";
+NSString* const kSlidingTabAnimationFinishedCompletelyKey = @"SlidingTabAnimationDidFinishCompletely";
 
 @interface TabButtonView (Private)
 
@@ -456,14 +456,14 @@ NSString *const kSlidingTabAnimationFinishedCompletelyKey = @"SlidingTabAnimatio
   }
 
   mSelectTabOnMouseUp = NO;
-  [[NSNotificationCenter defaultCenter] postNotificationName:kTabWillChangeNotifcation object:mTabViewItem];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kTabWillChangeNotification object:mTabViewItem];
   [[mTabViewItem tabView] selectTabViewItem:mTabViewItem];
 }
 
 - (void)mouseUp:(NSEvent *)theEvent
 {
   if (mSelectTabOnMouseUp) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kTabWillChangeNotifcation object:mTabViewItem];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTabWillChangeNotification object:mTabViewItem];
     [[mTabViewItem tabView] selectTabViewItem:mTabViewItem];
     mSelectTabOnMouseUp = NO;
   }
@@ -557,7 +557,7 @@ NSString *const kSlidingTabAnimationFinishedCompletelyKey = @"SlidingTabAnimatio
 - (void)accessibilityPerformAction:(NSString *)action
 {
   if ([action isEqual:NSAccessibilityPressAction]) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kTabWillChangeNotifcation object:mTabViewItem];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTabWillChangeNotification object:mTabViewItem];
     [[mTabViewItem tabView] selectTabViewItem:mTabViewItem];
   }
 }
@@ -649,7 +649,7 @@ NSString *const kSlidingTabAnimationFinishedCompletelyKey = @"SlidingTabAnimatio
   if ([[self window] firstResponder] == self &&
       [[theEvent characters] isEqualToString:@" "])
   {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kTabWillChangeNotifcation object:mTabViewItem];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTabWillChangeNotification object:mTabViewItem];
     [[mTabViewItem tabView] selectTabViewItem:mTabViewItem];
   }
   else

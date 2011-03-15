@@ -247,7 +247,7 @@ static const int kZoomActionsTag = 108;
   // listen for bookmark loading completion
   [notificationCenter addObserver:self selector:@selector(bookmarkLoadingCompleted:) name:kBookmarkManagerStartedNotification object:nil];
   // listen for changes to the dock menu
-  [notificationCenter addObserver:self selector:@selector(dockMenuBookmarkFolderChanged:) name:BookmarkFolderDockMenuChangeNotificaton object:nil];
+  [notificationCenter addObserver:self selector:@selector(dockMenuBookmarkFolderChanged:) name:kBookmarkFolderDockMenuChangeNotification object:nil];
 
   // and fire up bookmarks (they will be loaded on a thread)
   [[BookmarkManager sharedBookmarkManager] loadBookmarksLoadingSynchronously:NO];
@@ -256,7 +256,7 @@ static const int kZoomActionsTag = 108;
   [[SiteIconProvider sharedFavoriteIconProvider] registerFaviconImage:[NSImage imageNamed:@"smallDocument"] forPageURI:@"about:blank"];
   [[SiteIconProvider sharedFavoriteIconProvider] registerFaviconImage:[NSImage imageNamed:@"smallDocument"] forPageURI:@"about:local_file"];
   [[SiteIconProvider sharedFavoriteIconProvider] registerFaviconImage:[NSImage imageNamed:@"bm_favicon"]    forPageURI:@"about:bookmarks"];
-  [[SiteIconProvider sharedFavoriteIconProvider] registerFaviconImage:[NSImage imageNamed:@"history_icon"]   forPageURI:@"about:history"];
+  [[SiteIconProvider sharedFavoriteIconProvider] registerFaviconImage:[NSImage imageNamed:@"history_icon"]  forPageURI:@"about:history"];
 
   // listen for the Show Certificates notification (which is send from the Security prefs panel)
   [notificationCenter addObserver:self selector:@selector(showCertificatesNotification:) name:@"ShowCertificatesNotification" object:nil];
@@ -290,7 +290,7 @@ static const int kZoomActionsTag = 108;
   [prefManager addObserver:self forPref:kGeckoPrefFullContentZoom];
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(geckoPreferenceChanged:)
-                                               name:kPrefChangedNotificationName
+                                               name:kPrefChangedNotification
                                              object:self];
 
   // load up the charset dictionary with keys and menu titles.
@@ -587,9 +587,9 @@ static const int kZoomActionsTag = 108;
   [self addNoServicesFoundMenuItem];
 
   NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
-  [notificationCenter addObserver:self selector:@selector(availableServicesChanged:) name:NetworkServicesAvailableServicesChanged object:nil];
-  [notificationCenter addObserver:self selector:@selector(serviceResolved:) name:NetworkServicesResolutionSuccess object:nil];
-  [notificationCenter addObserver:self selector:@selector(serviceResolutionFailed:) name:NetworkServicesResolutionFailure object:nil];
+  [notificationCenter addObserver:self selector:@selector(availableServicesChanged:) name:kNetworkServicesAvailableServicesChanged object:nil];
+  [notificationCenter addObserver:self selector:@selector(serviceResolved:) name:kNetworkServicesResolutionSuccess object:nil];
+  [notificationCenter addObserver:self selector:@selector(serviceResolutionFailed:) name:kNetworkServicesResolutionFailure object:nil];
 }
 
 - (void)checkDefaultBrowser
@@ -2292,8 +2292,8 @@ static int SortByProtocolAndName(NSDictionary* item1, NSDictionary* item2, void*
 - (void)serviceResolved:(NSNotification*)note
 {
   NSDictionary* dict = [note userInfo];
-  if ([dict objectForKey:NetworkServicesClientKey] == self)
-    [self showURL:[dict objectForKey:NetworkServicesResolvedURLKey]];
+  if ([dict objectForKey:kNetworkServicesClientKey] == self)
+    [self showURL:[dict objectForKey:kNetworkServicesResolvedURLKey]];
 }
 
 //
@@ -2302,7 +2302,7 @@ static int SortByProtocolAndName(NSDictionary* item1, NSDictionary* item2, void*
 - (void)serviceResolutionFailed:(NSNotification*)note
 {
   NSDictionary* dict = [note userInfo];
-  NSString* serviceName = [dict objectForKey:NetworkServicesServiceKey];
+  NSString* serviceName = [dict objectForKey:kNetworkServicesServiceKey];
   NSBeginAlertSheet(NSLocalizedString(@"ServiceResolutionFailedTitle", @""),
                     @"",               // default button
                     nil,               // cancel buttton

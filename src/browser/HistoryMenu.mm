@@ -106,7 +106,7 @@ static const unsigned int kMaxTitleLength = 50;
     // register for xpcom shutdown
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(xpcomShutdownNotification:)
-                                                 name:XPCOMShutDownNotificationName
+                                                 name:kXPCOMShutDownNotification
                                                object:nil];
   }
   return self;
@@ -185,7 +185,7 @@ static const unsigned int kMaxTitleLength = 50;
   // set ourselves up to listen for history changes
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(historyChanged:)
-                                               name:kNotificationNameHistoryTreeChanged
+                                               name:kHistoryTreeChangedNotification
                                              object:[HistoryTreeOwner sharedHistoryTree]];
 
   // Set us up to receive menuNeedsUpdate: callbacks
@@ -430,7 +430,7 @@ static const unsigned int kMaxTitleLength = 50;
   [[NSNotificationCenter defaultCenter]
       addObserver:self
          selector:@selector(historyCleared:)
-             name:kNotificationNameHistoryDataSourceCleared
+             name:kHistoryDataSourceClearedNotification
            object:nil];
 
   [super setUpHistoryMenu];

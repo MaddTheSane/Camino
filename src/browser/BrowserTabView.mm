@@ -78,7 +78,7 @@ NSString* const kTabBarBackgroundDoubleClickedNotification = @"kTabBarBackground
     mVisible = YES;
     [self showOrHideTabsAsAppropriate];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tabWillChange:)
-        name:kTabWillChangeNotifcation object:nil];
+        name:kTabWillChangeNotification object:nil];
 }
 
 - (void)dealloc 

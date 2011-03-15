@@ -159,7 +159,7 @@ static JSConsole* gJSConsole;
 {
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(shutdown:)
-                                               name:TermEmbeddingNotificationName
+                                               name:kTermEmbeddingNotification
                                              object:nil];
 }
 

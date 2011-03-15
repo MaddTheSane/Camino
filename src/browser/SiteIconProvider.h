@@ -39,11 +39,11 @@
 
 #import "RemoteDataProvider.h"
 
-extern NSString* const SiteIconLoadNotificationName;
-extern NSString* const SiteIconLoadImageKey;
-extern NSString* const SiteIconLoadURIKey;
-extern NSString* const SiteIconLoadUsedNetworkKey;
-extern NSString* const SiteIconLoadUserDataKey;
+extern NSString* const kSiteIconLoadNotification;
+extern NSString* const kSiteIconLoadImageKey;
+extern NSString* const kSiteIconLoadURIKey;
+extern NSString* const kSiteIconLoadUsedNetworkKey;
+extern NSString* const kSiteIconLoadUserDataKey;
 
 class NeckoCacheHelper;
 
@@ -64,7 +64,7 @@ class NeckoCacheHelper;
 // fetch the icon for the given page.
 // inIconURI is the URI of the icon (if specified via a <link> element), or nil for the default
 // site icon location.
-// when the load is done, a SiteIconLoadNotificationName notification will be sent with
+// when the load is done, a kSiteIconLoadNotification notification will be sent with
 // |inClient| as the object.
 // returns YES if the load is initiated, and the client can expect a notification.
 // 

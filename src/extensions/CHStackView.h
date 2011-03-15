@@ -39,10 +39,10 @@
 #import <AppKit/AppKit.h>
 
 // views contained in the stack should send this notification when they change size
-extern NSString* const kStackViewReloadNotificationName;
+extern NSString* const kStackViewReloadNotification;
 
 // the stack view sends this notification after it has adjusted to subview sizes
-extern NSString* const kStackViewResizedNotificationName;
+extern NSString* const kStackViewResizedNotification;
 
 
 // 

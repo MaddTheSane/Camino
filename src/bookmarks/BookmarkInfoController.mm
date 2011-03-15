@@ -114,9 +114,9 @@ static BookmarkInfoController* gSharedBookmarkInfoController = nil;
   mBookmarkUpdateTabView = [mTabView tabViewItemAtIndex:[mTabView indexOfTabViewItemWithIdentifier:@"bmupdate"]];
   // Generic notifications for Bookmark Client - only care if there's a deletion
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-  [nc addObserver:self selector:@selector(bookmarkRemoved:) name:BookmarkFolderDeletionNotification object:nil];
+  [nc addObserver:self selector:@selector(bookmarkRemoved:) name:kBookmarkFolderDeletionNotification object:nil];
   // Listen for Dock Menu changes
-  [nc addObserver:self selector:@selector(dockMenuChanged:) name:BookmarkFolderDockMenuChangeNotificaton object:nil];
+  [nc addObserver:self selector:@selector(dockMenuChanged:) name:kBookmarkFolderDockMenuChangeNotification object:nil];
 }
 
 - (void)dealloc
@@ -265,14 +265,14 @@ static BookmarkInfoController* gSharedBookmarkInfoController = nil;
 {
   // register for changes on the new bookmark
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-  [nc removeObserver:self name:BookmarkItemChangedNotification object:nil];
+  [nc removeObserver:self name:kBookmarkItemChangedNotification object:nil];
 
   [aBookmark retain];
   [mBookmarkItem release];
   mBookmarkItem = aBookmark;
 
   [self updateUI];
-  [nc addObserver:self selector:@selector(bookmarkChanged:) name:BookmarkItemChangedNotification object:mBookmarkItem];
+  [nc addObserver:self selector:@selector(bookmarkChanged:) name:kBookmarkItemChangedNotification object:mBookmarkItem];
 }
 
 - (void)configureWindowForView:(EBookmarkInfoViewType)inViewType
@@ -403,7 +403,7 @@ static BookmarkInfoController* gSharedBookmarkInfoController = nil;
 
 - (void)bookmarkRemoved:(NSNotification *)aNote
 {
-  BookmarkItem *item = [[aNote userInfo] objectForKey:BookmarkFolderChildKey];
+  BookmarkItem *item = [[aNote userInfo] objectForKey:kBookmarkFolderChildKey];
   if ((item == [self bookmark]) && ![item parent]) {
     [self setBookmark:nil];
     [[self window] close];

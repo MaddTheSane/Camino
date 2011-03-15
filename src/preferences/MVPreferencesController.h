@@ -36,7 +36,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-extern NSString* const MVPreferencesWindowNotification;
+extern NSString* const kMVPreferencesWindowNotification;
 
 @interface MVPreferencesController : NSObject
 {

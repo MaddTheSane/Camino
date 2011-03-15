@@ -424,7 +424,7 @@ static CertificatesWindowController* gCertificatesWindowController;
   // we need to listen for changes in our parent chain, to update cached trust
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(certificateChanged:)
-                                               name:CertificateChangedNotificationName
+                                               name:kCertificateChangedNotification
                                              object:nil];
   
   [mSplitter setAutosaveSplitterPosition:YES];

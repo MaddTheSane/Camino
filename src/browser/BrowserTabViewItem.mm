@@ -48,10 +48,10 @@
 #import "BrowserWrapper.h"
 #import "TruncatingTextAndImageCell.h"
 
-NSString* const kTabWillChangeNotifcation = @"kTabWillChangeNotifcation";
+NSString* const kTabWillChangeNotification = @"TabWillChangeNotification";
 
 // truncate menuitem title to the same width as the bookmarks menu
-const int kMenuTruncationChars = 60;
+static const int kMenuTruncationChars = 60;
 
 @interface BrowserTabViewItem(Private)
 - (void)setTag:(int)tag;
@@ -171,7 +171,7 @@ const int kMenuTruncationChars = 60;
 
 - (void) selectTab:(id)sender
 {
-  [[NSNotificationCenter defaultCenter] postNotificationName:kTabWillChangeNotifcation object:self];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kTabWillChangeNotification object:self];
   [[self tabView] selectTabViewItem:self];
 }
 

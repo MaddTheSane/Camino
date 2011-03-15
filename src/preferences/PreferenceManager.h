@@ -44,7 +44,7 @@
 class nsProfileDirServiceProvider;
 class nsIPrefBranch;
 
-extern NSString* const kPrefChangedNotificationName;
+extern NSString* const kPrefChangedNotification;
 // userInfo entries:
 extern NSString* const kPrefChangedPrefNameUserInfoKey;   // NSString
 

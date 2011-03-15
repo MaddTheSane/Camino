@@ -168,7 +168,7 @@ static CHCookieStorage* sCookieStorage = nil;
     // Register for xpcom shutdown so that we can release the manager.
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(xpcomShutdown:)
-                                                 name:XPCOMShutDownNotificationName
+                                                 name:kXPCOMShutDownNotification
                                                object:nil];
   }
   return self;

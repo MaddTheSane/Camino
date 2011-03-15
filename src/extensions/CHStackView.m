@@ -298,8 +298,8 @@
 
 #pragma mark -
 
-NSString* const kStackViewReloadNotificationName  = @"ReloadStackView";
-NSString* const kStackViewResizedNotificationName = @"StackViewResized";
+NSString* const kStackViewReloadNotification  = @"ReloadStackView";
+NSString* const kStackViewResizedNotification = @"StackViewResized";
 
 @interface CHStackView(Private)
 
@@ -315,7 +315,7 @@ NSString* const kStackViewResizedNotificationName = @"StackViewResized";
   {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reloadNotification:)
-                                                 name:kStackViewReloadNotificationName
+                                                 name:kStackViewReloadNotification
                                                object:nil];
   }
   return self;
@@ -452,7 +452,7 @@ NSString* const kStackViewResizedNotificationName = @"StackViewResized";
     }
   }
     
-  [[NSNotificationCenter defaultCenter] postNotificationName:kStackViewResizedNotificationName
+  [[NSNotificationCenter defaultCenter] postNotificationName:kStackViewResizedNotification
                                         object:self
                                         userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSValue valueWithSize:oldSize], @"oldsize", nil]];
 }

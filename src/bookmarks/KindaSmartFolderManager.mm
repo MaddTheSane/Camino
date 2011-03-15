@@ -74,8 +74,8 @@ const unsigned kNumTop10Items = 10;   // well, 10, duh!
 
     // client notifications
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(bookmarkRemoved:) name:BookmarkFolderDeletionNotification object:nil];
-    [nc addObserver:self selector:@selector(bookmarkChanged:) name:BookmarkItemChangedNotification object:nil];
+    [nc addObserver:self selector:@selector(bookmarkRemoved:) name:kBookmarkFolderDeletionNotification object:nil];
+    [nc addObserver:self selector:@selector(bookmarkChanged:) name:kBookmarkItemChangedNotification object:nil];
   }
   return self;
 }
@@ -97,8 +97,8 @@ const unsigned kNumTop10Items = 10;   // well, 10, duh!
   if (mRendezvousFolder) {
     [NetworkServices sharedNetworkServices];
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(availableServicesChanged:) name:NetworkServicesAvailableServicesChanged object:nil];
-    [nc addObserver:self selector:@selector(serviceResolved:) name:NetworkServicesResolutionSuccess object:nil];
+    [nc addObserver:self selector:@selector(availableServicesChanged:) name:kNetworkServicesAvailableServicesChanged object:nil];
+    [nc addObserver:self selector:@selector(serviceResolved:) name:kNetworkServicesResolutionSuccess object:nil];
   }
 
   if (mAddressBookFolder)
@@ -289,7 +289,7 @@ static int SortByProtocolAndName(NSDictionary* item1, NSDictionary* item2, void 
 - (void)serviceResolved:(NSNotification *)note
 {
   NSDictionary *dict = [note userInfo];
-  id client = [dict objectForKey:NetworkServicesClientKey];
+  id client = [dict objectForKey:kNetworkServicesClientKey];
   if ([client isKindOfClass:[Bookmark class]]) {
     // I'm not sure why we have to check to see that the client is a child
     // of the rendezvous folder. Maybe just see if it's a RendezvousBookmark?
@@ -297,7 +297,7 @@ static int SortByProtocolAndName(NSDictionary* item1, NSDictionary* item2, void 
     Bookmark *curChild;
     while ((curChild = [enumerator nextObject])) {
       if (curChild == client) {
-        [client setUrl:[dict objectForKey:NetworkServicesResolvedURLKey]];
+        [client setUrl:[dict objectForKey:kNetworkServicesResolvedURLKey]];
         [client setResolved:YES];
       }
     }
@@ -325,7 +325,7 @@ static int SortByProtocolAndName(NSDictionary* item1, NSDictionary* item2, void 
 //
 - (void)bookmarkRemoved:(NSNotification *)note
 {
-  BookmarkItem *anItem = [[note userInfo] objectForKey:BookmarkFolderChildKey];
+  BookmarkItem *anItem = [[note userInfo] objectForKey:kBookmarkFolderChildKey];
   if (![anItem parent] && [anItem isKindOfClass:[Bookmark class]]) {
     [self removeBookmark:(Bookmark *)anItem fromSmartFolder:mTop10Folder];
   }

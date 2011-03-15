@@ -1058,7 +1058,7 @@ public:
                                               forPref:kGeckoPrefAlwaysShowTabBar];
       [[NSNotificationCenter defaultCenter] addObserver:self 
                                                selector:@selector(tabBarVisiblePrefChanged:) 
-                                                   name:kPrefChangedNotificationName 
+                                                   name:kPrefChangedNotification
                                                  object:self];
     }
 
@@ -3686,7 +3686,7 @@ public:
 - (IBAction)previousTab:(id)sender
 {
   // pass |nil| because it's way too complicated to compute the previous tab.
-  [[NSNotificationCenter defaultCenter] postNotificationName:kTabWillChangeNotifcation object:nil];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kTabWillChangeNotification object:nil];
   if ([mTabBrowser indexOfTabViewItem:[mTabBrowser selectedTabViewItem]] == 0)
     [mTabBrowser selectLastTabViewItem:sender];
   else
@@ -3696,7 +3696,7 @@ public:
 - (IBAction)nextTab:(id)sender
 {
   // pass |nil| because it's way too complicated to compute the next tab.
-  [[NSNotificationCenter defaultCenter] postNotificationName:kTabWillChangeNotifcation object:nil];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kTabWillChangeNotification object:nil];
   if ([mTabBrowser indexOfTabViewItem:[mTabBrowser selectedTabViewItem]] == [mTabBrowser numberOfTabViewItems] - 1)
     [mTabBrowser selectFirstTabViewItem:sender];
   else

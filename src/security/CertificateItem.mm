@@ -57,9 +57,7 @@
 
 #import "CertificateItem.h"
 
-
-NSString* const CertificateChangedNotificationName = @"CertificateChangedNotification";
-
+NSString* const kCertificateChangedNotification = @"CertificateChangedNotification";
 
 @interface CertificateItem(Private)
 
@@ -102,7 +100,7 @@ NSString* const CertificateChangedNotificationName = @"CertificateChangedNotific
     // we need to listen for changes in our parent chain, to update cached trust
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(certificateChanged:)
-                                                 name:CertificateChangedNotificationName
+                                                 name:kCertificateChangedNotification
                                                object:nil];
   }
   return self;
@@ -782,7 +780,7 @@ NSString* const CertificateChangedNotificationName = @"CertificateChangedNotific
 
 - (void)postChangedNotification
 {
-  [[NSNotificationCenter defaultCenter] postNotificationName:CertificateChangedNotificationName
+  [[NSNotificationCenter defaultCenter] postNotificationName:kCertificateChangedNotification
                                                       object:self];
 }
 

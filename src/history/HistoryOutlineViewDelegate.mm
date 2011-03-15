@@ -126,7 +126,7 @@ static NSString* const kExpandedHistoryStatesDefaultsKey = @"history_expand_stat
   // tree, as there may be more than one.
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(historyChanged:)
-                                               name:kNotificationNameHistoryTreeChanged
+                                               name:kHistoryTreeChangedNotification
                                              object:[self historyTree]];
 
   // Set up the date column formatting

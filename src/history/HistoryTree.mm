@@ -49,9 +49,9 @@
 #import "HistoryItem.h"
 #import "PreferenceManager.h"
 
-NSString* const kNotificationNameHistoryTreeChanged = @"history_tree_changed";
-NSString* const kHistoryTreeChangeRootKey           = @"history_tree_change_root";
-NSString* const kHistoryTreeChangedChildrenKey      = @"history_tree_changed_children";
+NSString* const kHistoryTreeChangedNotification = @"history_tree_changed";
+NSString* const kHistoryTreeChangeRootKey       = @"history_tree_change_root";
+NSString* const kHistoryTreeChangedChildrenKey  = @"history_tree_changed_children";
 
 NSString* const kHistoryViewByDate    = @"date";
 NSString* const kHistoryViewBySite    = @"site";
@@ -202,12 +202,13 @@ static int HistoryItemSort(id firstItem, id secondItem, void* context)
     // Listen for individual history item changes.
     [notificationCenter addObserver:self
                            selector:@selector(historyItemChanged:)
-                               name:kNotificationNameHistoryDataSourceItemChanged
+                               name:kHistoryDataSourceItemChangedNotification
                              object:nil];
+
     // Listen for history being completely rebuilt.
     [notificationCenter addObserver:self
                            selector:@selector(historyRebuilt:)
-                               name:kNotificationNameHistoryDataSourceRebuilt
+                               name:kHistoryDataSourceRebuiltNotification
                              object:nil];
   }
   return self;
@@ -424,7 +425,7 @@ static int HistoryItemSort(id firstItem, id secondItem, void* context)
   }
 
   [[NSNotificationCenter defaultCenter]
-      postNotificationName:kNotificationNameHistoryTreeChanged
+      postNotificationName:kHistoryTreeChangedNotification
                     object:self
                   userInfo:userInfoDict];
 }
@@ -440,7 +441,7 @@ static int HistoryItemSort(id firstItem, id secondItem, void* context)
 
   HistorySiteItem* item = [notification object];
   int changeType = [[[notification userInfo]
-      objectForKey:kNotificationHistoryDataSourceChangedUserInfoChangeType] intValue];
+      objectForKey:kHistoryDataSourceChangedUserInfoChangeType] intValue];
 
   switch (changeType) {
     case kHistoryChangeItemAdded: {

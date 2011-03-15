@@ -44,12 +44,12 @@
 #include "nsIHelperAppLauncherDialog.h"
 #include "nsIFactory.h"
 
-// two shutdown notifcations exist to allow listeners to guarantee ordering of
-// notifcations, such that they can save state before xpcom-reliant data structures
+// Two shutdown notifications exist to allow listeners to guarantee ordering of
+// notifications, such that they can save state before xpcom-reliant data structures
 // are torn down.
-extern NSString* const InitEmbeddingNotificationName;   // embedding was initted
-extern NSString* const TermEmbeddingNotificationName;   // someone called TermEmbedding
-extern NSString* const XPCOMShutDownNotificationName;   // XPCOM is about to shut down
+extern NSString* const kInitEmbeddingNotification;   // embedding was initted
+extern NSString* const kTermEmbeddingNotification;   // someone called TermEmbedding
+extern NSString* const kXPCOMShutDownNotification;   // XPCOM is about to shut down
 
 class nsModuleComponentInfo;
 

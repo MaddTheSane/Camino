@@ -66,15 +66,15 @@ static NSTimeInterval const kShortDownloadInterval = 15.0;
     NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self
                            selector:@selector(growlForNotification:)
-                               name:kDownloadStartedNotificationName
+                               name:kDownloadStartedNotification
                              object:nil];
     [notificationCenter addObserver:self
                            selector:@selector(growlForNotification:)
-                               name:kDownloadFailedNotificationName
+                               name:kDownloadFailedNotification
                              object:nil];
     [notificationCenter addObserver:self
                            selector:@selector(growlForNotification:)
-                               name:kDownloadCompleteNotificationName
+                               name:kDownloadCompleteNotification
                              object:nil];
   }
   return self;
@@ -121,13 +121,13 @@ static NSTimeInterval const kShortDownloadInterval = 15.0;
   NSString* title = nil;
   NSString* name = nil;
 
-  if ([notificationName isEqual:kDownloadStartedNotificationName]) {
+  if ([notificationName isEqual:kDownloadStartedNotification]) {
     name = NSLocalizedString(@"GrowlDownloadStarted", nil);
   }
-  else if ([notificationName isEqual:kDownloadFailedNotificationName]) {
+  else if ([notificationName isEqual:kDownloadFailedNotification]) {
     name = NSLocalizedString(@"GrowlDownloadFailed", nil);
   }
-  else if ([notificationName isEqual:kDownloadCompleteNotificationName]) {
+  else if ([notificationName isEqual:kDownloadCompleteNotification]) {
     double timeElapsed = [[userInfo objectForKey:kDownloadNotificationTimeElapsedKey] doubleValue];
     if (timeElapsed < kShortDownloadInterval) {
       name = NSLocalizedString(@"GrowlShortDownloadComplete", nil);
@@ -160,8 +160,8 @@ static NSTimeInterval const kShortDownloadInterval = 15.0;
 {
   NSString* notificationName = [clickContext objectForKey:kGrowlNotificationNameKey];
 
-  if ([notificationName isEqual:kDownloadStartedNotificationName] ||
-      [notificationName isEqual:kDownloadFailedNotificationName])
+  if ([notificationName isEqual:kDownloadStartedNotification] ||
+      [notificationName isEqual:kDownloadFailedNotification])
   {
     ProgressDlgController* progressWindowController = [ProgressDlgController existingSharedDownloadController];
     if (progressWindowController) {
@@ -174,7 +174,7 @@ static NSTimeInterval const kShortDownloadInterval = 15.0;
                                              withBehavior:DownloadSelectExclusively];
     }
   }
-  else if ([notificationName isEqual:kDownloadCompleteNotificationName]) {
+  else if ([notificationName isEqual:kDownloadCompleteNotification]) {
     // Reveal the file directly rather than asking the progressViewController to
     // reveal it because users can ask Camino to automatically remove downloads
     // upon completion.

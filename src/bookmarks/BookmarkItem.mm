@@ -43,23 +43,23 @@
 #import "BookmarkItem.h"
 
 // Notifications
-NSString* const BookmarkItemChangedNotification = @"bookmark_changed";
-NSString* const BookmarkItemChangedFlagsKey = @"change_flags";
+NSString* const kBookmarkItemChangedNotification = @"bookmark_changed";
+NSString* const kBookmarkItemChangedFlagsKey = @"change_flags";
 
 // Camino plist keys
-NSString* const BMTitleKey = @"Title";
-NSString* const BMChildrenKey = @"Children";
-NSString* const BMFolderDescKey = @"FolderDescription";
-NSString* const BMFolderTypeKey = @"FolderType";
-NSString* const BMFolderShortcutKey = @"FolderKeyword";
-NSString* const BMDescKey = @"Description";
-NSString* const BMStatusKey = @"Status";
-NSString* const BMURLKey = @"URL";
-NSString* const BMUUIDKey = @"UUID";
-NSString* const BMShortcutKey = @"Keyword";
-NSString* const BMLastVisitKey = @"LastVisitedDate";
-NSString* const BMNumberVisitsKey = @"VisitCount";
-NSString* const BMLinkedFaviconURLKey = @"LinkedFaviconURL";
+NSString* const kBMTitleKey = @"Title";
+NSString* const kBMChildrenKey = @"Children";
+NSString* const kBMFolderDescKey = @"FolderDescription";
+NSString* const kBMFolderTypeKey = @"FolderType";
+NSString* const kBMFolderShortcutKey = @"FolderKeyword";
+NSString* const kBMDescKey = @"Description";
+NSString* const kBMStatusKey = @"Status";
+NSString* const kBMURLKey = @"URL";
+NSString* const kBMUUIDKey = @"UUID";
+NSString* const kBMShortcutKey = @"Keyword";
+NSString* const kBMLastVisitKey = @"LastVisitedDate";
+NSString* const kBMNumberVisitsKey = @"VisitCount";
+NSString* const kBMLinkedFaviconURLKey = @"LinkedFaviconURL";
 
 @implementation BookmarkShortcutFormatter
 
@@ -92,7 +92,7 @@ NSString* const BMLinkedFaviconURLKey = @"LinkedFaviconURL";
 + (BOOL)bookmarkChangedNotificationUserInfo:(NSDictionary*)inUserInfo containsFlags:(unsigned int)inFlags
 {
   unsigned int changeFlags = kBookmarkItemEverythingChangedMask;  // assume everything changed
-  NSNumber* noteChangeFlags = [inUserInfo objectForKey:BookmarkItemChangedFlagsKey];
+  NSNumber* noteChangeFlags = [inUserInfo objectForKey:kBookmarkItemChangedFlagsKey];
   if (noteChangeFlags)
     changeFlags = [noteChangeFlags unsignedIntValue];
 
@@ -327,8 +327,8 @@ NSString* const BMLinkedFaviconURLKey = @"LinkedFaviconURL";
     return;
 
   NSDictionary* flagsInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithUnsignedInt:mPendingChangeFlags]
-                                                        forKey:BookmarkItemChangedFlagsKey];
-  NSNotification* note = [NSNotification notificationWithName:BookmarkItemChangedNotification
+                                                        forKey:kBookmarkItemChangedFlagsKey];
+  NSNotification* note = [NSNotification notificationWithName:kBookmarkItemChangedNotification
                                                        object:self
                                                      userInfo:flagsInfo];
   [[NSNotificationCenter defaultCenter] postNotification:note];

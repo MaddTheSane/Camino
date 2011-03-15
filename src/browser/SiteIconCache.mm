@@ -42,7 +42,7 @@
 
 #import "SiteIconCache.h"
 
-static NSString* const kCacheIndexSaveNotificationName   = @"save_site_icon_cache";
+static NSString* const kCacheIndexSaveNotification  = @"save_site_icon_cache";
 
 static NSString* const kCacheEntryUUIDStringKey     = @"uuid";
 static NSString* const kCacheEntryExpirationDateKey = @"exp_date";
@@ -90,7 +90,7 @@ static NSString* const kCacheEntryExpirationDateKey = @"exp_date";
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(saveCacheNotification:)
-                                                 name:kCacheIndexSaveNotificationName
+                                                 name:kCacheIndexSaveNotification
                                                object:self];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(shutdownNotification:)
@@ -286,7 +286,7 @@ static NSString* const kCacheEntryExpirationDateKey = @"exp_date";
   if (mSuppressSaveNotification)
     return;
 
-  NSNotification* saveCacheNote = [NSNotification notificationWithName:kCacheIndexSaveNotificationName
+  NSNotification* saveCacheNote = [NSNotification notificationWithName:kCacheIndexSaveNotification
                                                                 object:self
                                                               userInfo:nil];
 

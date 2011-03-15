@@ -61,11 +61,11 @@
 #include "nsString.h"
 
 
-NSString* const kNotificationNameHistoryDataSourceItemChanged            = @"history_item_changed";
-NSString* const kNotificationHistoryDataSourceChangedUserInfoChangeType  = @"change_type";
+NSString* const kHistoryDataSourceItemChangedNotification    = @"history_item_changed";
+NSString* const kHistoryDataSourceChangedUserInfoChangeType  = @"change_type";
 
-NSString* const kNotificationNameHistoryDataSourceCleared = @"history_cleared";
-NSString* const kNotificationNameHistoryDataSourceRebuilt = @"history_rebuilt";
+NSString* const kHistoryDataSourceClearedNotification = @"history_cleared";
+NSString* const kHistoryDataSourceRebuiltNotification = @"history_rebuilt";
 
 // Internal change queueing constants.
 static NSString* const kChangeTypeKey = @"change_type";
@@ -380,7 +380,7 @@ static HistoryDataSource* sSharedDataSource = nil;
     // register for xpcom shutdown
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(xpcomShutdownNotification:)
-                                                 name:XPCOMShutDownNotificationName
+                                                 name:kXPCOMShutDownNotification
                                                object:nil];
 
     nsCOMPtr<nsINavHistoryService> histSvc = do_GetService("@mozilla.org/browser/nav-history-service;1");
@@ -399,7 +399,7 @@ static HistoryDataSource* sSharedDataSource = nil;
     // register for site icon loads
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(siteIconLoaded:)
-                                                 name:SiteIconLoadNotificationName
+                                                 name:kSiteIconLoadNotification
                                                object:nil];
 
     mShowSiteIcons = [[PreferenceManager sharedInstance] getBooleanPref:kGeckoPrefEnableFavicons
@@ -408,7 +408,7 @@ static HistoryDataSource* sSharedDataSource = nil;
     // register for xpcom shutdown
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(xpcomShutdownNotification:)
-                                                 name:XPCOMShutDownNotificationName
+                                                 name:kXPCOMShutDownNotification
                                                object:nil];
   }
 
@@ -753,10 +753,10 @@ static HistoryDataSource* sSharedDataSource = nil;
 {
   NSMutableDictionary* userInfoDict = [NSMutableDictionary
       dictionaryWithObject:[NSNumber numberWithInt:type]
-                    forKey:kNotificationHistoryDataSourceChangedUserInfoChangeType];
+                    forKey:kHistoryDataSourceChangedUserInfoChangeType];
 
   [[NSNotificationCenter defaultCenter]
-      postNotificationName:kNotificationNameHistoryDataSourceItemChanged
+      postNotificationName:kHistoryDataSourceItemChangedNotification
                     object:item
                   userInfo:userInfoDict];
 }
@@ -764,7 +764,7 @@ static HistoryDataSource* sSharedDataSource = nil;
 - (void)sendHistoryRebuildNotification
 {
   [[NSNotificationCenter defaultCenter]
-      postNotificationName:kNotificationNameHistoryDataSourceRebuilt
+      postNotificationName:kHistoryDataSourceRebuiltNotification
                     object:self
                   userInfo:nil];
 }
@@ -795,7 +795,7 @@ static HistoryDataSource* sSharedDataSource = nil;
     return;
 
   HistorySiteItem* siteItem = (HistorySiteItem*)theItem;
-  NSImage* iconImage = [[inNotification userInfo] objectForKey:SiteIconLoadImageKey];
+  NSImage* iconImage = [[inNotification userInfo] objectForKey:kSiteIconLoadImageKey];
   if (iconImage) {
     [siteItem setSiteIcon:iconImage];
     [self sendChangeNotification:kHistoryChangeIconLoaded forItem:siteItem];
@@ -824,9 +824,10 @@ static HistoryDataSource* sSharedDataSource = nil;
   [mHistoryItemsDictionary removeAllObjects];
 
   [[NSNotificationCenter defaultCenter]
-      postNotificationName:kNotificationNameHistoryDataSourceCleared
+      postNotificationName:kHistoryDataSourceClearedNotification
                     object:self
                   userInfo:nil];
+
   // Send a rebuild notification as well so that clients that just care about
   // the raw items don't have to listen for both.
   [self sendHistoryRebuildNotification];

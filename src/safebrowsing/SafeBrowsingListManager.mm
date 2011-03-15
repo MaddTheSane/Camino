@@ -150,7 +150,7 @@ static NSString *const kBrowserVersionPlaceholder = @"{moz:version}";
     // Register for xpcom shutdown so we know if the list manager goes away.
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(xpcomShutdown:)
-                                                 name:XPCOMShutDownNotificationName
+                                                 name:kXPCOMShutDownNotification
                                                object:nil];
 
     [self registerObservationOfSafeBrowsingPreferences];
@@ -183,7 +183,7 @@ static NSString *const kBrowserVersionPlaceholder = @"{moz:version}";
 {
   [[NSNotificationCenter defaultCenter] addObserver:self 
                                            selector:@selector(safeBrowsingPrefChanged:) 
-                                               name:kPrefChangedNotificationName 
+                                               name:kPrefChangedNotification
                                              object:self];
 
   [[PreferenceManager sharedInstance] addObserver:self 

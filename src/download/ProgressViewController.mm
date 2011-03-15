@@ -51,15 +51,15 @@
 
 // we should really get this from "CHBrowserService.h",
 // but that requires linkage and extra search paths.
-static NSString* XPCOMShutDownNotificationName = @"XPCOMShutDown";
+static NSString* kXPCOMShutDownNotification = @"XPCOMShutDown";
 
 // This is the OS notification name to make the Dock icon for the downloads folder bounce.
-static NSString* const DownloadFinishedOSNotificationName = @"com.apple.DownloadFileFinished";
+static NSString* const kDownloadFinishedOSNotification = @"com.apple.DownloadFileFinished";
 
 // Names of notifications we will post on download-related events
-NSString* const kDownloadStartedNotificationName = @"DownloadStartedNotificationName";
-NSString* const kDownloadFailedNotificationName = @"DownloadFailedNotificationName";
-NSString* const kDownloadCompleteNotificationName = @"DownloadCompleteNotificationName";
+NSString* const kDownloadStartedNotification = @"DownloadStartedNotification";
+NSString* const kDownloadFailedNotification = @"DownloadFailedNotification";
+NSString* const kDownloadCompleteNotification = @"DownloadCompleteNotification";
 
 // Names of keys for objects passed in these notifications
 NSString* const kDownloadNotificationFilenameKey = @"DownloadNotificationFilenameKey";
@@ -276,7 +276,7 @@ NSString *FormatFractionalSize(float bytes, int bytesPerUnit, NSString *unitsKey
   // because we don't know when it will get called (we might be autoreleased).
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(xpcomShutdown:)
-                                               name:XPCOMShutDownNotificationName
+                                               name:kXPCOMShutDownNotification
                                               object:nil];
 }
 
@@ -385,7 +385,7 @@ NSString *FormatFractionalSize(float bytes, int bytesPerUnit, NSString *unitsKey
 
   NSDictionary* userInfo = [NSDictionary dictionaryWithObject:mDestPath
                                                        forKey:kDownloadNotificationFilenameKey];
-  [[NSNotificationCenter defaultCenter] postNotificationName:kDownloadStartedNotificationName
+  [[NSNotificationCenter defaultCenter] postNotificationName:kDownloadStartedNotification
                                                       object:self
                                                     userInfo:userInfo];
 }
@@ -432,7 +432,7 @@ NSString *FormatFractionalSize(float bytes, int bytesPerUnit, NSString *unitsKey
     // for the folder containing the downloaded file bounce.
     if (!mUserCancelled && !mDownloadFailed) {
       [[NSDistributedNotificationCenter defaultCenter]
-       postNotificationName:DownloadFinishedOSNotificationName object:mDestPath];
+       postNotificationName:kDownloadFinishedOSNotification object:mDestPath];
     }
 
     // Notify any listeners (currently, just Growl) if the download completed or failed.
@@ -442,7 +442,7 @@ NSString *FormatFractionalSize(float bytes, int bytesPerUnit, NSString *unitsKey
                                 [NSNumber numberWithDouble: mDownloadTime], kDownloadNotificationTimeElapsedKey,
                                 nil];
 
-      NSString* name = mDownloadFailed ? kDownloadFailedNotificationName : kDownloadCompleteNotificationName;
+      NSString* name = mDownloadFailed ? kDownloadFailedNotification : kDownloadCompleteNotification;
       [[NSNotificationCenter defaultCenter] postNotificationName:name
                                                           object:self
                                                         userInfo:userInfo];

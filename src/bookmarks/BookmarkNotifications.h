@@ -38,21 +38,21 @@
 #import <Foundation/Foundation.h>
 
 // Notification keys
-// Defined in Bookmark.
-extern NSString* const URLLoadNotification;                     // object is NSString of URL, userinfo has NSNum of success/fail
-extern NSString* const URLLoadSuccessKey;                       // key for bool of load success/fail
+// Defined in Bookmark.mm
+extern NSString* const kURLLoadNotification;                      // object is NSString of URL, userinfo has NSNum of success/fail
+extern NSString* const kURLLoadSuccessKey;                        // key for bool of load success/fail
 
-// Defined in BookmarkFolder.
-extern NSString* const BookmarkFolderAdditionNotification;      // self is obj, userinfo has added item/index
-extern NSString* const BookmarkFolderDeletionNotification;      // self is obj, userinfo dict has removed item
-extern NSString* const BookmarkFolderChildKey;                  // key for added/removed object in userinfo dict
-extern NSString* const BookmarkFolderChildIndexKey;             // key for added object index in userinfo dict
-extern NSString* const BookmarkFolderDockMenuChangeNotificaton; // self is NEW dock menu OR nil
+// Defined in BookmarkFolder.mm
+extern NSString* const kBookmarkFolderAdditionNotification;       // self is obj, userinfo has added item/index
+extern NSString* const kBookmarkFolderDeletionNotification;       // self is obj, userinfo dict has removed item
+extern NSString* const kBookmarkFolderChildKey;                   // key for added/removed object in userinfo dict
+extern NSString* const kBookmarkFolderChildIndexKey;              // key for added object index in userinfo dict
+extern NSString* const kBookmarkFolderDockMenuChangeNotification; // self is NEW dock menu OR nil
 
-// Defined in BookmarkItem.
-extern NSString* const BookmarkItemChangedNotification;         // self is object, userInfo contains change flags
-extern NSString* const BookmarkItemChangedFlagsKey;
+// Defined in BookmarkItem.mm
+extern NSString* const kBookmarkItemChangedNotification;          // self is object, userInfo contains change flags
+extern NSString* const kBookmarkItemChangedFlagsKey;
 
-// Defined in BookmarkManager.
-extern NSString* const BookmarkItemsAddedNotification;          // object is array of added bookmarks
-extern NSString* const BookmarkItemsRemovedNotification;        // object is array of removed bookmarks
+// Defined in BookmarkManager.mm
+extern NSString* const kBookmarkItemsAddedNotification;           // object is array of added bookmarks
+extern NSString* const kBookmarkItemsRemovedNotification;         // object is array of removed bookmarks

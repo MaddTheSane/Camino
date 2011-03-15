@@ -54,12 +54,12 @@
 @class NSNetServiceBrowser;
 
 // client notifications
-NSString* const NetworkServicesAvailableServicesChanged = @"netserv_asc";
-NSString* const NetworkServicesResolutionSuccess        = @"netserv_resok";
-NSString* const NetworkServicesClientKey                = @"netserv_clikey";
-NSString* const NetworkServicesResolvedURLKey           = @"netserv_urlkey";
-NSString* const NetworkServicesResolutionFailure        = @"netserv_resbad";
-NSString* const NetworkServicesServiceKey               = @"netserv_srvkey";
+NSString* const kNetworkServicesAvailableServicesChanged = @"netserv_asc";
+NSString* const kNetworkServicesResolutionSuccess        = @"netserv_resok";
+NSString* const kNetworkServicesClientKey                = @"netserv_clikey";
+NSString* const kNetworkServicesResolvedURLKey           = @"netserv_urlkey";
+NSString* const kNetworkServicesResolutionFailure        = @"netserv_resbad";
+NSString* const kNetworkServicesServiceKey               = @"netserv_srvkey";
 
 
 @interface NetworkServices(Private)
@@ -196,7 +196,7 @@ static NetworkServices* gNetworkServices = nil;
 
 - (void)notifyClientsOfServicesChange
 {
-  NSNotification *note = [NSNotification notificationWithName:NetworkServicesAvailableServicesChanged object:self userInfo:nil];
+  NSNotification *note = [NSNotification notificationWithName:kNetworkServicesAvailableServicesChanged object:self userInfo:nil];
   NSNotificationQueue *nc = [NSNotificationQueue defaultQueue];
   [nc enqueueNotification:note postingStyle:NSPostWhenIdle coalesceMask:NSNotificationCoalescingOnName forModes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
 }
@@ -205,8 +205,8 @@ static NetworkServices* gNetworkServices = nil;
 {
   NSNumber *serviceKey = [[mNetworkServices allKeysForObject:aService] objectAtIndex:0];
   id aClient = [mClients objectForKey:serviceKey];
-  NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:aClient,NetworkServicesClientKey,url,NetworkServicesResolvedURLKey,[aService name],NetworkServicesServiceKey,nil];
-  [[NSNotificationCenter defaultCenter] postNotificationName:NetworkServicesResolutionSuccess object:self userInfo:userInfo];
+  NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:aClient,kNetworkServicesClientKey, url,kNetworkServicesResolvedURLKey, [aService name],kNetworkServicesServiceKey, nil];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kNetworkServicesResolutionSuccess object:self userInfo:userInfo];
   [mClients removeObjectForKey:aService];
 }
 
@@ -214,8 +214,8 @@ static NetworkServices* gNetworkServices = nil;
 {
   NSNumber *serviceKey = [[mNetworkServices allKeysForObject:aService] objectAtIndex:0];
   id aClient = [mClients objectForKey:serviceKey];
-  NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:aClient, NetworkServicesClientKey, [aService name],NetworkServicesServiceKey,nil];
-  [[NSNotificationCenter defaultCenter] postNotificationName:NetworkServicesResolutionFailure object:self userInfo:userInfo];
+  NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:aClient,kNetworkServicesClientKey, [aService name],kNetworkServicesServiceKey, nil];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kNetworkServicesResolutionFailure object:self userInfo:userInfo];
   [mClients removeObjectForKey:aService];
 }
 

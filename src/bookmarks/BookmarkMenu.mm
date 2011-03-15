@@ -106,7 +106,7 @@ const long kOpenInTabsTag = 0xBEEF;
   // TODO: Move this once the boomark notifications are refactored.
   [nc addObserver:self
          selector:@selector(bookmarkChanged:)
-             name:BookmarkItemChangedNotification
+             name:kBookmarkItemChangedNotification
            object:nil];
 }
 
@@ -118,16 +118,16 @@ const long kOpenInTabsTag = 0xBEEF;
   mDirty = YES;
 
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-  [nc removeObserver:self name:BookmarkFolderAdditionNotification object:nil];
-  [nc removeObserver:self name:BookmarkFolderDeletionNotification object:nil];
+  [nc removeObserver:self name:kBookmarkFolderAdditionNotification object:nil];
+  [nc removeObserver:self name:kBookmarkFolderDeletionNotification object:nil];
   if (mFolder) {
     [nc addObserver:self
            selector:@selector(bookmarkListChanged:)
-               name:BookmarkFolderAdditionNotification
+               name:kBookmarkFolderAdditionNotification
              object:mFolder];
     [nc addObserver:self
            selector:@selector(bookmarkListChanged:)
-               name:BookmarkFolderDeletionNotification
+               name:kBookmarkFolderDeletionNotification
              object:mFolder];
   }
 }
@@ -303,7 +303,7 @@ static NSString* GetMenuItemTitleForBookmark(BookmarkItem* item)
 {
   BookmarkItem* changedItem = [inNotification object];
 
-  NSNumber* noteChangeFlags = [[inNotification userInfo] objectForKey:BookmarkItemChangedFlagsKey];
+  NSNumber* noteChangeFlags = [[inNotification userInfo] objectForKey:kBookmarkItemChangedFlagsKey];
   unsigned int changeFlags = kBookmarkItemEverythingChangedMask;
   if (noteChangeFlags)
     changeFlags = [noteChangeFlags unsignedIntValue];

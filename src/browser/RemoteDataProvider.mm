@@ -48,11 +48,11 @@
 #include "nsICacheEntryDescriptor.h"
 #include "nsICachingChannel.h"
 
-NSString* const RemoteDataLoadRequestNotificationName = @"remoteload_notification_name";
-NSString* const RemoteDataLoadRequestURIKey           = @"remoteload_uri_key";
-NSString* const RemoteDataLoadRequestDataKey          = @"remoteload_data_key";
-NSString* const RemoteDataLoadRequestUserDataKey      = @"remoteload_user_data_key";
-NSString* const RemoteDataLoadRequestResultKey        = @"remoteload_result_key";
+NSString* const kRemoteDataLoadRequestNotification = @"remoteload_notification";
+NSString* const kRemoteDataLoadRequestURIKey       = @"remoteload_uri_key";
+NSString* const kRemoteDataLoadRequestDataKey      = @"remoteload_data_key";
+NSString* const kRemoteDataLoadRequestUserDataKey  = @"remoteload_user_data_key";
+NSString* const kRemoteDataLoadRequestResultKey    = @"remoteload_result_key";
 
 
 // this has to retain the load listener, to ensure that the listener lives long
@@ -326,13 +326,13 @@ nsresult RemoteURILoadManager::CancelAllRequests()
 - (void)doneRemoteLoad:(NSString*)inURI forTarget:(id)target withUserData:(id)userData data:(NSData*)data status:(nsresult)status usingNetwork:(BOOL)usingNetwork
 {
   NSDictionary*	notificationData = [NSDictionary dictionaryWithObjectsAndKeys:
-                              inURI, RemoteDataLoadRequestURIKey,
-                               data, RemoteDataLoadRequestDataKey,
-                           userData, RemoteDataLoadRequestUserDataKey,
-    [NSNumber numberWithInt:status], RemoteDataLoadRequestResultKey,
+                              inURI, kRemoteDataLoadRequestURIKey,
+                               data, kRemoteDataLoadRequestDataKey,
+                           userData, kRemoteDataLoadRequestUserDataKey,
+    [NSNumber numberWithInt:status], kRemoteDataLoadRequestResultKey,
                                      nil];
   
-  [[NSNotificationCenter defaultCenter] postNotificationName: RemoteDataLoadRequestNotificationName
+  [[NSNotificationCenter defaultCenter] postNotificationName:kRemoteDataLoadRequestNotification
       	object:target userInfo:notificationData];
 }
 

@@ -132,7 +132,7 @@ const float kGapUnderCheckboxLine = 3.0f;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(certificateChanged:)
-                                                 name:CertificateChangedNotificationName
+                                                 name:kCertificateChangedNotification
                                                object:nil];
   }
   return self;

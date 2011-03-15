@@ -63,9 +63,9 @@
 #include "GeckoUtils.h"
 #include "GeckoPrefConstants.h"
 
-NSString* const InitEmbeddingNotificationName = @"InitEmebedding";    // this is actually broadcast from MainController
-NSString* const TermEmbeddingNotificationName = @"TermEmbedding";
-NSString* const XPCOMShutDownNotificationName = @"XPCOMShutDown";
+NSString* const kInitEmbeddingNotification = @"InitEmebedding";    // this is actually broadcast from MainController
+NSString* const kTermEmbeddingNotification = @"TermEmbedding";
+NSString* const kXPCOMShutDownNotification = @"XPCOMShutDown";
 
 CHBrowserService* CHBrowserService::sSingleton = nsnull;
 PRUint32 CHBrowserService::sNumBrowsers = 0;
@@ -179,7 +179,7 @@ void
 CHBrowserService::TermEmbedding()
 {
   // phase 1 notification (we're trying to terminate)
-  [[NSNotificationCenter defaultCenter] postNotificationName:TermEmbeddingNotificationName object:nil];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kTermEmbeddingNotification object:nil];
 
   sCanTerminate = PR_TRUE;
   if (sNumBrowsers == 0) {
@@ -203,8 +203,8 @@ void CHBrowserService::ShutDown()
   if (observerService)
     observerService->NotifyObservers(nsnull, "profile-change-net-teardown", nsnull);
 
-  // phase 2 notifcation (we really are about to terminate)
-  [[NSNotificationCenter defaultCenter] postNotificationName:XPCOMShutDownNotificationName object:nil];
+  // phase 2 notification (we really are about to terminate)
+  [[NSNotificationCenter defaultCenter] postNotificationName:kXPCOMShutDownNotification object:nil];
 
   // Camino observers have been notified of XPCOM shutdown. Now notify Gecko
   // that we are quitting.

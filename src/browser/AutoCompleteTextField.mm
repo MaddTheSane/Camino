@@ -305,7 +305,7 @@ static NSString* kCorePasteboardFlavorType_url = @"CorePasteboardFlavorType 0x75
   // Register for embedding shutting down, to clean up history stuff.
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(shutdown:)
-                                               name:TermEmbeddingNotificationName
+                                               name:kTermEmbeddingNotification
                                              object:nil];
 
   // Use the Firefox pref for inline (IE-style complete-in-the-bar) versus
@@ -321,7 +321,7 @@ static NSString* kCorePasteboardFlavorType_url = @"CorePasteboardFlavorType 0x75
   [[PreferenceManager sharedInstance] addObserver:self forPref:kGeckoPrefLocationBarAutocompleteEnabled];
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(locationBarAutocompletePrefChanged:)
-                                               name:kPrefChangedNotificationName
+                                               name:kPrefChangedNotification
                                              object:self]; // since we added ourself as the Gecko pref observer
 
   // register for string & URL drags

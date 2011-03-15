@@ -49,16 +49,16 @@ class nsINavHistoryContainerResultNode;
 class nsINavHistoryService;
 
 // Sent when a history item changes. Notification object is the changed item.
-extern NSString* const kNotificationNameHistoryDataSourceItemChanged;
+extern NSString* const kHistoryDataSourceItemChangedNotification;
 // The type of change that occured.
-extern NSString* const kNotificationHistoryDataSourceChangedUserInfoChangeType;
+extern NSString* const kHistoryDataSourceChangedUserInfoChangeType;
 
 // Sent when history is cleared. Notification object is the data source.
-extern NSString* const kNotificationNameHistoryDataSourceCleared;
+extern NSString* const kHistoryDataSourceClearedNotification;
 
 // Sent when history is rebuilt from scratch (after initial load). Notification
 // object is the data source.
-extern NSString* const kNotificationNameHistoryDataSourceRebuilt;
+extern NSString* const kHistoryDataSourceRebuiltNotification;
 
 typedef enum {
   kHistoryChangeItemAdded,

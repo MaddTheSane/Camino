@@ -41,7 +41,7 @@
 class nsIX509Cert;
 
 // object is the CertificateItem. No userinfo.
-extern NSString* const CertificateChangedNotificationName;
+extern NSString* const kCertificateChangedNotification;
 
 // A class that wraps a single nsIX509Cert certificate object.
 // Note that these aren't necessarily singletons (more than one

@@ -70,8 +70,8 @@
 
 NSString* const kBookmarkManagerStartedNotification = @"BookmarkManagerStartedNotification";
 
-NSString* const BookmarkItemsAddedNotification      = @"BookmarkItemAddedNotification";
-NSString* const BookmarkItemsRemovedNotification    = @"BookmarkItemRemovedNotification";
+NSString* const kBookmarkItemsAddedNotification      = @"BookmarkItemAddedNotification";
+NSString* const kBookmarkItemsRemovedNotification    = @"BookmarkItemRemovedNotification";
 
 // root bookmark folder identifiers (must be unique!)
 NSString* const kBookmarksToolbarFolderIdentifier              = @"BookmarksToolbarFolder";
@@ -401,14 +401,14 @@ static BookmarkManager* gBookmarkManager = nil;
   // folders have loaded. Even though we coalesce bookmark update notifications down into a single
   // message, there's no need to write out even once for any of these changes.
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-  [nc addObserver:self selector:@selector(bookmarkAdded:) name:BookmarkFolderAdditionNotification object:nil];
-  [nc addObserver:self selector:@selector(bookmarkRemoved:) name:BookmarkFolderDeletionNotification object:nil];
-  [nc addObserver:self selector:@selector(bookmarkChanged:) name:BookmarkItemChangedNotification object:nil];
+  [nc addObserver:self selector:@selector(bookmarkAdded:) name:kBookmarkFolderAdditionNotification object:nil];
+  [nc addObserver:self selector:@selector(bookmarkRemoved:) name:kBookmarkFolderDeletionNotification object:nil];
+  [nc addObserver:self selector:@selector(bookmarkChanged:) name:kBookmarkItemChangedNotification object:nil];
   [nc addObserver:self selector:@selector(writeBookmarks:) name:kWriteBookmarkNotification object:nil];
 
   // listen for site icon and page loads, to forward to bookmarks
-  [nc addObserver:self selector:@selector(onSiteIconLoad:) name:SiteIconLoadNotificationName object:nil];
-  [nc addObserver:self selector:@selector(onPageLoad:) name:URLLoadNotification object:nil];
+  [nc addObserver:self selector:@selector(onSiteIconLoad:) name:kSiteIconLoadNotification object:nil];
+  [nc addObserver:self selector:@selector(onPageLoad:) name:kURLLoadNotification object:nil];
 
   // broadcast to everyone interested that we're loaded and ready for public consumption
   [[NSNotificationCenter defaultCenter] postNotificationName:kBookmarkManagerStartedNotification object:nil];
@@ -558,7 +558,7 @@ static BookmarkManager* gBookmarkManager = nil;
     }
   }
 
-  [[NSNotificationCenter defaultCenter] postNotificationName:BookmarkItemsAddedNotification
+  [[NSNotificationCenter defaultCenter] postNotificationName:kBookmarkItemsAddedNotification
                                                       object:bookmarks];
 }
 
@@ -577,7 +577,7 @@ static BookmarkManager* gBookmarkManager = nil;
     }
   }
 
-  [[NSNotificationCenter defaultCenter] postNotificationName:BookmarkItemsRemovedNotification
+  [[NSNotificationCenter defaultCenter] postNotificationName:kBookmarkItemsRemovedNotification
                                                       object:bookmarks];
 }
 
@@ -1118,9 +1118,9 @@ static BookmarkManager* gBookmarkManager = nil;
   if (!userInfo)
     return;
 
-  NSImage*  iconImage    = [userInfo objectForKey:SiteIconLoadImageKey];
-  NSString* siteIconURI  = [userInfo objectForKey:SiteIconLoadURIKey];
-  NSString* pageURI      = [userInfo objectForKey:SiteIconLoadUserDataKey];
+  NSImage*  iconImage    = [userInfo objectForKey:kSiteIconLoadImageKey];
+  NSString* siteIconURI  = [userInfo objectForKey:kSiteIconLoadURIKey];
+  NSString* pageURI      = [userInfo objectForKey:kSiteIconLoadUserDataKey];
   pageURI = [BookmarkManager canonicalBookmarkURL:pageURI];
 
   BOOL isDefaultSiteIconLocation = [siteIconURI isEqualToString:[SiteIconProvider defaultFaviconLocationStringFromURI:pageURI]];
@@ -1155,7 +1155,7 @@ static BookmarkManager* gBookmarkManager = nil;
   }
   else {
     // we got no image. If this was a network load for a custom favicon url, clear the favicon url from the bookmarks which use it
-    BOOL networkLoad = [[userInfo objectForKey:SiteIconLoadUsedNetworkKey] boolValue];
+    BOOL networkLoad = [[userInfo objectForKey:kSiteIconLoadUsedNetworkKey] boolValue];
     if (networkLoad && !isDefaultSiteIconLocation) {
       NSArray* bookmarksForPage = [[mBookmarkURLMap objectForKey:pageURI] allObjects];
       NSEnumerator* bookmarksForPageEnum = [bookmarksForPage objectEnumerator];
@@ -1174,7 +1174,7 @@ static BookmarkManager* gBookmarkManager = nil;
 - (void)onPageLoad:(NSNotification*)inNotification
 {
   NSString* loadURL = [BookmarkManager canonicalBookmarkURL:[inNotification object]];
-  BOOL successfullLoad = [[[inNotification userInfo] objectForKey:URLLoadSuccessKey] boolValue];
+  BOOL successfullLoad = [[[inNotification userInfo] objectForKey:kURLLoadSuccessKey] boolValue];
 
   NSEnumerator* bookmarksEnum = [BookmarkManager enumeratorForBookmarksInMap:mBookmarkURLMap matchingURL:loadURL];
   Bookmark* curBookmark;
@@ -1200,7 +1200,7 @@ static BookmarkManager* gBookmarkManager = nil;
 
 - (void)bookmarkRemoved:(NSNotification *)inNotification
 {
-  BookmarkItem* bmItem = [[inNotification userInfo] objectForKey:BookmarkFolderChildKey];
+  BookmarkItem* bmItem = [[inNotification userInfo] objectForKey:kBookmarkFolderChildKey];
 
   if ([bmItem isKindOfClass:[BookmarkFolder class]]) {
     if ([(BookmarkFolder*)bmItem containsChildItem:mLastUsedFolder]) {
@@ -1227,7 +1227,7 @@ static BookmarkManager* gBookmarkManager = nil;
     return;
 
   unsigned int changeFlags = kBookmarkItemEverythingChangedMask;
-  NSNumber* noteChangeFlags = [[inNotification userInfo] objectForKey:BookmarkItemChangedFlagsKey];
+  NSNumber* noteChangeFlags = [[inNotification userInfo] objectForKey:kBookmarkItemChangedFlagsKey];
   if (noteChangeFlags)
     changeFlags = [noteChangeFlags unsignedIntValue];
 

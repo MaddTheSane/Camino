@@ -43,7 +43,7 @@
 // switched to. NSTabView does have a delegate method when the tab changes,
 // but no notification and we don't want to take over the delegate for internal
 // implementation.
-extern NSString* const kTabWillChangeNotifcation;
+extern NSString* const kTabWillChangeNotification;
 
 // A subclass of NSTabViewItem that manages the custom Camino tabs.
 @class TabButtonView;

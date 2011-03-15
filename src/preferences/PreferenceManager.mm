@@ -77,13 +77,12 @@
 
 #define CUSTOM_PROFILE_DIR  "CAMINO_PROFILE_DIR"
 
-NSString* const kPrefChangedNotificationName = @"PrefChangedNotification";
+NSString* const kPrefChangedNotification = @"PrefChangedNotification";
 // userInfo entries:
 NSString* const kPrefChangedPrefNameUserInfoKey = @"pref_name";
 
-
-static NSString* const AdBlockingChangedNotificationName = @"AdBlockingChanged";
-static NSString* const kFlashblockChangedNotificationName = @"FlashblockChanged";
+static NSString* const kAdBlockingChangedNotification = @"AdBlockingChanged";
+static NSString* const kFlashblockChangedNotification = @"FlashblockChanged";
 
 static NSString* const kJEPName = @"Java Embedding Plugin";
 static NSString* const kAppleJavaName = @"Java Plug-In 2";
@@ -300,7 +299,7 @@ PrefChangeObserver::Observe(nsISupports* aSubject, const char* aTopic, const PRU
   NSDictionary* userInfoDict = [NSDictionary dictionaryWithObject:[NSString stringWithPRUnichars:aSomeData]
                                                            forKey:kPrefChangedPrefNameUserInfoKey];
 
-  [[NSNotificationCenter defaultCenter] postNotificationName:kPrefChangedNotificationName
+  [[NSNotificationCenter defaultCenter] postNotificationName:kPrefChangedNotification
                                                       object:mObject
                                                     userInfo:userInfoDict];
   return NS_OK;
@@ -447,22 +446,22 @@ static BOOL gMadePrefManager;
 {
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(termEmbedding:)
-                                               name:TermEmbeddingNotificationName
+                                               name:kTermEmbeddingNotification
                                              object:nil];
 
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(xpcomTerminate:)
-                                               name:XPCOMShutDownNotificationName
+                                               name:kXPCOMShutDownNotification
                                              object:nil];
 
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(adBlockingPrefChanged:)
-                                               name:AdBlockingChangedNotificationName
+                                               name:kAdBlockingChangedNotification
                                              object:nil];
 
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(flashblockPrefChanged:)
-                                               name:kFlashblockChangedNotificationName
+                                               name:kFlashblockChangedNotification
                                              object:nil];
 }
 
@@ -679,7 +678,7 @@ static BOOL gMadePrefManager;
       WriteVersion(profileDir, version, osABI, executable);
 
     // Send out "embedding-initialized" notification.
-    [[NSNotificationCenter defaultCenter] postNotificationName:InitEmbeddingNotificationName object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kInitEmbeddingNotification object:nil];
 
     return YES;
 }
@@ -893,7 +892,7 @@ static BOOL gMadePrefManager;
   [self addObserver:self forPref:kGeckoPrefDisabledPluginPrefixes];
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(internallyObservedPrefChanged:)
-                                               name:kPrefChangedNotificationName
+                                               name:kPrefChangedNotification
                                              object:self];
 
   // Make sure the homepage has been set up.
