@@ -68,7 +68,7 @@ const unsigned kNumTop10Items = 10;   // well, 10, duh!
     mAddressBookFolder = [[manager addressBookFolder] retain];
     mRendezvousFolder = [[manager rendezvousFolder] retain];
     mTop10SortDescriptors = [[NSArray alloc] initWithObjects:
-                              [[[NSSortDescriptor alloc] initWithKey:@"numberOfVisits" ascending:NO] autorelease],
+                              [[[NSSortDescriptor alloc] initWithKey:@"visitCount" ascending:NO] autorelease],
                               [[[NSSortDescriptor alloc] initWithKey:@"lastVisit" ascending:NO] autorelease],
                               nil];
 
@@ -151,17 +151,17 @@ const unsigned kNumTop10Items = 10;   // well, 10, duh!
     return;
 
   NSArray* top10ItemsArray = [mTop10Folder children];
-  unsigned curIndex   = [top10ItemsArray indexOfObjectIdenticalTo:aBookmark];
-  unsigned visitCount = [aBookmark numberOfVisits];
+  unsigned int curIndex = [top10ItemsArray indexOfObjectIdenticalTo:aBookmark];
+  unsigned int visitCount = [aBookmark visitCount];
 
   // if it's not in the list, and the visit count is zero, nothing to do
   if (curIndex == NSNotFound && visitCount == 0)
     return;
 
   // we assume the list is sorted here
-  unsigned currentMinVisits = 1;
+  unsigned int currentMinVisits = 1;
   if ([top10ItemsArray count] == kNumTop10Items)
-    currentMinVisits = [[top10ItemsArray lastObject] numberOfVisits];
+    currentMinVisits = [[top10ItemsArray lastObject] visitCount];
 
   if (curIndex != NSNotFound) {  // it's already in the list
     if (visitCount < currentMinVisits) {
@@ -333,8 +333,9 @@ static int SortByProtocolAndName(NSDictionary* item1, NSDictionary* item2, void 
 
 - (void)bookmarkChanged:(NSNotification *)note
 {
-  BOOL visitCountChanged = [BookmarkItem bookmarkChangedNotificationUserInfo:[note userInfo]
-                                                               containsFlags:kBookmarkItemNumVisitsChangedMask];
+  BOOL visitCountChanged =
+      [BookmarkItem bookmarkChangedNotificationUserInfo:[note userInfo]
+                                          containsFlags:kBookmarkItemVisitCountChangedMask];
   if (visitCountChanged) {
     BookmarkItem *anItem = [note object];
     if ([anItem isKindOfClass:[Bookmark class]])

@@ -120,9 +120,9 @@ enum
   return nil;
 }
 
-- (NSNumber*)visitCount
+- (unsigned int)visitCount
 {
-  return nil;
+  return 0;
 }
 
 - (NSString*)hostname
@@ -254,9 +254,9 @@ enum
   return nil;
 }
 
-- (NSNumber*)visitCount
+- (unsigned int)visitCount
 {
-  return nil;
+  return 0;
 }
 
 - (NSString*)hostname
@@ -523,7 +523,7 @@ enum
 
     PRUint32 visitCount;
     if (NS_SUCCEEDED(inNode->GetAccessCount(&visitCount)))
-      mVisitCount = [[NSNumber numberWithUnsignedInt:visitCount] retain];
+      mVisitCount = visitCount;
   }
   return self;
 }
@@ -536,7 +536,6 @@ enum
   [mHostname release];
   [mFirstVisitDate release];
   [mLastVisitDate release];
-  [mVisitCount release];
   [mSiteIcon release];
 
   [super dealloc];
@@ -637,7 +636,7 @@ enum
   return mLastVisitDate;
 }
 
-- (NSNumber*)visitCount
+- (unsigned int)visitCount
 {
   return mVisitCount;
 }
@@ -765,10 +764,17 @@ enum
 {
   NSComparisonResult result;
   // sort categories before sites
-  if ([aItem isKindOfClass:[HistoryCategoryItem class]])
+  if ([aItem isKindOfClass:[HistoryCategoryItem class]]) {
     result = NSOrderedDescending;
-  else
-    result = [mVisitCount compare:[aItem visitCount]];
+  }
+  else {
+    unsigned int otherVisits = [aItem visitCount];
+    if (mVisitCount == otherVisits)
+      result = NSOrderedSame;
+    else
+      result = (otherVisits > mVisitCount) ? NSOrderedAscending
+                                           : NSOrderedDescending;
+  }
 
   return [inDescending boolValue] ? (NSComparisonResult)(-1 * (int)result) : result;
 }

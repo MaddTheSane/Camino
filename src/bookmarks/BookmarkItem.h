@@ -52,7 +52,7 @@ enum
   kBookmarkItemURLChangedMask           = (1 << 5),
   kBookmarkItemLastVisitChangedMask     = (1 << 6),
   kBookmarkItemStatusChangedMask        = (1 << 7),   // really "flags", like separator vs. bookmark
-  kBookmarkItemNumVisitsChangedMask     = (1 << 8),
+  kBookmarkItemVisitCountChangedMask    = (1 << 8),
 
   // flags for bookmark folder changes
   kBookmarkItemChildrenChangedMask      = (1 << 9),
@@ -70,7 +70,7 @@ enum
                                             kBookmarkItemURLChangedMask |
                                             kBookmarkItemLastVisitChangedMask |
                                             kBookmarkItemStatusChangedMask |
-                                            kBookmarkItemNumVisitsChangedMask,
+                                            kBookmarkItemVisitCountChangedMask,
 
   kBookmarkItemEverythingChangedMask    = 0xFFFFFFFE
 };
@@ -171,5 +171,5 @@ extern NSString* const kBMURLKey;
 extern NSString* const kBMUUIDKey;
 extern NSString* const kBMShortcutKey;
 extern NSString* const kBMLastVisitKey;
-extern NSString* const kBMNumberVisitsKey;
+extern NSString* const kBMVisitCountKey;
 extern NSString* const kBMLinkedFaviconURLKey;

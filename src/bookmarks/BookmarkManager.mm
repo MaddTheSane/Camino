@@ -715,7 +715,7 @@ static BookmarkManager* gBookmarkManager = nil;
   BookmarkItem* curItem;
   while ((curItem = [bookmarksEnum nextObject])) {
     if ([curItem isKindOfClass:[Bookmark class]])
-      [(Bookmark*)curItem setNumberOfVisits:0];
+      [(Bookmark*)curItem clearVisitHistory];
   }
 }
 

@@ -58,7 +58,7 @@ NSString* const kBMURLKey = @"URL";
 NSString* const kBMUUIDKey = @"UUID";
 NSString* const kBMShortcutKey = @"Keyword";
 NSString* const kBMLastVisitKey = @"LastVisitedDate";
-NSString* const kBMNumberVisitsKey = @"VisitCount";
+NSString* const kBMVisitCountKey = @"VisitCount";
 NSString* const kBMLinkedFaviconURLKey = @"LinkedFaviconURL";
 
 @implementation BookmarkShortcutFormatter

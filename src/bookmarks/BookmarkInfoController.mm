@@ -257,7 +257,7 @@ static BookmarkInfoController* gSharedBookmarkInfoController = nil;
 - (IBAction)clearVisitCount:(id)sender
 {
   if ([mBookmarkItem isKindOfClass:[Bookmark class]])
-    [(Bookmark *)mBookmarkItem setNumberOfVisits:0];
+    [(Bookmark *)mBookmarkItem clearVisitHistory];
   [mNumberVisitsField setIntValue:0];
 }
 
@@ -305,7 +305,7 @@ static BookmarkInfoController* gSharedBookmarkInfoController = nil;
     [mBookmarkDescField setStringValue:[mBookmarkItem itemDescription]];
     [mBookmarkShortcutField setStringValue:[mBookmarkItem shortcut]];
     [mBookmarkLocationField setStringValue:[(Bookmark *)mBookmarkItem url]];
-    [mNumberVisitsField setIntValue:[(Bookmark *)mBookmarkItem numberOfVisits]];
+    [mNumberVisitsField setIntValue:[(Bookmark *)mBookmarkItem visitCount]];
     [self updateLastVisitField];
 
     // if its parent is a smart folder or it's a menu separator,
@@ -416,7 +416,7 @@ static BookmarkInfoController* gSharedBookmarkInfoController = nil;
 {
   BookmarkItem *item = [aNote object];
   if ([item isKindOfClass:[Bookmark class]]) {
-    [mNumberVisitsField setIntValue:[(Bookmark *)item numberOfVisits]];
+    [mNumberVisitsField setIntValue:[(Bookmark *)item visitCount]];
     [self updateLastVisitField];
   }
 }

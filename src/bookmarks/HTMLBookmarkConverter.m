@@ -164,7 +164,7 @@
     [bookmark setLastVisit:[NSDate dateWithTimeIntervalSince1970:(NSTimeInterval)lastVisitSeconds]];
   int visitCount = [[[linkElement attributeForName:@"visitation_count"] stringValue] intValue];
   if (visitCount > 0)
-    [bookmark setNumberOfVisits:(unsigned int)visitCount];
+    [bookmark setVisitCount:(unsigned int)visitCount];
 
   return bookmark;
 }

@@ -67,7 +67,7 @@ NSString* const kURLLoadSuccessKey     = @"url_bool";
 
 // methods used for saving to files; are guaranteed never to return nil
 - (id)savedStatus;
-- (id)savedNumberOfVisits;
+- (id)savedVisitCount;
 - (id)savedFaviconURL;
 
 @end
@@ -92,7 +92,7 @@ NSString* const kURLLoadSuccessKey     = @"url_bool";
   [bookmark setUrl:aURL];
   if (aLastVisit) {
     [bookmark setLastVisit:aLastVisit];
-    [bookmark setNumberOfVisits:1];
+    [bookmark setVisitCount:1];
   }
   return bookmark;
 }
@@ -110,7 +110,7 @@ NSString* const kURLLoadSuccessKey     = @"url_bool";
   [bookmark setItemDescription:[aDict objectForKey:kBMDescKey]];
   [bookmark setShortcut:[aDict objectForKey:kBMShortcutKey]];
   [bookmark setUUID:[aDict objectForKey:kBMUUIDKey]];
-  [bookmark setNumberOfVisits:[[aDict objectForKey:kBMNumberVisitsKey] unsignedIntValue]];
+  [bookmark setVisitCount:[[aDict objectForKey:kBMVisitCountKey] unsignedIntValue]];
   [bookmark setFaviconURL:[aDict objectForKey:kBMLinkedFaviconURLKey]];
 
   return bookmark;
@@ -122,7 +122,7 @@ NSString* const kURLLoadSuccessKey     = @"url_bool";
   [bookmarkCopy setUrl:[self url]];
   [bookmarkCopy setIsSeparator:[self isSeparator]];
   [bookmarkCopy setLastVisit:[self lastVisit]];
-  [bookmarkCopy setNumberOfVisits:[self numberOfVisits]];
+  [bookmarkCopy setVisitCount:[self visitCount]];
   return bookmarkCopy;
 }
 
@@ -160,9 +160,9 @@ NSString* const kURLLoadSuccessKey     = @"url_bool";
   return mLastVisit;
 }
 
-- (unsigned)numberOfVisits
+- (unsigned int)visitCount
 {
-  return mNumberOfVisits;
+  return mVisitCount;
 }
 
 - (BOOL)isSeparator
@@ -221,17 +221,19 @@ NSString* const kURLLoadSuccessKey     = @"url_bool";
   }
 }
 
-- (void)setNumberOfVisits:(unsigned)aNumber
+- (void)setVisitCount:(unsigned)visits
 {
-  if (mNumberOfVisits != aNumber) {
-    mNumberOfVisits = aNumber;
+  if (mVisitCount != visits) {
+    mVisitCount = visits;
 
-    [self itemUpdatedNote:kBookmarkItemNumVisitsChangedMask];
-
-    if (mNumberOfVisits == 0) {
-      [self clearLastVisit];
-    }
+    [self itemUpdatedNote:kBookmarkItemVisitCountChangedMask];
   }
+}
+
+- (void)clearVisitHistory
+{
+  [self setVisitCount:0];
+  [self clearLastVisit];
 }
 
 - (void)setIsSeparator:(BOOL)isSeparator
@@ -264,7 +266,7 @@ NSString* const kURLLoadSuccessKey     = @"url_bool";
 {
   [self setLastVisit:[NSDate date]];
   if (inSuccess)
-    [self setNumberOfVisits:(mNumberOfVisits + 1)];
+    [self setVisitCount:(mVisitCount + 1)];
 }
 
 // rather than overriding this, it might be better to have a stub for
@@ -298,9 +300,9 @@ NSString* const kURLLoadSuccessKey     = @"url_bool";
                                                        : kBookmarkOKStatus)];
 }
 
-- (id)savedNumberOfVisits
+- (id)savedVisitCount
 {
-  return [NSNumber numberWithUnsignedInt:mNumberOfVisits];
+  return [NSNumber numberWithUnsignedInt:mVisitCount];
 }
 
 - (id)savedFaviconURL
@@ -393,8 +395,8 @@ NSString* const kURLLoadSuccessKey     = @"url_bool";
   if (mLastVisit)
     [itemDict setObject:mLastVisit forKey:kBMLastVisitKey];
 
-  if (mNumberOfVisits)
-    [itemDict setObject:[self savedNumberOfVisits] forKey:kBMNumberVisitsKey];
+  if (mVisitCount)
+    [itemDict setObject:[self savedVisitCount] forKey:kBMVisitCountKey];
 
   // The bookmark is guaranteed not to be a separator at this point, so
   // [self savedStatus] will be 0, and there is no reason to write anything
@@ -452,11 +454,12 @@ NSString* const kURLLoadSuccessKey     = @"url_bool";
   if ([aItem isKindOfClass:[BookmarkFolder class]])
     result = NSOrderedDescending;
   else {
-    unsigned int otherVisits = [(Bookmark*)aItem numberOfVisits];
-    if (mNumberOfVisits == otherVisits)
+    unsigned int otherVisits = [(Bookmark*)aItem visitCount];
+    if (mVisitCount == otherVisits)
       result = NSOrderedSame;
     else
-      result = (otherVisits > mNumberOfVisits) ? NSOrderedAscending : NSOrderedDescending;
+      result = (otherVisits > mVisitCount) ? NSOrderedAscending
+                                           : NSOrderedDescending;
   }
 
   return [inDescending boolValue] ? (NSComparisonResult)(-1 * (int)result) : result;

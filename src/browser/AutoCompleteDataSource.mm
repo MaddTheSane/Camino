@@ -356,18 +356,14 @@ enum SourceChangeType {
     mGenericFileIcon = [[NSImage imageNamed:@"smallDocument"] retain];
     mSchemeToPlaceholderMap = [[NSMutableDictionary alloc] init];
 
-    NSSortDescriptor *bookmarkSortOrder =
-        [[[NSSortDescriptor alloc] initWithKey:@"numberOfVisits"
-                                     ascending:NO] autorelease];
-    mBookmarkTrie = [[Trie alloc] initWithKeywordDelegate:self
-                                                sortOrder:bookmarkSortOrder
-                                                 maxDepth:kMaxTrieDepth];
-
-    NSSortDescriptor *historySortOrder =
+    NSSortDescriptor *trieSortOrder =
         [[[NSSortDescriptor alloc] initWithKey:@"visitCount"
                                      ascending:NO] autorelease];
+    mBookmarkTrie = [[Trie alloc] initWithKeywordDelegate:self
+                                                sortOrder:trieSortOrder
+                                                 maxDepth:kMaxTrieDepth];
     mHistoryTrie = [[Trie alloc] initWithKeywordDelegate:self
-                                               sortOrder:historySortOrder
+                                               sortOrder:trieSortOrder
                                                 maxDepth:kMaxTrieDepth];
 
     NSNotificationCenter *notificationCenter =
@@ -595,7 +591,7 @@ enum SourceChangeType {
   unsigned int interestingFlagsMask = kBookmarkItemTitleChangedMask |
                                       kBookmarkItemShortcutChangedMask |
                                       kBookmarkItemURLChangedMask |
-                                      kBookmarkItemNumVisitsChangedMask;
+                                      kBookmarkItemVisitCountChangedMask;
   if (![[notification object] isKindOfClass:[Bookmark class]] ||
       [[notification object] isSeparator] ||
       !(changeFlags & interestingFlagsMask))
@@ -821,9 +817,9 @@ enum SourceChangeType {
   while ([results count] < kMaxResultsCount &&
          (nextBookmark || nextHistoryItem))
   {
-    int bookmarkScore =
-        ceil([nextBookmark numberOfVisits] * kBookmarkBoostFactor);
-    int historyScore = [[nextHistoryItem visitCount] intValue];
+    unsigned int bookmarkScore =
+        ceil([nextBookmark visitCount] * kBookmarkBoostFactor);
+    unsigned int historyScore = [nextHistoryItem visitCount];
     AutoCompleteResult *result = nil;
     unsigned int *sourceCount = NULL;
     if (nextBookmark && (!nextHistoryItem ||

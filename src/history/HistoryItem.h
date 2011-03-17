@@ -60,7 +60,7 @@ class nsINavHistoryResultNode;
 - (NSString*)url;
 - (NSDate*)firstVisit;
 - (NSDate*)lastVisit;
-- (NSNumber*)visitCount;
+- (unsigned int)visitCount;
 - (NSString*)hostname;
 - (NSString*)identifier;
 
@@ -136,7 +136,7 @@ class nsINavHistoryResultNode;
   NSString*         mHostname;
   NSDate*           mFirstVisitDate;
   NSDate*           mLastVisitDate;
-  NSNumber*         mVisitCount;
+  unsigned int      mVisitCount;
   
   NSImage*          mSiteIcon;
   BOOL              mAttemptedIconLoad;

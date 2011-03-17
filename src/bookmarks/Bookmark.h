@@ -45,7 +45,7 @@
   NSString*     mURL;
   NSDate*       mLastVisit;
   BOOL          mIsSeparator;
-  unsigned int  mNumberOfVisits;
+  unsigned int  mVisitCount;
   NSString*     mFaviconURL;  // only used for <link> favicons
 }
 
@@ -57,7 +57,7 @@
 
 - (NSString *)url;
 - (NSDate *)lastVisit;  // nil if not visited
-- (unsigned)numberOfVisits;
+- (unsigned int)visitCount;
 
 // Alternate accessors for persisting to disk; never returns nil.
 - (NSString*)savedURL;
@@ -67,7 +67,9 @@
 
 - (void)setUrl:(NSString *)aURL;
 - (void)setLastVisit:(NSDate *)aLastVisit;
-- (void)setNumberOfVisits:(unsigned)aNumber;  // if 0, clears lastVisit
+- (void)setVisitCount:(unsigned)count;
+// Clears the last visit date and sets the visit count to 0.
+- (void)clearVisitHistory;
 
 - (void)notePageLoadedWithSuccess:(BOOL)inSuccess;
 
