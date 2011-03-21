@@ -49,6 +49,14 @@
 - (NSArray*)keywordsForObject:(id)object;
 @end
 
+// Protocol used by a Trie to generate keywords for an object.
+@protocol TrieItemScorer <NSObject>
+// Returns the score for the given item. The score of an item relative to other
+// items should not change without the item being removed from the trie and
+// re-inserted, but the absolute score can change over time.
+// The higher the score, the higher the ranking in search results.
+- (double)scoreForItem:(id)item;
+@end
 
 // Trie implementation for storing objects keyed by strings, for doing fast
 // prefix searching.
@@ -56,7 +64,7 @@
 {
  @private
   TrieNode*                         mRoot;
-  NSSortDescriptor*                 mSortOrder;
+  id<TrieItemScorer>                mScorer;
   id<TrieKeywordGenerationDelegate> mDelegate;  // weak
   unsigned int                      mMaxDepth;
 
@@ -74,7 +82,7 @@
 // depth require expensive validation at search time, so this paramater allows
 // tuning between memory usage and search speed.
 - (id)initWithKeywordDelegate:(id<TrieKeywordGenerationDelegate>)delegate
-                    sortOrder:(NSSortDescriptor*)sortOrder
+                       scorer:(id<TrieItemScorer>)scorer
                      maxDepth:(unsigned int)maxDepth;
 
 // Adds the given item to the trie under all relevent search terms.

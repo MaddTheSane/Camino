@@ -43,7 +43,7 @@
 
 #import <AppKit/AppKit.h>
 #import "AutoCompleteDataSource.h"
-#import "AutoCompleteTextField.h"
+#import "AutoCompleteScorer.h"
 #import "AutoCompleteResult.h"
 #import "Trie.h"
 #import "CHBrowserService.h"
@@ -290,6 +290,11 @@ enum SourceChangeType {
 // |trie|, removing them from |items|.
 - (void)processNextChunkOfItems:(NSMutableArray *)items intoTrie:(Trie *)trie;
 
+// Helper method for asyncronous loading; inserts a chunk of |items| into
+// |trie|, removing them from |items|.
+- (NSArray *)mergedResultsFromBookmarks:(TrieSearchEnumerator *)bookmarkEnumerator
+                                history:(TrieSearchEnumerator *)historyEnumerator;
+
 // Creates and returns an AutoCompleteResult object for the given item.
 // The AutoCompleteResult class is used by the AutoCompleteCell to store
 // all of the data relevant to drawing a cell.
@@ -356,14 +361,12 @@ enum SourceChangeType {
     mGenericFileIcon = [[NSImage imageNamed:@"smallDocument"] retain];
     mSchemeToPlaceholderMap = [[NSMutableDictionary alloc] init];
 
-    NSSortDescriptor *trieSortOrder =
-        [[[NSSortDescriptor alloc] initWithKey:@"visitCount"
-                                     ascending:NO] autorelease];
+    mTrieScorer = [[AutoCompleteScorer alloc] init];
     mBookmarkTrie = [[Trie alloc] initWithKeywordDelegate:self
-                                                sortOrder:trieSortOrder
+                                                   scorer:mTrieScorer
                                                  maxDepth:kMaxTrieDepth];
     mHistoryTrie = [[Trie alloc] initWithKeywordDelegate:self
-                                               sortOrder:trieSortOrder
+                                                  scorer:mTrieScorer
                                                 maxDepth:kMaxTrieDepth];
 
     NSNotificationCenter *notificationCenter =
@@ -394,6 +397,7 @@ enum SourceChangeType {
   [mHistoryTrieUpdater release];
   [mBookmarkTrie release];
   [mHistoryTrie release];
+  [mTrieScorer release];
 
   [mResults release];
   [mHistoryItemsToLoad release];
@@ -640,6 +644,7 @@ enum SourceChangeType {
 
 - (void)processNextChunkOfItems:(NSMutableArray *)items intoTrie:(Trie *)trie
 {
+  [mTrieScorer cacheCurrentTime];
   NSDate *startTime = [NSDate date];
   NSAutoreleasePool *localPool = [[NSAutoreleasePool alloc] init];
   unsigned int processedCount = 0;
@@ -656,6 +661,7 @@ enum SourceChangeType {
     }
   }
   [localPool drain];
+  [mTrieScorer clearTimeCache];
 
   [items removeObjectsInRange:NSMakeRange(0, processedCount)];
 }
@@ -790,23 +796,36 @@ enum SourceChangeType {
       searchTerms = [NSArray arrayWithObject:searchStringWithSchemePlaceholder];
   }
 
-  // Bookmarks are given slightly higher weight, since all else being equal a
-  // bookmark is more likely to be relevant since the user has explicitly
-  // expressed interest in it. The boost shouldn't be too high, however, so
-  // that bookmarks don't drown out commonly visited sites.
-  const double kBookmarkBoostFactor = 1.1;
-
-  // TODO: Make the trie searches asynchronous? That would creates the
+  // TODO: Make the trie searches asynchronous? That would create the
   // possibility of the results being invalidated during iteration though.
-  NSMutableArray *results = [NSMutableArray arrayWithCapacity:kMaxResultsCount];
   TrieSearchEnumerator *bookmarkEnumerator =
       [TrieSearchEnumerator enumeratorWithTrie:mBookmarkTrie
                                    searchTerms:searchTerms];
   TrieSearchEnumerator *historyEnumerator =
       [TrieSearchEnumerator enumeratorWithTrie:mHistoryTrie
                                    searchTerms:searchTerms];
+  [self reportResults:[self mergedResultsFromBookmarks:bookmarkEnumerator
+                                               history:historyEnumerator]];
+}
+
+- (void)cancelSearch
+{
+  [self resetSearch];
+  // TODO: Once performSearchWithString is once again asynchronous, implement
+  // cancel logic.
+}
+
+- (NSArray *)mergedResultsFromBookmarks:(TrieSearchEnumerator *)bookmarkEnumerator
+                                history:(TrieSearchEnumerator *)historyEnumerator
+{
+  NSMutableArray *results = [NSMutableArray arrayWithCapacity:kMaxResultsCount];
+  [mTrieScorer cacheCurrentTime];
   Bookmark *nextBookmark = [bookmarkEnumerator nextResult];
   HistoryItem *nextHistoryItem = [historyEnumerator nextResult];
+  double bookmarkScore =
+      nextBookmark ? [mTrieScorer scoreForItem:nextBookmark] : 0;
+  double historyScore =
+      nextHistoryItem ? [mTrieScorer scoreForItem:nextHistoryItem] : 0;
   // Regardless of the scores, don't take more than 70% of the results from one
   // source (unless the other is out of matches), so that the top results from
   // both sources always show.
@@ -817,9 +836,6 @@ enum SourceChangeType {
   while ([results count] < kMaxResultsCount &&
          (nextBookmark || nextHistoryItem))
   {
-    unsigned int bookmarkScore =
-        ceil([nextBookmark visitCount] * kBookmarkBoostFactor);
-    unsigned int historyScore = [nextHistoryItem visitCount];
     AutoCompleteResult *result = nil;
     unsigned int *sourceCount = NULL;
     if (nextBookmark && (!nextHistoryItem ||
@@ -828,12 +844,15 @@ enum SourceChangeType {
                           bookmarkScore >= historyScore)))
     {
       result = [self autoCompleteResultForItem:nextBookmark];
-      nextBookmark = [bookmarkEnumerator nextResult];
+      nextBookmark = nextBookmark ? [bookmarkEnumerator nextResult] : 0;
+      bookmarkScore = [mTrieScorer scoreForItem:nextBookmark];
       sourceCount = &bookmarksUsed;
     }
     else {
       result = [self autoCompleteResultForItem:nextHistoryItem];
       nextHistoryItem = [historyEnumerator nextResult];
+      historyScore =
+          nextHistoryItem ? [mTrieScorer scoreForItem:nextHistoryItem] : 0;
       sourceCount = &historyItemsUsed;
     }
     if (![results containsObject:result]) {
@@ -841,14 +860,8 @@ enum SourceChangeType {
       *sourceCount += 1;
     }
   }
-  [self reportResults:results];
-}
-
-- (void)cancelSearch
-{
-  [self resetSearch];
-  // TODO: Once performSearchWithString is once again asynchronous, implement
-  // cancel logic.
+  [mTrieScorer clearTimeCache];
+  return results;
 }
 
 - (AutoCompleteResult *)autoCompleteResultForItem:(id)item

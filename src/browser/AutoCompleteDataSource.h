@@ -43,7 +43,14 @@
 #import "Trie.h"
 
 @class AsynchronousTrieUpdater;
+@class AutoCompleteScorer;
 @class HistoryItem;
+
+// Informal protocol for search delegates
+@interface NSObject (AutoCompleteSearchDelegate)
+// Called when search results are available.
+- (void)searchResultsAvailable;
+@end
 
 //
 // This class is in charge of retrieving/sorting the history and bookmark results
@@ -60,6 +67,7 @@
   NSMutableArray*          mBookmarkData;              // owned
   Trie*                    mHistoryTrie;               // owned
   Trie*                    mBookmarkTrie;              // owned
+  AutoCompleteScorer*      mTrieScorer;                // owned
   NSMutableArray*          mBookmarkResults;           // owned
   NSMutableArray*          mHistoryResults;            // owned
   NSMutableArray*          mResults;                   // owned

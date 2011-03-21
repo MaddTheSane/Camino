@@ -55,13 +55,13 @@
   NSMutableArray*        mItems;
 }
 
-// Adds an item to the trie with the given keyword. |sortOrder| is used to order
+// Adds an item to the trie with the given keyword. |scorer| is used to order
 // the list of items at the given node; it should always be the same for every
 // node in a trie.
 // This is intended to be called on the root node only.
 - (void)addItem:(id)item
         withKey:(NSString*)key
-      sortOrder:(NSSortDescriptor*)sortOrder;
+         scorer:(id<TrieItemScorer>)scorer;
 
 // Removes an item recursively, starting at this node.
 - (void)removeItem:(id)item;
@@ -79,16 +79,16 @@
 // Returns an empty, autoreleased trieNode.
 + (TrieNode*)trieNode;
 
-// Helper for addItem:withKey:sortOrder:; stores the item in the child node
+// Helper for addItem:withKey:scorer:; stores the item in the child node
 // corresponding to the character at |index| in |key|, then recurses.
 - (void)addItem:(id)item
         withKey:(NSString*)key
       charIndex:(unsigned int)index
-      sortOrder:(NSSortDescriptor*)sortOrder;
+         scorer:(id<TrieItemScorer>)scorer;
 
 // Stores the given item in this node's item list at the position indicated by
-// sortOrder.
-- (void)storeItem:(id)item withSortOrder:(NSSortDescriptor*)sortOrder;
+// scorer.
+- (void)storeItem:(id)item withScorer:(id<TrieItemScorer>)scorer;
 
 // Helper for itemsForKey:; if |index| is the end of |key|, returns the item
 // array, otherwise recurses. May return duplicates.
@@ -121,19 +121,19 @@
 
 - (void)addItem:(id)item
         withKey:(NSString*)key
-      sortOrder:(NSSortDescriptor*)sortOrder;
+         scorer:(id<TrieItemScorer>)scorer;
 {
-  [self addItem:item withKey:key charIndex:0 sortOrder:sortOrder];
+  [self addItem:item withKey:key charIndex:0 scorer:scorer];
 }
 
 - (void)addItem:(id)item
         withKey:(NSString*)key
       charIndex:(unsigned int)index
-      sortOrder:(NSSortDescriptor*)sortOrder;
+         scorer:(id<TrieItemScorer>)scorer;
 {
   // Don't bother to store at the root node, since "" is an uninteresting query.
   if (index > 0)
-    [self storeItem:item withSortOrder:sortOrder];
+    [self storeItem:item withScorer:scorer];
 
   if (index == [key length])
     return;
@@ -146,20 +146,22 @@
     node = [TrieNode trieNode];
     [mChildren setObject:node forKey:keyChar];
   }
-  [node addItem:item withKey:key charIndex:NSMaxRange(charRange) sortOrder:sortOrder];
+  [node addItem:item withKey:key charIndex:NSMaxRange(charRange) scorer:scorer];
 }
 
-- (void)storeItem:(id)item withSortOrder:(NSSortDescriptor*)sortOrder
+- (void)storeItem:(id)item withScorer:(id<TrieItemScorer>)scorer
 {
   // Note: we explicitly don't do full duplicate detection here, since it is
   // incredibly expensive. We check for dups where it's easy, but it's not
   // intended to be robust; the real checking is done at query time.
-  unsigned index = 0;
-  unsigned maxIndex = [mItems count];
+  unsigned int index = 0;
+  double score = [scorer scoreForItem:item];
+  unsigned int maxIndex = [mItems count];
   while (index < maxIndex) {
     unsigned midIndex = (index + maxIndex) / 2;
     id testItem = [mItems objectAtIndex:midIndex];
-    if ([sortOrder compareObject:item toObject:testItem] == NSOrderedDescending)
+    double testItemScore = [scorer scoreForItem:testItem];
+    if (score < testItemScore)
       index = midIndex + 1;
     else if (item == testItem)  // deliberately a pointer compare; dup check.
       return;
@@ -370,12 +372,12 @@
 @implementation Trie
 
 - (id)initWithKeywordDelegate:(id<TrieKeywordGenerationDelegate>)delegate
-                    sortOrder:(NSSortDescriptor*)sortOrder
+                       scorer:(id<TrieItemScorer>)scorer
                      maxDepth:(unsigned int)maxDepth
 {
   if ((self = [super init])) {
     mRoot = [[TrieNode alloc] init];
-    mSortOrder = [sortOrder retain];
+    mScorer = [scorer retain];
     mDelegate = delegate;
     mMaxDepth = maxDepth;
   }
@@ -386,7 +388,7 @@
 {
   [self invalidateCachedQuery];
   [mRoot release];
-  [mSortOrder release];
+  [mScorer release];
   [super dealloc];
 }
 
@@ -401,7 +403,7 @@
     if ([key length] == 0)
       continue;
     key = [key prefixWithCharacterCount:mMaxDepth];
-    [mRoot addItem:item withKey:key sortOrder:mSortOrder];
+    [mRoot addItem:item withKey:key scorer:mScorer];
   }
 }
 
