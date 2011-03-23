@@ -40,20 +40,17 @@
 
 #import "Trie.h"
 
-// Generates scores for ranking autocomplete suggestions.
-@interface AutoCompleteScorer : NSObject<TrieScorer> {
-  NSTimeInterval mCachedCurrentTime;
+// Generates keywords for autocomplete suggestions.
+@interface AutoCompleteKeywordGenerator : NSObject<TrieKeywordGenerator> {
+  NSMutableDictionary* mSchemeToPlaceholderMap;  // owned
 }
 
-// TrieScorer implementation.
-- (double)scoreForItem:(id)item;
+// TrieKeywordGenerator implementation.
+- (NSArray*)keywordsForItem:(id)item;
 
-// Sets the current time for use in scoring. This allows callers to optimize
-// repeated calls to scoreForItem: in a tight loop, since finding the current
-// time is relatively expensive.
-- (void)cacheCurrentTime;
-// Clears the cached time, so future calls to scoreForItem: will get the current
-// time internally.
-- (void)clearTimeCache;
+// Returns the set of query terms to use when searching a trie for the given
+// search string. It uses the same word breaking, standardization/substitution,
+// etc. that keywordsForItem: uses.
+- (NSArray*)searchTermsForString:(NSString*)searchString;
 
 @end

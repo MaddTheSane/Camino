@@ -40,11 +40,12 @@
 #import <AppKit/AppKit.h>
 
 #import "HistoryLoadListener.h"
-#import "Trie.h"
 
 @class AsynchronousTrieUpdater;
+@class AutoCompleteKeywordGenerator;
 @class AutoCompleteScorer;
 @class HistoryItem;
+@class Trie;
 
 // Informal protocol for search delegates
 @interface NSObject (AutoCompleteSearchDelegate)
@@ -57,28 +58,25 @@
 // for the location bar autocomplete, and is also the datasource for the table view
 // in the autocomplete popup window.
 //
-@interface AutoCompleteDataSource: NSObject<HistoryLoadListener,
-                                            TrieKeywordGenerationDelegate>
+@interface AutoCompleteDataSource: NSObject<HistoryLoadListener>
 {
-  id                       mDelegate;
+  id                          mDelegate;
 
-  unsigned int             mSearchStringLength;
+  unsigned int                  mSearchStringLength;
 
-  NSMutableArray*          mBookmarkData;              // owned
-  Trie*                    mHistoryTrie;               // owned
-  Trie*                    mBookmarkTrie;              // owned
-  AutoCompleteScorer*      mTrieScorer;                // owned
-  NSMutableArray*          mBookmarkResults;           // owned
-  NSMutableArray*          mHistoryResults;            // owned
-  NSMutableArray*          mResults;                   // owned
-  NSMutableArray*          mHistoryItemsToLoad;        // owned
-  NSMutableArray*          mBookmarksToLoad;           // owned
-  AsynchronousTrieUpdater* mHistoryTrieUpdater;        // owned
-  AsynchronousTrieUpdater* mBookmarkTrieUpdater;       // owned
-  NSMutableDictionary*     mSchemeToPlaceholderMap;    // owned
+  NSMutableArray*               mBookmarkData;            // owned
+  Trie*                         mHistoryTrie;             // owned
+  Trie*                         mBookmarkTrie;            // owned
+  AutoCompleteScorer*           mTrieScorer;              // owned
+  AutoCompleteKeywordGenerator* mKeywordGenerator;        // owned
+  NSMutableArray*               mResults;                 // owned
+  NSMutableArray*               mHistoryItemsToLoad;      // owned
+  NSMutableArray*               mBookmarksToLoad;         // owned
+  AsynchronousTrieUpdater*      mHistoryTrieUpdater;      // owned
+  AsynchronousTrieUpdater*      mBookmarkTrieUpdater;     // owned
 
-  NSImage*                 mGenericSiteIcon;           // owned
-  NSImage*                 mGenericFileIcon;           // owned
+  NSImage*                      mGenericSiteIcon;         // owned
+  NSImage*                      mGenericFileIcon;         // owned
 }
 
 // Returns the single shared autocomplete data source.

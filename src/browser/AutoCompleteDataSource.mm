@@ -43,6 +43,7 @@
 
 #import <AppKit/AppKit.h>
 #import "AutoCompleteDataSource.h"
+#import "AutoCompleteKeywordGenerator.h"
 #import "AutoCompleteScorer.h"
 #import "AutoCompleteResult.h"
 #import "Trie.h"
@@ -324,22 +325,6 @@ enum SourceChangeType {
 - (void)queueBookmarkChangesOfType:(SourceChangeType)type
                             atRoot:(BookmarkItem *)root;
 
-// Generates the trie keywords for the given URL.
-- (NSArray *)keyArrayForURL:(NSString *)url;
-
-// Returns a URL string with the scheme (and '://' or ':') replaced with a
-// unicode character placeholder. See keyArrayForURL for full details.
-// Returns nil if the URL has no scheme (or, if restrictScheme is true, if
-// it doesn't have a scheme that has been seen before).
-- (NSString *)urlStringWithSchemePlaceholder:(NSString *)url
-                    restrictedToKnownSchemes:(BOOL)restrictScheme;
-
-// Returns the unicode placeholder for the given scheme.
-// If scheme doesn't have a placeholder assigned yet, one will be created if
-// |create| is true, or the method will return nil if not.
-- (NSString *)unicodeCharacterForScheme:(NSString*)scheme
-                      createIfNecessary:(BOOL)create;
-
 @end
 
 @implementation AutoCompleteDataSource
@@ -359,15 +344,15 @@ enum SourceChangeType {
     mResults = [[NSMutableArray alloc] init];
     mGenericSiteIcon = [[NSImage imageNamed:@"globe_ico"] retain];
     mGenericFileIcon = [[NSImage imageNamed:@"smallDocument"] retain];
-    mSchemeToPlaceholderMap = [[NSMutableDictionary alloc] init];
 
     mTrieScorer = [[AutoCompleteScorer alloc] init];
-    mBookmarkTrie = [[Trie alloc] initWithKeywordDelegate:self
+    mKeywordGenerator = [[AutoCompleteKeywordGenerator alloc] init];
+    mBookmarkTrie = [[Trie alloc] initWithKeywordGenerator:mKeywordGenerator
+                                                    scorer:mTrieScorer
+                                                  maxDepth:kMaxTrieDepth];
+    mHistoryTrie = [[Trie alloc] initWithKeywordGenerator:mKeywordGenerator
                                                    scorer:mTrieScorer
                                                  maxDepth:kMaxTrieDepth];
-    mHistoryTrie = [[Trie alloc] initWithKeywordDelegate:self
-                                                  scorer:mTrieScorer
-                                                maxDepth:kMaxTrieDepth];
 
     NSNotificationCenter *notificationCenter =
         [NSNotificationCenter defaultCenter];
@@ -397,6 +382,7 @@ enum SourceChangeType {
   [mHistoryTrieUpdater release];
   [mBookmarkTrie release];
   [mHistoryTrie release];
+  [mKeywordGenerator release];
   [mTrieScorer release];
 
   [mResults release];
@@ -404,7 +390,6 @@ enum SourceChangeType {
   [mBookmarksToLoad release];
   [mGenericSiteIcon release];
   [mGenericFileIcon release];
-  [mSchemeToPlaceholderMap release];
   [super dealloc];
 }
 
@@ -666,109 +651,6 @@ enum SourceChangeType {
   [items removeObjectsInRange:NSMakeRange(0, processedCount)];
 }
 
-- (NSArray *)keywordsForObject:(id)object
-{
-  NSMutableArray *keys = [NSMutableArray array];
-  [keys addObjectsFromArray:[[[object valueForKey:@"title"] lowercaseString] componentsSeparatedByString:@" "]];
-  [keys addObjectsFromArray:[self keyArrayForURL:[object valueForKey:@"url"]]];
-  if ([object isKindOfClass:[Bookmark class]] && [[object shortcut] length])
-    [keys addObject:[object shortcut]];
-  return keys;
-}
-
-- (NSArray *)keyArrayForURL:(NSString *)url
-{
-  NSString *lowercaseURL = [url lowercaseString];
-  NSMutableArray *urls = [NSMutableArray array];
-
-  // First, convert the url's scheme, if it has one, to a placeholder unicode
-  // character. This has essentially the same effect as creating a forest of
-  // scheme-specific tries (at the cost of one character of depth in the trie),
-  // without all the update and query complexity of actually using a forest.
-  // This is done because just inserting the raw URL would
-  // a) pollute the search results (e.g., the results for 'h' would be much
-  //    noisier than for most letters), and
-  // b) make all queries starting with a scheme linear, since the whole depth
-  //    of the trie would be used up on the scheme.
-  // If there's no scheme (including if NSURL doesn't consider the URL valid)
-  // insert the whole string).
-  NSString *urlWithSchemePlaceholder =
-      [self urlStringWithSchemePlaceholder:lowercaseURL
-                  restrictedToKnownSchemes:NO];
-  if (urlWithSchemePlaceholder)
-    [urls addObject:urlWithSchemePlaceholder];
-  else
-    [urls addObject:lowercaseURL];
-
-  NSString *host = [[NSURL URLWithString:lowercaseURL] host];
-  if (host) {
-    // If a host is found, we iterate through each domain fragment and add a
-    // copy of the URL beginning with that fragment to the array. This allows
-    // matches to any fragment of the domain. The top level domain should be
-    // ignored since we don't want to match to it. However, currently
-    // we just ignore the final part of the URL after the last dot, so we'll
-    // over-match for two-part TLDs such as co.uk.
-    NSRange rangeOfHost = [lowercaseURL rangeOfString:host];
-    if (rangeOfHost.location == NSNotFound) {
-      // If there's no match, it's probably because |host| is unescaped but
-      // lowercaseURL isn't; try again with an escaped version of the host.
-      NSString* escapedHost =
-          [[host stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
-              lowercaseString];
-      rangeOfHost = [lowercaseURL rangeOfString:escapedHost];
-    }
-    // If we really can't figure out where the host is, just use the host
-    // without the rest of the URL, so it will at least match short
-    // search strings.
-    NSString *restOfURL = rangeOfHost.location != NSNotFound ?
-        [lowercaseURL substringFromIndex:NSMaxRange(rangeOfHost)] : @"";
-    NSRange nextDot;
-    while ((nextDot = [host rangeOfString:@"."]).location != NSNotFound) {
-      [urls addObject:[host stringByAppendingString:restOfURL]];
-      host = [host substringFromIndex:NSMaxRange(nextDot)];
-    }
-  }
-  return urls;
-}
-
-- (NSString *)urlStringWithSchemePlaceholder:(NSString *)url
-                    restrictedToKnownSchemes:(BOOL)restrictScheme;
-{
-  NSURL *nsURL = [NSURL URLWithString:url];
-  NSString *scheme = [nsURL scheme];
-  if (!scheme)
-    return nil;
-  NSMutableString *schemelessURL = [[url mutableCopy] autorelease];
-  [schemelessURL deleteCharactersInRange:NSMakeRange(0, [scheme length])];
-  if ([schemelessURL hasPrefix:@"://"])
-    [schemelessURL deleteCharactersInRange:NSMakeRange(0, 3)];
-  else if ([schemelessURL hasPrefix:@":"])
-    [schemelessURL deleteCharactersInRange:NSMakeRange(0, 1)];
-  else
-    return nil;
-
-  NSString *placeholder = [self unicodeCharacterForScheme:scheme
-                                        createIfNecessary:(!restrictScheme)];
-  if (!placeholder)
-    return nil;
-
-  return [placeholder stringByAppendingString:schemelessURL];
-}
-
-- (NSString *)unicodeCharacterForScheme:(NSString*)scheme
-                      createIfNecessary:(BOOL)create
-{
-  NSString *placeholder = [mSchemeToPlaceholderMap objectForKey:scheme];
-  if (!placeholder && create) {
-    // Each new scheme encountered is given the next available character from
-    // the first Unicode Private Use Area.
-    placeholder = [NSString stringWithFormat:@"%C",
-                      0xE000 + [mSchemeToPlaceholderMap count]];
-    [mSchemeToPlaceholderMap setObject:placeholder forKey:scheme];
-  }
-  return placeholder;
-}
-
 #pragma mark -
 
 - (void)resetSearch
@@ -780,21 +662,7 @@ enum SourceChangeType {
 {
   mDelegate = delegate;
 
-  NSString *lowercaseSearchString = [searchString lowercaseString];
-  NSArray *searchTerms =
-      [lowercaseSearchString componentsSeparatedByString:@" "];
-
-  // If it is likely a URL with a scheme, use the placeholder version.
-  // This uses a conservative heuristic based on whether or not the scheme
-  // actually exists in one of the tries, in order to avoid breaking title
-  // queries containing a ':'.
-  if ([searchTerms count] == 1) {
-    NSString *searchStringWithSchemePlaceholder =
-        [self urlStringWithSchemePlaceholder:lowercaseSearchString
-                    restrictedToKnownSchemes:YES];
-    if (searchStringWithSchemePlaceholder)
-      searchTerms = [NSArray arrayWithObject:searchStringWithSchemePlaceholder];
-  }
+  NSArray *searchTerms = [mKeywordGenerator searchTermsForString:searchString];
 
   // TODO: Make the trie searches asynchronous? That would create the
   // possibility of the results being invalidated during iteration though.

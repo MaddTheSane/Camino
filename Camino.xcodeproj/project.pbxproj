@@ -104,6 +104,8 @@
 		00A29E880BC9AA5B00BF313F /* tab_menu_button.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 00A29E860BC9AA5B00BF313F /* tab_menu_button.tiff */; };
 		00BA5DA6133466BC00C9A8C0 /* AutoCompleteScorer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 00BA5DA5133466BC00C9A8C0 /* AutoCompleteScorer.mm */; };
 		00BA5DA7133466BC00C9A8C0 /* AutoCompleteScorer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 00BA5DA5133466BC00C9A8C0 /* AutoCompleteScorer.mm */; };
+		00BA5EBB1338215C00C9A8C0 /* AutoCompleteKeywordGenerator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 00BA5EBA1338215C00C9A8C0 /* AutoCompleteKeywordGenerator.mm */; };
+		00BA5EBC1338215C00C9A8C0 /* AutoCompleteKeywordGenerator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 00BA5EBA1338215C00C9A8C0 /* AutoCompleteKeywordGenerator.mm */; };
 		00BBBC850D66C13400C2D916 /* CHGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 00BBBC840D66C13400C2D916 /* CHGradient.m */; };
 		00BBBC860D66C13400C2D916 /* CHGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 00BBBC840D66C13400C2D916 /* CHGradient.m */; };
 		00BBBF1E0D6A149900C2D916 /* FindBarTextured.nib in Resources */ = {isa = PBXBuildFile; fileRef = 00BBBF1C0D6A149800C2D916 /* FindBarTextured.nib */; };
@@ -2565,6 +2567,8 @@
 		00A29E860BC9AA5B00BF313F /* tab_menu_button.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = tab_menu_button.tiff; path = resources/images/chrome/tab_menu_button.tiff; sourceTree = SOURCE_ROOT; };
 		00BA5DA4133466BC00C9A8C0 /* AutoCompleteScorer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AutoCompleteScorer.h; path = src/browser/AutoCompleteScorer.h; sourceTree = "<group>"; };
 		00BA5DA5133466BC00C9A8C0 /* AutoCompleteScorer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AutoCompleteScorer.mm; path = src/browser/AutoCompleteScorer.mm; sourceTree = "<group>"; };
+		00BA5EB91338215C00C9A8C0 /* AutoCompleteKeywordGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AutoCompleteKeywordGenerator.h; path = src/browser/AutoCompleteKeywordGenerator.h; sourceTree = "<group>"; };
+		00BA5EBA1338215C00C9A8C0 /* AutoCompleteKeywordGenerator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AutoCompleteKeywordGenerator.mm; path = src/browser/AutoCompleteKeywordGenerator.mm; sourceTree = "<group>"; };
 		00BBBC830D66C13400C2D916 /* CHGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHGradient.h; path = src/extensions/CHGradient.h; sourceTree = "<group>"; };
 		00BBBC840D66C13400C2D916 /* CHGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHGradient.m; path = src/extensions/CHGradient.m; sourceTree = "<group>"; };
 		00BBBF1D0D6A149800C2D916 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = resources/localized/English.lproj/FindBarTextured.nib; sourceTree = "<group>"; };
@@ -5071,6 +5075,8 @@
 				000CE53B121A2E06006B4153 /* Trie.mm */,
 				F52D5CD3027A88C601A80166 /* AutoCompleteDataSource.h */,
 				F52D5CD4027A88C601A80166 /* AutoCompleteDataSource.mm */,
+				00BA5EB91338215C00C9A8C0 /* AutoCompleteKeywordGenerator.h */,
+				00BA5EBA1338215C00C9A8C0 /* AutoCompleteKeywordGenerator.mm */,
 				00BA5DA4133466BC00C9A8C0 /* AutoCompleteScorer.h */,
 				00BA5DA5133466BC00C9A8C0 /* AutoCompleteScorer.mm */,
 				F52D5CCF027A887001A80166 /* AutoCompleteTextField.h */,
@@ -6597,6 +6603,7 @@
 				001E5C1212D24AC9003E82A3 /* LocationBarPartitionView.mm in Sources */,
 				009EE0E412E024C400A8C0AD /* PluginBlocklistService.mm in Sources */,
 				00BA5DA7133466BC00C9A8C0 /* AutoCompleteScorer.mm in Sources */,
+				00BA5EBC1338215C00C9A8C0 /* AutoCompleteKeywordGenerator.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6801,6 +6808,7 @@
 				001E5C1112D24AC9003E82A3 /* LocationBarPartitionView.mm in Sources */,
 				009EE0E512E024C400A8C0AD /* PluginBlocklistService.mm in Sources */,
 				00BA5DA6133466BC00C9A8C0 /* AutoCompleteScorer.mm in Sources */,
+				00BA5EBB1338215C00C9A8C0 /* AutoCompleteKeywordGenerator.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

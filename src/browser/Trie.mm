@@ -61,7 +61,7 @@
 // This is intended to be called on the root node only.
 - (void)addItem:(id)item
         withKey:(NSString*)key
-         scorer:(id<TrieItemScorer>)scorer;
+         scorer:(id<TrieScorer>)scorer;
 
 // Removes an item recursively, starting at this node.
 - (void)removeItem:(id)item;
@@ -84,11 +84,11 @@
 - (void)addItem:(id)item
         withKey:(NSString*)key
       charIndex:(unsigned int)index
-         scorer:(id<TrieItemScorer>)scorer;
+         scorer:(id<TrieScorer>)scorer;
 
 // Stores the given item in this node's item list at the position indicated by
 // scorer.
-- (void)storeItem:(id)item withScorer:(id<TrieItemScorer>)scorer;
+- (void)storeItem:(id)item withScorer:(id<TrieScorer>)scorer;
 
 // Helper for itemsForKey:; if |index| is the end of |key|, returns the item
 // array, otherwise recurses. May return duplicates.
@@ -121,7 +121,7 @@
 
 - (void)addItem:(id)item
         withKey:(NSString*)key
-         scorer:(id<TrieItemScorer>)scorer;
+         scorer:(id<TrieScorer>)scorer;
 {
   [self addItem:item withKey:key charIndex:0 scorer:scorer];
 }
@@ -129,7 +129,7 @@
 - (void)addItem:(id)item
         withKey:(NSString*)key
       charIndex:(unsigned int)index
-         scorer:(id<TrieItemScorer>)scorer;
+         scorer:(id<TrieScorer>)scorer;
 {
   // Don't bother to store at the root node, since "" is an uninteresting query.
   if (index > 0)
@@ -149,7 +149,7 @@
   [node addItem:item withKey:key charIndex:NSMaxRange(charRange) scorer:scorer];
 }
 
-- (void)storeItem:(id)item withScorer:(id<TrieItemScorer>)scorer
+- (void)storeItem:(id)item withScorer:(id<TrieScorer>)scorer
 {
   // Note: we explicitly don't do full duplicate detection here, since it is
   // incredibly expensive. We check for dups where it's easy, but it's not
@@ -226,9 +226,9 @@
 // the validation requirements.
 @interface TrieQueryItemValidator : NSObject
 {
-  NSArray*                          mPotentialMatchLists;
-  NSArray*                          mMatchTerms;
-  id<TrieKeywordGenerationDelegate> mKeywordDelegate;  // weak
+  NSArray*                 mPotentialMatchLists;
+  NSArray*                 mMatchTerms;
+  id<TrieKeywordGenerator> mKeywordGenerator;
 }
 
 // Initializes a validator.
@@ -238,11 +238,11 @@
 //   keywords in order for it to be a match. This should only contain terms
 //   for which |lists| is not sufficient to determine a match, since checking
 //   an item against |terms| requires generating keywords, thus is expensive.
-// - |delegate| is used to generate keywords if necessary. It is not retained.
+// - |keywordGenerator| is used to generate keywords if necessary.
 // |lists| and |terms| may be empty or nil.
 - (id)initWithMatchLists:(NSArray*)lists
                    terms:(NSArray*)terms
-         keywordDelegate:(id<TrieKeywordGenerationDelegate>)delegate;
+        keywordGenerator:(id<TrieKeywordGenerator>)keywordGenerator;
 
 // Returs YES if |item| satisfies this validator.
 - (BOOL)matchesItem:(id)item;
@@ -253,12 +253,12 @@
 
 - (id)initWithMatchLists:(NSArray*)lists
                    terms:(NSArray*)terms
-         keywordDelegate:(id<TrieKeywordGenerationDelegate>)delegate
+        keywordGenerator:(id<TrieKeywordGenerator>)keywordGenerator
 {
   if ((self = [super init])) {
     mPotentialMatchLists = [lists retain];
     mMatchTerms = [terms retain];
-    mKeywordDelegate = delegate;
+    mKeywordGenerator = [keywordGenerator retain];
   }
   return self;
 }
@@ -267,6 +267,7 @@
 {
   [mPotentialMatchLists release];
   [mMatchTerms release];
+  [mKeywordGenerator release];
   [super dealloc];
 }
 
@@ -293,7 +294,7 @@
     return YES;
 
   NSAutoreleasePool* localPool = [[NSAutoreleasePool alloc] init];
-  NSArray* keys = [mKeywordDelegate keywordsForObject:item];
+  NSArray* keys = [mKeywordGenerator keywordsForItem:item];
   NSEnumerator* termEnumerator = [terms objectEnumerator];
   NSString* term;
   BOOL matches = YES;
@@ -371,14 +372,14 @@
 
 @implementation Trie
 
-- (id)initWithKeywordDelegate:(id<TrieKeywordGenerationDelegate>)delegate
-                       scorer:(id<TrieItemScorer>)scorer
-                     maxDepth:(unsigned int)maxDepth
+- (id)initWithKeywordGenerator:(id<TrieKeywordGenerator>)keywordGenerator
+                        scorer:(id<TrieScorer>)scorer
+                      maxDepth:(unsigned int)maxDepth
 {
   if ((self = [super init])) {
     mRoot = [[TrieNode alloc] init];
     mScorer = [scorer retain];
-    mDelegate = delegate;
+    mKeywordGenerator = [keywordGenerator retain];
     mMaxDepth = maxDepth;
   }
   return self;
@@ -389,6 +390,7 @@
   [self invalidateCachedQuery];
   [mRoot release];
   [mScorer release];
+  [mKeywordGenerator release];
   [super dealloc];
 }
 
@@ -396,7 +398,7 @@
 {
   [self invalidateCachedQuery];
 
-  NSArray* keys = [mDelegate keywordsForObject:item];
+  NSArray* keys = [mKeywordGenerator keywordsForItem:item];
   NSEnumerator* keyEnumerator = [keys objectEnumerator];
   NSString* key;
   while ((key = [keyEnumerator nextObject])) {
@@ -460,9 +462,10 @@
   // Create a validator for the query.
   NSArray* termsNeedingValidation = [self termsNeedingExtendedValidation:cleanTerms];
   TrieQueryItemValidator* validator =
-      [[[TrieQueryItemValidator alloc] initWithMatchLists:potentialMatchLists
-                                                    terms:termsNeedingValidation
-                                          keywordDelegate:mDelegate] autorelease];
+      [[[TrieQueryItemValidator alloc]
+          initWithMatchLists:potentialMatchLists
+                       terms:termsNeedingValidation
+            keywordGenerator:mKeywordGenerator] autorelease];
 
   NSMutableArray* matches = [NSMutableArray arrayWithCapacity:limit];
   unsigned int startIndex = 0;

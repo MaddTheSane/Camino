@@ -42,15 +42,15 @@
 @class TrieNode;
 
 // Protocol used by a Trie to generate keywords for an object.
-@protocol TrieKeywordGenerationDelegate
-// Returns the keywords for the given object. This may be called during both
+@protocol TrieKeywordGenerator <NSObject>
+// Returns the keywords for the given item. This may be called during both
 // insertion and searching. For searching to work correctly, it must return
 // the same keywords every time (although order is not important).
-- (NSArray*)keywordsForObject:(id)object;
+- (NSArray*)keywordsForItem:(id)item;
 @end
 
-// Protocol used by a Trie to generate keywords for an object.
-@protocol TrieItemScorer <NSObject>
+// Protocol used by a Trie to generate scores for an object.
+@protocol TrieScorer <NSObject>
 // Returns the score for the given item. The score of an item relative to other
 // items should not change without the item being removed from the trie and
 // re-inserted, but the absolute score can change over time.
@@ -64,8 +64,8 @@
 {
  @private
   TrieNode*                         mRoot;
-  id<TrieItemScorer>                mScorer;
-  id<TrieKeywordGenerationDelegate> mDelegate;  // weak
+  id<TrieScorer>                    mScorer;
+  id<TrieKeywordGenerator>          mKeywordGenerator;
   unsigned int                      mMaxDepth;
 
   // Previous query cache.
@@ -75,15 +75,14 @@
   unsigned int                      mLastCheckedCandidateIndex;
 }
 
-// Initializes a Trie that uses the given keyword generation delegate, and the
-// given sort descriptor to order the results returned by searches.
-// The delegate is not retained.
+// Initializes a Trie that uses the given keyword generation generator to
+// determine query matches, and the scorer to order the results.
 // maxDepth is the maximum depth of the Trie; search terms longer than this
 // depth require expensive validation at search time, so this paramater allows
 // tuning between memory usage and search speed.
-- (id)initWithKeywordDelegate:(id<TrieKeywordGenerationDelegate>)delegate
-                       scorer:(id<TrieItemScorer>)scorer
-                     maxDepth:(unsigned int)maxDepth;
+- (id)initWithKeywordGenerator:(id<TrieKeywordGenerator>)keywordGenerator
+                        scorer:(id<TrieScorer>)scorer
+                      maxDepth:(unsigned int)maxDepth;
 
 // Adds the given item to the trie under all relevent search terms.
 - (void)addItem:(id)item;

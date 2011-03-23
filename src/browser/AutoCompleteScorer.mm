@@ -100,7 +100,6 @@ static double RecencyScoreForLastVisit(NSTimeInterval lastVisitInSeconds)
 - (NSTimeInterval)secondsSince1970;
 @end
 
-
 @implementation AutoCompleteScorer
 
 // TODO: Make a protocol or base class for "persistent site references", and
