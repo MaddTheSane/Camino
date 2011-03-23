@@ -878,8 +878,9 @@ public:
   delete mDataOwner;
   mDataOwner = NULL;
   
-  [[PreferenceManager sharedInstance] removeObserver:self
-                                             forPref:kGeckoPrefAlwaysShowTabBar];
+  [[PreferenceManager sharedInstanceDontCreate]
+      removeObserver:self
+             forPref:kGeckoPrefAlwaysShowTabBar];
       
   // Tell the BrowserTabView the window is closed
   [mTabBrowser windowClosed];

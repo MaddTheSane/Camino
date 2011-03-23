@@ -165,7 +165,7 @@ static NSString *const kBrowserVersionPlaceholder = @"{moz:version}";
   NS_IF_RELEASE(mListManager);
 
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  [[PreferenceManager sharedInstance] removeObserver:self];
+  [[PreferenceManager sharedInstanceDontCreate] removeObserver:self];
 
   [mRegisteredLists release];
   [super dealloc];
