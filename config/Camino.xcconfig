@@ -24,3 +24,7 @@ GCC_TREAT_WARNINGS_AS_ERRORS = YES
 GCC_WARN_SIGN_COMPARE = YES
 WARNING_CFLAGS = -Wall -Wno-four-char-constants
 OTHER_CPLUSPLUSFLAGS = $(OTHER_CPLUSPLUSFLAGS) -Wno-non-virtual-dtor
+
+// Disable stripping of nibs on 10.6 to ensure any 10.6-built release will have
+// localizable nibs.
+IBC_STRIP_NIBS = NO

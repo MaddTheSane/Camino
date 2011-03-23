@@ -47,3 +47,7 @@ STRIPFLAGS = -X
 STRIP_STYLE = none  // Anything other than a recognized value (all, non-global,
                     // debugging) causes Xcode to not pass any flags to strip
                     // on its own.  The only flags passed will be STRIPFLAGS.
+
+// Disable stripping of nibs on 10.6 to ensure any 10.6-built release will have
+// localizable nibs.
+IBC_STRIP_NIBS = NO

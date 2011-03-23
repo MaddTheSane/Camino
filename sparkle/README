@@ -14,3 +14,4 @@ with the following changes:
   Per bug 495620, Sparkle source contains no code from these projects; it merely uses headers from
   these projects that are included as part of Mac OS X system libraries.  Consequently, these
   licenses are superfluous.
+- Setting IBC_STRIP_NIBS = NO in ConfigCommon.xcconfig to fix compilation on 10.6 (and ensure any Camino release built on 10.6 will have localizable nibs).
