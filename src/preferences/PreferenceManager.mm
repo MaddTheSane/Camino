@@ -83,6 +83,7 @@ NSString* const kPrefChangedPrefNameUserInfoKey = @"pref_name";
 
 static NSString* const kAdBlockingCSSFile = @"ad_blocking";
 static NSString* const kAquaSelectCSSFile = @"aquaSelect";
+static NSString* const kHTML5ElementsCSSFile = @"html5elements";
 
 static NSString* const kAdBlockingChangedNotification = @"AdBlockingChanged";
 static NSString* const kFlashblockChangedNotification = @"FlashblockChanged";
@@ -232,8 +233,11 @@ WriteVersion(nsIFile* aProfileDir, const nsACString& aVersion,
 - (void)setFlashblockStyleSheetLoaded:(BOOL)inLoad;
 // Loads/unloads the bundled CSS file with the given name (without extension).
 - (void)setBundledStyleSheet:(NSString*)filename loaded:(BOOL)load;
-// Loads/unloads the given style sheet.
-- (void)setStyleSheet:(nsIURI *)cssFileURI loaded:(BOOL)load;
+// Loads/unloads the given style sheet, with type |type| (one of the values
+// from nsIStyleSheetService).
+- (void)setStyleSheet:(nsIURI *)cssFileURI
+               loaded:(BOOL)load
+             withType:(unsigned long)sheetType;
 - (void)updatePluginEnableState;
 - (BOOL)isFlashblockAllowed;
 
@@ -874,16 +878,13 @@ static BOOL gMadePrefManager;
   [self setAcceptLanguagesPref];
   [self setLocalePref];
 
-  // Load up the default stylesheet. (Is this the best place to do this?)
+  // Load our various style sheets, according to user prefs.
+  [self setBundledStyleSheet:kHTML5ElementsCSSFile loaded:YES];
   if ([self getBooleanPref:kGeckoPrefBlockAds withSuccess:NULL])
     [self setBundledStyleSheet:kAdBlockingCSSFile loaded:YES];
-
-  // Load Flashblock if enabled, and test dependencies to avoid conflicts.
   BOOL flashblockAllowed = [self isFlashblockAllowed];
   if (flashblockAllowed && [self getBooleanPref:kGeckoPrefBlockFlash withSuccess:NULL])
     [self setFlashblockStyleSheetLoaded:YES];
-
-  // Load the stylesheet to force Aqua <select>s.
   if ([self getBooleanPref:kGeckoPrefForceAquaSelects withSuccess:NULL])
     [self setBundledStyleSheet:kAquaSelectCSSFile loaded:YES];
 
@@ -1231,7 +1232,9 @@ typedef enum EProxyConfig {
   if (NS_FAILED(rv))
     return;
 
-  [self setStyleSheet:cssFileURI loaded:inLoad];
+  [self setStyleSheet:cssFileURI
+               loaded:inLoad
+             withType:nsIStyleSheetService::USER_SHEET];
 }
 
 - (void)setBundledStyleSheet:(NSString*)filename loaded:(BOOL)load
@@ -1255,10 +1258,18 @@ typedef enum EProxyConfig {
   if (NS_FAILED(rv))
     return;
 
-  [self setStyleSheet:cssFileURI loaded:load];
+  unsigned long styleSheetType = nsIStyleSheetService::USER_SHEET;
+  if ([filename isEqualToString:kHTML5ElementsCSSFile])
+      styleSheetType = nsIStyleSheetService::AGENT_SHEET;
+
+  [self setStyleSheet:cssFileURI
+               loaded:load
+             withType:styleSheetType];
 }
 
-- (void)setStyleSheet:(nsIURI *)cssFileURI loaded:(BOOL)load
+- (void)setStyleSheet:(nsIURI *)cssFileURI
+               loaded:(BOOL)load
+             withType:(unsigned long)sheetType
 {
   nsCOMPtr<nsIStyleSheetService> ssService =
       do_GetService("@mozilla.org/content/style-sheet-service;1");
@@ -1266,12 +1277,11 @@ typedef enum EProxyConfig {
     return;
 
   PRBool alreadyRegistered = PR_FALSE;
-  ssService->SheetRegistered(cssFileURI, nsIStyleSheetService::USER_SHEET,
-                             &alreadyRegistered);
+  ssService->SheetRegistered(cssFileURI, sheetType, &alreadyRegistered);
   if (!load && alreadyRegistered)
-    ssService->UnregisterSheet(cssFileURI, nsIStyleSheetService::USER_SHEET);
+    ssService->UnregisterSheet(cssFileURI, sheetType);
   else if (load && !alreadyRegistered)
-    ssService->LoadAndRegisterSheet(cssFileURI, nsIStyleSheetService::USER_SHEET);
+    ssService->LoadAndRegisterSheet(cssFileURI, sheetType);
 }
 
 - (void)updatePluginEnableState

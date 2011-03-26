@@ -106,6 +106,8 @@
 		00BA5DA7133466BC00C9A8C0 /* AutoCompleteScorer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 00BA5DA5133466BC00C9A8C0 /* AutoCompleteScorer.mm */; };
 		00BA5EBB1338215C00C9A8C0 /* AutoCompleteKeywordGenerator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 00BA5EBA1338215C00C9A8C0 /* AutoCompleteKeywordGenerator.mm */; };
 		00BA5EBC1338215C00C9A8C0 /* AutoCompleteKeywordGenerator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 00BA5EBA1338215C00C9A8C0 /* AutoCompleteKeywordGenerator.mm */; };
+		00BA5F43133E614C00C9A8C0 /* html5elements.css in Resources */ = {isa = PBXBuildFile; fileRef = 00BA5F40133E612000C9A8C0 /* html5elements.css */; };
+		00BA5F45133E614C00C9A8C0 /* html5elements.css in Resources */ = {isa = PBXBuildFile; fileRef = 00BA5F40133E612000C9A8C0 /* html5elements.css */; };
 		00BBBC850D66C13400C2D916 /* CHGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 00BBBC840D66C13400C2D916 /* CHGradient.m */; };
 		00BBBC860D66C13400C2D916 /* CHGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 00BBBC840D66C13400C2D916 /* CHGradient.m */; };
 		00BBBF1E0D6A149900C2D916 /* FindBarTextured.nib in Resources */ = {isa = PBXBuildFile; fileRef = 00BBBF1C0D6A149800C2D916 /* FindBarTextured.nib */; };
@@ -2569,6 +2571,7 @@
 		00BA5DA5133466BC00C9A8C0 /* AutoCompleteScorer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AutoCompleteScorer.mm; path = src/browser/AutoCompleteScorer.mm; sourceTree = "<group>"; };
 		00BA5EB91338215C00C9A8C0 /* AutoCompleteKeywordGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AutoCompleteKeywordGenerator.h; path = src/browser/AutoCompleteKeywordGenerator.h; sourceTree = "<group>"; };
 		00BA5EBA1338215C00C9A8C0 /* AutoCompleteKeywordGenerator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AutoCompleteKeywordGenerator.mm; path = src/browser/AutoCompleteKeywordGenerator.mm; sourceTree = "<group>"; };
+		00BA5F40133E612000C9A8C0 /* html5elements.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = html5elements.css; path = resources/application/html5elements.css; sourceTree = "<group>"; };
 		00BBBC830D66C13400C2D916 /* CHGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHGradient.h; path = src/extensions/CHGradient.h; sourceTree = "<group>"; };
 		00BBBC840D66C13400C2D916 /* CHGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHGradient.m; path = src/extensions/CHGradient.m; sourceTree = "<group>"; };
 		00BBBF1D0D6A149800C2D916 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = resources/localized/English.lproj/FindBarTextured.nib; sourceTree = "<group>"; };
@@ -3926,10 +3929,11 @@
 				3F22CC1303DF42A200026DCE /* Charset.dict */,
 				C7FF53740D35286800194776 /* WebSearchEngines.plist */,
 				3FFE23520847CB0D00D6CAFC /* ad_blocking.css */,
+				DEE8101D0EFB7D2E006ACC7D /* aquaSelect.css */,
+				00BA5F40133E612000C9A8C0 /* html5elements.css */,
 				1B825D020C5D268600CB4343 /* Camino.sdef */,
 				33E1EA970D358DE200910BBD /* caminosearch.xpt */,
 				DE4044910ED0A96F00057E17 /* Gecko Strings */,
-				DEE8101D0EFB7D2E006ACC7D /* aquaSelect.css */,
 				3D94197F0F559B2F00227277 /* blockedSite.xhtml */,
 				DE59E2F40FA54E6F001F240C /* Crash Reporter InfoPlist.strings Override */,
 				DE1E1E6011752B6300501E5C /* camino_dsa_pub.pem */,
@@ -5964,6 +5968,7 @@
 				DE02574412F28D45003F4B1C /* global.dtd in Resources */,
 				DE02574512F28D45003F4B1C /* config.dtd in Resources */,
 				DE02574912F28D8D003F4B1C /* gecko.manifest in Resources */,
+				00BA5F43133E614C00C9A8C0 /* html5elements.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6193,6 +6198,7 @@
 				DE02573C12F28D45003F4B1C /* global.dtd in Resources */,
 				DE02573D12F28D45003F4B1C /* config.dtd in Resources */,
 				DE02574812F28D8D003F4B1C /* gecko.manifest in Resources */,
+				00BA5F45133E614C00C9A8C0 /* html5elements.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
