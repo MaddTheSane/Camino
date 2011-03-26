@@ -37,12 +37,9 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-#include <unistd.h>
+#import "BookmarkManager.h"
 
-#include "nsString.h"
-#include "nsIContent.h"
-#include "nsIFile.h"
-#include "nsAppDirectoryServiceDefs.h"
+#include <unistd.h>
 
 #import "NSString+Utils.h"
 #import "NSArray+Utils.h"
@@ -53,7 +50,6 @@
 #import "NSMenu+Utils.h"
 
 #import "PreferenceManager.h"
-#import "BookmarkManager.h"
 #import "Bookmark.h"
 #import "BookmarkFolder.h"
 #import "BookmarkToolbar.h"
