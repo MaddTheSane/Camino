@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/ruby -w
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -12,16 +12,15 @@
 # for the specific language governing rights and limitations under the
 # License.
 #
-# The Original Code is generate_update_statistics.sh.
+# The Original Code is generate_update_statistics.
 #
 # The Initial Developer of the Original Code is
-# Samuel Sidler.
-# Portions created by the Initial Developer are Copyright (C) 2008
+# Stuart Morgan
+# Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s):
-#   Samuel Sidler <samuel.sidler@gmail.com> (Original Author)
-#   Smokey Ardisson <alqahira@ardisson.org>
+#   Stuart Morgan <stuart.morgan@alumni.case.edu> (Original Author)
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -37,92 +36,230 @@
 #
 # ***** END LICENSE BLOCK *****
 
-if [ $# -ne 3 ]; then
-  if [ $# -ne 2 ]; then
-    echo "Usage: $0 <date in DD/Mmm format> <caminobrowser.org-ssl_log path>"
-    exit 1
-  fi
-fi
+require 'date'
 
-date="$1"
-if [ $# -eq 2 ]; then
-  file="$2"
-else
-  file="$2 $3"
-fi
-badips="204.234.28.|149.150.236.250|203.42.177.1[6-9]|200.19.92.|189.108.14.138|72.10.105.23|205.202.243.2[3-9]|205.202.243.3[0-9]|205.202.243.4[0-7]|63.245.210.43|204.234.25.253|97.119.20.170|97.119.24.98|149.150.236.189|75.135.19.219"
+# IP addresses to filter out of the logs. For readability, these are
+# string/regex hybrids. The first three octets should just be numbers, and the
+# octet separators will be escaped automatically. The last octet will be
+# treated as a regex (or if blank, as .*).
+$bad_ips = [
+  '63.245.210.43',
+  '72.10.105.23',
+  '75.135.19.219',
+  '97.119.20.170',
+  '97.119.24.98',
+  '149.150.236.189',
+  '149.150.236.250',
+  '189.108.14.138',
+  '200.19.92.',
+  '203.42.177.1[6-9]',
+  '204.234.25.253',
+  '204.234.28.',
+  '205.202.243.2[3-9]',
+  '205.202.243.3.',
+  '205.202.243.4[0-7]',
+]
 
-echo "$date"
+# Keys for the various printed sections. These are listed explicitly, rather
+# than generated dynamically from the data, in order to match the spreadsheet.
+$by_arch_keys = ['x86', 'ppc']
+$by_os_keys = ['10.3', '10.4', '10.5', '10.6']
+$by_version_keys = [
+  '1.6.11', '1.6.10', '1.6.9', '1.6.8', '1.6.7', '1.6.6', '1.6.5', '1.6.4',
+  '1.6.3', '1.6.2', '1.6.1', '1.6', 
+  '2.0.7', '2.0.6', '2.0.5', '2.0.4', '2.0.3', '2.0.2', '2.0.1', '2.0',
+  '2.0b4', '2.0b3', '2.0b2', '2.0b1', '2.0a1',
+  '2.1a1'
+]
+$by_version_and_os_keys = [
+  ['1.6', $by_os_keys],
+  ['2.0', $by_os_keys[1..-1]],
+  ['2.1', $by_os_keys[1..-1]],
+]
+# The major version to print language counts for
+$language_count_version = "2.0"
 
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep -c " /update-check?os="
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -c "x86"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -c "ppc"
+def main
+  if ARGV.length < 2
+    puts "Usage: #{$0} <date> <caminobrowser.org-ssl_log path> " +
+         "[ <caminobrowser.org-ssl_log path> ...]"
+    exit
+  end
 
-echo "=================="
-echo "By OS"
-# Only run the greps once to generate the OS and Version/OS numbers, and then echo them in the appropriate locations to match the spreadsheet.
-cm16_pan=`grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=10\.3" | grep -E -c "version=1\.6"`
-cm16_tig=`grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=10\.4" | grep -E -c "version=1\.6"`
-cm16_lep=`grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=10\.5" | grep -E -c "version=1\.6"`
-cm16_snl=`grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=10\.6" | grep -E -c "version=1\.6"`
-cm20_tig=`grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=10\.4" | grep -E -c "version=2\.0"`
-cm20_lep=`grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=10\.5" | grep -E -c "version=2\.0"`
-cm20_snl=`grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=10\.6" | grep -E -c "version=2\.0"`
-cm21_tig=`grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=10\.4" | grep -E -c "version=2\.1"`
-cm21_lep=`grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=10\.5" | grep -E -c "version=2\.1"`
-cm21_snl=`grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=10\.6" | grep -E -c "version=2\.1"`
-# Do math to derive the OS numbers across all versions; this saves us 3 formulas/day in the spreadsheet.
-echo $cm16_pan
-echo `expr $cm16_tig "+" $cm20_tig "+" $cm21_tig`
-echo `expr $cm16_lep "+" $cm20_lep "+" $cm21_lep`
-echo `expr $cm16_snl "+" $cm20_snl "+" $cm21_snl`
+  date = ARGV[0]
+  # TODO: This is a temporary compatibility measure with the old script.
+  # Once any scripts depending on this have changed, the year will become
+  # part of the input and output.
+  date_key = "#{date}/2011"
 
-echo "=================="
-echo "By Version"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "1\.6\.11(I|\&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "1\.6\.10(I|\&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "1\.6\.9(I|\&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "1\.6\.8(I|\&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "1\.6\.7(I|\&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "1\.6\.6(I|&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "1\.6\.5(I|&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "1\.6\.4(I|&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "1\.6\.3(I|&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "1\.6\.2(I|&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "1\.6\.1(I|&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "1\.6(I|&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "2\.0\.7(I|&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "2\.0\.6(I|&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "2\.0\.5(I|&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "2\.0\.4(I|&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "2\.0\.3(I|&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "2\.0\.2(I|&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "2\.0\.1(I|&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "2\.0(I|&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "2\.0b4(I|&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "2\.0b3(I|&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "2\.0b2(I|&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "2\.0b1(I|&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "2\.0a1(I|&)"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep -E -c "2\.1a1(I|&)"
+  log_paths = ARGV[1..-1]
+  pings = load_files(log_paths)
+  pings.reject! {|ping| ping.from_bad_ip_address }
 
-echo "=================="
-echo "By Version and OS"
-echo $cm16_pan
-echo $cm16_tig
-echo $cm16_lep
-echo $cm16_snl
-echo $cm20_tig
-echo $cm20_lep
-echo $cm20_snl
-echo $cm21_tig
-echo $cm21_lep
-echo $cm21_snl
+  pings_by_date = partition_pings_by_attribute(pings, :date_str)
+  # TODO: We can easily generate data for all dates at once, once clients
+  # of the script expect that.
+  print_spreadsheet_stats(date, pings_by_date[date_key])
+end
 
-# echo "=================="
-# echo "1.6 l10n"
-# grep "$date" $file | grep -Ev "$badips" | grep " /update-check?os=" | grep "version=1\.6" | grep "lang=" | cut -d " " -f 7 | cut -d "&" -f 5 | sort | uniq -c
+# Returns an array of ping data extracted from the given files.
+def load_files(files)
+  pings = []
+  files.each do |file|
+    File.foreach(file) do |line|
+      next unless UpdatePing.request_is_update_ping(line)
+      ping = UpdatePing.new(line)
+      pings.push(ping)
+    end
+  end
+  return pings
+end
 
-echo "=================="
-echo "2.0 l10n"
-grep "$date" $file | grep -Ev "$badips" | grep "Sparkle/" | grep " /update-check?os=" | grep "version=2\.0" | grep "lang=" | cut -d " " -f 7 | cut -d "&" -f 5 | sort | uniq -c
+def print_spreadsheet_stats(date, pings)
+  arch_count = {}
+  os_and_version_count = {}
+  version_count = {}
+  version_lang_count = {}
+  pings.each do |ping|
+    arch_count[ping.arch] ||= 0
+    arch_count[ping.arch] += 1
+    os_and_version_count[ping.major_os] ||= {}
+    os_and_version_count[ping.major_os][ping.major_version] ||= 0
+    os_and_version_count[ping.major_os][ping.major_version] += 1
+    version_count[ping.version] ||= 0
+    version_count[ping.version] += 1
+    version_lang_count[ping.major_version] ||= {}
+    version_lang_count[ping.major_version][ping.lang] ||= 0
+    version_lang_count[ping.major_version][ping.lang] += 1
+  end
+  puts date
+  puts pings.count
+  $by_arch_keys.each do |arch|
+    puts arch_count[arch]
+  end
+  print_heading("By OS")
+  $by_os_keys.each do |os|
+    puts os_and_version_count[os].values.sum
+  end
+  print_heading("By Version")
+  $by_version_keys.each do |version|
+    puts version_count[version]
+  end
+  print_heading("By Version and OS")
+  $by_version_and_os_keys.each do |keys|
+    major_version = keys[0]
+    keys[1].each do |os|
+      puts os_and_version_count[os][major_version]
+    end
+  end
+  print_heading("#{$language_count_version} l10n")
+  language_counts = version_lang_count[$language_count_version]
+  language_counts.keys.sort.each do |lang|
+    puts "#{language_counts[lang]} lang=#{lang}"
+  end
+end
+
+# Prints a section heading
+def print_heading(heading)
+  puts "=================="
+  puts heading
+end
+
+# Prints the ping counts by OS+arch pair.
+# TODO: Expose this as a flag; its currently unused.
+def print_os_arch_counts(pings)
+  arch_os_count = {}
+  pings.each do |ping|
+    key = "#{ping.major_os}-#{ping.arch}"
+    arch_os_count[key] ||= 0
+    arch_os_count[key] += 1
+  end
+  arch_os_count.keys.sort.reverse.each do |key|
+    puts "#{key} : #{arch_os_count[key]}"
+  end
+end
+
+# Given an array of pings and a ping attribute, returns a hash mapping each
+# unique value of the attribute to the pings with that value.
+def partition_pings_by_attribute(pings, attribute)
+  partitions = {}
+  pings.each do |ping|
+    key = ping.send attribute
+    partitions[key] ||= []
+    partitions[key].push(ping)
+  end
+  return partitions
+end
+
+# Creates and returns the regex to use for testing for bad IP addresses.
+def create_bad_ip_regex
+  bad_ip_patterns = $bad_ips.collect {|ip|
+    octets = ip.split('.', 4)
+    octets[3] = '.*' if octets[3].empty?
+    octets.join('\.')
+  }
+  return Regexp.compile("^(#{ bad_ip_patterns.join('|') })$")
+end
+
+
+# A object representing a specific update ping.
+class UpdatePing
+  attr_accessor :ip, :date_str, :os, :arch, :version, :intl, :lang
+
+  # Regex for parsing an upadate request log line, which looks like:
+  # 12.34.56.789 - - [21/Mar/2011:01:46:46 -0700] "GET /update-check?os=10.6.6&arch=x86&version=2.0.6&intl=1&lang=es HTTP/1.1" 200 1135 "-" "Camino/2.0.6 Sparkle/1.5"
+  @@ping_parsing_regex = Regexp.compile('(^[\d.]+).*?\[([^:]+):.*?os=([^&]+)&arch=([^&]+)&version=([^&I]+)(?:I[^&]*)?&intl=(\d)(?:&lang=([\w]+))?')
+
+  # Regex for testing whether a request is for the update ping URL.
+  @@ping_test_regex = Regexp.compile('GET /update-check.*Sparkle')
+
+  # Regex for testing whether an IP should be filtered out.
+  @@bad_ip_regex = create_bad_ip_regex()
+
+  def initialize(log_line)
+    match = @@ping_parsing_regex.match(log_line)
+    if (!match)
+      # Treat parse failures as fatal, so regex mistakes are caught.
+      puts "Error: unparseable ping: '#{log_line.chomp}'"
+      exit
+    end
+    @ip = match[1]
+    # Using Date objects makes parsing several orders of magnitude more
+    # expensive, so just work with strings instead.
+    @date_str = match[2]
+    @os = match[3]
+    @arch = match[4]
+    @version = match[5]
+    @intl = match[6] == '1'
+    @lang = match[7] || 'en'
+  end
+
+  def self.request_is_update_ping(log_line)
+    return !@@ping_test_regex.match(log_line).nil?
+  end
+
+  # Returns just the major OS version (e.g., 10.5)
+  def major_os
+    @major_os ||= @os.split('.')[0..1].join('.')
+    return @major_os
+  end
+
+  # Returns just the major Camino version (e.g., 2.1)
+  def major_version
+    @major_version ||= @version.split(/[.abp]/)[0..1].join('.')
+    return @major_version
+  end
+
+  # Returns true if the ping is from a bad IP address
+  def from_bad_ip_address
+    return @@bad_ip_regex.match(@ip)
+  end
+end
+
+class Array
+  def sum
+    inject(0) { |sum, value| sum + value }
+  end
+end
+
+main
