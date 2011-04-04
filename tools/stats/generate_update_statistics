@@ -81,25 +81,25 @@ $language_count_version = "2.0"
 
 def main
   if ARGV.length < 2
-    puts "Usage: #{$0} <date> <caminobrowser.org-ssl_log path> " +
+    puts "Usage: #{$0} <date>[,<date>] <caminobrowser.org-ssl_log path> " +
          "[ <caminobrowser.org-ssl_log path> ...]"
     exit
   end
 
-  date = ARGV[0]
-  # TODO: This is a temporary compatibility measure with the old script.
-  # Once any scripts depending on this have changed, the year will become
-  # part of the input and output.
-  date_key = "#{date}/2011"
+  date_range = ARGV[0].split(',')
+  start_date = Date.parse(date_range[0])
+  end_date = Date.parse(date_range[-1])
 
   log_paths = ARGV[1..-1]
   pings = load_files(log_paths)
   pings.reject! {|ping| ping.from_bad_ip_address }
 
   pings_by_date = partition_pings_by_attribute(pings, :date_str)
-  # TODO: We can easily generate data for all dates at once, once clients
-  # of the script expect that.
-  print_spreadsheet_stats(date, pings_by_date[date_key])
+
+  (start_date..end_date).each do |date|
+    print_date_heading(date)
+    print_spreadsheet_stats(pings_by_date[date.date_str])
+  end
 end
 
 # Returns an array of ping data extracted from the given files.
@@ -115,7 +115,7 @@ def load_files(files)
   return pings
 end
 
-def print_spreadsheet_stats(date, pings)
+def print_spreadsheet_stats(pings)
   arch_count = {}
   os_and_version_count = {}
   version_count = {}
@@ -132,7 +132,6 @@ def print_spreadsheet_stats(date, pings)
     version_lang_count[ping.major_version][ping.lang] ||= 0
     version_lang_count[ping.major_version][ping.lang] += 1
   end
-  puts date
   puts pings.count
   $by_arch_keys.each do |arch|
     puts arch_count[arch]
@@ -157,6 +156,13 @@ def print_spreadsheet_stats(date, pings)
   language_counts.keys.sort.each do |lang|
     puts "#{language_counts[lang]} lang=#{lang}"
   end
+end
+
+# Prints a date heading
+def print_date_heading(date)
+  puts "\n===================================="
+  puts date.strftime
+  puts "===================================="
 end
 
 # Prints a section heading
@@ -199,6 +205,14 @@ def create_bad_ip_regex
     octets.join('\.')
   }
   return Regexp.compile("^(#{ bad_ip_patterns.join('|') })$")
+end
+
+class Date
+  # Returns a string representation of the given date that matches an
+  # UpdatePing's date_str attribute.
+  def date_str
+    return strftime("%d/%b/%Y")
+  end
 end
 
 
