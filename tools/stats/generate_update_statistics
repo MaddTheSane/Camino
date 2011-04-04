@@ -132,7 +132,7 @@ def print_spreadsheet_stats(pings)
     version_lang_count[ping.major_version][ping.lang] ||= 0
     version_lang_count[ping.major_version][ping.lang] += 1
   end
-  puts pings.count
+  puts pings.length
   $by_arch_keys.each do |arch|
     puts arch_count[arch]
   end
