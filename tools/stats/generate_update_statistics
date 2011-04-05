@@ -69,7 +69,7 @@ $by_version_keys = [
   '1.6.3', '1.6.2', '1.6.1', '1.6', 
   '2.0.7', '2.0.6', '2.0.5', '2.0.4', '2.0.3', '2.0.2', '2.0.1', '2.0',
   '2.0b4', '2.0b3', '2.0b2', '2.0b1', '2.0a1',
-  '2.1a1'
+  '2.1a1',
 ]
 $by_version_and_os_keys = [
   ['1.6', $by_os_keys],
@@ -132,23 +132,23 @@ def print_spreadsheet_stats(pings)
     version_lang_count[ping.major_version][ping.lang] ||= 0
     version_lang_count[ping.major_version][ping.lang] += 1
   end
-  puts pings.length
+  print_count(pings.length)
   $by_arch_keys.each do |arch|
-    puts arch_count[arch]
+    print_count(arch_count[arch])
   end
   print_heading("By OS")
   $by_os_keys.each do |os|
-    puts os_and_version_count[os].values.sum
+    print_count(os_and_version_count[os].values.sum)
   end
   print_heading("By Version")
   $by_version_keys.each do |version|
-    puts version_count[version]
+    print_count(version_count[version])
   end
   print_heading("By Version and OS")
   $by_version_and_os_keys.each do |keys|
     major_version = keys[0]
     keys[1].each do |os|
-      puts os_and_version_count[os][major_version]
+      print_count(os_and_version_count[os][major_version])
     end
   end
   print_heading("#{$language_count_version} l10n")
@@ -169,6 +169,11 @@ end
 def print_heading(heading)
   puts "=================="
   puts heading
+end
+
+# Prints a count, handling nil values correctly.
+def print_count(count)
+  puts count || 0
 end
 
 # Prints the ping counts by OS+arch pair.
