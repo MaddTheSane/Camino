@@ -63,18 +63,18 @@ $bad_ips = [
 # Keys for the various printed sections. These are listed explicitly, rather
 # than generated dynamically from the data, in order to match the spreadsheet.
 $by_arch_keys = ['x86', 'ppc']
-$by_os_keys = ['10.3', '10.4', '10.5', '10.6']
+$by_os_keys = ['10.6', '10.5', '10.4', '10.3']
 $by_version_keys = [
-  '1.6.11', '1.6.10', '1.6.9', '1.6.8', '1.6.7', '1.6.6', '1.6.5', '1.6.4',
-  '1.6.3', '1.6.2', '1.6.1', '1.6', 
+  '2.1a1',
   '2.0.7', '2.0.6', '2.0.5', '2.0.4', '2.0.3', '2.0.2', '2.0.1', '2.0',
   '2.0b4', '2.0b3', '2.0b2', '2.0b1', '2.0a1',
-  '2.1a1',
+  '1.6.11', '1.6.10', '1.6.9', '1.6.8', '1.6.7', '1.6.6', '1.6.5', '1.6.4',
+  '1.6.3', '1.6.2', '1.6.1', '1.6', 
 ]
 $by_version_and_os_keys = [
+  ['2.1', $by_os_keys[0..-2]],
+  ['2.0', $by_os_keys[0..-2]],
   ['1.6', $by_os_keys],
-  ['2.0', $by_os_keys[1..-1]],
-  ['2.1', $by_os_keys[1..-1]],
 ]
 # The major version to print language counts for
 $language_count_version = "2.0"
