@@ -37,6 +37,7 @@
 # ***** END LICENSE BLOCK *****
 
 require 'date'
+require 'set'
 
 # IP addresses to filter out of the logs. For readability, these are
 # string/regex hybrids. The first three octets should just be numbers, and the
@@ -80,20 +81,46 @@ $by_version_and_os_keys = [
 $language_count_version = "2.0"
 
 def main
-  if ARGV.length < 2
-    puts "Usage: #{$0} <date>[,<date>] <caminobrowser.org-ssl_log path> " +
-         "[ <caminobrowser.org-ssl_log path> ...]"
-    exit
+  print_usage if ARGV.length < 1
+  command = ARGV.shift
+  if (command == 'counts')
+    handle_command_counts(ARGV)
+  elsif (command == 'dump-ips')
+    handle_command_dump_ips(ARGV)
+  else
+    print_usage
   end
+end
 
-  date_range = ARGV[0].split(',')
+# Print usage info and then exit
+def print_usage
+  program = File.basename($0)
+  puts <<EOF
+Usage:"
+  #{program} counts <date>[,<date>] <caminobrowser.org-ssl_log path>
+        [ <caminobrowser.org-ssl_log path> ...]
+    Generates ping count to add to the tracking spreadsheet. If given one date,
+    data is generated for only that date; if two, data is generated for all
+    dates in that range (inclusive).
+
+  #{program} dump-ips <threshold> <caminobrowser.org-ssl_log path>
+        [ <caminobrowser.org-ssl_log path> ...]
+    Lists all IPs that aren't already blacklisted and have more than |threshold|
+    pings in a day, in descending order of the max number of pings, along with
+    the ping counts for each day in the log files.
+EOF
+  exit
+end
+
+# Handle the top-level 'counts' command.
+def handle_command_counts(arguments)
+  print_usage if arguments.length < 2
+
+  date_range = arguments.shift.split(',')
   start_date = Date.parse(date_range[0])
   end_date = Date.parse(date_range[-1])
 
-  log_paths = ARGV[1..-1]
-  pings = load_files(log_paths)
-  pings.reject! {|ping| ping.from_bad_ip_address }
-
+  pings = load_filtered_pings(arguments)
   pings_by_date = partition_pings_by_attribute(pings, :date_str)
 
   (start_date..end_date).each do |date|
@@ -102,37 +129,43 @@ def main
   end
 end
 
-# Returns an array of ping data extracted from the given files.
-def load_files(files)
-  pings = []
-  files.each do |file|
-    File.foreach(file) do |line|
-      next unless UpdatePing.request_is_update_ping(line)
-      ping = UpdatePing.new(line)
-      pings.push(ping)
-    end
+# Handle the top-level 'dump-ips' command.
+def handle_command_dump_ips(arguments)
+  print_usage if arguments.length < 2
+  threshold = Integer(arguments.shift)
+  pings = load_filtered_pings(arguments)
+  counts = count_pings_by_attribute_pair(pings, :ip, :date_str)
+
+  dates = Set.new
+  counts.values.each do |date_hash|
+    dates.merge(date_hash.keys)
   end
-  return pings
+  dates = dates.map {|date_str| Date.parse(date_str) }.sort
+  print_table_line(nil, dates.map {|date| date.strftime("%m/%d") })
+
+  counts.keys.sort_by {|ip| counts[ip].values.max }.reverse.each do |ip|
+    daily_pings = counts[ip]
+    break if counts[ip].values.max < threshold
+    print_table_line(ip, dates.map {|date| daily_pings[date.date_str] || 0 })
+  end
+end
+
+# Prints one line of a table.
+def print_table_line(row_label, cells)
+  print row_label ? (row_label.rjust(15) + " |") : (" " * 17)
+  cells.each {|cell| print cell.to_s.rjust(7) }
+  print "\n"
 end
 
 def print_spreadsheet_stats(pings)
-  arch_count = {}
-  os_and_version_count = {}
-  version_count = {}
-  version_lang_count = {}
-  pings.each do |ping|
-    arch_count[ping.arch] ||= 0
-    arch_count[ping.arch] += 1
-    os_and_version_count[ping.major_os] ||= {}
-    os_and_version_count[ping.major_os][ping.major_version] ||= 0
-    os_and_version_count[ping.major_os][ping.major_version] += 1
-    version_count[ping.version] ||= 0
-    version_count[ping.version] += 1
-    version_lang_count[ping.major_version] ||= {}
-    version_lang_count[ping.major_version][ping.lang] ||= 0
-    version_lang_count[ping.major_version][ping.lang] += 1
-  end
-  print_count(pings.length)
+  arch_count = count_pings_by_attribute(pings, :arch)
+  version_count = count_pings_by_attribute(pings, :version)
+  os_and_version_count = count_pings_by_attribute_pair(pings, :major_os,
+                                                       :major_version)
+  version_lang_count = count_pings_by_attribute_pair(pings, :major_version,
+                                                     :lang)
+
+  puts pings.length
   $by_arch_keys.each do |arch|
     print_count(arch_count[arch])
   end
@@ -176,6 +209,26 @@ def print_count(count)
   puts count || 0
 end
 
+# Returns a array of pings extracted from the given files, with pings from bad
+# IPs removed.
+def load_filtered_pings(files)
+  pings = load_files(files)
+  pings.reject! {|ping| ping.from_bad_ip_address }
+end
+
+# Returns an array of ping data extracted from the given files.
+def load_files(files)
+  pings = []
+  files.each do |file|
+    File.foreach(file) do |line|
+      next unless UpdatePing.request_is_update_ping(line)
+      ping = UpdatePing.new(line)
+      pings.push(ping)
+    end
+  end
+  return pings
+end
+
 # Prints the ping counts by OS+arch pair.
 # TODO: Expose this as a flag; its currently unused.
 def print_os_arch_counts(pings)
@@ -191,7 +244,7 @@ def print_os_arch_counts(pings)
 end
 
 # Given an array of pings and a ping attribute, returns a hash mapping each
-# unique value of the attribute to the pings with that value.
+# unique value of the attribute to an array of pings with that value.
 def partition_pings_by_attribute(pings, attribute)
   partitions = {}
   pings.each do |ping|
@@ -200,6 +253,32 @@ def partition_pings_by_attribute(pings, attribute)
     partitions[key].push(ping)
   end
   return partitions
+end
+
+# Given an array of pings and a ping attribute, returns a hash mapping each
+# unique value of the attribute to the number of pings with that value
+def count_pings_by_attribute(pings, attribute)
+  counts = {}
+  pings.each do |ping|
+    key = ping.send attribute
+    counts[key] ||= 0
+    counts[key] += 1
+  end
+  return counts
+end
+
+# Given an array of pings and two ping attributes, returns a two-dimensional
+# hash of the counts of pings matching both attributes.
+def count_pings_by_attribute_pair(pings, attribute, subattribute)
+  counts = {}
+  pings.each do |ping|
+    key1 = ping.send attribute
+    key2 = ping.send subattribute
+    counts[key1] ||= {}
+    counts[key1][key2] ||= 0
+    counts[key1][key2] += 1
+  end
+  return counts
 end
 
 # Creates and returns the regex to use for testing for bad IP addresses.
