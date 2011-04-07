@@ -77,6 +77,13 @@ $by_version_and_os_keys = [
   ['2.0', $by_os_keys[0..-2]],
   ['1.6', $by_os_keys],
 ]
+$by_language_keys = [
+  # Official languages
+  'da', 'de', 'en', 'es', 'fr', 'it', 'ja', 'nb', 'nl', 'pl', 'ru', 'sl', 'sv',
+  'tr_TR', 'zh_CN',
+  # Other languages that have shown up in pings
+  'en-GB', 'ko', 'fi', 'zh_TW',
+]
 # The major version to print language counts for
 $language_count_version = "2.0"
 
@@ -124,8 +131,7 @@ def handle_command_counts(arguments)
   pings_by_date = partition_pings_by_attribute(pings, :date_str)
 
   (start_date..end_date).each do |date|
-    print_date_heading(date)
-    print_spreadsheet_stats(pings_by_date[date.date_str])
+    print_spreadsheet_count_line(date, pings_by_date[date.date_str])
   end
 end
 
@@ -157,38 +163,39 @@ def print_table_line(row_label, cells)
   print "\n"
 end
 
-def print_spreadsheet_stats(pings)
+def print_spreadsheet_count_line(date, pings)
   arch_count = count_pings_by_attribute(pings, :arch)
   version_count = count_pings_by_attribute(pings, :version)
   os_and_version_count = count_pings_by_attribute_pair(pings, :major_os,
                                                        :major_version)
   version_lang_count = count_pings_by_attribute_pair(pings, :major_version,
                                                      :lang)
+  cells = []
+  cells.push date.weekday_letter
+  cells.push date.strftime("%m/%d/%y")
 
-  puts pings.length
+  cells.push pings.length
   $by_arch_keys.each do |arch|
-    print_count(arch_count[arch])
+    cells.push Integer(arch_count[arch])
   end
-  print_heading("By OS")
   $by_os_keys.each do |os|
-    print_count(os_and_version_count[os].values.sum)
+    cells.push Integer(os_and_version_count[os].values.sum)
   end
-  print_heading("By Version")
   $by_version_keys.each do |version|
-    print_count(version_count[version])
+    cells.push Integer(version_count[version])
   end
-  print_heading("By Version and OS")
   $by_version_and_os_keys.each do |keys|
     major_version = keys[0]
     keys[1].each do |os|
-      print_count(os_and_version_count[os][major_version])
+      cells.push Integer(os_and_version_count[os][major_version])
     end
   end
-  print_heading("#{$language_count_version} l10n")
   language_counts = version_lang_count[$language_count_version]
-  language_counts.keys.sort.each do |lang|
-    puts "#{language_counts[lang]} lang=#{lang}"
+  $by_language_keys.each do |lang|
+    cells.push Integer(language_counts[lang])
   end
+
+  puts cells.join("\t")
 end
 
 # Prints a date heading
@@ -202,11 +209,6 @@ end
 def print_heading(heading)
   puts "=================="
   puts heading
-end
-
-# Prints a count, handling nil values correctly.
-def print_count(count)
-  puts count || 0
 end
 
 # Returns a array of pings extracted from the given files, with pings from bad
@@ -296,6 +298,11 @@ class Date
   # UpdatePing's date_str attribute.
   def date_str
     return strftime("%d/%b/%Y")
+  end
+
+  # Returns the first letter of the weekday
+  def weekday_letter
+    return strftime("%a")[0..0]
   end
 end
 
