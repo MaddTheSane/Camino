@@ -70,7 +70,7 @@ $by_version_keys = [
   '2.0.7', '2.0.6', '2.0.5', '2.0.4', '2.0.3', '2.0.2', '2.0.1', '2.0',
   '2.0b4', '2.0b3', '2.0b2', '2.0b1', '2.0a1',
   '1.6.11', '1.6.10', '1.6.9', '1.6.8', '1.6.7', '1.6.6', '1.6.5', '1.6.4',
-  '1.6.3', '1.6.2', '1.6.1', '1.6', 
+  '1.6.3', '1.6.2', '1.6.1', '1.6',
 ]
 $by_version_and_os_keys = [
   ['2.1', $by_os_keys[0..-2]],
@@ -87,11 +87,16 @@ $by_language_keys = [
 # The major version to print language counts for
 $language_count_version = "2.0"
 
+# The major version of the current release
+$latest_major_version = "2.0"
+
 def main
   print_usage if ARGV.length < 1
   command = ARGV.shift
   if (command == 'counts')
     handle_command_counts(ARGV)
+  elsif (command == 'pretty-print')
+    handle_command_pretty_print(ARGV)
   elsif (command == 'dump-ips')
     handle_command_dump_ips(ARGV)
   else
@@ -106,9 +111,14 @@ def print_usage
 Usage:"
   #{program} counts <date>[,<date>] <caminobrowser.org-ssl_log path>
         [ <caminobrowser.org-ssl_log path> ...]
-    Generates ping count to add to the tracking spreadsheet. If given one date,
-    data is generated for only that date; if two, data is generated for all
-    dates in that range (inclusive).
+    Generates ping counts to paste into the tracking spreadsheet. If given one
+    date, data is generated for only that date; if two, data is generated for
+    all dates in that range (inclusive).
+
+  #{program} pretty-print <date> <caminobrowser.org-ssl_log path>
+        [ <caminobrowser.org-ssl_log path> ...]
+    Generates a human-readable overview of the ping breakdown for the given
+    date.
 
   #{program} dump-ips <threshold> <caminobrowser.org-ssl_log path>
         [ <caminobrowser.org-ssl_log path> ...]
@@ -135,6 +145,18 @@ def handle_command_counts(arguments)
   end
 end
 
+# Handle the top-level 'pretty-print' command.
+def handle_command_pretty_print(arguments)
+  print_usage if arguments.length < 2
+
+  date = Date.parse(arguments.shift)
+
+  pings = load_filtered_pings(arguments)
+  pings_by_date = partition_pings_by_attribute(pings, :date_str)
+
+  print_overview_tables(pings_by_date[date.date_str])
+end
+
 # Handle the top-level 'dump-ips' command.
 def handle_command_dump_ips(arguments)
   print_usage if arguments.length < 2
@@ -147,22 +169,69 @@ def handle_command_dump_ips(arguments)
     dates.merge(date_hash.keys)
   end
   dates = dates.map {|date_str| Date.parse(date_str) }.sort
-  print_table_line(nil, dates.map {|date| date.strftime("%m/%d") })
+  label_width = 15
+  print_table_row(nil, label_width, dates.map {|date| date.strftime("%m/%d") })
 
   counts.keys.sort_by {|ip| counts[ip].values.max }.reverse.each do |ip|
     daily_pings = counts[ip]
     break if counts[ip].values.max < threshold
-    print_table_line(ip, dates.map {|date| daily_pings[date.date_str] || 0 })
+    print_table_row(ip, label_width,
+                    dates.map {|date| daily_pings[date.date_str] || 0 })
   end
 end
 
+# Given a hash of counts, prints a list of percentages.
+def print_percentage_list(counts)
+  total = counts.values.sum
+  labels = counts.keys.sort
+  label_width = labels.map {|key| key.length}.max
+  labels.each do |key|
+    percent = formatted_percent(counts[key], total)
+    print_table_row(key, label_width, percent)
+  end
+end
+
+# Given a two-dimensional hash of counts, prints a table of percentages.
+def print_percentage_table(counts)
+  total = counts.values.inject(0) {|sum, row| sum + row.values.sum }
+  row_keys = counts.keys.sort
+  column_keys = column_keys_for_breakdown(counts)
+  label_width = row_keys.map {|key| key.length}.max
+  print_table_row(nil, label_width, column_keys)
+  row_keys.each do |row_key|
+    row = counts[row_key]
+    percents = column_keys.map {|key| formatted_percent(row[key], total) }
+    percents.push("| " + formatted_percent(row.values.sum, total).rjust(4))
+    print_table_row(row_key, label_width, percents)
+  end
+  column_sums = column_keys.collect {|key| column_sum(counts, key) }
+  print_table_row(nil, label_width,
+                  column_sums.map {|sum| formatted_percent(sum, total) })
+end
+
 # Prints one line of a table.
-def print_table_line(row_label, cells)
-  print row_label ? (row_label.rjust(15) + " |") : (" " * 17)
+def print_table_row(row_label, label_width, cells)
+  print row_label ? (row_label.rjust(label_width) + " |") :
+                    (" " * (label_width + 2))
   cells.each {|cell| print cell.to_s.rjust(7) }
   print "\n"
 end
 
+# Given a two-dimensional hash, returns a sorted column label list.
+# TODO: take a sorting block.
+def column_keys_for_breakdown(hash)
+  columns = Set.new
+  hash.values.each {|row| columns.merge(row.keys) }
+  return columns.to_a.sort
+end
+
+# Given a two-dimensional hash of numbers, returns the sum of the column with
+# the given key
+def column_sum(hash, key)
+  return hash.values.inject(0) {|sum, row| sum + (row[key] || 0) }
+end
+
+# Prints a tracking-spreadsheet line for the given pings.
 def print_spreadsheet_count_line(date, pings)
   arch_count = count_pings_by_attribute(pings, :arch)
   version_count = count_pings_by_attribute(pings, :version)
@@ -198,17 +267,36 @@ def print_spreadsheet_count_line(date, pings)
   puts cells.join("\t")
 end
 
-# Prints a date heading
-def print_date_heading(date)
-  puts "\n===================================="
-  puts date.strftime
-  puts "===================================="
+# Prints human-readable tables with various ping breakdowns
+def print_overview_tables(pings)
+  print_heading("Arch vs OS")
+  arch_by_os = count_pings_by_attribute_pair(pings, :major_os, :arch)
+  print_percentage_table(arch_by_os)
+
+  print_heading("Arch vs Version")
+  arch_by_version = count_pings_by_attribute_pair(pings, :major_version, :arch)
+  print_percentage_table(arch_by_version)
+
+  print_heading("Version vs OS")
+  version_by_os = count_pings_by_attribute_pair(pings, :major_os,
+                                                :major_version)
+  print_percentage_table(version_by_os)
+
+  print_heading("#{$latest_major_version} Languages")
+  lang_by_version = count_pings_by_attribute_pair(pings, :major_version, :lang)
+  print_percentage_list(lang_by_version[$latest_major_version])
 end
 
 # Prints a section heading
 def print_heading(heading)
-  puts "=================="
-  puts heading
+  separator = "=================="
+  puts ['', separator, heading, separator].join("\n")
+end
+
+# Returns a formatted percent string for the given ratio. Returns an empty
+# string if |count| is nil.
+def formatted_percent(count, total)
+  return count ? sprintf("%.0f%%", 100.0 * count / total) : ''
 end
 
 # Returns a array of pings extracted from the given files, with pings from bad
