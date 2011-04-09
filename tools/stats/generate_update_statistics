@@ -248,7 +248,8 @@ def print_spreadsheet_count_line(date, pings)
     cells.push Integer(arch_count[arch])
   end
   $by_os_keys.each do |os|
-    cells.push Integer(os_and_version_count[os].values.sum)
+    os_counts = os_and_version_count[os]
+    cells.push os_counts ? Integer(os_counts.values.sum) : 0
   end
   $by_version_keys.each do |version|
     cells.push Integer(version_count[version])
@@ -256,7 +257,8 @@ def print_spreadsheet_count_line(date, pings)
   $by_version_and_os_keys.each do |keys|
     major_version = keys[0]
     keys[1].each do |os|
-      cells.push Integer(os_and_version_count[os][major_version])
+      os_counts = os_and_version_count[os]
+      cells.push os_counts ? Integer(os_counts[major_version]) : 0
     end
   end
   language_counts = version_lang_count[$language_count_version]
