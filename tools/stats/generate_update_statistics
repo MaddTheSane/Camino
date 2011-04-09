@@ -65,6 +65,7 @@ $bad_ips = [
 # than generated dynamically from the data, in order to match the spreadsheet.
 $by_arch_keys = ['x86', 'ppc']
 $by_os_keys = ['10.6', '10.5', '10.4', '10.3']
+$by_major_version_keys = ['2.1', '2.0', '1.6']
 $by_version_keys = [
   '2.1a1',
   '2.0.7', '2.0.6', '2.0.5', '2.0.4', '2.0.3', '2.0.2', '2.0.1', '2.0',
@@ -72,11 +73,11 @@ $by_version_keys = [
   '1.6.11', '1.6.10', '1.6.9', '1.6.8', '1.6.7', '1.6.6', '1.6.5', '1.6.4',
   '1.6.3', '1.6.2', '1.6.1', '1.6',
 ]
-$by_version_and_os_keys = [
-  ['2.1', $by_os_keys[0..-2]],
-  ['2.0', $by_os_keys[0..-2]],
-  ['1.6', $by_os_keys],
-]
+$os_keys_for_version = {
+  '2.1' => $by_os_keys[0..-2],
+  '2.0' => $by_os_keys[0..-2],
+  '1.6' => $by_os_keys,
+}
 $by_language_keys = [
   # Official languages
   'da', 'de', 'en', 'es', 'fr', 'it', 'ja', 'nb', 'nl', 'pl', 'ru', 'sl', 'sv',
@@ -95,6 +96,8 @@ def main
   command = ARGV.shift
   if (command == 'counts')
     handle_command_counts(ARGV)
+  elsif (command == 'percents')
+    handle_command_percents(ARGV)
   elsif (command == 'pretty-print')
     handle_command_pretty_print(ARGV)
   elsif (command == 'dump-ips')
@@ -111,9 +114,11 @@ def print_usage
 Usage:"
   #{program} counts <date>[,<date>] <caminobrowser.org-ssl_log path>
         [ <caminobrowser.org-ssl_log path> ...]
-    Generates ping counts to paste into the tracking spreadsheet. If given one
-    date, data is generated for only that date; if two, data is generated for
-    all dates in that range (inclusive).
+  #{program} percents <date>[,<date>] <caminobrowser.org-ssl_log path>
+        [ <caminobrowser.org-ssl_log path> ...]
+    Generates ping data to paste into the appropriate sheet of the tracking
+    spreadsheet. If given one date, data is generated for only that date; if
+    two, data is generated for all dates in that range (inclusive).
 
   #{program} pretty-print <date> <caminobrowser.org-ssl_log path>
         [ <caminobrowser.org-ssl_log path> ...]
@@ -131,17 +136,28 @@ end
 
 # Handle the top-level 'counts' command.
 def handle_command_counts(arguments)
-  print_usage if arguments.length < 2
+  load_and_process_by_date(arguments[1..-1], arguments[0]) {|date, pings|
+    print_spreadsheet_count_line(date, pings)
+  }
+end
 
-  date_range = arguments.shift.split(',')
-  start_date = Date.parse(date_range[0])
-  end_date = Date.parse(date_range[-1])
+# Handle the top-level 'percents' command.
+def handle_command_percents(arguments)
+  load_and_process_by_date(arguments[1..-1], arguments[0]) {|date, pings|
+    print_spreadsheet_percent_line(date, pings)
+  }
+end
 
-  pings = load_filtered_pings(arguments)
-  pings_by_date = partition_pings_by_attribute(pings, :date_str)
+# Shared implementation for commands that take a date specifier and file list
+# and process the pings by day.
+def load_and_process_by_date(files, date_spec, &block)
+  print_usage unless date_spec and !files.empty?
 
-  (start_date..end_date).each do |date|
-    print_spreadsheet_count_line(date, pings_by_date[date.date_str])
+  date_range = date_range_for_argument(date_spec)
+  pings_by_date = load_filtered_pings_by_date(files)
+
+  date_range.each do |date|
+    block.call(date, pings_by_date[date.date_str])
   end
 end
 
@@ -151,8 +167,7 @@ def handle_command_pretty_print(arguments)
 
   date = Date.parse(arguments.shift)
 
-  pings = load_filtered_pings(arguments)
-  pings_by_date = partition_pings_by_attribute(pings, :date_str)
+  pings_by_date = load_filtered_pings_by_date(arguments)
 
   print_overview_tables(pings_by_date[date.date_str])
 end
@@ -186,7 +201,7 @@ def print_percentage_list(counts)
   labels = counts.keys.sort
   label_width = labels.map {|key| key.length}.max
   labels.each do |key|
-    percent = formatted_percent(counts[key], total)
+    percent = short_percent(counts[key], total)
     print_table_row(key, label_width, percent)
   end
 end
@@ -200,13 +215,13 @@ def print_percentage_table(counts)
   print_table_row(nil, label_width, column_keys)
   row_keys.each do |row_key|
     row = counts[row_key]
-    percents = column_keys.map {|key| formatted_percent(row[key], total) }
-    percents.push("| " + formatted_percent(row.values.sum, total).rjust(4))
+    percents = column_keys.map {|key| short_percent(row[key], total) }
+    percents.push("| " + short_percent(row.values.sum, total).rjust(4))
     print_table_row(row_key, label_width, percents)
   end
   column_sums = column_keys.collect {|key| column_sum(counts, key) }
   print_table_row(nil, label_width,
-                  column_sums.map {|sum| formatted_percent(sum, total) })
+                  column_sums.map {|sum| short_percent(sum, total) })
 end
 
 # Prints one line of a table.
@@ -254,9 +269,8 @@ def print_spreadsheet_count_line(date, pings)
   $by_version_keys.each do |version|
     cells.push Integer(version_count[version])
   end
-  $by_version_and_os_keys.each do |keys|
-    major_version = keys[0]
-    keys[1].each do |os|
+  $by_major_version_keys.each do |major_version|
+    $os_keys_for_version[major_version].each do |os|
       os_counts = os_and_version_count[os]
       cells.push os_counts ? Integer(os_counts[major_version]) : 0
     end
@@ -264,6 +278,60 @@ def print_spreadsheet_count_line(date, pings)
   language_counts = version_lang_count[$language_count_version]
   $by_language_keys.each do |lang|
     cells.push Integer(language_counts[lang])
+  end
+
+  puts cells.join("\t")
+end
+
+def print_spreadsheet_percent_line(date, pings)
+  arch_count = count_pings_by_attribute(pings, :arch)
+  major_version_count = count_pings_by_attribute(pings, :major_version)
+  version_count = count_pings_by_attribute(pings, :version)
+  os_and_version_count = count_pings_by_attribute_pair(pings, :major_os,
+                                                       :major_version)
+  version_lang_count = count_pings_by_attribute_pair(pings, :major_version,
+                                                     :lang)
+  cells = []
+  cells.push date.weekday_letter
+  cells.push date.strftime("%m/%d/%y")
+
+  total = pings.length
+  cells.push total
+  $by_major_version_keys.each do |version|
+    cells.push long_percent(major_version_count[version], total)
+  end
+  $by_arch_keys.each do |arch|
+    cells.push long_percent(arch_count[arch], total)
+  end
+  $by_version_keys.each do |version|
+    major_version_total = major_version_count[major_version_component(version)]
+    cells.push long_percent(version_count[version], major_version_total)
+  end
+  $by_major_version_keys.each do |major_version|
+    version_total = column_sum(os_and_version_count, major_version)
+    $os_keys_for_version[major_version].each do |os|
+      os_counts = os_and_version_count[os]
+      cells.push long_percent(os_counts && os_counts[major_version],
+                              version_total)
+    end
+  end
+  $by_os_keys.each do |os|
+    next if os == '10.3'  # Everyone is on 1.6, so this isn't interesting.
+    os_counts = os_and_version_count[os]
+    os_total = os_counts ? os_counts.values.sum : 1
+    $by_major_version_keys.each do |major_version|
+      next unless ($os_keys_for_version[major_version].include?(os))
+      cells.push long_percent(os_counts && os_counts[major_version], os_total)
+    end
+  end
+  $by_os_keys.each do |os|
+    os_counts = os_and_version_count[os]
+    cells.push long_percent(os_counts && os_counts.values.sum, total)
+  end
+  language_counts = version_lang_count[$language_count_version]
+  language_total = language_counts.values.sum
+  $by_language_keys.each do |lang|
+    cells.push long_percent(language_counts[lang], language_total)
   end
 
   puts cells.join("\t")
@@ -295,10 +363,32 @@ def print_heading(heading)
   puts ['', separator, heading, separator].join("\n")
 end
 
-# Returns a formatted percent string for the given ratio. Returns an empty
-# string if |count| is nil.
-def formatted_percent(count, total)
+# Returns a formatted percent string for the given ratio rounded to the nearest
+# percent. Returns an empty string if |count| is nil.
+def short_percent(count, total)
   return count ? sprintf("%.0f%%", 100.0 * count / total) : ''
+end
+
+# Returns a formatted percent string for the given ratio rounded to the nearest
+# hundredth of a percent. Returns an empty string if |count| is nil.
+def long_percent(count, total)
+  return count ? sprintf("%.2f%%", 100.0 * count / total) : ''
+end
+
+# Returns the date range corresponding to the given date argument.
+def date_range_for_argument(arg)
+  date_range = arg.split(',')
+  start_date = Date.parse(date_range[0])
+  end_date = Date.parse(date_range[-1])
+  return (start_date..end_date)
+end
+
+# Loads pings from the given files, removes the pings from bad IPs, and returns
+# a hash of date strings to the pings from those dates.
+# IPs removed.
+def load_filtered_pings_by_date(files)
+  pings = load_filtered_pings(files)
+  return partition_pings_by_attribute(pings, :date_str)
 end
 
 # Returns a array of pings extracted from the given files, with pings from bad
@@ -383,6 +473,11 @@ def create_bad_ip_regex
   return Regexp.compile("^(#{ bad_ip_patterns.join('|') })$")
 end
 
+# Returns the major version for the given full version (e.g., 2.0 for 2.0.7)
+def major_version_component(version)
+  return version.split(/[.abp]/)[0..1].join('.')
+end
+
 class Date
   # Returns a string representation of the given date that matches an
   # UpdatePing's date_str attribute.
@@ -435,13 +530,13 @@ class UpdatePing
 
   # Returns just the major OS version (e.g., 10.5)
   def major_os
-    @major_os ||= @os.split('.')[0..1].join('.')
+    @major_os ||= major_version_component(@os)
     return @major_os
   end
 
   # Returns just the major Camino version (e.g., 2.1)
   def major_version
-    @major_version ||= @version.split(/[.abp]/)[0..1].join('.')
+    @major_version ||= major_version_component(@version)
     return @major_version
   end
 
