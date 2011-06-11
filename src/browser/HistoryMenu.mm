@@ -285,7 +285,7 @@ static const unsigned int kMaxTitleLength = 50;
                                      keyEquivalent:@""] autorelease];
       [newItem setImage:[curChild iconAllowingLoad:NO]];
 
-      HistorySubmenu* newSubmenu = [[HistorySubmenu alloc] initWithTitle:itemTitle];
+      HistorySubmenu* newSubmenu = [[[HistorySubmenu alloc] initWithTitle:itemTitle] autorelease];
       [newSubmenu setRootHistoryItem:curChild];
       [newItem setSubmenu:newSubmenu];
 
