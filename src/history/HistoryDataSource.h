@@ -40,7 +40,7 @@
 
 #import <AppKit/AppKit.h>
 
-#import "HistoryLoadListener.h";
+#import "HistoryLoadListener.h"
 
 @class HistorySiteItem;
 

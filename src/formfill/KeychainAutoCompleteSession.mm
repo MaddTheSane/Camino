@@ -44,8 +44,8 @@
 #include "nsIDocument.h"
 #include "nsIDOMDocument.h"
 #include "nsIDOMEvent.h"
-#include "nsIDOMEventTarget.h";
-#include "nsIDOMHTMLInputElement.h";
+#include "nsIDOMEventTarget.h"
+#include "nsIDOMHTMLInputElement.h"
 
 static BOOL FindPasswordField(nsIDOMHTMLInputElement* inUsername, nsIDOMHTMLInputElement** outPassword);
 

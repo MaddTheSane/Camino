@@ -69,7 +69,7 @@
 
 #import "CHDownloadProgressDisplay.h"
 #import "FileChangeWatcher.h"
-#import "ProgressViewController.h"; // For DownloadSelectionBehavior enum
+#import "ProgressViewController.h"  // For DownloadSelectionBehavior enum
 
 //
 // interface ProgressDlgController

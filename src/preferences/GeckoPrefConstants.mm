@@ -36,7 +36,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-#import "GeckoPrefConstants.h";
+#import "GeckoPrefConstants.h"
 
 #import "nsIBrowserDOMWindow.h"
 
