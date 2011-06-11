@@ -1758,7 +1758,7 @@ typedef enum EProxyConfig {
 {
   NSString* urlClassifierDB = [[self profilePath] stringByAppendingPathComponent:@"urlclassifier3.sqlite"];
   NSFileManager* fileMgr = [NSFileManager defaultManager];
-  if ([fileMgr fileExistsAtPath:urlClassifierDB]);
+  if ([fileMgr fileExistsAtPath:urlClassifierDB])
     [fileMgr removeFileAtPath:urlClassifierDB handler:nil];
 }
 
