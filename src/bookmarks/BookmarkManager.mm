@@ -1571,7 +1571,7 @@ static BookmarkManager* gBookmarkManager = nil;
   // If somehow we imported nothing, return an empty folder.
   if (!topImportFolder) {
     NSString* title = NSLocalizedString(@"Imported Bookmarks", nil);
-    topImportFolder = [BookmarkFolder bookmarkFolderWithTitle:title];
+    topImportFolder = [[BookmarkFolder bookmarkFolderWithTitle:title] retain];
   }
 
   [self stopSuppressingChangeNotifications];
