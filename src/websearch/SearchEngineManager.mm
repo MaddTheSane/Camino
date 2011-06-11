@@ -361,7 +361,8 @@ static NSString *const kPreferredSearchEngineNameKey = @"PreferredSearchEngine";
 - (void)renameSearchEngineAtIndex:(unsigned)index to:(NSString *)newEngineName
 {
   if (index >= [mInstalledSearchEngines count] || !newEngineName) {
-    NSLog(@"Cannot rename search engine at index: %u (engine doesn't exist)");
+    NSLog(@"Cannot rename search engine at index: %u (engine doesn't exist)",
+          index);
     return;
   }
 
@@ -395,7 +396,8 @@ static NSString *const kPreferredSearchEngineNameKey = @"PreferredSearchEngine";
       [mInstalledSearchEngines replaceObjectAtIndex:currentIndex withObject:[NSNull null]];
     }
     else {
-      NSLog(@"Cannot move search engine at index: %u (engine doesn't exist)");
+      NSLog(@"Cannot move search engine at index: %u (engine doesn't exist)",
+            currentIndex);
     }
     currentIndex = [indexes indexGreaterThanIndex:currentIndex];
   }
