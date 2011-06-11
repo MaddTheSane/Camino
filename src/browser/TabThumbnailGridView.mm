@@ -146,6 +146,9 @@ const int kHorizontalPadding = 25;
   // First make a self-contained tab loop.
   NSArray* thumbViews = [self subviews];
   unsigned int thumbViewCount = [thumbViews count];
+  if (thumbViewCount == 0)
+    return;
+
   for (unsigned int i = 0; i < thumbViewCount ; i++) {
     unsigned int nextThumbIndex = (i + 1) % thumbViewCount;
     ThumbnailView* thumbView = [thumbViews objectAtIndex:i];
