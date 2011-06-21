@@ -2,12 +2,13 @@
 /* #    Those strings are inserted into an HTML page, so you all HTML characters */
 /* #    have to be escaped in a way that they show up correctly in HTML! */
 
-"title_label" = "About Plugins";
-"installedplugins_label" = "Installed plugins";
-"nopluginsareinstalled_label" = "No plugins are installed";
-"findmore_label" = "Find more information about browser plugins at";
-"installhelp_label" = "Help for installing plugins is available from";
-"filename_label" = "File name:";
+"title_label" = "About Plug-Ins";
+"installedplugins_label" = "Installed Plug-Ins";
+"nopluginsareinstalled_label" = "No plug-ins are installed";
+"findmore_label" = "Find more information about browser plug-ins at";
+"installhelp_label" = "Help for installing plug-ins is available from";
+"file_label" = "File:";
+"version_label" = "Version:";
 "mimetype_label" = "MIME Type";
 "description_label" = "Description";
 "suffixes_label" = "Suffixes";

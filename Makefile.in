@@ -185,6 +185,7 @@ GECKO_STRINGS_FILES = \
 	resources/localized/English.lproj/global_locale_layout_xmlparser_properties.strings \
 	resources/localized/English.lproj/global_locale_plugins_properties.strings \
 	resources/localized/English.lproj/global_locale_prompts_properties.strings \
+	resources/localized/English.lproj/global_locale_svg_svg_properties.strings \
 	resources/localized/English.lproj/global_locale_xslt_xslt_properties.strings \
 	resources/localized/English.lproj/necko_locale_necko_properties.strings \
 	resources/localized/English.lproj/pipnss_locale_nsserrors_properties.strings \

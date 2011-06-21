@@ -1194,6 +1194,8 @@
 		DE963D1E0D43EFCF007D44EE /* FormFillPopup.mm in Sources */ = {isa = PBXBuildFile; fileRef = DE963D120D43EFCF007D44EE /* FormFillPopup.mm */; };
 		DE963D1F0D43EFCF007D44EE /* FormFillController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DE963D130D43EFCF007D44EE /* FormFillController.mm */; };
 		DE963D200D43EFCF007D44EE /* KeychainAutoCompleteSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = DE963D150D43EFCF007D44EE /* KeychainAutoCompleteSession.mm */; settings = {COMPILER_FLAGS = "-DNO_NSPR_10_SUPPORT"; }; };
+		DE9D593B13ADBFF400B25DAF /* global_locale_svg_svg_properties.strings in Resources */ = {isa = PBXBuildFile; fileRef = DE9D593913ADBFF400B25DAF /* global_locale_svg_svg_properties.strings */; };
+		DE9D593C13ADBFF400B25DAF /* global_locale_svg_svg_properties.strings in Resources */ = {isa = PBXBuildFile; fileRef = DE9D593913ADBFF400B25DAF /* global_locale_svg_svg_properties.strings */; };
 		DEA5484A0A251FA900186C93 /* GeckoUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEA548490A251FA900186C93 /* GeckoUtils.cpp */; };
 		DEA5484B0A251FA900186C93 /* GeckoUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEA548490A251FA900186C93 /* GeckoUtils.cpp */; };
 		DEB608CA0CAF0964006C34F1 /* throbber-00.tiff in Resources */ = {isa = PBXBuildFile; fileRef = DEB608C90CAF0964006C34F1 /* throbber-00.tiff */; };
@@ -3028,6 +3030,7 @@
 		DE963D160D43EFCF007D44EE /* FormFillPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FormFillPopup.h; path = src/formfill/FormFillPopup.h; sourceTree = SOURCE_ROOT; };
 		DE963D170D43EFCF007D44EE /* FormFillController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FormFillController.h; path = src/formfill/FormFillController.h; sourceTree = SOURCE_ROOT; };
 		DE963D180D43EFCF007D44EE /* AutoCompleteUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AutoCompleteUtils.h; path = src/formfill/AutoCompleteUtils.h; sourceTree = SOURCE_ROOT; };
+		DE9D593A13ADBFF400B25DAF /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = generated/resources/localized/English.lproj/global_locale_svg_svg_properties.strings; sourceTree = "<group>"; };
 		DEA548490A251FA900186C93 /* GeckoUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = GeckoUtils.cpp; path = src/extensions/GeckoUtils.cpp; sourceTree = SOURCE_ROOT; };
 		DEB608C90CAF0964006C34F1 /* throbber-00.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "throbber-00.tiff"; path = "resources/images/throbber/throbber-00.tiff"; sourceTree = SOURCE_ROOT; };
 		DEB968140B0D8DF70023F8B1 /* KeychainItem.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = KeychainItem.m; path = src/formfill/KeychainItem.m; sourceTree = "<group>"; };
@@ -4436,6 +4439,7 @@
 				DE4044360ED09D1E00057E17 /* global_locale_appstrings_properties.strings */,
 				DE4044380ED09D1E00057E17 /* global-platform_locale_intl_properties.strings */,
 				DE4044420ED09D1E00057E17 /* global_locale_xslt_xslt_properties.strings */,
+				DE9D593913ADBFF400B25DAF /* global_locale_svg_svg_properties.strings */,
 				DE02572612F28D45003F4B1C /* typeaheadfind.properties */,
 				DE02572812F28D45003F4B1C /* caps.properties */,
 				DE02572A12F28D45003F4B1C /* prettyprint.dtd */,
@@ -5951,6 +5955,7 @@
 				DE4044880ED09D1E00057E17 /* global-platform_locale_intl_properties.strings in Resources */,
 				DE40448D0ED09D1E00057E17 /* global_locale_xslt_xslt_properties.strings in Resources */,
 				DEC180780F9EA96A001E43F1 /* global_locale_crashes_properties.strings in Resources */,
+				DE9D593C13ADBFF400B25DAF /* global_locale_svg_svg_properties.strings in Resources */,
 				000D0A9C0ED9BD8100A6C2F0 /* tabOverview.tiff in Resources */,
 				DEE8101E0EFB7D2E006ACC7D /* aquaSelect.css in Resources */,
 				3D9419800F559B2F00227277 /* blockedSite.xhtml in Resources */,
@@ -6181,6 +6186,7 @@
 				DE4044640ED09D1E00057E17 /* global-platform_locale_intl_properties.strings in Resources */,
 				DE4044690ED09D1E00057E17 /* global_locale_xslt_xslt_properties.strings in Resources */,
 				DEC180790F9EA96A001E43F1 /* global_locale_crashes_properties.strings in Resources */,
+				DE9D593B13ADBFF400B25DAF /* global_locale_svg_svg_properties.strings in Resources */,
 				000D0A9D0ED9BD8100A6C2F0 /* tabOverview.tiff in Resources */,
 				DEE8101F0EFB7D2E006ACC7D /* aquaSelect.css in Resources */,
 				3D9419810F559B2F00227277 /* blockedSite.xhtml in Resources */,
@@ -7447,6 +7453,14 @@
 				DE74F7610AB2612700FD1D5B /* English */,
 			);
 			name = OpenFeed.nib;
+			sourceTree = SOURCE_ROOT;
+		};
+		DE9D593913ADBFF400B25DAF /* global_locale_svg_svg_properties.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DE9D593A13ADBFF400B25DAF /* English */,
+			);
+			name = global_locale_svg_svg_properties.strings;
 			sourceTree = SOURCE_ROOT;
 		};
 		DEC180760F9EA96A001E43F1 /* global_locale_crashes_properties.strings */ = {
