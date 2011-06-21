@@ -172,6 +172,7 @@
 "DownloadErrorMsgFmt" = "There was an error downloading the file “%@”";
 "DownloadErrorNoDiskSpaceOnVolumeFmt" = "The download failed because the volume “%@” has run out of disk space.";
 "DownloadErrorDestinationWriteProtectedFmt" = "The download failed because you do not have write permissions in the destination folder “%@”.";
+"DownloadErrorHTMLCompleteFolderIsFileFmt" = "Camino cannot create the folder “%1$@” because a file with the same name already exists in “%2$@”.";
 "DownloadErrorOther" = "The download failed. Check your network connectivity and the download folder, and try again.";
 
 /* Keychain items */

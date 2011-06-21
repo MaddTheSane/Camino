@@ -638,6 +638,7 @@ static id gSharedProgressController = nil;
 
   NSString* errorMsg = [NSString stringWithFormat:errorMsgFmt, fileName];
 
+  // Handy list of status to name mappings: https://developer.mozilla.org/en/Table_Of_Errors#File_Errors
   switch (inStatus)
   {
     case NS_ERROR_FILE_DISK_FULL:
@@ -653,6 +654,19 @@ static id gSharedProgressController = nil;
         NSString* fmtString = NSLocalizedString(@"DownloadErrorDestinationWriteProtectedFmt", @"");
         NSString* destDirPath = [destFilePath stringByDeletingLastPathComponent];
         errorExplString = [NSString stringWithFormat:fmtString, [destDirPath displayNameOfLastPathComponent]];
+      }
+      break;
+
+    // There's an existing file with the same name as the to-be-created
+    // HTML Complete "Files" folder; see bug 314803 comment 22 et seq.
+    case NS_ERROR_FILE_ALREADY_EXISTS:
+      {
+        NSString* fmtString = NSLocalizedString(@"DownloadErrorHTMLCompleteFolderIsFileFmt", nil);
+        NSString* destDirPath = [destFilePath stringByDeletingLastPathComponent];
+        NSString* htmlCompleteFolderName = [NSString stringWithFormat:NSLocalizedString(@"HTMLCompleteFolderSuffixString", nil),
+                                                [fileName stringByDeletingPathExtension]];
+        errorExplString = [NSString stringWithFormat:fmtString, htmlCompleteFolderName, destDirPath];
+        NSLog(@"Download failure code: %X", inStatus);
       }
       break;
 
