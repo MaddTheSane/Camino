@@ -630,7 +630,7 @@ static id gSharedProgressController = nil;
 
 -(void)showErrorSheetForDownload:(id <CHDownloadProgressDisplay>)progressDisplay withStatus:(nsresult)inStatus
 {
-  NSString* errorMsgFmt = NSLocalizedString(@"DownloadErrorMsgFmt", @"");
+  NSString* errorMsgFmt = NSLocalizedString(@"DownloadErrorMsgFmt", nil);
   NSString* errorExplString = nil;
 
   NSString* destFilePath = [progressDisplay destinationPath];
@@ -644,14 +644,14 @@ static id gSharedProgressController = nil;
     case NS_ERROR_FILE_DISK_FULL:
     case NS_ERROR_FILE_NO_DEVICE_SPACE:
       {
-        NSString* fmtString = NSLocalizedString(@"DownloadErrorNoDiskSpaceOnVolumeFmt", @"");
+        NSString* fmtString = NSLocalizedString(@"DownloadErrorNoDiskSpaceOnVolumeFmt", nil);
         errorExplString = [NSString stringWithFormat:fmtString, [destFilePath volumeNamePathComponent]];
       }
       break;
 
     case NS_ERROR_FILE_ACCESS_DENIED:
       {
-        NSString* fmtString = NSLocalizedString(@"DownloadErrorDestinationWriteProtectedFmt", @"");
+        NSString* fmtString = NSLocalizedString(@"DownloadErrorDestinationWriteProtectedFmt", nil);
         NSString* destDirPath = [destFilePath stringByDeletingLastPathComponent];
         errorExplString = [NSString stringWithFormat:fmtString, [destDirPath displayNameOfLastPathComponent]];
       }
@@ -674,7 +674,7 @@ static id gSharedProgressController = nil;
     case NS_ERROR_FILE_READ_ONLY:
     default:
       {
-        errorExplString = NSLocalizedString(@"DownloadErrorOther", @"");
+        errorExplString = NSLocalizedString(@"DownloadErrorOther", nil);
         NSLog(@"Download failure code: %X", inStatus);
       }
       break;
