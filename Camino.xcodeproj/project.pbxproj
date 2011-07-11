@@ -1059,6 +1059,12 @@
 		C7FF537F0D3528B700194776 /* SearchEngineEditor.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7FF537B0D3528B700194776 /* SearchEngineEditor.mm */; };
 		C7FF53810D3528B700194776 /* SearchEngineManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7FF53790D3528B700194776 /* SearchEngineManager.mm */; };
 		C7FF53830D3528B700194776 /* SearchEngineEditor.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7FF537B0D3528B700194776 /* SearchEngineEditor.mm */; };
+		DE014A40131244B500817077 /* ad_blocking_loader.css in Resources */ = {isa = PBXBuildFile; fileRef = DE014A3F131244B500817077 /* ad_blocking_loader.css */; };
+		DE014A41131244B500817077 /* ad_blocking_loader.css in Resources */ = {isa = PBXBuildFile; fileRef = DE014A3F131244B500817077 /* ad_blocking_loader.css */; };
+		DE014A441312450000817077 /* user_ad_blocking.css in Copy Profile Defaults */ = {isa = PBXBuildFile; fileRef = DE014A421312450000817077 /* user_ad_blocking.css */; };
+		DE014A451312450000817077 /* profile.manifest in Copy Profile Defaults */ = {isa = PBXBuildFile; fileRef = DE014A431312450000817077 /* profile.manifest */; };
+		DE014A461312450000817077 /* user_ad_blocking.css in Copy Profile Defaults */ = {isa = PBXBuildFile; fileRef = DE014A421312450000817077 /* user_ad_blocking.css */; };
+		DE014A471312450000817077 /* profile.manifest in Copy Profile Defaults */ = {isa = PBXBuildFile; fileRef = DE014A431312450000817077 /* profile.manifest */; };
 		DE02573612F28D45003F4B1C /* typeaheadfind.properties in Resources */ = {isa = PBXBuildFile; fileRef = DE02572612F28D45003F4B1C /* typeaheadfind.properties */; };
 		DE02573712F28D45003F4B1C /* caps.properties in Resources */ = {isa = PBXBuildFile; fileRef = DE02572812F28D45003F4B1C /* caps.properties */; };
 		DE02573812F28D45003F4B1C /* prettyprint.dtd in Resources */ = {isa = PBXBuildFile; fileRef = DE02572A12F28D45003F4B1C /* prettyprint.dtd */; };
@@ -1723,6 +1729,8 @@
 			dstSubfolderSpec = 6;
 			files = (
 				0098B20D0CAEC6D500DA0F2F /* mimeTypes.rdf in Copy Profile Defaults */,
+				DE014A471312450000817077 /* profile.manifest in Copy Profile Defaults */,
+				DE014A461312450000817077 /* user_ad_blocking.css in Copy Profile Defaults */,
 			);
 			name = "Copy Profile Defaults";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1734,6 +1742,8 @@
 			dstSubfolderSpec = 6;
 			files = (
 				0098B20E0CAEC6D900DA0F2F /* mimeTypes.rdf in Copy Profile Defaults */,
+				DE014A451312450000817077 /* profile.manifest in Copy Profile Defaults */,
+				DE014A441312450000817077 /* user_ad_blocking.css in Copy Profile Defaults */,
 			);
 			name = "Copy Profile Defaults";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2947,6 +2957,9 @@
 		C7FF537A0D3528B700194776 /* SearchEngineManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchEngineManager.h; path = src/websearch/SearchEngineManager.h; sourceTree = "<group>"; };
 		C7FF537B0D3528B700194776 /* SearchEngineEditor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = SearchEngineEditor.mm; path = src/websearch/SearchEngineEditor.mm; sourceTree = "<group>"; };
 		C7FF537C0D3528B700194776 /* SearchEngineEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchEngineEditor.h; path = src/websearch/SearchEngineEditor.h; sourceTree = "<group>"; };
+		DE014A3F131244B500817077 /* ad_blocking_loader.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = ad_blocking_loader.css; path = resources/application/ad_blocking_loader.css; sourceTree = SOURCE_ROOT; };
+		DE014A421312450000817077 /* user_ad_blocking.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = user_ad_blocking.css; path = resources/application/user_ad_blocking.css; sourceTree = SOURCE_ROOT; };
+		DE014A431312450000817077 /* profile.manifest */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = profile.manifest; path = resources/application/profile.manifest; sourceTree = SOURCE_ROOT; };
 		DE02572712F28D45003F4B1C /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = English; path = generated/resources/localized/English.lproj/typeaheadfind.properties; sourceTree = "<group>"; };
 		DE02572912F28D45003F4B1C /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = English; path = generated/resources/localized/English.lproj/caps.properties; sourceTree = "<group>"; };
 		DE02572B12F28D45003F4B1C /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = English; path = generated/resources/localized/English.lproj/prettyprint.dtd; sourceTree = "<group>"; };
@@ -3932,6 +3945,7 @@
 				3F22CC1303DF42A200026DCE /* Charset.dict */,
 				C7FF53740D35286800194776 /* WebSearchEngines.plist */,
 				3FFE23520847CB0D00D6CAFC /* ad_blocking.css */,
+				DE014A3F131244B500817077 /* ad_blocking_loader.css */,
 				DEE8101D0EFB7D2E006ACC7D /* aquaSelect.css */,
 				00BA5F40133E612000C9A8C0 /* html5elements.css */,
 				1B825D020C5D268600CB4343 /* Camino.sdef */,
@@ -4513,6 +4527,8 @@
 			isa = PBXGroup;
 			children = (
 				0098B20C0CAEC6C600DA0F2F /* mimeTypes.rdf */,
+				DE014A431312450000817077 /* profile.manifest */,
+				DE014A421312450000817077 /* user_ad_blocking.css */,
 			);
 			name = "Gecko Profile Defaults";
 			sourceTree = "<group>";
@@ -5886,6 +5902,7 @@
 				0FFE0A83079B147F00966027 /* bm_action.tiff in Resources */,
 				3FBDC8E00827C44B00D7F8E0 /* autofill.tiff in Resources */,
 				3FFE23530847CB0D00D6CAFC /* ad_blocking.css in Resources */,
+				DE014A41131244B500817077 /* ad_blocking_loader.css in Resources */,
 				0FB6D99B089B276100414498 /* bm_favicon.tiff in Resources */,
 				3FEBB43C089DA88C00BD8373 /* history.tiff in Resources */,
 				3FEBB4E908A02F2900BD8373 /* dl_pause.tiff in Resources */,
@@ -6117,6 +6134,7 @@
 				0FFE0A86079B147F00966027 /* bm_action.tiff in Resources */,
 				3FBDC8E10827C44B00D7F8E0 /* autofill.tiff in Resources */,
 				3FFE23540847CB0D00D6CAFC /* ad_blocking.css in Resources */,
+				DE014A40131244B500817077 /* ad_blocking_loader.css in Resources */,
 				0FB6D99C089B276100414498 /* bm_favicon.tiff in Resources */,
 				3FEBB43D089DA88C00BD8373 /* history.tiff in Resources */,
 				3FEBB4EB08A02F2900BD8373 /* dl_pause.tiff in Resources */,

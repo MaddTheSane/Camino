@@ -73,6 +73,8 @@ protected:
     nsresult                GetChromeManifestDirectories(nsIMutableArray* folderList);
     nsresult                GetProfilePluginsDirectory(nsIMutableArray* folderList);
     nsresult                GetProfileComponentsDirectory(nsIMutableArray* folderList);
+    nsresult                GetProfileChromeDirectory(nsILocalFile** outFolder);
+    nsresult                EnsureProfileFileExists(nsIFile *aFile, nsIFile *destDir);
     static nsresult         EnsureExists(nsILocalFile* inFolder);
   
 protected:

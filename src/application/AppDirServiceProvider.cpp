@@ -52,6 +52,8 @@
 #define XPTI_REGISTRY_NAME           NS_LITERAL_CSTRING("xpti.dat")
 #define PROFILE_PLUGIN_DIR_NAME      NS_LITERAL_CSTRING("Internet Plug-Ins")
 #define PROFILE_COMPONENTS_DIR_NAME  NS_LITERAL_CSTRING("components")
+#define PROFILE_CHROME_MANIFEST_NAME NS_LITERAL_CSTRING("profile.manifest")
+#define PROFILE_ADBLOCKING_CSS_NAME  NS_LITERAL_CSTRING("user_ad_blocking.css")
 
 
 AppDirServiceProvider::AppDirServiceProvider(const char *inName, PRBool isCustomProfile)
@@ -217,6 +219,44 @@ AppDirServiceProvider::GetParentCacheDirectory(nsILocalFile** outFolder)
   return rv;
 }
 
+// Gets the "chrome" folder in the user's profile and installs any app-provided
+// user profile chrome.
+nsresult
+AppDirServiceProvider::GetProfileChromeDirectory(nsILocalFile** outFolder)
+{
+  *outFolder = nsnull;
+  
+  nsCOMPtr<nsIFile> appUserChromeDir;
+  nsresult rv = NS_GetSpecialDirectory(NS_APP_USER_CHROME_DIR,
+                                       getter_AddRefs(appUserChromeDir));
+  NS_ENSURE_SUCCESS(rv, rv);
+  // This folder may not exist yet, so create it in that case.
+  nsCOMPtr<nsILocalFile> appUserChromeDirLocalFile(do_QueryInterface(appUserChromeDir));
+  NS_ENSURE_TRUE(appUserChromeDirLocalFile, NS_ERROR_FAILURE);
+  rv = EnsureExists(appUserChromeDirLocalFile);
+  NS_ENSURE_SUCCESS(rv, rv);
+
+  // Add our chrome manifest and CSS file before returning, so that files are
+  // in place before registering chrome.
+  nsCOMPtr<nsIFile> appUserChromeManifest;
+  rv = appUserChromeDir->Clone(getter_AddRefs(appUserChromeManifest));
+  if (NS_SUCCEEDED(rv)) {
+    rv = appUserChromeManifest->AppendNative(PROFILE_CHROME_MANIFEST_NAME);
+    if (NS_SUCCEEDED(rv))
+      rv = EnsureProfileFileExists(appUserChromeManifest, appUserChromeDir);
+  }
+  nsCOMPtr<nsIFile> userAdBlockingSheet;
+  rv = appUserChromeDir->Clone(getter_AddRefs(userAdBlockingSheet));
+  if (NS_SUCCEEDED(rv)) {
+    rv = userAdBlockingSheet->AppendNative(PROFILE_ADBLOCKING_CSS_NAME);
+    if (NS_SUCCEEDED(rv))
+      rv = EnsureProfileFileExists(userAdBlockingSheet, appUserChromeDir);
+  }
+
+  NS_ADDREF(*outFolder = appUserChromeDirLocalFile);
+  return NS_OK;
+}
+
 nsresult
 AppDirServiceProvider::GetChromeManifestDirectories(nsIMutableArray* folderList)
 {
@@ -245,6 +285,13 @@ AppDirServiceProvider::GetChromeManifestDirectories(nsIMutableArray* folderList)
   rv = NS_GetSpecialDirectory(NS_APP_CHROME_DIR, getter_AddRefs(appChromeDir));
   NS_ENSURE_SUCCESS(rv, rv);
   rv = folderList->AppendElement(appChromeDir, PR_FALSE);
+  NS_ENSURE_SUCCESS(rv, rv);
+
+  nsCOMPtr<nsILocalFile> appUserChromeDir;
+  rv = GetProfileChromeDirectory(getter_AddRefs(appUserChromeDir));
+  NS_ENSURE_SUCCESS(rv, rv);
+  rv = folderList->AppendElement(appUserChromeDir, PR_FALSE);
+  NS_ENSURE_SUCCESS(rv, rv);
 
   return rv;
 }
@@ -277,6 +324,41 @@ AppDirServiceProvider::GetProfileComponentsDirectory(nsIMutableArray* folderList
   NS_ENSURE_SUCCESS(rv, rv);
 
   return NS_SUCCESS_AGGREGATE_RESULT;
+}
+
+/* Copied wholesale from nsProfileDirServiceProvider::EnsureProfileFileExists */
+nsresult
+AppDirServiceProvider::EnsureProfileFileExists(nsIFile *aFile, nsIFile *destDir)
+{
+  nsresult rv;
+  PRBool exists;
+
+  rv = aFile->Exists(&exists);
+  if (NS_FAILED(rv))
+    return rv;
+  if (exists)
+    return NS_OK;
+
+  nsCOMPtr<nsIFile> defaultsFile;
+
+  // Attempt first to get the localized subdir of the defaults
+  rv = NS_GetSpecialDirectory(NS_APP_PROFILE_DEFAULTS_50_DIR, getter_AddRefs(defaultsFile));
+  if (NS_FAILED(rv)) {
+    // If that has not been defined, use the top level of the defaults
+    rv = NS_GetSpecialDirectory(NS_APP_PROFILE_DEFAULTS_NLOC_50_DIR, getter_AddRefs(defaultsFile));
+    if (NS_FAILED(rv))
+      return rv;
+  }
+
+  nsCAutoString leafName;
+  rv = aFile->GetNativeLeafName(leafName);
+  if (NS_FAILED(rv))
+    return rv;
+  rv = defaultsFile->AppendNative(leafName);
+  if (NS_FAILED(rv))
+    return rv;
+  
+  return defaultsFile->CopyTo(destDir, EmptyString());
 }
 
 /* static */ 

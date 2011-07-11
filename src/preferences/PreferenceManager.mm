@@ -81,7 +81,7 @@ NSString* const kPrefChangedNotification = @"PrefChangedNotification";
 // userInfo entries:
 NSString* const kPrefChangedPrefNameUserInfoKey = @"pref_name";
 
-static NSString* const kAdBlockingCSSFile = @"ad_blocking";
+static NSString* const kAdBlockingCSSFile = @"ad_blocking_loader";
 static NSString* const kAquaSelectCSSFile = @"aquaSelect";
 static NSString* const kHTML5ElementsCSSFile = @"html5elements";
 
