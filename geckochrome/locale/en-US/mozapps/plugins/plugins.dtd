@@ -24,7 +24,7 @@
 <!ENTITY pluginLink.label                                    "Learn more">
 <!ENTITY missingPlugin.label                                 "No plug-in is installed for this content.">
 <!ENTITY disabledPlugin.label                                "The plug-in for this content has been disabled.">
-<!ENTITY blockedPlugin.label                                 "This plug-in has been blocked due to instability.">
+<!ENTITY blockedPlugin.label                                 "This plug-in has been blocked due to stability or security issues.">
 <!-- LOCALIZATION NOTE (reloadPlugin.pre): include a trailing space as needed -->
 <!-- LOCALIZATION NOTE (reloadPlugin.middle): avoid leading/trailing spaces, this text is a link -->
 <!-- LOCALIZATION NOTE (reloadPlugin.post): include a starting space as needed -->

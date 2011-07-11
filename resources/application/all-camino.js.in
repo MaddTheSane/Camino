@@ -57,6 +57,7 @@ pref("camino.use_system_proxy_settings", true);
 // Plugin defaults
 pref("camino.enable_plugins", true);
 pref("camino.enable_java", false);
+pref("camino.allow_dangerous_plugins", false);
 pref("camino.disabled_plugin_names", "");
 
 // show warning when closing windows or quitting

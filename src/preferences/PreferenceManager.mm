@@ -94,7 +94,7 @@ static NSString* const kAppleJavaName = @"Java Plug-In 2";
 // This is an arbitrary version stamp that gets written to the prefs file.
 // It can be used to detect when a new version of Camino is run that needs
 // some prefs to be upgraded.
-static const PRInt32 kCurrentPrefsVersion = 4;
+static const PRInt32 kCurrentPrefsVersion = 5;
 
 // CheckCompatibility and WriteVersion are based on the versions in
 // toolkit/xre/nsAppRunner.cpp.  This is done to provide forward
@@ -860,6 +860,14 @@ static BOOL gMadePrefManager;
     if (!mIsCustomProfile)
       [self removeProfileURLClassifierDB];
   }
+
+#if defined(__ppc__)
+  if (mLastRunPrefsVersion < 5) {
+    // PPC users don't have access to a version of Flash without serious known
+    // vulnerabilities, so enable Flash blocking to help increase security.
+    [self setPref:kGeckoPrefBlockFlash toBoolean:YES];
+  }
+#endif
 
   mPrefs->SetIntPref("camino.prefs_version", kCurrentPrefsVersion);
 

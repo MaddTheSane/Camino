@@ -115,6 +115,7 @@ const char* const kGeckoPrefLastAddOnWarningVersion = "camino.last_addon_check_v
 const char* const kGeckoPrefEnableJavascript = "javascript.enabled";
 const char* const kGeckoPrefEnableJava = "camino.enable_java";
 const char* const kGeckoPrefEnablePlugins = "camino.enable_plugins";
+const char* const kGeckoPrefAllowDangerousPlugins = "camino.allow_dangerous_plugins";
 const char* const kGeckoPrefDisabledPluginPrefixes = "camino.disabled_plugin_names";
 const char* const kGeckoPrefBlockPopups = "dom.disable_open_during_load";
 const char* const kGeckoPrefBlockAds = "camino.enable_ad_blocking";

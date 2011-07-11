@@ -104,6 +104,9 @@ extern const char* const kGeckoPrefEnableJava;                         // bool
 // Controls whether plugins are enabled
 extern const char* const kGeckoPrefEnablePlugins;                      // bool
 
+// Controls whether plugins known to be insecure are allowed to load
+extern const char* const kGeckoPrefAllowDangerousPlugins;              // bool
+
 // Controls which plugins are disabled overall
 extern const char* const kGeckoPrefDisabledPluginPrefixes;             // bool
 

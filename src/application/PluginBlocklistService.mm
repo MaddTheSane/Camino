@@ -52,7 +52,17 @@ struct VersionStruct {
   int major;
   int minor;
   int bugfix;
+  int build;
 };
+
+// Minimum versions of plugins allowed unless the dangerous plugin pref is set.
+#if defined(__ppc__)
+// This version is known to have vulnerabilities, but is the last available for
+// PPC so we have to allow it.
+static const VersionStruct minFlashVersion = { 10, 1, 102, 64 };
+#else
+static const VersionStruct minFlashVersion = { 10, 3, 181, 34 };
+#endif
 
 // Given a version string, parses it according to the common major.minor.bugfix
 // format. Any component not present (or not parsable) will be set to 0.
@@ -66,6 +76,8 @@ static void ParseVersion(NSString* version, VersionStruct* components)
       [[versionComponents objectAtIndex:1] intValue] : 0;
   components->bugfix = count > 2 ?
       [[versionComponents objectAtIndex:2] intValue] : 0;
+  components->build = count > 3 ?
+      [[versionComponents objectAtIndex:3] intValue] : 0;
 }
 
 // Returns YES if |version| is older than |target|
@@ -74,7 +86,9 @@ static BOOL IsOlder(const VersionStruct& version, const VersionStruct& target)
   return (version.major < target.major ||
           (version.major == target.major && version.minor < target.minor) ||
           (version.major == target.major && version.minor == target.minor &&
-           version.bugfix < target.bugfix));
+           version.bugfix < target.bugfix) ||
+          (version.major == target.major && version.minor == target.minor &&
+           version.bugfix == target.bugfix && version.build < target.build));
 }
 
 NS_IMPL_ISUPPORTS1(PluginBlocklistService, nsIBlocklistService)
@@ -116,6 +130,14 @@ NS_IMETHODIMP PluginBlocklistService::GetPluginBlocklistState(nsIPluginTag *plug
 
   BOOL blocked = NO;
   if ([name hasPrefix:kPluginNameFlash]) {
+    // Unless the user allows dangerous plugins, disable versions of Flash with
+    // known security vulnerabilities.
+    BOOL prefLoaded = NO;
+    BOOL allowDangerousPlugins = [[PreferenceManager sharedInstanceDontCreate]
+        getBooleanPref:kGeckoPrefAllowDangerousPlugins withSuccess:&prefLoaded];
+    if (prefLoaded && !allowDangerousPlugins)
+      blocked = IsOlder(version, minFlashVersion);
+
     // Flash 9 leaks file handles on every instantiation.
     if (version.major == 9)
       blocked = YES;
@@ -126,7 +148,7 @@ NS_IMETHODIMP PluginBlocklistService::GetPluginBlocklistState(nsIPluginTag *plug
       blocked = YES;
     else {
       // Pre-2.2.1 moves the graphics origin, corrupting all Gecko drawing.
-      VersionStruct minAllowed = { 2, 2, 1 };
+      VersionStruct minAllowed = { 2, 2, 1, 0 };
       blocked = IsOlder(version, minAllowed);
     }
   }
