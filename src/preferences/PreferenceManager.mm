@@ -1336,6 +1336,16 @@ typedef enum EProxyConfig {
   return NO;
 }
 
+- (BOOL)javaPluginCanBeEnabled
+{
+  nsCOMPtr<nsIPluginHost> pluginHost = do_GetService(MOZ_PLUGIN_HOST_CONTRACTID);
+  if (!pluginHost)
+    return NO;
+  nsresult rv = pluginHost->IsPluginEnabledForType("application/x-java-vm");
+  // NS_ERROR_FAILURE indicates no plugin exists for the type.
+  return rv != NS_ERROR_FAILURE;
+}
+
 #pragma mark -
 
 - (NSURL*)getFilePref:(const char*)prefName withSuccess:(BOOL*)outSuccess

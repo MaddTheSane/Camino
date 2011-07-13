@@ -46,6 +46,7 @@
 #import "ExtendedTableView.h"             
 #import "GeckoPrefConstants.h"
 #import "FlashblockWhitelistManager.h"
+#import "PreferenceManager.h"
 
 // need to match the strings in PreferenceManager.mm
 static NSString* const AdBlockingChangedNotificationName = @"AdBlockingChanged";
@@ -97,9 +98,13 @@ const int kAnnoyancePrefSome = 3;
   [mEnableJS setState:jsEnabled];
 
   // Set initial value on Java checkbox, and disable it if plugins are off
+  // or no Java plugin is installed
   BOOL pluginsEnabled = [self getBooleanPref:kGeckoPrefEnablePlugins withSuccess:&gotPref] || !gotPref;
-  [mEnableJava setEnabled:pluginsEnabled];
-  BOOL javaEnabled = pluginsEnabled && [self getBooleanPref:kGeckoPrefEnableJava withSuccess:NULL];
+  BOOL javaCanBeEnabled = pluginsEnabled &&
+      [[PreferenceManager sharedInstanceDontCreate] javaPluginCanBeEnabled];
+  [mEnableJava setEnabled:javaCanBeEnabled];
+  BOOL javaEnabled = javaCanBeEnabled &&
+      [self getBooleanPref:kGeckoPrefEnableJava withSuccess:NULL];
   [mEnableJava setState:javaEnabled];
 
   // set initial value on popup blocking checkbox and disable the whitelist
