@@ -233,8 +233,6 @@ SYMBOL_SOURCE_FILES = \
 	growl/build/$(BUILDSTYLE)/Growl.framework.dSYM/Contents/Resources/DWARF/Growl \
 	sparkle/build/$(BUILDSTYLE)/Sparkle.framework.dSYM/Contents/Resources/DWARF/Sparkle \
 	$(XCODE_PRODUCT_DIR)/Camino.app/Contents/MacOS/*.dylib \
-	$(XCODE_PRODUCT_DIR)/Camino.app/Contents/MacOS/plugins/JavaEmbeddingPlugin.bundle/Contents/MacOS/JavaEmbeddingPlugin \
-	$(XCODE_PRODUCT_DIR)/Camino.app/Contents/MacOS/plugins/MRJPlugin.plugin/Contents/MacOS/MRJPlugin \
 	$(NULL)
 
 GARBAGE_DIRS += \

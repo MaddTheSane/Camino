@@ -885,10 +885,6 @@
 		3FE4ECEB082C2D89003BF39E /* NSURL+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FE4ECE9082C2D89003BF39E /* NSURL+Utils.m */; };
 		3FE5BA0C068A1A140001CECD /* libmozz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FE5BA0B068A1A140001CECD /* libmozz.a */; };
 		3FE5BA0D068A1A6F0001CECD /* libmozz.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 3FE5B9FC068A090F0001CECD /* libmozz.dylib */; };
-		3FEBB09D0899C0F700BD8373 /* JavaEmbeddingPlugin.bundle in Copy Gecko Plugins */ = {isa = PBXBuildFile; fileRef = 3FEBB08E0899C0F600BD8373 /* JavaEmbeddingPlugin.bundle */; };
-		3FEBB0A70899C0F700BD8373 /* JavaEmbeddingPlugin.bundle in Copy Gecko Plugins */ = {isa = PBXBuildFile; fileRef = 3FEBB08E0899C0F600BD8373 /* JavaEmbeddingPlugin.bundle */; };
-		3FEBB0F90899C18600BD8373 /* MRJPlugin.plugin in Copy Gecko Plugins */ = {isa = PBXBuildFile; fileRef = 3FEBB0E60899C18600BD8373 /* MRJPlugin.plugin */; };
-		3FEBB0FA0899C18600BD8373 /* MRJPlugin.plugin in Copy Gecko Plugins */ = {isa = PBXBuildFile; fileRef = 3FEBB0E60899C18600BD8373 /* MRJPlugin.plugin */; };
 		3FEBB28D089D73A700BD8373 /* bookmarks.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FEBB28C089D73A700BD8373 /* bookmarks.plist */; };
 		3FEBB28E089D73A700BD8373 /* bookmarks.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FEBB28C089D73A700BD8373 /* bookmarks.plist */; };
 		3FEBB43C089DA88C00BD8373 /* history.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3FEBB43B089DA88B00BD8373 /* history.tiff */; };
@@ -2446,30 +2442,6 @@
 			name = "Copy Wallet Resources";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4D5881750864B276001305B3 /* Copy Gecko Plugins */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = plugins;
-			dstSubfolderSpec = 6;
-			files = (
-				3FEBB09D0899C0F700BD8373 /* JavaEmbeddingPlugin.bundle in Copy Gecko Plugins */,
-				3FEBB0F90899C18600BD8373 /* MRJPlugin.plugin in Copy Gecko Plugins */,
-			);
-			name = "Copy Gecko Plugins";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4D5881790864B297001305B3 /* Copy Gecko Plugins */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = plugins;
-			dstSubfolderSpec = 6;
-			files = (
-				3FEBB0A70899C0F700BD8373 /* JavaEmbeddingPlugin.bundle in Copy Gecko Plugins */,
-				3FEBB0FA0899C18600BD8373 /* MRJPlugin.plugin in Copy Gecko Plugins */,
-			);
-			name = "Copy Gecko Plugins";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		4DD0EFFA09918BE100B6BBFD /* Copy Gecko Fonts */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2855,8 +2827,6 @@
 		3FE4ECE9082C2D89003BF39E /* NSURL+Utils.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = "NSURL+Utils.m"; path = "src/extensions/NSURL+Utils.m"; sourceTree = "<group>"; };
 		3FE5B9FC068A090F0001CECD /* libmozz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmozz.dylib; path = ../dist/bin/libmozz.dylib; sourceTree = SOURCE_ROOT; };
 		3FE5BA0B068A1A140001CECD /* libmozz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmozz.a; path = ../dist/lib/libmozz.a; sourceTree = SOURCE_ROOT; };
-		3FEBB08E0899C0F600BD8373 /* JavaEmbeddingPlugin.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = JavaEmbeddingPlugin.bundle; path = ../dist/bin/plugins/JavaEmbeddingPlugin.bundle; sourceTree = SOURCE_ROOT; };
-		3FEBB0E60899C18600BD8373 /* MRJPlugin.plugin */ = {isa = PBXFileReference; explicitFileType = "wrapper.plug-in"; name = MRJPlugin.plugin; path = ../dist/bin/plugins/MRJPlugin.plugin; sourceTree = SOURCE_ROOT; };
 		3FEBB43B089DA88B00BD8373 /* history.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = history.tiff; path = resources/images/toolbar/history.tiff; sourceTree = SOURCE_ROOT; };
 		3FEBB4E708A02F2900BD8373 /* dl_pause.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = dl_pause.tiff; path = resources/images/toolbar/dl_pause.tiff; sourceTree = SOURCE_ROOT; };
 		3FEBB4E808A02F2900BD8373 /* dl_resume.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = dl_resume.tiff; path = resources/images/toolbar/dl_resume.tiff; sourceTree = SOURCE_ROOT; };
@@ -3910,7 +3880,6 @@
 				00BC68A0114B5F55000A0508 /* Spotlight Importer */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				F6BD637A01B30E0F01A962F7 /* Gecko */,
-				F56610A40394767101A9666E /* Plugins */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				00BC6CB7114B6F73000A0508 /* External Projects */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
@@ -4942,15 +4911,6 @@
 			name = Sidebar;
 			sourceTree = "<group>";
 		};
-		F56610A40394767101A9666E /* Plugins */ = {
-			isa = PBXGroup;
-			children = (
-				3FEBB0E60899C18600BD8373 /* MRJPlugin.plugin */,
-				3FEBB08E0899C0F600BD8373 /* JavaEmbeddingPlugin.bundle */,
-			);
-			name = Plugins;
-			sourceTree = "<group>";
-		};
 		F56F242202AC6F7101A967F3 /* Gecko Static Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -5358,7 +5318,6 @@
 				DE578A7A0FA69EAF0032CFD2 /* Copy Crash Reporter InfoPlists.strings Override */,
 				0080C7DE0E2E4CD9006AFD32 /* Change Sparkle Load ID */,
 				3365CA1F0D073ECA00ACBF18 /* Scrub Sparkle Languages */,
-				4D5881750864B276001305B3 /* Copy Gecko Plugins */,
 				00BC696B114B6839000A0508 /* Copy Spotlight Importer */,
 				33820EA50F8AB1F400D2164A /* Force Copy Before Link */,
 				3F44AD7C05BDFB9F00CB4B08 /* Frameworks */,
@@ -5498,7 +5457,6 @@
 				DE578A7C0FA69FCB0032CFD2 /* Copy Crash Reporter InfoPlist.strings Override */,
 				0080C7F10E2E4D7A006AFD32 /* Change Sparkle Load ID */,
 				3365CA0F0D07197E00ACBF18 /* Scrub Sparkle Languages */,
-				4D5881790864B297001305B3 /* Copy Gecko Plugins */,
 				00BC696D114B6899000A0508 /* Copy Spotlight Importer */,
 				33A72CD40F8ADDE4003D3D78 /* Force Copy Before Link */,
 				3F44AF9405BDFBA000CB4B08 /* Frameworks */,
