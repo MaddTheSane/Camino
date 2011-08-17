@@ -333,7 +333,6 @@ nsHeaderSniffer::PerformSave(nsIURI* inOriginalURI)
     
     // Now it's time to pose the save dialog.
     NSSavePanel* savePanel = [NSSavePanel savePanel];
-    [savePanel setCanSelectHiddenExtension:YES];
     NSString* file = nil;
     if (!defaultFileName.IsEmpty())
         file = [NSString stringWith_nsAString:defaultFileName];

@@ -203,6 +203,7 @@ WriteVersion(nsIFile* aProfileDir, const nsACString& aVersion,
 
 - (void)registerNotificationListener;
 - (void)initUpdatePrefs;
+- (void)ensureVisibleFilenameExtension;
 - (void)cleanUpObsoletePrefs;
 - (void)migrateOldDownloadPrefs;
 - (void)migrateOldExternalLoadBehaviorPref;
@@ -405,6 +406,7 @@ static BOOL gMadePrefManager;
     }
 
     [self initUpdatePrefs];
+    [self ensureVisibleFilenameExtension];
     [self cleanUpObsoletePrefs];
 
     mDefaults = [NSUserDefaults standardUserDefaults];
@@ -759,6 +761,18 @@ static BOOL gMadePrefManager;
                    currentLanguage];
   }
   [[SUUpdater sharedUpdater] setFeedURL:[NSURL URLWithString:manifestURL]];
+}
+
+- (void)ensureVisibleFilenameExtension
+{
+  // Clean up after 2.1 development builds that allowed the user to kill the
+  // extension by checking the hidden extension checkbox. A user may inherit
+  // a default from the Finder and thus not have the key, so set the key 
+  // unconditionally to prevent extension loss.
+  // After no one is migrating from 2.0.x or a 2.1 development build, this can
+  // be changed to only run once by checking for the key first.
+  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+  [defaults setBool:NO forKey:@"NSNavLastUserSetHideExtensionButtonState"];
 }
 
 - (void)cleanUpObsoletePrefs

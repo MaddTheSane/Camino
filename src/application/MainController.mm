@@ -1505,7 +1505,6 @@ static const int kZoomActionsTag = 108;
 {
   NSSavePanel* savePanel = [NSSavePanel savePanel];
   [savePanel setPrompt:NSLocalizedString(@"Export", @"Export")];
-  [savePanel setCanSelectHiddenExtension:YES];
 
   // get an accessory view for HTML or Safari .plist output
   if (!mExportPanelView)

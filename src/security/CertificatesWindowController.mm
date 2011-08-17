@@ -762,7 +762,6 @@ static CertificatesWindowController* gCertificatesWindowController;
 {
   NSSavePanel* theSavePanel = [NSSavePanel savePanel];
   [theSavePanel setRequiredFileType:@"p12"];
-  [theSavePanel setCanSelectHiddenExtension:YES];
 
   [theSavePanel beginSheetForDirectory:nil
                                   file:nil
