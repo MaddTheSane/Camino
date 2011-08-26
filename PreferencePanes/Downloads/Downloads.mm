@@ -40,7 +40,6 @@
 
 #import "Downloads.h"
 
-#import "GeckoPrefConstants.h"
 #import "PreferenceManager.h"
 
 @interface OrgMozillaCaminoPreferenceDownloads(Private)

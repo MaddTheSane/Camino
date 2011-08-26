@@ -44,7 +44,6 @@
 #import "NSString+Utils.h"
 #import "CHPermissionManager.h"
 #import "ExtendedTableView.h"             
-#import "GeckoPrefConstants.h"
 #import "FlashblockWhitelistManager.h"
 #import "PreferenceManager.h"
 

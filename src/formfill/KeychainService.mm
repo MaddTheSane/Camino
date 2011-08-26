@@ -42,7 +42,6 @@
 
 #import "NSString+Gecko.h"
 
-#import "GeckoPrefConstants.h"
 #import "KeychainItem.h"
 #import "KeychainService.h"
 #import "KeychainDenyList.h"

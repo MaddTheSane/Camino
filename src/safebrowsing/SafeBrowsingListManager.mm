@@ -37,7 +37,6 @@
 
 #import "SafeBrowsingListManager.h"
 #import "PreferenceManager.h"
-#import "GeckoPrefConstants.h"
 #import "CmXULAppInfo.h"
 #import "NSString+Gecko.h"
 #import "NSString+Utils.h"

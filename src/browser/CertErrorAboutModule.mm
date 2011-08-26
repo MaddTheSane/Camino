@@ -40,7 +40,6 @@
 #import "NSString+Gecko.h"
 #include "CertErrorAboutModule.h"
 #import "PreferenceManager.h"
-#import "GeckoPrefConstants.h"
 
 #include "nsCOMPtr.h"
 #include "nsIChannel.h"
