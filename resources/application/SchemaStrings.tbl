@@ -150,6 +150,12 @@ webpage
 $uri
 homepage
 
+$uri
+url
+
+$uri
+uri
+
 %bdate
 birthday
 
