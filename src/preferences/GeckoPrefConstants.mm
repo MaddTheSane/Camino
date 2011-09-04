@@ -181,6 +181,7 @@ const char* const kGeckoPrefHistoryLifetimeDays = "browser.history_expire_days";
 
 const char* const kGeckoPrefCookieDefaultAcceptPolicy = "network.cookie.cookieBehavior";
 const char* const kGeckoPrefCookieLifetimePolicy = "network.cookie.lifetimePolicy";
+const char* const kGeckoPrefShouldRememberCookieDecision = "cocoa_prompt.remember_cookie_decision";
 
 #pragma mark Proxies
 

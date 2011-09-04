@@ -137,6 +137,8 @@ pref("network.protocol-handler.warn-external.nntp", false);
 
 // cookies: 0 = accept all, 1 = don't accept third-party, 2 = don't accept any
 pref("network.cookie.cookieBehavior", 0);
+// "Remember this decision?" should be checked by default in the request sheet.
+pref("cocoa_prompt.remember_cookie_decision", true);
 
 // Enable DNS prefetch by default for both http and https resources
 pref("network.dns.disablePrefetch", false);

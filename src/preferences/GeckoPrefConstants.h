@@ -269,6 +269,9 @@ extern const int kCookieLifetimeNormal;
 extern const int kCookieLifetimeAsk;
 extern const int kCookieLifetimeSession;
 
+// Controls the state of the "Remember this decision?" checkbox
+extern const char* const kGeckoPrefShouldRememberCookieDecision;       // bool
+
 #pragma mark Proxies
 
 // Controls whether the proxy settings are taken from the OS settings

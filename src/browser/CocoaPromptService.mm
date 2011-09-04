@@ -41,8 +41,10 @@
 #import "CHBrowserView.h"
 #import "CHBrowserService.h"
 #import "CocoaPromptService.h"
+#import "GeckoPrefConstants.h"
 
 #include "nsCRT.h"
+#include "nsIPrefBranch.h"
 #include "nsString.h"
 #include "nsServiceManagerUtils.h"
 
@@ -617,7 +619,18 @@ CocoaPromptService::CookieDialog(nsIDOMWindow *parent, nsICookie *cookie, const 
 
   long buttonFlags = (BUTTON_TITLE_IS_STRING << kButton0) | (BUTTON_TITLE_IS_STRING << kButton1) | (BUTTON_TITLE_IS_STRING << kButton2);
   PRInt32 buttonPressed = 0;
-  *rememberDecision = PR_TRUE;          // "remember this decision" should be checked when we show the dialog
+  // Initialize the "Remember this decision?" checkbox to the previous state
+  // when we show the dialog.
+  *rememberDecision = PR_TRUE;
+  BOOL gotPref = NO;
+  PRBool shouldRememberDecision = PR_TRUE;
+  nsCOMPtr<nsIPrefBranch> pref(do_GetService("@mozilla.org/preferences-service;1"));
+  if (pref) {
+    nsresult rv = pref->GetBoolPref(kGeckoPrefShouldRememberCookieDecision, &shouldRememberDecision);
+    gotPref = NS_SUCCEEDED(rv);
+  }
+  if (!shouldRememberDecision && gotPref)
+    *rememberDecision = PR_FALSE;
   ConfirmEx(parent, titleStr, textStr, buttonFlags, allowStr, denyStr, allowForSessionStr, checkboxStr, rememberDecision, &buttonPressed);
  
   // map return values for nsICookiePromptService
@@ -634,6 +647,10 @@ CocoaPromptService::CookieDialog(nsIDOMWindow *parent, nsICookie *cookie, const 
       break;
   }
   
+  // Store the state of the "Remember this decision?" checkbox for next time.
+  if (pref)
+    pref->SetBoolPref(kGeckoPrefShouldRememberCookieDecision, *rememberDecision ? PR_TRUE : PR_FALSE);
+
   nsMemory::Free(textStr);
   nsMemory::Free(checkboxStr);
   nsMemory::Free(titleStr);
