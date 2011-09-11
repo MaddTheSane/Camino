@@ -119,8 +119,8 @@ typedef enum {
 // Called when an XUL element was activated (e.g. clicked) in the content area, 
 // typically on an about: page.
 - (void)onXULCommand:(nsIDOMNSEvent*)aDOMEvent;
-// Called when a mouse swipe gesture event occurs in the content area
-- (void)onMouseSwipeGestureEvent:(nsIDOMSimpleGestureEvent*)simpleGestureEvent;
+// Called when a gesture event occurs in the content area
+- (void)onGestureEvent:(nsIDOMSimpleGestureEvent*)simpleGestureEvent;
 
 @end
 

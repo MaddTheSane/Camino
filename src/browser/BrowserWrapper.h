@@ -102,7 +102,14 @@ typedef enum {
 // only sent on to the content view if unhandled.
 - (BOOL)shouldDivertKeyEquivalentToMenu:(NSEvent*)event;
 
+// Called when there is a swipe gesture with the given direction.
 - (void)swipeGestureDetectedWithDirection:(CHSwipeGestureDirection)swipeDirection;
+
+// Called when a zoom gesture starts.
+- (void)zoomGestureStarted;
+// Called repeatedly over the course of a zoom gesture, with the delta since the
+// last update.
+- (void)zoomGestureContinuedWithDelta:(float)delta;
 
 @end
 

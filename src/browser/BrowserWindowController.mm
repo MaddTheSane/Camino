@@ -740,9 +740,16 @@ public:
   mMoveReentrant = NO;
 }
 
+#pragma mark -
+#pragma mark Native Gesture Entry Points
+
 // Undocumented method for handling multi-touch swipe and pinch events in 10.5.
 // The worst that's likely to happen is that this would just stop being
 // called if the gesture system changes in a future version.
+//
+// Since gesture events may come in via either the native calls or the Gecko
+// delegate calls (depending on where focus is), the native events just
+// translate and forward to the delegate handlers.
 - (void)swipeWithEvent:(NSEvent*)event
 {
   CHSwipeGestureDirection swipeDirection;
@@ -763,6 +770,36 @@ public:
 
 - (void)magnifyWithEvent:(NSEvent*)event
 {
+  [self zoomGestureContinuedWithDelta:[event deltaZ]];
+}
+
+- (void)beginGestureWithEvent:(NSEvent*)event
+{
+  [self zoomGestureStarted];
+}
+
+# pragma mark BrowserUIDelegate Gesture Handling
+
+- (void)swipeGestureDetectedWithDirection:(CHSwipeGestureDirection)swipeDirection
+{
+  if (swipeDirection == CHSwipeGestureDirectionLeft)
+    [self back:nil];
+  else if (swipeDirection == CHSwipeGestureDirectionRight)
+    [self forward:nil];
+  else if (swipeDirection == CHSwipeGestureDirectionUp)
+    [[mBrowserView browserView] pageUp];
+  else if (swipeDirection == CHSwipeGestureDirectionDown)
+    [[mBrowserView browserView] pageDown];
+}
+
+- (void)zoomGestureStarted {
+  mTotalMagnifyGestureAmount = 0;
+  mCurrentZoomStepDelta = 0;
+}
+
+// Called repeatedly over the course of a zoom gesture, with the delta since the
+// last update.
+- (void)zoomGestureContinuedWithDelta:(float)delta {
   // The deltaZ difference necessary to trigger a zoom action. Derived from
   // experimentation to find a value that feels reasonable.
   static const float kZoomStepValue = 150;
@@ -779,7 +816,7 @@ public:
   float zoomInThreshold = (mCurrentZoomStepDelta >= 0) ? nextStep : -backStep;
   float zoomOutThreshold = (mCurrentZoomStepDelta <= 0) ? -nextStep : backStep;
 
-  mTotalMagnifyGestureAmount += [event deltaZ];
+  mTotalMagnifyGestureAmount += delta;
   if (mTotalMagnifyGestureAmount > zoomInThreshold &&
       [self canMakePageBigger]) {
     [self makePageBigger:nil];
@@ -792,11 +829,9 @@ public:
   }
 }
 
-- (void)beginGestureWithEvent:(NSEvent*)event
-{
-  mTotalMagnifyGestureAmount = 0;
-  mCurrentZoomStepDelta = 0;
-}
+#pragma mark Shared Gesture Handling
+
+#pragma mark -
 
 -(void)autosaveWindowFrame
 {
@@ -5452,18 +5487,6 @@ public:
 {
   return [(MainController*)[NSApp delegate]
       isEventNonOverridableMenuShortcut:event];
-}
-
-- (void)swipeGestureDetectedWithDirection:(CHSwipeGestureDirection)swipeDirection
-{
-  if (swipeDirection == CHSwipeGestureDirectionLeft)
-    [self back:nil];
-  else if (swipeDirection == CHSwipeGestureDirectionRight)
-    [self forward:nil];
-  else if (swipeDirection == CHSwipeGestureDirectionUp)
-    [[mBrowserView browserView] pageUp];
-  else if (swipeDirection == CHSwipeGestureDirectionDown)
-    [[mBrowserView browserView] pageDown];
 }
 
 @end

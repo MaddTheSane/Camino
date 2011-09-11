@@ -822,8 +822,12 @@ CHBrowserListener::HandleEvent(nsIDOMEvent* inEvent)
   if (eventType.Equals(NS_LITERAL_STRING("popupshowing")))
     return HandleXULPopupEvent(inEvent);
 
-  if (eventType.Equals(NS_LITERAL_STRING("MozSwipeGesture")))
-    return HandleSwipeGestureEvent(inEvent);
+  if (eventType.Equals(NS_LITERAL_STRING("MozSwipeGesture")) ||
+      eventType.Equals(NS_LITERAL_STRING("MozMagnifyGestureStart")) ||
+      eventType.Equals(NS_LITERAL_STRING("MozMagnifyGestureUpdate")))
+  {
+    return HandleGestureEvent(inEvent);
+  }
 
   if (eventType.Equals(NS_LITERAL_STRING("DOMPopupBlocked")))
     return HandleBlockedPopupEvent(inEvent);
@@ -1203,13 +1207,13 @@ CHBrowserListener::FocusPrevElement()
 }
 
 nsresult
-CHBrowserListener::HandleSwipeGestureEvent(nsIDOMEvent* inEvent)
+CHBrowserListener::HandleGestureEvent(nsIDOMEvent* inEvent)
 {
-  nsCOMPtr<nsIDOMSimpleGestureEvent> swipeGestureEvent = do_QueryInterface(inEvent);
-  if (!swipeGestureEvent)
+  nsCOMPtr<nsIDOMSimpleGestureEvent> gestureEvent = do_QueryInterface(inEvent);
+  if (!gestureEvent)
     return NS_ERROR_FAILURE;
 
-  [mContainer onMouseSwipeGestureEvent:swipeGestureEvent];
+  [mContainer onGestureEvent:gestureEvent];
 
   return NS_OK;
 }

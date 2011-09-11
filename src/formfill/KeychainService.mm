@@ -1422,7 +1422,7 @@ KeychainFormSubmitObserver::Notify(nsIDOMHTMLFormElement* formNode, nsIDOMWindow
 {
 }
 
-- (void)onMouseSwipeGestureEvent:(nsIDOMSimpleGestureEvent*)simpleGestureEvent
+- (void)onGestureEvent:(nsIDOMSimpleGestureEvent*)simpleGestureEvent
 {
 }
 

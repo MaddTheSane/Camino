@@ -155,6 +155,10 @@ static const NSTimeInterval kTimeIntervalToConsiderSiteBlockingStatusValid = 900
 // Returns YES if the web content is the current first responder.
 - (BOOL)webContentIsFirstResponder;
 
+// Translates specific gesture events and forwards them on to BrowserUIDelegate.
+- (void)handleSwipeGesture:(nsIDOMSimpleGestureEvent*)simpleGestureEvent;
+- (void)handleZoomGesture:(nsIDOMSimpleGestureEvent*)simpleGestureEvent;
+
 @end
 
 #pragma mark -
@@ -1072,8 +1076,27 @@ static const NSTimeInterval kTimeIntervalToConsiderSiteBlockingStatusValid = 900
                                      site:siteURI];
 }
 
-- (void)onMouseSwipeGestureEvent:(nsIDOMSimpleGestureEvent*)simpleGestureEvent
+- (void)onGestureEvent:(nsIDOMSimpleGestureEvent*)simpleGestureEvent
 {
+  nsAutoString eventType;
+  simpleGestureEvent->GetType(eventType);
+  if (eventType.Equals(NS_LITERAL_STRING("MozSwipeGesture"))) {
+    [self handleSwipeGesture:simpleGestureEvent];
+  }
+  else if (eventType.Equals(NS_LITERAL_STRING("MozMagnifyGestureStart"))) {
+    // Gecko treats the first zoom gesture as a start event with the first zoom
+    // value, whereas BrowserUIDelegate follows the native pattern of having a
+    // separate start event with no value, so this event is split into two
+    // to handle the mismatch.
+    [mDelegate zoomGestureStarted];
+    [self handleZoomGesture:simpleGestureEvent];
+  }
+  else if (eventType.Equals(NS_LITERAL_STRING("MozMagnifyGestureUpdate"))) {
+    [self handleZoomGesture:simpleGestureEvent];
+  }
+}
+
+- (void)handleSwipeGesture:(nsIDOMSimpleGestureEvent*)simpleGestureEvent {
   PRUint32 swipeDirection;
   simpleGestureEvent->GetDirection(&swipeDirection);
 
@@ -1097,6 +1120,12 @@ static const NSTimeInterval kTimeIntervalToConsiderSiteBlockingStatusValid = 900
   }
 
   [mDelegate swipeGestureDetectedWithDirection:nativeSwipeDirection];
+}
+
+- (void)handleZoomGesture:(nsIDOMSimpleGestureEvent*)simpleGestureEvent {
+  double delta = 0.0;
+  simpleGestureEvent->GetDelta(&delta);
+  [mDelegate zoomGestureContinuedWithDelta:delta];
 }
 
 // The pageURI is supplied because it might differ from -[self currentURI], particularly

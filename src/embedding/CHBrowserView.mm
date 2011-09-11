@@ -290,7 +290,15 @@ const char* const kHTMLMIMEType = "text/html";
 
         rv = eventTarget->AddEventListener(NS_LITERAL_STRING("MozSwipeGesture"),
                                            static_cast<nsIDOMEventListener*>(_listener), PR_FALSE);
-        NS_ASSERTION(NS_SUCCEEDED(rv), "AddEventListener failed");              
+        NS_ASSERTION(NS_SUCCEEDED(rv), "AddEventListener failed");
+        
+        rv = eventTarget->AddEventListener(NS_LITERAL_STRING("MozMagnifyGestureStart"),
+                                           static_cast<nsIDOMEventListener*>(_listener), PR_FALSE);
+        NS_ASSERTION(NS_SUCCEEDED(rv), "AddEventListener failed");
+        
+        rv = eventTarget->AddEventListener(NS_LITERAL_STRING("MozMagnifyGestureUpdate"),
+                                           static_cast<nsIDOMEventListener*>(_listener), PR_FALSE);
+        NS_ASSERTION(NS_SUCCEEDED(rv), "AddEventListener failed");
 
         // Register the CHBrowserListener to listen for Flashblock whitelist
         // and Silverlight blocking checks. Need to use an nsIDOMNSEventTarget

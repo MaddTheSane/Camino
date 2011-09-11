@@ -108,7 +108,7 @@ protected:
   void HandleSearchPluginLink(nsIDOMElement* inElement);
   ELinkAttributeType GetLinkAttributeType(nsIDOMElement* inElement); 
   nsresult HandleXULCommandEvent(nsIDOMEvent* inEvent);
-  nsresult HandleSwipeGestureEvent(nsIDOMEvent* inEvent);
+  nsresult HandleGestureEvent(nsIDOMEvent* inEvent);
 
 private:
   CHBrowserView*          mView;     // WEAK - it owns us
