@@ -20,6 +20,10 @@ $name.last
 last
 name
 
+$name.last
+surname
+name
+
 $name.suffix
 suffix
 name
