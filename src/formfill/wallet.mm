@@ -1483,7 +1483,12 @@ static void wallet_InitListFromAppleAddressBook(nsVoidArray** inList)
   wallet_WriteToList("home.email", [primaryEmail UTF8String], dummy, *inList, PR_FALSE);
   
   // web
-  NSString* webPage = [me valueForProperty:kABHomePageProperty];
+  // |kABHomePageProperty| is deprecated on Tiger. Look for the new property first and then
+  // the old one (as the old one is still present, just no longer updated).
+  ABMultiValue* urls = [me valueForProperty:kABURLsProperty];
+  NSString* webPage = [urls valueAtIndex:[urls indexForIdentifier:[urls primaryIdentifier]]];
+  if (!webPage)
+    webPage = [me valueForProperty:kABHomePageProperty];
   wallet_WriteToList("home.uri", [webPage UTF8String], dummy, *inList, PR_FALSE);
 }
 
