@@ -64,6 +64,7 @@ function flashblockShowFlash(event) {
 	if( event.type == "keypress" && event.keyCode != KeyEvent.DOM_VK_RETURN)
 		return false;
 	event.stopPropagation();
+	var parent = placeholder.parentNode;
 	if(placeholder.flashblock == "frame") {
 		current.height = current.prevHeight;
 		current.width = current.prevWidth;
@@ -397,6 +398,7 @@ function flashblockShowFlash(event) {
 	if( event.type == "keypress" && event.keyCode != KeyEvent.DOM_VK_RETURN)
 		return false;
 	event.stopPropagation();
+	var parent = placeholder.parentNode;
 	if(placeholder.flashblock == "frame") {
 		current.height = current.prevHeight;
 		current.width = current.prevWidth;

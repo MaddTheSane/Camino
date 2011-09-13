@@ -5,5 +5,5 @@ are placed in the content directory and referenced by the jar.mn
 manifest.
 
 Camino's bundled Flashblock extension is currently synchronized with
-Flashblock 1.5.14 from
-http://downloads.mozdev.org/flashblock/flashblock-1.5.14.xpi.
+Flashblock 1.5.15 from
+http://downloads.mozdev.org/flashblock/flashblock-1.5.15.xpi.
