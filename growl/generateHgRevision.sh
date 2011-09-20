@@ -14,8 +14,31 @@ HEADERPATH="$TARGET_BUILD_DIR/include/hgRevision.h"
 #nonetheless, we should handle it sanely. We do this by only showing the
 #first parent.
 REVISION=`hg parent --template="{rev}\n" | head -n1`
-echo "*** Building Growl Revision: $REVISION"
+if [[ "x$REVISION" = "x" ]]; then
+	#This is not an hg repository. It's probably an archive. Try to determine the archived revision.
+	REVISION=`/usr/bin/sed -E -n '/^node:/{ s/node: //; s/^([0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]).*/\1/; p; q; }' < "${SRCROOT}/.hg_archival.txt"`
+	if [[ "x$REVISION" = "x" ]]; then
+		#Not an archive, either. Weird.
+		REVISION=0
+	fi
+fi
+
 mkdir -p "`dirname "$HEADERPATH"`"
+
+if [[ -f "$HEADERPATH" ]]; then
+	#Determine whether the header already contains our current revision.
+	pushd Tools/printRevision > /dev/null
+	make HEADERPATH="../../$HEADERPATH" > /dev/null
+	LAST_REVISION=$(./printRevision)
+	popd > /dev/null
+
+	if [[ "$REVISION" -eq "$LAST_REVISION" ]]; then
+		#The revision has not changed! No need to rewrite the file.
+		exit 0
+	fi
+fi
+
+echo "*** Building Growl Revision: $REVISION"
 
 echo "#define HG_REVISION $REVISION" > "$HEADERPATH"
 echo "#define HG_REVISION_STRING \"$REVISION\"" >> "$HEADERPATH"
