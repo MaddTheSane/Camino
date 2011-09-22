@@ -61,7 +61,7 @@ struct VersionStruct {
 // PPC so we have to allow it.
 static const VersionStruct minFlashVersion = { 10, 1, 102, 64 };
 #else
-static const VersionStruct minFlashVersion = { 10, 3, 181, 26 };
+static const VersionStruct minFlashVersion = { 10, 3, 183, 10 };
 #endif
 
 // Given a version string, parses it according to the common major.minor.bugfix
