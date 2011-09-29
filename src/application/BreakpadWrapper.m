@@ -21,6 +21,7 @@
  *
  * Contributor(s):
  *   Stuart Morgan <stuart.morgan@alumni.case.edu>
+ *   Smokey Ardisson <alqahira@ardisson.org>
  *
  * Alternatively, the contents of this file may be used under the terms of
  * either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -44,6 +45,17 @@
 
 static BreakpadWrapper* sGlobalBreakpadInstance = nil;
 
+@interface BreakpadWrapper(Private)
+
+- (NSString*)versionFirstInstalledTime;
+- (NSString*)installTimeFilePath;
+- (NSString*)currentEpochTimeAsString;
+- (BOOL)isValidSocorroTimeString:(NSString*)timeString;
+- (void)writeInstallTime:(NSString*)installTime forBuild:(NSString*)buildID toDictionary:(NSDictionary*)installTimes;
+- (void)writeInstallTimesToFile:(NSDictionary*)installData;
+
+@end
+
 @implementation BreakpadWrapper
 
 - (id)init
@@ -65,6 +77,9 @@ static BreakpadWrapper* sGlobalBreakpadInstance = nil;
       // Get the localized vendor, which infoDictionary doesn't do.
       BreakpadSetKeyValue(mBreakpadReference, @BREAKPAD_VENDOR,
                           [mainBundle objectForInfoDictionaryKey:@"BreakpadVendor"]);
+
+      NSString* installTime = [self versionFirstInstalledTime];
+      BreakpadAddUploadParameter(mBreakpadReference, @"InstallTime", installTime);
     }
     else {
       NSLog(@"WARNING: attempting to create a second BreakpadWrapper");
@@ -93,6 +108,88 @@ static BreakpadWrapper* sGlobalBreakpadInstance = nil;
 {
   if (![url isBlankURL])
     BreakpadAddUploadParameter(mBreakpadReference, @"URL", url);
+}
+
+- (NSString*)versionFirstInstalledTime
+{
+  NSString* buildID = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"MozillaBuildID"];
+  NSString* installTimesFile = [self installTimeFilePath];
+  NSMutableDictionary* installTimes = nil;
+  NSString* currentBuildInstallTime = nil;
+  if ([[NSFileManager defaultManager] fileExistsAtPath:installTimesFile]) {
+    NSData* fileData = [NSData dataWithContentsOfFile:installTimesFile];
+    if (fileData) {
+      installTimes = [NSPropertyListSerialization propertyListFromData:fileData
+                                                      mutabilityOption:NSPropertyListMutableContainers
+                                                                format:NULL
+                                                      errorDescription:NULL];
+    }
+  }
+  if (installTimes) {
+    currentBuildInstallTime = [installTimes valueForKey:buildID];
+    if (!currentBuildInstallTime ||
+        ![self isValidSocorroTimeString:currentBuildInstallTime])
+    {
+      currentBuildInstallTime = [self currentEpochTimeAsString];
+      [self writeInstallTime:currentBuildInstallTime
+                    forBuild:buildID
+                toDictionary:installTimes];
+    }
+  }
+  else {
+    // Something failed along the way: either there's no file, reading the data
+    // from the file failed, or converting the data to a plist failed; in these
+    // cases, set up the install time for the current build using the current
+    // time and then start a new file.
+    currentBuildInstallTime = [self currentEpochTimeAsString];
+    [self writeInstallTime:currentBuildInstallTime
+                  forBuild:buildID
+              toDictionary:[NSMutableDictionary dictionary]];
+  }
+  return currentBuildInstallTime;
+}
+
+- (NSString*)installTimeFilePath
+{
+  NSString* appName = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"CFBundleName"];
+  NSString *libraryPath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory,
+                              NSUserDomainMask, YES) objectAtIndex:0];
+  NSString* installTimeFilePath = [[[libraryPath stringByAppendingPathComponent:@"Breakpad"]
+                                                 stringByAppendingPathComponent:appName]
+                                                 stringByAppendingPathComponent:@"InstallTime.plist"];
+  return installTimeFilePath;
+}
+
+- (NSString*)currentEpochTimeAsString
+{
+  NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+  return [NSString stringWithFormat:@"%.f", now];
+}
+
+// Socorro only handles 10-digit numbers for time strings; if we ever manage to
+// retrive a valid NSString but an invalid UNIX time integer, Socorro barfs on
+// the crash report, so perform some very basic validation.
+- (BOOL)isValidSocorroTimeString:(NSString*)timeString
+{
+  NSCharacterSet* nonDigitSet = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+  return (([timeString rangeOfCharacterFromSet:nonDigitSet].location == NSNotFound) &&
+          ([timeString length] == 10));  
+}
+
+- (void)writeInstallTime:(NSString*)installTime forBuild:(NSString*)buildID toDictionary:(NSDictionary*)installTimes
+{
+  [installTimes setValue:installTime forKey:buildID];
+  [self writeInstallTimesToFile:installTimes];
+
+}
+
+- (void)writeInstallTimesToFile:(NSDictionary*)installData
+{
+  NSData* dataFromPlist = [NSPropertyListSerialization dataFromPropertyList:installData
+                                                                 format:NSPropertyListBinaryFormat_v1_0
+                                                       errorDescription:NULL];
+  if (dataFromPlist)
+    [dataFromPlist writeToFile:[self installTimeFilePath] atomically:YES];
 }
 
 @end
