@@ -78,7 +78,7 @@ using google_breakpad::MinidumpGenerator;
 
 namespace google_breakpad {
 
-static BOOL EnsureDirectoryPathExists(NSString *dirPath);
+BOOL EnsureDirectoryPathExists(NSString *dirPath);
 
 //=============================================================================
 class ConfigFile {
@@ -123,7 +123,7 @@ class ConfigFile {
 //=============================================================================
 class MinidumpLocation {
  public:
-  MinidumpLocation(const NSString *minidumpDir) {
+  MinidumpLocation(NSString *minidumpDir) {
     // Ensure that the path exists.  Fallback to /tmp if unable to locate path.
     assert(minidumpDir);
     if (!EnsureDirectoryPathExists(minidumpDir)) {

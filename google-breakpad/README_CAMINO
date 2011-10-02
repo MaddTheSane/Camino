@@ -2,11 +2,12 @@ Breakpad is an open-source library for crash reporting. See:
   http://code.google.com/p/google-breakpad/
 for more information.
 
-This is a pull of r366 from the svn repository at:
+This is a pull of r841 from the svn repository at:
   http://google-breakpad.googlecode.com/svn/trunk/
-with the testing and non-mac platform directories stripped out, and the patches
-for:
-- http://code.google.com/p/google-breakpad/issues/detail?id=348
-- http://code.google.com/p/google-breakpad/issues/detail?id=349
-- https://bugzilla.mozilla.org/show_bug.cgi?id=595054
-applied locally.
+with many testing and non-mac platform directories stripped out, and the following
+source changes:
+- privacyPolicyURL in Localizable.strings has been changed to point to Camino's website.
+- Kept the pre-XIB-conversion NIBs, and all XIB references in projects to NIB. (The relevant XIBs had not changed since conversion.)
+As well as the following Xcode project and xcconfig canges:
+- Commented out the SDK declarations to support mozconfig-based configurations.
+- Commented out any Xcode 3.1-style [<foo>=<bar>] notation and supplied non-configuration-specific values where appropriate.

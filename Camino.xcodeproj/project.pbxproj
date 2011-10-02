@@ -1301,6 +1301,34 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		00533FD61432E4F600DAC768 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 33820D980F8AA24500D2164A /* Breakpad.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2F9A41512131EF0002747C1;
+			remoteInfo = gtest;
+		};
+		00533FD81432E4F600DAC768 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 33820D980F8AA24500D2164A /* Breakpad.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2F9A546121383A1002747C1;
+			remoteInfo = crash_generation_server_test;
+		};
+		00533FDA1432E4F600DAC768 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 33820D980F8AA24500D2164A /* Breakpad.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D23F4BAB12A868A500686C8D;
+			remoteInfo = minidump_generator_test_helper;
+		};
+		00533FEE1432E4F600DAC768 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DEFAA2850F24192200BD51C1 /* Growl.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 31E184D61084628D0011C78B;
+			remoteInfo = "Unit tests";
+		};
 		0080C7C50E2E4CBE006AFD32 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7B64B7BA0CCFD9F50098406C /* Sparkle.xcodeproj */;
@@ -3613,6 +3641,7 @@
 				00BC6C95114B6F45000A0508 /* MailMe.growlView */,
 				00BC6C97114B6F45000A0508 /* MusicVideo.growlView */,
 				00BC6C99114B6F45000A0508 /* SMS.growlView */,
+				00533FEF1432E4F600DAC768 /* Unit tests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4261,6 +4290,9 @@
 				33820DB20F8AA24500D2164A /* generator_test */,
 				33820DB40F8AA24500D2164A /* minidump_file_writer_unittest */,
 				33820DB60F8AA24500D2164A /* handler_test */,
+				00533FD71432E4F600DAC768 /* libgtest.a */,
+				00533FD91432E4F600DAC768 /* crash_generation_server_test */,
+				00533FDB1432E4F600DAC768 /* minidump_generator_test_helper */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -5530,6 +5562,34 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		00533FD71432E4F600DAC768 /* libgtest.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libgtest.a;
+			remoteRef = 00533FD61432E4F600DAC768 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		00533FD91432E4F600DAC768 /* crash_generation_server_test */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = crash_generation_server_test;
+			remoteRef = 00533FD81432E4F600DAC768 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		00533FDB1432E4F600DAC768 /* minidump_generator_test_helper */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = minidump_generator_test_helper;
+			remoteRef = 00533FDA1432E4F600DAC768 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		00533FEF1432E4F600DAC768 /* Unit tests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Unit tests.octest";
+			remoteRef = 00533FEE1432E4F600DAC768 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		0080C7C60E2E4CBE006AFD32 /* relaunch */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.executable";

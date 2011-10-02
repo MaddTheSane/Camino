@@ -1,4 +1,4 @@
-// Copyright (c) 2006, Google Inc.
+// Copyright (c) 2010 Google Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -27,82 +27,52 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// BasicSourceLineResolver implements SourceLineResolverInterface, using
-// address map files produced by a compatible writer, e.g. PDBSourceLineWriter.
+// basic_source_line_resolver.h: BasicSourceLineResolver is derived from
+// SourceLineResolverBase, and is a concrete implementation of
+// SourceLineResolverInterface, using address map files produced by a
+// compatible writer, e.g. PDBSourceLineWriter.
+//
+// see "processor/source_line_resolver_base.h"
+// and "source_line_resolver_interface.h" for more documentation.
 
 #ifndef GOOGLE_BREAKPAD_PROCESSOR_BASIC_SOURCE_LINE_RESOLVER_H__
 #define GOOGLE_BREAKPAD_PROCESSOR_BASIC_SOURCE_LINE_RESOLVER_H__
 
-// TODO: Platforms that have no hash_map can use map, at the likely cost of
-// performance.
-#ifdef __SUNPRO_CC
-#define BSLR_NO_HASH_MAP
-#endif  // __SUNPRO_CC
-
-#ifdef BSLR_NO_HASH_MAP
 #include <map>
-#else  // BSLR_NO_HASH_MAP
-#include <ext/hash_map>
-#endif  // BSLR_NO_HASH_MAP
 
-#include "google_breakpad/processor/source_line_resolver_interface.h"
+#include "google_breakpad/processor/source_line_resolver_base.h"
 
 namespace google_breakpad {
 
 using std::string;
-#ifdef BSLR_NO_HASH_MAP
 using std::map;
-#else  // BSLR_NO_HASH_MAP
-using __gnu_cxx::hash_map;
-#endif  // BSLR_NO_HASH_MAP
 
-class BasicSourceLineResolver : public SourceLineResolverInterface {
+class BasicSourceLineResolver : public SourceLineResolverBase {
  public:
   BasicSourceLineResolver();
-  virtual ~BasicSourceLineResolver();
+  virtual ~BasicSourceLineResolver() { }
 
-  // SourceLineResolverInterface methods, see source_line_resolver_interface.h
-  // for more details.
-
-  // Adds a module to this resolver, returning true on success.
-  // The given map_file is read into memory, and its symbols will be
-  // retained until the BasicSourceLineResolver is destroyed.
-  virtual bool LoadModule(const string &module_name, const string &map_file);
-
-  // Exactly the same as above, except the given map_buffer is used
-  // for symbols. 
-  virtual bool LoadModuleUsingMapBuffer(const string &module_name,
-                                        const string &map_buffer);
-
-
-  virtual bool HasModule(const string &module_name) const;
-
-  virtual StackFrameInfo* FillSourceLineInfo(StackFrame *frame) const;
+  using SourceLineResolverBase::LoadModule;
+  using SourceLineResolverBase::LoadModuleUsingMapBuffer;
+  using SourceLineResolverBase::LoadModuleUsingMemoryBuffer;
+  using SourceLineResolverBase::ShouldDeleteMemoryBufferAfterLoadModule;
+  using SourceLineResolverBase::UnloadModule;
+  using SourceLineResolverBase::HasModule;
+  using SourceLineResolverBase::FillSourceLineInfo;
+  using SourceLineResolverBase::FindWindowsFrameInfo;
+  using SourceLineResolverBase::FindCFIFrameInfo;
 
  private:
-  template<class T> class MemAddrMap;
-  struct Line;
-  struct Function;
-  struct PublicSymbol;
-  struct File;
-#ifdef BSLR_NO_HASH_MAP
-  struct CompareString {
-    bool operator()(const string &s1, const string &s2) const;
-  };
-#else  // BSLR_NO_HASH_MAP
-  struct HashString {
-    size_t operator()(const string &s) const;
-  };
-#endif  // BSLR_NO_HASH_MAP
-  class Module;
+  // friend declarations:
+  friend class BasicModuleFactory;
+  friend class ModuleComparer;
+  friend class ModuleSerializer;
+  template<class> friend class SimpleSerializer;
 
-  // All of the modules we've loaded
-#ifdef BSLR_NO_HASH_MAP
-  typedef map<string, Module*, CompareString> ModuleMap;
-#else  // BSLR_NO_HASH_MAP
-  typedef hash_map<string, Module*, HashString> ModuleMap;
-#endif  // BSLR_NO_HASH_MAP
-  ModuleMap *modules_;
+  // Function derives from SourceLineResolverBase::Function.
+  struct Function;
+  // Module implements SourceLineResolverBase::Module interface.
+  class Module;
 
   // Disallow unwanted copy ctor and assignment operator
   BasicSourceLineResolver(const BasicSourceLineResolver&);
