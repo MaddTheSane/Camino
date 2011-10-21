@@ -159,7 +159,7 @@ extern const char* const kGeckoPrefNewTabStartPage;                    // int
 // Possible values:
 extern const int kStartPageBlank;
 extern const int kStartPageHome;
-// other Mozilla/Firefox values are not implement in Camino
+// other Mozilla/Firefox values are not implemented in Camino
 
 // Records the last version where the homepage override has been applied
 extern const char* const kGeckoPrefNewVersionHomepageOverrideVersion;  // string
