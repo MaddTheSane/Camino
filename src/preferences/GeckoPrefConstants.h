@@ -141,6 +141,12 @@ extern const char* const kGeckoPrefPreventDOMStatusChange;             // bool
 // Controls whether JS window reordering is disabled
 extern const char* const kGeckoPrefPreventDOMWindowFocus;              // bool
 
+// Controls whether downloadable fonts are enabled on pre-Lion OS versions
+extern const char* const kGeckoPrefEnableWebFonts;                     // bool
+
+// Controls whether downloadable fonts are enabled on Lion
+extern const char* const kGeckoPrefEnableWebFontsOnLion;               // bool
+
 #pragma mark Home Page
 
 // The homepage URL

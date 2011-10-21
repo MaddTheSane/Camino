@@ -126,6 +126,8 @@ const char* const kGeckoPrefImageAnimationBehavior = "image.animation_mode";
 const char* const kGeckoPrefPreventDOMWindowResize = "dom.disable_window_move_resize";
 const char* const kGeckoPrefPreventDOMStatusChange = "dom.disable_window_status_change";
 const char* const kGeckoPrefPreventDOMWindowFocus = "dom.disable_window_flip";
+const char* const kGeckoPrefEnableWebFonts = "gfx_downloadable_fonts.enabled";
+const char* const kGeckoPrefEnableWebFontsOnLion = "gfx_downloadable_fonts.enabled.lion";
 
 #pragma mark Home Page
 
