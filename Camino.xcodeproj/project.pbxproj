@@ -48,6 +48,16 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		000B0DAA144B7C2D006A4B8E /* caminojsbridge.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = 000B0DA9144B7BF8006A4B8E /* caminojsbridge.xpt */; };
+		000B0DAC144B7C5E006A4B8E /* caminojsbridge.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = 000B0DA9144B7BF8006A4B8E /* caminojsbridge.xpt */; };
+		000B0E40144B82D1006A4B8E /* caminojsbridge.js in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = 000B0E3F144B81EF006A4B8E /* caminojsbridge.js */; };
+		000B0E41144B8335006A4B8E /* caminojsbridge.js in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = 000B0E3F144B81EF006A4B8E /* caminojsbridge.js */; };
+		000B0EC6144DF8AA006A4B8E /* PlacesDBUtils.jsm in Copy Gecko Modules */ = {isa = PBXBuildFile; fileRef = 000B0EC4144DF888006A4B8E /* PlacesDBUtils.jsm */; };
+		000B0EC8144DF8B4006A4B8E /* PlacesDBUtils.jsm in Copy Gecko Modules */ = {isa = PBXBuildFile; fileRef = 000B0EC4144DF888006A4B8E /* PlacesDBUtils.jsm */; };
+		000B0F3F144E1638006A4B8E /* nsUpdateTimerManager.js in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = 000B0F3E144E15BA006A4B8E /* nsUpdateTimerManager.js */; };
+		000B0F52144E1651006A4B8E /* nsUpdateTimerManager.js in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = 000B0F3E144E15BA006A4B8E /* nsUpdateTimerManager.js */; };
+		000B0F5B144E16F5006A4B8E /* update.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = 000B0F53144E1691006A4B8E /* update.xpt */; };
+		000B0F69144E1746006A4B8E /* update.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = 000B0F53144E1691006A4B8E /* update.xpt */; };
 		000CE53C121A2E12006B4153 /* Trie.mm in Sources */ = {isa = PBXBuildFile; fileRef = 000CE53B121A2E06006B4153 /* Trie.mm */; };
 		000CE53D121A2E12006B4153 /* Trie.mm in Sources */ = {isa = PBXBuildFile; fileRef = 000CE53B121A2E06006B4153 /* Trie.mm */; };
 		000D0A9C0ED9BD8100A6C2F0 /* tabOverview.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 000D0A980ED9BD7000A6C2F0 /* tabOverview.tiff */; };
@@ -1730,6 +1740,7 @@
 			dstPath = modules;
 			dstSubfolderSpec = 6;
 			files = (
+				000B0EC6144DF8AA006A4B8E /* PlacesDBUtils.jsm in Copy Gecko Modules */,
 				0098B1800CAEA9DC00DA0F2F /* XPCOMUtils.jsm in Copy Gecko Modules */,
 			);
 			name = "Copy Gecko Modules";
@@ -1741,6 +1752,7 @@
 			dstPath = modules;
 			dstSubfolderSpec = 6;
 			files = (
+				000B0EC8144DF8B4006A4B8E /* PlacesDBUtils.jsm in Copy Gecko Modules */,
 				0098B1830CAEAA0200DA0F2F /* XPCOMUtils.jsm in Copy Gecko Modules */,
 			);
 			name = "Copy Gecko Modules";
@@ -1848,13 +1860,15 @@
 				0F518833088592020091F3FB /* libpermissions.dylib in Copy Component Libraries */,
 				DEC87B100C2882DC002EB106 /* libstoragecomps.dylib in Copy Component Libraries */,
 				C7DE8E2F0F30D2AD00CD3872 /* libcaminosafebrowsing.dylib in Copy Component Libraries */,
-				3F44AD2705BDFB9F00CB4B08 /* nsProxyAutoConfig.js in Copy Component Libraries */,
+				000B0E40144B82D1006A4B8E /* caminojsbridge.js in Copy Component Libraries */,
 				0098B1230CAEA77500DA0F2F /* nsHandlerService.js in Copy Component Libraries */,
 				B33032F610AE17C9002FA0A7 /* nsLivemarkService.js in Copy Component Libraries */,
 				B328DF46114ED069004D2EDC /* nsPlacesDBFlush.js in Copy Component Libraries */,
-				DE581AB611865B1A00BAEA05 /* pluginGlue.js in Copy Component Libraries */,
-				C7DE8E300F30D2C100CD3872 /* nsUrlClassifierListManager.js in Copy Component Libraries */,
+				3F44AD2705BDFB9F00CB4B08 /* nsProxyAutoConfig.js in Copy Component Libraries */,
+				000B0F3F144E1638006A4B8E /* nsUpdateTimerManager.js in Copy Component Libraries */,
 				C7DE8E310F30D2C100CD3872 /* nsUrlClassifierLib.js in Copy Component Libraries */,
+				C7DE8E300F30D2C100CD3872 /* nsUrlClassifierListManager.js in Copy Component Libraries */,
+				DE581AB611865B1A00BAEA05 /* pluginGlue.js in Copy Component Libraries */,
 			);
 			name = "Copy Component Libraries";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1889,13 +1903,15 @@
 			dstPath = components;
 			dstSubfolderSpec = 6;
 			files = (
-				3F44AF4405BDFBA000CB4B08 /* nsProxyAutoConfig.js in Copy Component Libraries */,
+				000B0E41144B8335006A4B8E /* caminojsbridge.js in Copy Component Libraries */,
 				0098B12A0CAEA81700DA0F2F /* nsHandlerService.js in Copy Component Libraries */,
 				B33032F710AE17F1002FA0A7 /* nsLivemarkService.js in Copy Component Libraries */,
 				B328DF47114ED0AD004D2EDC /* nsPlacesDBFlush.js in Copy Component Libraries */,
-				DE581AB511865B1A00BAEA05 /* pluginGlue.js in Copy Component Libraries */,
-				C7DE8E4B0F30D41500CD3872 /* nsUrlClassifierListManager.js in Copy Component Libraries */,
+				3F44AF4405BDFBA000CB4B08 /* nsProxyAutoConfig.js in Copy Component Libraries */,
+				000B0F52144E1651006A4B8E /* nsUpdateTimerManager.js in Copy Component Libraries */,
 				C7DE8E4C0F30D41500CD3872 /* nsUrlClassifierLib.js in Copy Component Libraries */,
+				C7DE8E4B0F30D41500CD3872 /* nsUrlClassifierListManager.js in Copy Component Libraries */,
+				DE581AB511865B1A00BAEA05 /* pluginGlue.js in Copy Component Libraries */,
 			);
 			name = "Copy Component Libraries";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1969,6 +1985,7 @@
 				DEC87B120C288337002EB106 /* storage.xpt in Copy Component XPTs */,
 				3F44AD1705BDFB9F00CB4B08 /* uconv.xpt in Copy Component XPTs */,
 				3F44AD1805BDFB9F00CB4B08 /* unicharutil.xpt in Copy Component XPTs */,
+				000B0F69144E1746006A4B8E /* update.xpt in Copy Component XPTs */,
 				3F44AD1905BDFB9F00CB4B08 /* uriloader.xpt in Copy Component XPTs */,
 				C7DE8E420F30D2FF00CD3872 /* url-classifier.xpt in Copy Component XPTs */,
 				3F44AD1A05BDFB9F00CB4B08 /* xpcom_base.xpt in Copy Component XPTs */,
@@ -1984,6 +2001,7 @@
 				3F44AD2405BDFB9F00CB4B08 /* xuldoc.xpt in Copy Component XPTs */,
 				3F44AD2C05BDFB9F00CB4B08 /* suitetypeaheadfind.xpt in Copy Component XPTs */,
 				3F44ADB105BDFB9F00CB4B08 /* layout_printing.xpt in Copy Component XPTs */,
+				000B0DAC144B7C5E006A4B8E /* caminojsbridge.xpt in Copy Component XPTs */,
 				33E1EA990D358DFA00910BBD /* caminosearch.xpt in Copy Component XPTs */,
 			);
 			name = "Copy Component XPTs";
@@ -2239,6 +2257,7 @@
 				DEC87B130C288337002EB106 /* storage.xpt in Copy Component XPTs */,
 				3F44AF3705BDFBA000CB4B08 /* uconv.xpt in Copy Component XPTs */,
 				3F44AF3805BDFBA000CB4B08 /* unicharutil.xpt in Copy Component XPTs */,
+				000B0F5B144E16F5006A4B8E /* update.xpt in Copy Component XPTs */,
 				3F44AF3905BDFBA000CB4B08 /* uriloader.xpt in Copy Component XPTs */,
 				C7DE8E430F30D32700CD3872 /* url-classifier.xpt in Copy Component XPTs */,
 				3F44AF3A05BDFBA000CB4B08 /* xpcom_base.xpt in Copy Component XPTs */,
@@ -2255,6 +2274,7 @@
 				3F44AF4705BDFBA000CB4B08 /* suitetypeaheadfind.xpt in Copy Component XPTs */,
 				3F44AFF905BDFBA000CB4B08 /* layout_printing.xpt in Copy Component XPTs */,
 				0F66E4A907D6D90500444E2A /* intl.xpt in Copy Component XPTs */,
+				000B0DAA144B7C2D006A4B8E /* caminojsbridge.xpt in Copy Component XPTs */,
 				33E1EA9A0D358E0C00910BBD /* caminosearch.xpt in Copy Component XPTs */,
 			);
 			name = "Copy Component XPTs";
@@ -2546,6 +2566,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		000B0DA9144B7BF8006A4B8E /* caminojsbridge.xpt */ = {isa = PBXFileReference; lastKnownFileType = file; name = caminojsbridge.xpt; path = ../dist/bin/components/caminojsbridge.xpt; sourceTree = SOURCE_ROOT; };
+		000B0E3F144B81EF006A4B8E /* caminojsbridge.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = caminojsbridge.js; path = ../dist/bin/components/caminojsbridge.js; sourceTree = SOURCE_ROOT; };
+		000B0EC4144DF888006A4B8E /* PlacesDBUtils.jsm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = PlacesDBUtils.jsm; path = ../dist/bin/modules/PlacesDBUtils.jsm; sourceTree = SOURCE_ROOT; };
+		000B0F3E144E15BA006A4B8E /* nsUpdateTimerManager.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = nsUpdateTimerManager.js; path = ../dist/bin/components/nsUpdateTimerManager.js; sourceTree = SOURCE_ROOT; };
+		000B0F53144E1691006A4B8E /* update.xpt */ = {isa = PBXFileReference; lastKnownFileType = file; name = update.xpt; path = ../dist/bin/components/update.xpt; sourceTree = SOURCE_ROOT; };
 		000CE53A121A2E06006B4153 /* Trie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Trie.h; path = src/browser/Trie.h; sourceTree = "<group>"; };
 		000CE53B121A2E06006B4153 /* Trie.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Trie.mm; path = src/browser/Trie.mm; sourceTree = "<group>"; };
 		000D0A980ED9BD7000A6C2F0 /* tabOverview.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = tabOverview.tiff; path = resources/images/toolbar/tabOverview.tiff; sourceTree = "<group>"; };
@@ -3611,6 +3636,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		000B0F3D144E151B006A4B8E /* Gecko Modules */ = {
+			isa = PBXGroup;
+			children = (
+				000B0EC4144DF888006A4B8E /* PlacesDBUtils.jsm */,
+				0098B17F0CAEA9CF00DA0F2F /* XPCOMUtils.jsm */,
+			);
+			name = "Gecko Modules";
+			sourceTree = "<group>";
+		};
 		00BC68A0114B5F55000A0508 /* Spotlight Importer */ = {
 			isa = PBXGroup;
 			children = (
@@ -3732,6 +3766,7 @@
 		0FA8EFA20423B36300A80166 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				000B0E3F144B81EF006A4B8E /* caminojsbridge.js */,
 				E4C7D98B0A32108500B455AD /* libspellchecker.dylib */,
 				82180AC907368BDF002EFA6D /* libcomposer.dylib */,
 				F5F181C90208006F0124611D /* libappcomps.dylib */,
@@ -3765,6 +3800,14 @@
 				DE62E42F0B72B3D200142851 /* libauth.dylib */,
 				DEC87B0F0C2882DC002EB106 /* libstoragecomps.dylib */,
 				C7DE8E2B0F30D27300CD3872 /* libcaminosafebrowsing.dylib */,
+				0098B11D0CAEA75700DA0F2F /* nsHandlerService.js */,
+				B33032AA10AE15EA002FA0A7 /* nsLivemarkService.js */,
+				B328DEF9114ECFBF004D2EDC /* nsPlacesDBFlush.js */,
+				F5461CBB03AAC25C01A96660 /* nsProxyAutoConfig.js */,
+				000B0F3E144E15BA006A4B8E /* nsUpdateTimerManager.js */,
+				C7DE8E160F30D14F00CD3872 /* nsUrlClassifierLib.js */,
+				C7DE8E150F30D14F00CD3872 /* nsUrlClassifierListManager.js */,
+				DE581AB411865B1A00BAEA05 /* pluginGlue.js */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -3772,6 +3815,8 @@
 		0FA8EFA30423B37000A80166 /* XPT files */ = {
 			isa = PBXGroup;
 			children = (
+				000B0DA9144B7BF8006A4B8E /* caminojsbridge.xpt */,
+				33E1EA970D358DE200910BBD /* caminosearch.xpt */,
 				F6BD639401B3131201A962F7 /* caps.xpt */,
 				82CE28C40736625800B4DE07 /* composer.xpt */,
 				F6BD63D901B313EE01A962F7 /* content_base.xpt */,
@@ -3836,6 +3881,7 @@
 				F6BD63B301B3131201A962F7 /* txtsvc.xpt */,
 				F6BD642101B3156701A962F7 /* uconv.xpt */,
 				F6BD642201B3156701A962F7 /* unicharutil.xpt */,
+				000B0F53144E1691006A4B8E /* update.xpt */,
 				F6BD642301B3156701A962F7 /* uriloader.xpt */,
 				C7DE8E260F30D1BC00CD3872 /* url-classifier.xpt */,
 				F6BD63B401B3131201A962F7 /* webBrowser_core.xpt */,
@@ -3947,7 +3993,6 @@
 				DEE8101D0EFB7D2E006ACC7D /* aquaSelect.css */,
 				00BA5F40133E612000C9A8C0 /* html5elements.css */,
 				1B825D020C5D268600CB4343 /* Camino.sdef */,
-				33E1EA970D358DE200910BBD /* caminosearch.xpt */,
 				DE4044910ED0A96F00057E17 /* Gecko Strings */,
 				3D94197F0F559B2F00227277 /* blockedSite.xhtml */,
 				DE59E2F40FA54E6F001F240C /* Crash Reporter InfoPlist.strings Override */,
@@ -5157,16 +5202,9 @@
 				008115420B180F35001CB3F0 /* libthebes.dylib */,
 				F6BD638701B30F5301A962F7 /* libgkgfx.dylib */,
 				3FE5B9FC068A090F0001CECD /* libmozz.dylib */,
-				F5461CBB03AAC25C01A96660 /* nsProxyAutoConfig.js */,
-				0098B11D0CAEA75700DA0F2F /* nsHandlerService.js */,
-				B33032AA10AE15EA002FA0A7 /* nsLivemarkService.js */,
-				B328DEF9114ECFBF004D2EDC /* nsPlacesDBFlush.js */,
-				DE581AB411865B1A00BAEA05 /* pluginGlue.js */,
-				C7DE8E150F30D14F00CD3872 /* nsUrlClassifierListManager.js */,
-				C7DE8E160F30D14F00CD3872 /* nsUrlClassifierLib.js */,
-				0098B17F0CAEA9CF00DA0F2F /* XPCOMUtils.jsm */,
 				F5247C2F0228B5E7013DD99A /* Gecko Security */,
 				F6BD645501B3167601A962F7 /* Gecko Res */,
+				000B0F3D144E151B006A4B8E /* Gecko Modules */,
 				F6BD64FB01B3184301A962F7 /* Gecko Pref Defaults */,
 				F507BA530213C26501D93544 /* Gecko Profile Defaults */,
 				F56F242202AC6F7101A967F3 /* Gecko Static Components */,

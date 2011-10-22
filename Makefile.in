@@ -50,6 +50,7 @@ DIRS = \
 	flashblock \
 	geckochrome \
 	idl \
+	jsbridge \
 	striptease \
 	safebrowsing \
 	typeaheadfind \

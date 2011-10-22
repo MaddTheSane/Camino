@@ -50,6 +50,7 @@
 #import "NSURL+Utils.h"
 #import "NSWorkspace+Utils.h"
 
+#import "chIJavascriptBridge.h"
 #import "ChimeraUIConstants.h"
 #import "BrowserWindow.h"
 #import "BrowserWindowController.h"
@@ -207,6 +208,12 @@ static const int kZoomActionsTag = 108;
 
   // add our OpenSearch handler
   AddSearchProviderHandler::InstallHandler();
+
+  // Kick off background maintenance tasks (which run on a timer, so there's no
+  // need to defer this call until later).
+  nsCOMPtr<chIJavascriptBridge> jsBridge(do_GetService("@mozilla.org/camino/javascript-bridge;1"));
+  if (jsBridge)
+    jsBridge->StartMaintenance();
 
   mGeckoInitted = YES;
 }

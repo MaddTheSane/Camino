@@ -56,6 +56,7 @@
 #import "CmXULAppInfo.h"
 
 #include "nsString.h"
+#include "nsCategoryManagerUtils.h"
 #include "nsCRT.h"
 #include "nsWeakReference.h"
 #include "nsIServiceManager.h"
@@ -671,6 +672,14 @@ static BOOL gMadePrefManager;
       // not reached
       return NO;
     }
+    // XRE has code to create components in the profile-after-change category
+    // after sending the profile-after-change notification, but nothing else
+    // does. We don't use XRE, but need the timer component that's registered
+    // there, so create those components ourselves here (since SetProfileDir
+    // is what sends the profile-after-change for us, so this is the closest
+    // point).
+    (void)NS_CreateServicesFromCategory("profile-after-change", nsnull,
+                                        "profile-after-change");
 
     nsCOMPtr<nsIPrefBranch> prefs(do_GetService(NS_PREFSERVICE_CONTRACTID));
     if (!prefs) {
