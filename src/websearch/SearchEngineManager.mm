@@ -48,12 +48,14 @@ NSString *const kWebSearchEngineWhereFromKey = @"PluginURL";
 
 static NSString *const kListOfSearchEnginesKey = @"SearchEngineList";
 static NSString *const kPreferredSearchEngineNameKey = @"PreferredSearchEngine";
+static NSString *const kBuiltInEngineSetVersionKey = @"BuiltInEngineSetVersion";
+static const int kCurrentBuiltInEngineSetVersion = 1;
 
 @interface SearchEngineManager (Private)
 
 - (NSString *)pathToSavedSearchEngineInformation;
-- (void)migrateOldSearchEnginesAtPath:(NSString *)oldEnginesPath;
 - (void)loadSavedSearchEngineInformation;
+- (void)upgradeSearchEnginesFromVersion:(int)oldVersion;
 - (void)saveSearchEngineInformation;
 - (void)setInstalledSearchEngines:(NSMutableArray *)newSearchEngines;
 - (void)installedSearchEnginesChanged;
@@ -105,62 +107,11 @@ static NSString *const kPreferredSearchEngineNameKey = @"PreferredSearchEngine";
   return mPathToSavedSearchEngineInfo;
 }
 
-// Converts search engines saved in the old |SearchURLList.plist| file format
-// to the current structure and writes them out to |savedSearchEnginesPath|.
-- (void)migrateOldSearchEnginesAtPath:(NSString *)oldEnginesPath
-{
-  NSDictionary *searchEngineDictionary = [NSDictionary dictionaryWithContentsOfFile:oldEnginesPath];
-  if (!searchEngineDictionary)
-    return;
-
-  NSArray *engineNames = [[searchEngineDictionary allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-
-  NSMutableArray *searchEngines = [NSMutableArray arrayWithCapacity:([engineNames count] - 1)];
-  NSEnumerator *engineEnumerator = [engineNames objectEnumerator];
-  NSString *engineName = nil;
-  NSString *preferredSearchEngineName = nil;
-  while ((engineName = [engineEnumerator nextObject])) {
-    if ([engineName isEqualToString:kPreferredSearchEngineNameKey]) {
-      preferredSearchEngineName = [searchEngineDictionary objectForKey:engineName];
-      continue;
-    }
-    [searchEngines addObject:[NSDictionary dictionaryWithObjectsAndKeys:engineName,
-                                                                        kWebSearchEngineNameKey,
-                                                                        [searchEngineDictionary objectForKey:engineName],
-                                                                        kWebSearchEngineURLKey, nil]];
-  }
-
-   if ([searchEngines count] > 0) {
-    if (!preferredSearchEngineName)
-      preferredSearchEngineName = [[searchEngines objectAtIndex:0] valueForKey:kWebSearchEngineNameKey];
-
-    NSDictionary *searchEngineInfoDict = [NSDictionary dictionaryWithObjectsAndKeys:preferredSearchEngineName,
-                                                                                    kPreferredSearchEngineNameKey,
-                                                                                    searchEngines,
-                                                                                    kListOfSearchEnginesKey, nil];
-
-    [searchEngineInfoDict writeToFile:[self pathToSavedSearchEngineInformation] atomically:YES];
-  }
-}
-
 - (void)loadSavedSearchEngineInformation
 {
   NSString *pathToSavedEngineInfo = [self pathToSavedSearchEngineInformation];
   if (!pathToSavedEngineInfo)
     return;
-
-  // If there are no saved search engines, check for the old file format and migrate it.
-  NSString *profileDirectory = [[PreferenceManager sharedInstance] profilePath];
-  NSString *pathToOldEngines = [profileDirectory stringByAppendingPathComponent:@"SearchURLList.plist"];
-  if (![[NSFileManager defaultManager] isReadableFileAtPath:pathToSavedEngineInfo] &&
-      [[NSFileManager defaultManager] isReadableFileAtPath:pathToOldEngines])
-  {
-#if DEBUG
-    NSLog(@"No search engines found; migrating old file detected at %@", pathToOldEngines);
-#endif
-    [self migrateOldSearchEnginesAtPath:pathToOldEngines];
-  }
-
   NSDictionary *savedSearchEngineInfoDict = [NSDictionary dictionaryWithContentsOfFile:pathToSavedEngineInfo];
 
   if (!savedSearchEngineInfoDict || 
@@ -186,7 +137,14 @@ static NSString *const kPreferredSearchEngineNameKey = @"PreferredSearchEngine";
   NSMutableArray *savedSearchEngines = [NSMutableArray arrayWithArray:[savedSearchEngineInfoDict objectForKey:kListOfSearchEnginesKey]];
 
   BOOL duplicatesWereRemoved = [self filterDuplicatesFromEngines:savedSearchEngines];
+
   [self setInstalledSearchEngines:savedSearchEngines];
+
+  // Check for built-in engine updates.
+  int version = [[savedSearchEngineInfoDict objectForKey:kBuiltInEngineSetVersionKey] intValue];
+  BOOL needsUpdate = version < kCurrentBuiltInEngineSetVersion;
+  if (needsUpdate)
+    [self upgradeSearchEnginesFromVersion:version];
 
   // Validate and set the saved preferred engine name.
   NSString *savedPreferredEngine = [savedSearchEngineInfoDict objectForKey:kPreferredSearchEngineNameKey];
@@ -196,16 +154,50 @@ static NSString *const kPreferredSearchEngineNameKey = @"PreferredSearchEngine";
     [self setPreferredSearchEngine:[[self installedSearchEngineNames] objectAtIndex:0] sendingChangeNotification:NO];
 
   // Update the saved engines if any modifications were made during loading.
-  if (duplicatesWereRemoved || ![[self preferredSearchEngine] isEqualToString:savedPreferredEngine])
+  if (duplicatesWereRemoved || needsUpdate ||
+      ![[self preferredSearchEngine] isEqualToString:savedPreferredEngine])
+  {
     [self saveSearchEngineInformation];
+  }
+}
+
+// Updates the saved search engines to reflect changes in the built-in engines.
+- (void)upgradeSearchEnginesFromVersion:(int)oldVersion {
+  if (oldVersion < 1) {
+    // Version 1 switched Google searches to HTTPS. Map the old URLs to the new
+    // ones (if they are still there).
+    NSDictionary *urlMap = [NSDictionary dictionaryWithObjectsAndKeys:
+        // Web search, new and old.
+        @"https://www.google.com/search?q=%s&ie=utf-8&oe=utf-8",
+        @"http://www.google.com/search?q=%s&ie=utf-8&oe=utf-8",
+        // Image search, new and old.
+        @"https://www.google.com/search?tbm=isch&ie=UTF-8&oe=UTF-8&q=%s",
+        @"http://images.google.com/images?ie=UTF-8&oe=UTF-8&q=%s",
+        // Site search, new and old.
+        @"https://www.google.com/search?ie=UTF-8&oe=UTF-8&q=%s site:%d",
+        @"http://www.google.com/search?ie=UTF-8&oe=UTF-8&q=%s site:%d",
+        nil];
+    // Loop, rather than enumerate, to allow modification.
+    for (unsigned int i = 0; i < [mInstalledSearchEngines count]; ++i) {
+      NSDictionary *engine = [mInstalledSearchEngines objectAtIndex:i];
+      NSString *engineURL = [engine objectForKey:kWebSearchEngineURLKey];
+      NSString *replacementURL = [urlMap objectForKey:engineURL];
+      if (replacementURL) {
+        NSMutableDictionary *newEngine = [[engine mutableCopy] autorelease];
+        [newEngine setObject:replacementURL forKey:kWebSearchEngineURLKey];
+        [mInstalledSearchEngines replaceObjectAtIndex:i withObject:newEngine];
+      }
+    }
+  }
 }
 
 - (void)saveSearchEngineInformation
 {
-  NSDictionary *searchEngineInfoDict = [NSDictionary dictionaryWithObjectsAndKeys:[self preferredSearchEngine],
-                                                                                  kPreferredSearchEngineNameKey,
-                                                                                  [self installedSearchEngines],
-                                                                                  kListOfSearchEnginesKey, nil];
+  NSDictionary *searchEngineInfoDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  [self preferredSearchEngine], kPreferredSearchEngineNameKey,
+                                 [self installedSearchEngines], kListOfSearchEnginesKey,
+      [NSNumber numberWithInt:kCurrentBuiltInEngineSetVersion], kBuiltInEngineSetVersionKey,
+                                                                nil];
 
   [searchEngineInfoDict writeToFile:[self pathToSavedSearchEngineInformation] atomically:YES];
 }

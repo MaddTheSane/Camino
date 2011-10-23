@@ -180,7 +180,7 @@
 					<key>Title</key>
 					<string>Google</string>
 					<key>URL</key>
-					<string>http://www.google.com/</string>
+					<string>https://www.google.com/</string>
 				</dict>
 				<dict>
 					<key>Title</key>
@@ -192,7 +192,7 @@
 					<key>Title</key>
 					<string>Google Maps</string>
 					<key>URL</key>
-					<string>http://maps.google.com/</string>
+					<string>https://maps.google.com/</string>
 				</dict>
 				<dict>
 					<key>Title</key>
@@ -273,7 +273,7 @@
 							<key>Title</key>
 							<string>Google News</string>
 							<key>URL</key>
-							<string>http://news.google.com/</string>
+							<string>https://news.google.com/</string>
 						</dict>
 						<dict>
 							<key>Title</key>
@@ -291,7 +291,7 @@
 					<key>Title</key>
 					<string>Google</string>
 					<key>URL</key>
-					<string>http://www.google.com/</string>
+					<string>https://www.google.com/</string>
 				</dict>
 				<dict>
 					<key>Title</key>
