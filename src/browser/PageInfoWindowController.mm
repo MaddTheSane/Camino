@@ -35,8 +35,6 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-#include "nsXPIDLString.h"
-
 #include "nsIDOMWindow.h"
 #include "nsIX509Cert.h"
 
