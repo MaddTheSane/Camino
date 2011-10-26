@@ -44,6 +44,7 @@ camino/flashblock/Makefile
 camino/geckochrome/Makefile
 camino/idl/Makefile
 camino/installer/Makefile
+camino/jsbridge/Makefile
 camino/striptease/Makefile
 camino/safebrowsing/Makefile
 camino/typeaheadfind/Makefile
