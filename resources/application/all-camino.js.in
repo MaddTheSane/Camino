@@ -140,9 +140,9 @@ pref("network.cookie.cookieBehavior", 0);
 // "Remember this decision?" should be checked by default in the request sheet.
 pref("cocoa_prompt.remember_cookie_decision", true);
 
-// Enable DNS prefetch by default for both http and https resources
+// Enable DNS prefetch by default for http resources, but not for https ones
 pref("network.dns.disablePrefetch", false);
-pref("network.dns.disablePrefetchFromHTTPS", false);
+pref("network.dns.disablePrefetchFromHTTPS", true);
 
 // default to opening tabs instead of windows for command-click
 pref("browser.tabs.opentabfor.middleclick", true);
