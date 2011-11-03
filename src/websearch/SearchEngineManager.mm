@@ -49,7 +49,7 @@ NSString *const kWebSearchEngineWhereFromKey = @"PluginURL";
 static NSString *const kListOfSearchEnginesKey = @"SearchEngineList";
 static NSString *const kPreferredSearchEngineNameKey = @"PreferredSearchEngine";
 static NSString *const kBuiltInEngineSetVersionKey = @"BuiltInEngineSetVersion";
-static const int kCurrentBuiltInEngineSetVersion = 1;
+static const int kCurrentBuiltInEngineSetVersion = 2;
 
 @interface SearchEngineManager (Private)
 
@@ -163,19 +163,34 @@ static const int kCurrentBuiltInEngineSetVersion = 1;
 
 // Updates the saved search engines to reflect changes in the built-in engines.
 - (void)upgradeSearchEnginesFromVersion:(int)oldVersion {
-  if (oldVersion < 1) {
-    // Version 1 switched Google searches to HTTPS. Map the old URLs to the new
+  if (oldVersion < 2) {
+    // Version 2 switched Google searches to HTTPS. Map the old URLs to the new
     // ones (if they are still there).
     NSDictionary *urlMap = [NSDictionary dictionaryWithObjectsAndKeys:
         // Web search, new and old.
         @"https://www.google.com/search?q=%s&ie=utf-8&oe=utf-8",
         @"http://www.google.com/search?q=%s&ie=utf-8&oe=utf-8",
+        // Added Mozilla sourceid.
+        @"https://www.google.com/search?q=%s&ie=utf-8&oe=utf-8",
+        @"http://www.google.com/search?q=%s&sourceid=mozilla2&ie=utf-8&oe=utf-8",
+        // Added UTF-8 (bug 201642).
+        @"https://www.google.com/search?q=%s&ie=utf-8&oe=utf-8",
+        @"http://www.google.com/search?ie=UTF-8&oe=UTF-8&q=%s",
+        // Dawn of web search (bug 158246).
+        @"https://www.google.com/search?q=%s&ie=utf-8&oe=utf-8",
+        @"http://www.google.com/search?q=%s",
         // Image search, new and old.
         @"https://www.google.com/search?tbm=isch&ie=UTF-8&oe=UTF-8&q=%s",
         @"http://images.google.com/images?ie=UTF-8&oe=UTF-8&q=%s",
+        // // Dawn of image search (bug 158246).
+        @"https://www.google.com/search?tbm=isch&ie=UTF-8&oe=UTF-8&q=%s",
+        @"http://images.google.com/images?q=%s",
         // Site search, new and old.
         @"https://www.google.com/search?ie=UTF-8&oe=UTF-8&q=%s site:%d",
         @"http://www.google.com/search?ie=UTF-8&oe=UTF-8&q=%s site:%d",
+        // Dawn of site search (bug 158246).
+        @"https://www.google.com/search?ie=UTF-8&oe=UTF-8&q=%s site:%d",
+        @"http://www.google.com/search?q=%s site:%d",
         nil];
     // Loop, rather than enumerate, to allow modification.
     for (unsigned int i = 0; i < [mInstalledSearchEngines count]; ++i) {
