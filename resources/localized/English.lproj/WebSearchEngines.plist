@@ -2,10 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>BuiltInEngineSetVersion</key>
+	<integer>2</integer>
 	<key>PreferredSearchEngine</key>
 	<string>Google</string>
-	<key>BuiltInEngineSetVersion</key>
-	<integer>1</integer>
 	<key>SearchEngineList</key>
 	<array>
 		<dict>
