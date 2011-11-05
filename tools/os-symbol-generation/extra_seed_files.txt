@@ -23,4 +23,5 @@
 /System/Library/Frameworks/Security.framework/PlugIns/
 /System/Library/Frameworks/System.framework/System
 /System/Library/Input Methods/
+/System/Library/Java/Support/CoreDeploy.bundle/Contents/JavaAppletPlugin.plugin
 /System/Library/QuickTime/QuickTimeComponents.component/Contents/MacOS/QuickTimeComponents
