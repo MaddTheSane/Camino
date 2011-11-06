@@ -6,7 +6,7 @@
 #   Version: The bundle version.
 #   VersionString: The user-visible version.
 #   MinOSVersion: The minimum supported OS version.
-#   Arch: A comma-separated list of supported architectures (e.g., ppc,i386).
+#   Arch: A comma-separated list of supported architectures (e.g., ppc,x86).
 #   Intl: 0 if the update is English-only, 1 if internationalized. Can also be
 #         0,1 if the two build types merge in the future.
 #   FileURL: The URL where the update can be downloaded.
@@ -144,7 +144,8 @@ sub latest_supported_update {
     if (client_meets_platform_requirements($client_info, $update) &&
         client_internationalization_matches_update($client_info, $update) &&
         client_meets_camino_version_requirement($client_info, $update) &&
-        ($include_pre_release || version_is_release($update->{VersionString})))
+        ($include_pre_release || version_is_release($update->{VersionString}) ||
+         is_rc_update($client_info->{version}, $update->{VersionString})))
     {
       # Load the description in the approriate language.
       my $base_name = $update->{VersionString};
@@ -170,7 +171,7 @@ sub version_is_release {
   # The localized build marker is Int, but check for Intl as well just in
   # case someone gets mixed up (since we use Intl in our update descriptions).
   $version =~ s/\s*intl?$//i;
-  return $version !~ /(?:(?:a|b)\d*|pre|rc)$/;
+  return $version !~ /(?:(?:a|b|rc)\d*|pre)$/;
 }
 
 # Returns true if the client is capable of running the given update.
@@ -214,6 +215,22 @@ sub client_wants_pre_release_builds {
   return !version_is_release($client->{version});
 }
 
+# RC updates after the first are tricky, since someone running a build pushed
+# as Xrc will just be identified as X. To allow for rc -> rc2 (or rcN -> rcN+1),
+# treat Xrc* as a valid update for anyone running X (but not any other release,
+# since people on X-1 should not be autoupdated to Xrc*). Once X is actually
+# released it will be a newer update than any Xrc*, so the fact that this will
+# return true for people actually running X won't matter.
+sub is_rc_update {
+  my ($client_version, $update_version) = @_;
+  my ($client_num) = version_components($client_version);
+  my ($update_num, $update_stage) = version_components($update_version);
+  return 0 unless (defined($client_num) && defined($update_num));
+  return ($client_num eq $update_num &&
+          $update_stage =~ /^rc\d*$/ &&
+          version_is_release($client_version));
+}
+
 # Performs a <=> style comparison on two OS or Camino versions
 sub compare_versions {
   my ($a, $b) = @_;
@@ -240,7 +257,7 @@ sub compare_versions {
 # (numeric version, stage (e.g, 'a', 'b1', 'rc'), is-nightly-or-not).
 sub version_components {
   my ($version) = @_;
-  my ($num, $stage, $pre) = ($version =~ /^([\d.]+)([ab]\d*|rc)?(pre)?/);
+  my ($num, $stage, $pre) = ($version =~ /^([\d.]+)([ab]\d*|rc\d*)?(pre)?/);
   return ($num, $stage, defined($pre));
 }
 
