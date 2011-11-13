@@ -36,6 +36,9 @@
  * ***** END LICENSE BLOCK ***** */
 
 #import "LocationBarPartitionView.h"
+
+#import "NSWorkspace+Utils.h"
+
 #import "AutoCompleteTextField.h"
 #import "CHGradient.h"
 
@@ -111,9 +114,12 @@ static CHGradient *CreateGreyGradientWithValues(int startValue, int endValue)
   [mLineGradient drawInRect:NSMakeRect(NSMinX(rect), NSMinY(rect), 1, NSHeight(rect))
                       angle:90.0];
   NSColor *currentBackgroundColor = [(NSTextField *)[self superview] backgroundColor];
-  CHGradient *fadeGradient = [[[CHGradient alloc] initWithStartingColor:currentBackgroundColor
-                                                            endingColor:mClearColor] autorelease];
-  [fadeGradient drawInRect:leftRect angle:180.0];
+  if ([NSWorkspace isLeopardOrHigher]) {
+    CHGradient *fadeGradient =
+        [[[CHGradient alloc] initWithStartingColor:currentBackgroundColor
+                                       endingColor:mClearColor] autorelease];
+    [fadeGradient drawInRect:leftRect angle:180.0];
+  }
 
   if (mDisplayFeedIcon)
     [mFeedImage drawAtPoint:mFeedIconRect.origin fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
