@@ -652,7 +652,6 @@ div[class^="ad_"],
 div[class^="ads_"],
 div[class="splitAd"],
 div[class="wide-text-ads"],
-div[class~="ads"],
 div[class^="adSpot"],
 div[class^="ad-break"],
 div[class="adcode"],
@@ -740,7 +739,9 @@ div[class="miniAdContainer"],
 div[id="contentinlineAd"],
 div[class~="admarker"],
 div[id$="ads-container"],
-div[class="mod-adcpc"]
+div[class="mod-adcpc"],
+div[id="adsTop"],
+div[id="adsBottom"]
 
 { display: none !important; -moz-binding: none !important }
 
