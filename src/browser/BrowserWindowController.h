@@ -292,6 +292,7 @@ typedef enum  {
 - (void)stopAllPendingLoads;
 
 - (IBAction)toggleTabThumbnailView:(id)sender;
+- (BOOL)tabThumbnailViewIsVisible;
 
 - (IBAction)reloadWithNewCharset:(NSString*)charset;
 - (NSString*)currentCharset;

@@ -5416,6 +5416,11 @@ public:
   }
 }
 
+- (BOOL)tabThumbnailViewIsVisible
+{
+  return [mContentView tabThumbnailGridViewIsVisible];
+}
+
 - (void)showSafeBrowsingInformation
 {
   NSString *blockingInformationURL = 

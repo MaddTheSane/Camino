@@ -78,10 +78,14 @@ static const int kEscapeKeyCode = 53;
   }
 }
 
-// this gets called when the user hits the Escape key
+// This gets called when the user hits the Escape key.
 - (void)cancel:(id)sender
 {
-  [(BrowserWindowController*)[self delegate] stop:nil];
+  BrowserWindowController* windowController = (BrowserWindowController*)[self delegate];
+  if ([windowController tabThumbnailViewIsVisible])
+    [windowController toggleTabThumbnailView:nil];
+  else 
+    [windowController stop:nil];
 }
 
 - (BOOL)suppressMakeKeyFront
