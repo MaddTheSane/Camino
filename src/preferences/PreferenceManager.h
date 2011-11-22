@@ -97,6 +97,9 @@ extern NSString* const kPrefChangedPrefNameUserInfoKey;   // NSString
 // Returns YES if Java can be enabled (i.e., if a Java plugin is present).
 - (BOOL)javaPluginCanBeEnabled;
 
+// Returns YES if a Flash plugin is present.
+- (BOOL)isFlashInstalled;
+
 // the path to the user profile's root folder
 - (NSString*)profilePath;
 // the path to Camino's cache root folder

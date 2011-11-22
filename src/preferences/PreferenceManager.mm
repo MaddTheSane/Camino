@@ -241,6 +241,7 @@ WriteVersion(nsIFile* aProfileDir, const nsACString& aVersion,
                loaded:(BOOL)load
              withType:(unsigned long)sheetType;
 - (void)updatePluginEnableState;
+- (BOOL)isPluginInstalledForType:(const char*)mimeType;
 - (BOOL)isFlashblockAllowed;
 
 - (NSString*)pathForSpecialDirectory:(const char*)specialDirectory;
@@ -1370,14 +1371,24 @@ typedef enum EProxyConfig {
   return NO;
 }
 
-- (BOOL)javaPluginCanBeEnabled
+- (BOOL)isPluginInstalledForType:(const char*)mimeType
 {
   nsCOMPtr<nsIPluginHost> pluginHost = do_GetService(MOZ_PLUGIN_HOST_CONTRACTID);
   if (!pluginHost)
     return NO;
-  nsresult rv = pluginHost->IsPluginEnabledForType("application/x-java-vm");
+  nsresult rv = pluginHost->IsPluginEnabledForType(mimeType);
   // NS_ERROR_FAILURE indicates no plugin exists for the type.
   return rv != NS_ERROR_FAILURE;
+}
+
+- (BOOL)javaPluginCanBeEnabled
+{
+  return [self isPluginInstalledForType:"application/x-java-vm"];
+}
+
+- (BOOL)isFlashInstalled
+{
+  return [self isPluginInstalledForType:"application/x-shockwave-flash"];
 }
 
 #pragma mark -
@@ -1673,8 +1684,9 @@ typedef enum EProxyConfig {
   BOOL gotPref = NO;
   BOOL jsEnabled = [self getBooleanPref:kGeckoPrefEnableJavascript withSuccess:&gotPref] && gotPref;
   BOOL pluginsEnabled = [self getBooleanPref:kGeckoPrefEnablePlugins withSuccess:&gotPref] || !gotPref;
+  BOOL flashPlugInPresent = [self isFlashInstalled];
 
-  return jsEnabled && pluginsEnabled;
+  return jsEnabled && pluginsEnabled && flashPlugInPresent;
 }
 
 //

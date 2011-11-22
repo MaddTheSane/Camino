@@ -543,13 +543,14 @@ const int kAnnoyancePrefSome = 3;
 // NOTE: This code is duplicated in PreferenceManager.mm since the Flashblock checkbox
 // settings are done by WebFeatures and stylesheet loading is done by PreferenceManager.
 //
--(BOOL) isFlashblockAllowed
+-(BOOL)isFlashblockAllowed
 {
   BOOL gotPref = NO;
   BOOL jsEnabled = [self getBooleanPref:kGeckoPrefEnableJavascript withSuccess:&gotPref] && gotPref;
   BOOL pluginsEnabled = [self getBooleanPref:kGeckoPrefEnablePlugins withSuccess:&gotPref] || !gotPref;
+  BOOL flashPlugInPresent = [[PreferenceManager sharedInstanceDontCreate] isFlashInstalled];
 
-  return jsEnabled && pluginsEnabled;
+  return jsEnabled && pluginsEnabled && flashPlugInPresent;
 }
 
 //
@@ -557,7 +558,7 @@ const int kAnnoyancePrefSome = 3;
 //
 // Update the state of the Flashblock checkbox
 //
--(void) updateFlashblock
+-(void)updateFlashblock
 {
   BOOL allowed = [self isFlashblockAllowed];
   [mEnableFlashblock setEnabled:allowed];
