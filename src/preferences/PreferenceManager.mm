@@ -905,17 +905,6 @@ static BOOL gMadePrefManager;
     mPrefs->SetIntPref(kCookieBehaviorPref, acceptCookies);
   }
 
-  // Core disabled downloadable fonts on 10.7 due to an OS bug that Apple fixed
-  // in 10.7.2.  Re-enable downloadable fonts for Lion users running 10.7.2 or
-  // higher (if the user hasn't otherwise disabled downloadable fonts).
-  if ([NSWorkspace systemVersion] >= 0x1072) {
-    BOOL gotPref;
-    BOOL webFontsEnabled = [self getBooleanPref:kGeckoPrefEnableWebFonts
-                                    withSuccess:&gotPref];
-    [self setPref:kGeckoPrefEnableWebFontsOnLion
-        toBoolean:(gotPref ? webFontsEnabled : YES)];
-  }
-
   [self configureProxies];
 
   [self setAcceptLanguagesPref];
