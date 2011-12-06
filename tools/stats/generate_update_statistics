@@ -88,10 +88,10 @@ $by_language_keys = [
   'en-GB', 'ko', 'fi', 'zh_TW',
 ]
 # The major version to print language counts for
-$language_count_version = "2.0"
+$language_count_version = "2.1"
 
 # The major version of the current release
-$latest_major_version = "2.0"
+$latest_major_version = "2.1"
 
 def main
   print_usage if ARGV.length < 1
