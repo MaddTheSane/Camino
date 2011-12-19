@@ -51,12 +51,14 @@ static const double kBookmarkScoreMultiplier = 1.1;
 
 // Items that haven't been visited recently are much less likely to be relevant
 // even if they used to be visited frequently.
-static const double kOlderThanAYearScoreMultiplier = 0.1;
+static const double kOlderThanAYearScoreMultiplier = 0.01;
+static const double kOlderThanSixMonthsScoreMultiplier = 0.1;
 static const double kOlderThanAMonthScoreMultiplier = 0.5;
 static const double kOlderThanAWeekScoreMultiplier = 0.9;
 
 static const NSTimeInterval kSecondsInAWeek = 60 * 60 * 24 * 7;
 static const NSTimeInterval kSecondsInAMonth = 60 * 60 * 24 * 30;
+static const NSTimeInterval kSecondsInSixMonths = 60 * 60 * 24 * 182;
 static const NSTimeInterval kSecondsInAYear = 60 * 60 * 24 * 365;
 
 // Returns the relevance portion of the score for the given item.
@@ -64,14 +66,20 @@ static unsigned int RelevanceScoreForItem(id item,
                                           NSTimeInterval secondsSinceLastVisit)
 {
   unsigned int visitCount = [item visitCount];
-  double score = visitCount;
+  double score = sqrt(visitCount);
 
   if (secondsSinceLastVisit > kSecondsInAYear)
     score *= kOlderThanAYearScoreMultiplier;
+  else if (secondsSinceLastVisit > kSecondsInSixMonths)
+    score *= kOlderThanSixMonthsScoreMultiplier;
   else if (secondsSinceLastVisit > kSecondsInAMonth)
     score *= kOlderThanAMonthScoreMultiplier;
   else if (secondsSinceLastVisit > kSecondsInAWeek)
     score *= kOlderThanAWeekScoreMultiplier;
+
+  // For sufficiently old results, cap the relevance.
+  if (secondsSinceLastVisit > kSecondsInSixMonths && score > 1.0)
+    score = 1.0;
 
   if ([item isKindOfClass:[Bookmark class]])
     score *= kBookmarkScoreMultiplier;
