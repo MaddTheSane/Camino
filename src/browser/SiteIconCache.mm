@@ -150,22 +150,28 @@ static NSString* const kCacheEntryExpirationDateKey = @"exp_date";
 
 - (void)setSiteIcon:(NSImage*)inImage forURL:(NSString*)inURL withExpiration:(NSDate*)inExpirationDate memoryOnly:(BOOL)inMemoryOnly
 {
-  // add to memory cache
+  // Add to memory cache.
   [mURLToImageMap setObject:inImage forKey:inURL];
   if (inMemoryOnly)
     return;
 
-  // avoid redundant image serialization?
+  // Avoid redundant image serialization?
   NSString* curUID = [self UUIDForURL:inURL expired:NULL];
   if (!curUID)
     curUID = [NSString stringWithUUID];
-  // reset the expiration date
+  // Reset the expiration date.
   [self setUUID:curUID expiration:inExpirationDate forURL:inURL];
   
-  // and save to disk
-  BOOL imageSaved = [NSKeyedArchiver archiveRootObject:inImage toFile:[self imageDataFileWithUUID:curUID]];
+  // Save to disk, protecting against possible exceptions.
+  BOOL imageSaved;
+  @try {
+    imageSaved = [NSKeyedArchiver archiveRootObject:inImage toFile:[self imageDataFileWithUUID:curUID]];
+  }
+  @catch (id exception) {
+    imageSaved = NO;
+  }
   if (!imageSaved)
-    NSLog(@"Failed to archive image for %@ to file", inURL);
+    NSLog(@"Failed to archive image for %@ to file.", inURL);
 }
   
 
