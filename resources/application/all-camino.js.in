@@ -80,6 +80,8 @@ pref("browser.chrome.favicons", true);
 pref("browser.urlbar.autocomplete.enabled", true);
 // Don't do inline autocomplete in the location bar
 pref("browser.urlbar.autoFill", false);
+// Autocomplete using titles as well as URLs
+pref("camino.autocomplete_from_titles", true);
 
 // Download to the system download folder by default
 pref("browser.download.folderList", 1);

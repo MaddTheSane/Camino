@@ -195,6 +195,9 @@ extern const char* const kGeckoPrefInlineLocationBarAutocomplete;      // bool
 // Controls whether autocomplete is enabled
 extern const char* const kGeckoPrefLocationBarAutocompleteEnabled;     // bool
 
+// Controls whether autocomplete searches titles or just URLs
+extern const char* const kGeckoPrefLocationBarAutocompleteFromTitles;  // bool
+
 // Controls whether full content zoom is used, or text scaling
 extern const char* const kGeckoPrefFullContentZoom;                    // bool
 

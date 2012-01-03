@@ -48,6 +48,7 @@
 #import "AutoCompleteResult.h"
 #import "Trie.h"
 #import "CHBrowserService.h"
+#import "PreferenceManager.h"
 #import "SiteIconProvider.h"
 
 #import "Bookmark.h"
@@ -346,7 +347,18 @@ enum SourceChangeType {
     mGenericFileIcon = [[NSImage imageNamed:@"smallDocument"] retain];
 
     mTrieScorer = [[AutoCompleteScorer alloc] init];
+    // As a short-term measure, allow users to disable use of titles as a data
+    // source by setting a hidden pref. 
+    // TODO: Remove this check and the associated code in
+    // AutoCompleteKeywordGenerator once we have implemented learning and
+    // improved scoring.
+    BOOL gotPref;
+    BOOL shouldAutocompleteTitles = [[PreferenceManager sharedInstanceDontCreate]
+                                        getBooleanPref:kGeckoPrefLocationBarAutocompleteFromTitles
+                                           withSuccess:&gotPref];
+    shouldAutocompleteTitles = gotPref ? shouldAutocompleteTitles : YES;
     mKeywordGenerator = [[AutoCompleteKeywordGenerator alloc] init];
+    [mKeywordGenerator setGeneratesTitleKeywords:shouldAutocompleteTitles];
     mBookmarkTrie = [[Trie alloc] initWithKeywordGenerator:mKeywordGenerator
                                                     scorer:mTrieScorer
                                                   maxDepth:kMaxTrieDepth];

@@ -72,6 +72,7 @@
 {
   if ((self = [super init])) {
     mSchemeToPlaceholderMap = [[NSMutableDictionary alloc] init];
+    mGeneratesTitleKeywords = YES;
   }
   return self;
 }
@@ -88,12 +89,25 @@
 - (NSArray*)keywordsForItem:(id)item
 {
   NSMutableArray* keys = [NSMutableArray array];
-  [keys addObjectsFromArray:[[[item valueForKey:@"title"] lowercaseString]
-                                componentsSeparatedByString:@" "]];
+
+  // As a short-term measure, allow users to disable use of titles as a data
+  // source by setting a hidden pref. 
+  // TODO: Remove this check and associated prefs-fetching code in
+  // AutoCompleteDataSource once we have implemented learning and improved
+  // scoring.
+  if (mGeneratesTitleKeywords) {
+    [keys addObjectsFromArray:[[[item valueForKey:@"title"] lowercaseString]
+                                  componentsSeparatedByString:@" "]];
+  }
   [keys addObjectsFromArray:[self keyArrayForURL:[item valueForKey:@"url"]]];
   if ([item isKindOfClass:[Bookmark class]] && [[item shortcut] length])
     [keys addObject:[item shortcut]];
   return keys;
+}
+
+- (void)setGeneratesTitleKeywords:(BOOL)useTitles
+{
+  mGeneratesTitleKeywords = useTitles;
 }
 
 - (NSArray*)keyArrayForURL:(NSString*)url

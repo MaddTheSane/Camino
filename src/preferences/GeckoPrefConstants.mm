@@ -149,6 +149,7 @@ const char* const kGeckoPrefDisableBonjour = "camino.disable_bonjour";
 const char* const kGeckoPrefCheckDefaultBrowserAtLaunch = "camino.check_default_browser";
 const char* const kGeckoPrefInlineLocationBarAutocomplete = "browser.urlbar.autoFill";
 const char* const kGeckoPrefLocationBarAutocompleteEnabled = "browser.urlbar.autocomplete.enabled";
+const char* const kGeckoPrefLocationBarAutocompleteFromTitles = "camino.autocomplete_from_titles";
 const char* const kGeckoPrefFullContentZoom = "browser.zoom.full";
 
 #pragma mark Keyboard Shortcuts

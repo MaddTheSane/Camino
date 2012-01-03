@@ -43,10 +43,16 @@
 // Generates keywords for autocomplete suggestions.
 @interface AutoCompleteKeywordGenerator : NSObject<TrieKeywordGenerator> {
   NSMutableDictionary* mSchemeToPlaceholderMap;  // owned
+
+  BOOL                 mGeneratesTitleKeywords;  
 }
 
 // TrieKeywordGenerator implementation.
 - (NSArray*)keywordsForItem:(id)item;
+
+// Allows clients to disable keyword generation for titles if desired, e.g.
+// based on a user's hidden preference setting.
+- (void)setGeneratesTitleKeywords:(BOOL)useTitles;
 
 // Returns the set of query terms to use when searching a trie for the given
 // search string. It uses the same word breaking, standardization/substitution,
