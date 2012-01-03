@@ -193,6 +193,8 @@
 		<string>SUFeedURL</string> 
 		<string>SULastCheckTime</string>
 	</array>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.productivity</string>
 	<key>LSFileQuarantineEnabled</key>
 	<true/>
 	<key>LSFileQuarantineExcludedPathPatterns</key>
