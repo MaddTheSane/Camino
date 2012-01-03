@@ -3020,6 +3020,14 @@ wallet_TraversalForPrefill (nsIDOMWindow* win, nsVoidArray* wallet_PrefillElemen
                       nsCOMPtr<nsIDOMNode> elementNode;
                       elements->Item(elementX, getter_AddRefs(elementNode));
                       if (elementNode) {
+                        /* Don't allow disabled elements to be candidates for filling */
+                        nsCOMPtr<nsIDOMElement> currentElement(do_QueryInterface(elementNode));
+                        if (currentElement) {
+                          PRBool isDisabled = PR_FALSE;
+                          nsresult rv = currentElement->HasAttribute(NS_LITERAL_STRING("disabled"), &isDisabled);
+                          if (NS_FAILED(rv) || isDisabled)
+                            continue;
+                        }
                         wallet_PrefillElement * prefillElement;
                         PRInt32 index = 0;
                         wallet_PrefillElement * firstElement = nsnull;
