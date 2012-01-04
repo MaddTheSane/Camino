@@ -896,28 +896,39 @@ static const int kZoomActionsTag = 108;
   return browser;
 }
 
-// Shows a given URL by finding and showing an existing tab/window with that URL, or
-// opening a new window or tab (observing the user's pref) if it's not already open
+// Convenience version of |showURL:usingReferrer:| for callers which do not
+// need to use a referrer.
 - (void)showURL:(NSString*)aURL
 {
-  // Check to see if we already have the URL somewhere, and just show it if we do.
-  NSEnumerator* windowEnumerator = [[NSApp orderedWindows] objectEnumerator];
-  NSWindow* window;
-  while ((window = [windowEnumerator nextObject])) {
-    if ([[window windowController] isMemberOfClass:[BrowserWindowController class]]) {
-      BrowserWindowController* browser = (BrowserWindowController*)[window windowController];
-      BrowserTabView* tabView = [browser tabBrowser];
-      int tabIndex = [tabView indexOfTabViewItemWithURL:aURL];
-      if (tabIndex != NSNotFound) {
-        [tabView selectTabViewItemAtIndex:tabIndex];
-        [[browser window] makeKeyAndOrderFront:self];
-        [browser reload:nil];
-        return;
+  [self showURL:aURL usingReferrer:nil];
+}
+
+// Shows a given URL by finding and showing an existing tab/window with that URL, or
+// opening a new window or tab (observing the user's pref) if it's not already open
+- (void)showURL:(NSString*)aURL usingReferrer:(NSString*)aReferrer
+{
+  // Only attempt to reuse an existing instance if there is no referrer.
+  if (!aReferrer) {
+    // Check to see if we already have the URL somewhere, and just show it if we do.
+    NSEnumerator* windowEnumerator = [[NSApp orderedWindows] objectEnumerator];
+    NSWindow* window;
+    while ((window = [windowEnumerator nextObject])) {
+      if ([[window windowController] isMemberOfClass:[BrowserWindowController class]]) {
+        BrowserWindowController* browser = (BrowserWindowController*)[window windowController];
+        BrowserTabView* tabView = [browser tabBrowser];
+        int tabIndex = [tabView indexOfTabViewItemWithURL:aURL];
+        if (tabIndex != NSNotFound) {
+          [tabView selectTabViewItemAtIndex:tabIndex];
+          [[browser window] makeKeyAndOrderFront:self];
+          [browser reload:nil];
+          return;
+        }
       }
     }
   }
 
-  // If we got here, we didn't find it already open. Open it based on user prefs.
+  // If we got here, we didn't find it already open, or the caller specified a
+  // referrer. Open the URL based on user prefs.
   int openExternal = [[PreferenceManager sharedInstance] getIntPref:kGeckoPrefExternalLoadBehavior
                                                         withSuccess:NULL];
 
@@ -926,16 +937,16 @@ static const int kZoomActionsTag = 108;
     BOOL tabOrWindowIsAvailable = ([[controller browserWrapper] isEmpty] && ![[controller browserWrapper] isBusy]);
 
     if (tabOrWindowIsAvailable || openExternal == kExternalLoadReusesWindow)
-      [controller loadURL:aURL];
+      [controller loadURL:aURL referrer:aReferrer focusContent:YES allowPopups:NO];
     else if (openExternal == kExternalLoadOpensNewWindow)
-      controller = [controller openNewWindowWithURL:aURL referrer:nil loadInBackground:NO allowPopups:NO];
+      controller = [controller openNewWindowWithURL:aURL referrer:aReferrer loadInBackground:NO allowPopups:NO];
     else  // kExternalLoadOpensNewTab (or unexpected value)
-      [controller openNewTabWithURL:aURL referrer:nil loadInBackground:NO allowPopups:NO setJumpback:NO];
+      [controller openNewTabWithURL:aURL referrer:aReferrer loadInBackground:NO allowPopups:NO setJumpback:NO];
     
     [[controller window] makeKeyAndOrderFront:nil];
   }
   else
-    controller = [self openBrowserWindowWithURL:aURL andReferrer:nil behind:nil allowPopups:NO];
+    controller = [self openBrowserWindowWithURL:aURL andReferrer:aReferrer behind:nil allowPopups:NO];
 }
 
 // Convenience function for loading application pages either in a new window or a new

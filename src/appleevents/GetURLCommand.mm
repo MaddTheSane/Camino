@@ -99,9 +99,10 @@ static NSString* const kMainControllerIsInitializedKey = @"initialized";
     {
       return nil;
     }
+    NSString* referrer = [[self evaluatedArguments] objectForKey:@"referrer"];
     if ([url isFileURL])
       urlString = [[NSURL decodeLocalFileURL:url] absoluteString];
-    [mainController showURL:urlString];
+    [mainController showURL:urlString usingReferrer:referrer];
   }
   else {
     [self suspendExecution];
