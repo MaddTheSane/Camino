@@ -78,4 +78,7 @@
   BOOL                  mAppLaunchDone;          // has app launching completed?
 }
 
+// Returns whether there are recently closed pages.
+- (BOOL)hasRecentlyClosedPages;
+
 @end

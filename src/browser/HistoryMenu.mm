@@ -613,4 +613,8 @@ static const unsigned int kMaxTitleLength = 50;
   mRecentlyClosedMenu = [[NSMenu alloc] initWithTitle:NSLocalizedString(@"RecentlyClosed", nil)];
 }
 
+- (BOOL)hasRecentlyClosedPages {
+  return ([mRecentlyClosedMenu numberOfItems] > 0);
+}
+
 @end

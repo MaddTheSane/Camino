@@ -63,6 +63,7 @@
 #import "CHBrowserService.h"
 #import "UserDefaults.h"
 #import "GrowlController.h"
+#import "HistoryMenu.h"
 #import "KeychainService.h"
 #import "RemoteDataProvider.h"
 #import "ProgressDlgController.h"
@@ -2011,7 +2012,7 @@ static BOOL HasHistoryItems()
   }
 
   if (action == @selector(clearHistory:)) {
-    return HasHistoryItems();
+    return (HasHistoryItems() || [mTopLevelHistoryMenu hasRecentlyClosedPages]);
   }
 
   // key alternates

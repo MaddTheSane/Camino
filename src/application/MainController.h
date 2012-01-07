@@ -45,6 +45,7 @@
 @class KeychainService;
 @class BrowserWindowController;
 @class GrowlController;
+@class TopLevelHistoryMenu;
 @class PreferenceManager;
 @class MVPreferencesController;
 @class SUUpdater;
@@ -70,63 +71,68 @@ typedef enum ETabAndWindowCount
 
 @interface MainController : NSObject 
 {
-    IBOutlet NSApplication* mApplication;
+    IBOutlet NSApplication*        mApplication;
 
-    // The following item is added to NSSavePanels as an accessory view
-    IBOutlet NSView*        mFilterView;
-    IBOutlet NSView*        mExportPanelView;
+    // The following item is added to NSSavePanels as an accessory view.
+    IBOutlet NSView*               mFilterView;
+    IBOutlet NSView*               mExportPanelView;
 
-    IBOutlet NSMenuItem*    mOfflineMenuItem;
-    IBOutlet NSMenuItem*    mHideMenuItem;
-    IBOutlet NSMenuItem*    mQuitMenuItem;
+    IBOutlet NSMenuItem*           mOfflineMenuItem;
+    IBOutlet NSMenuItem*           mHideMenuItem;
+    IBOutlet NSMenuItem*           mQuitMenuItem;
 
-    IBOutlet NSMenuItem*    mNewWindowMenuItem;
-    IBOutlet NSMenuItem*    mNewTabMenuItem;
-    IBOutlet NSMenuItem*    mOpenLocationMenuItem;
-    IBOutlet NSMenuItem*    mCloseWindowMenuItem;
-    IBOutlet NSMenuItem*    mCloseTabMenuItem;
+    IBOutlet NSMenuItem*           mNewWindowMenuItem;
+    IBOutlet NSMenuItem*           mNewTabMenuItem;
+    IBOutlet NSMenuItem*           mOpenLocationMenuItem;
+    IBOutlet NSMenuItem*           mCloseWindowMenuItem;
+    IBOutlet NSMenuItem*           mCloseTabMenuItem;
 
-    IBOutlet BookmarkMenu*  mBookmarksMenu;
-    IBOutlet BookmarkMenu*  mDockMenu;
-    IBOutlet NSMenu*        mServersSubmenu;
+    IBOutlet BookmarkMenu*         mBookmarksMenu;
+    IBOutlet BookmarkMenu*         mDockMenu;
+    IBOutlet NSMenu*               mServersSubmenu;
 
-    IBOutlet NSMenu*        mViewMenu;
-    IBOutlet NSMenuItem*    mTextZoomOnlyMenuItem;
+    IBOutlet NSMenu*               mViewMenu;
+    IBOutlet NSMenuItem*           mTextZoomOnlyMenuItem;
 
-    IBOutlet NSMenu*        mTextEncodingsMenu;
+    IBOutlet NSMenu*               mTextEncodingsMenu;
 
-    IBOutlet NSMenu*        mBookmarksHelperMenu; // not shown, used to get enable state
+    // The top-level history menu, used in menu validation.
+    IBOutlet TopLevelHistoryMenu*  mTopLevelHistoryMenu;
 
-    IBOutlet NSMenuItem*    mAddBookmarkMenuItem;
-    IBOutlet NSMenuItem*    mAddBookmarkWithoutPromptMenuItem;
-    IBOutlet NSMenuItem*    mAddTabGroupMenuItem;
-    IBOutlet NSMenuItem*    mAddTabGroupWithoutPromptMenuItem;
-    IBOutlet NSMenuItem*    mCreateBookmarksFolderMenuItem;
-    IBOutlet NSMenuItem*    mCreateBookmarksSeparatorMenuItem;  // unused
-    IBOutlet NSMenuItem*    mShowAllBookmarksMenuItem;
+    // Not shown; used to get enable state.
+    IBOutlet NSMenu*               mBookmarksHelperMenu;
 
-    IBOutlet NSMenuItem*    mMinimizeMenuItem;
-    IBOutlet NSMenuItem*    mPreviousTabMenuItem;
-    IBOutlet NSMenuItem*    mNextTabMenuItem;
+    IBOutlet NSMenuItem*           mAddBookmarkMenuItem;
+    IBOutlet NSMenuItem*           mAddBookmarkWithoutPromptMenuItem;
+    IBOutlet NSMenuItem*           mAddTabGroupMenuItem;
+    IBOutlet NSMenuItem*           mAddTabGroupWithoutPromptMenuItem;
+    IBOutlet NSMenuItem*           mCreateBookmarksFolderMenuItem;
+    // mCreateBookmarksSeparatorMenuItem is unused.
+    IBOutlet NSMenuItem*           mCreateBookmarksSeparatorMenuItem;
+    IBOutlet NSMenuItem*           mShowAllBookmarksMenuItem;
 
-    IBOutlet SUUpdater*     mAutoUpdater;
+    IBOutlet NSMenuItem*           mMinimizeMenuItem;
+    IBOutlet NSMenuItem*           mPreviousTabMenuItem;
+    IBOutlet NSMenuItem*           mNextTabMenuItem;
 
-    BOOL                    mInitialized;
-    BOOL                    mOffline;
-    BOOL                    mGeckoInitted;
-    BOOL                    mFileMenuUpdatePending;
-    BOOL                    mPageInfoUpdatePending;
+    IBOutlet SUUpdater*            mAutoUpdater;
 
-    BookmarkMenu*           mMenuBookmarks;
-    BookmarkMenu*           mDockBookmarks;
+    BOOL                           mInitialized;
+    BOOL                           mOffline;
+    BOOL                           mGeckoInitted;
+    BOOL                           mFileMenuUpdatePending;
+    BOOL                           mPageInfoUpdatePending;
 
-    KeychainService*        mKeychainService;
+    BookmarkMenu*                  mMenuBookmarks;
+    BookmarkMenu*                  mDockBookmarks;
 
-    NSString*               mStartURL;
+    KeychainService*               mKeychainService;
 
-    GrowlController*        mGrowlController;
+    NSString*                      mStartURL;
 
-    NSMutableDictionary*    mCharsets;
+    GrowlController*               mGrowlController;
+
+    NSMutableDictionary*           mCharsets;
 }
 
 - (BOOL)isInitialized;

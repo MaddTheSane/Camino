@@ -404,6 +404,7 @@
                 mShowAllBookmarksMenuItem = NSMenuItem;
                 mTextEncodingsMenu = NSMenu;
                 mTextZoomOnlyMenuItem = NSMenuItem;
+                mTopLevelHistoryMenu = TopLevelHistoryMenu;
                 mViewMenu = NSMenu;
             };
             SUPERCLASS = NSObject;
