@@ -175,16 +175,23 @@ static const int kBMBarScanningStep = 5;
   // gradient is only used if the window is main.  If the window is not main,
   // the title bar and toolbar will have a different (inactive) appearance, so
   // so the gradient won't be used.
-  // On 10.5, a different gradient is used, and is always drawn.
+  // On 10.5 and 10.6, a different gradient is used, and is always drawn.
+  // On 10.7, if the window is not main, the bookmark bar will have a lighter
+  // gradient to better match the lighter inactive toolbar appearance.
 
   BrowserWindow* browserWin = (BrowserWindow*)[self window];
   BOOL isLeopardOrHigher = [NSWorkspace isLeopardOrHigher];
+  BOOL isLionOrHigher = [NSWorkspace isLionOrHigher];
   if (isLeopardOrHigher ||
       ([browserWin hasUnifiedToolbarAppearance] && [browserWin isMainWindow]))
   {
     NSColor* startColor;
     NSColor* endColor;
-    if (isLeopardOrHigher) {
+    if (isLionOrHigher && ![browserWin isMainWindow]) {
+      startColor = [NSColor colorWithDeviceWhite:(230.0/255.0) alpha:1.0];
+      endColor = [NSColor colorWithDeviceWhite:(222.0/255.0) alpha:1.0];    
+    }
+    else if (isLeopardOrHigher) {
       startColor = [NSColor colorWithDeviceWhite:(217.0/255.0) alpha:1.0];
       endColor = [NSColor colorWithDeviceWhite:(195.0/255.0) alpha:1.0];
     }

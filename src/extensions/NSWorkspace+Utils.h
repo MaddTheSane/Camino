@@ -59,6 +59,7 @@
 // OS feature checks
 + (NSString*)osVersionString;
 + (BOOL)isLeopardOrHigher;
++ (BOOL)isLionOrHigher;
 
 @end
 
