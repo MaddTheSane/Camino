@@ -271,7 +271,7 @@ static NSString* kCorePasteboardFlavorType_url = @"CorePasteboardFlavorType 0x75
   const float kPopupWindowOffsetFromLocationField = 8.0;
   mPopupWin = [[MAAttachedWindow alloc] initWithView:tableViewContainerView
                                      attachedToPoint:NSZeroPoint
-                                            inWindow:[self window]
+                                            inWindow:nil
                                               onSide:MAPositionBottom
                                           atDistance:kPopupWindowOffsetFromLocationField];
   [mPopupWin setReleasedWhenClosed:NO];
