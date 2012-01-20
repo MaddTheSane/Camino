@@ -91,6 +91,7 @@ static NSString* const kFlashblockChangedNotification = @"FlashblockChanged";
 
 static NSString* const kJEPName = @"Java Embedding Plugin";
 static NSString* const kAppleJavaName = @"Java Plug-In 2";
+static NSString* const kAppleJavaNameLion = @"Java Applet Plug-in";
 
 // This is an arbitrary version stamp that gets written to the prefs file.
 // It can be used to detect when a new version of Camino is run that needs
@@ -1337,7 +1338,9 @@ typedef enum EProxyConfig {
 - (BOOL)pluginShouldBeDisabled:(const char*)pluginName
 {
   NSString* name = [NSString stringWithUTF8String:pluginName];
-  if ([name hasPrefix:kJEPName] || [name hasPrefix:kAppleJavaName]) {
+  if ([name hasPrefix:kJEPName] || [name hasPrefix:kAppleJavaName] ||
+      [name hasPrefix:kAppleJavaNameLion])
+  {
     // Java has a UI pref, so handle it specially.
     // Ideally Java would be detected by MIME type, but nsIPluginTag doesn't
     // expose MIME types, making it more trouble than it's worth.
