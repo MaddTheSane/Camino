@@ -57,6 +57,11 @@ static NSString* const kMainControllerIsInitializedKey = @"initialized";
   // session is restored.  We want to avoid opening URLs before that happens.
   if ([mainController isInitialized]) {
     NSString* urlString = [self directParameter];
+    if ([urlString length] == 0) {
+      [[NSScriptCommand currentCommand] setScriptErrorNumber:NSRequiredArgumentsMissingScriptError];
+      [[NSScriptCommand currentCommand] setScriptErrorString:@"The location to open is missing."];
+      return nil;
+    }
     // If the string has a shell tilde-prefix, standardize the path.
     if ([urlString hasPrefix:@"~"])
       urlString = [urlString stringByStandardizingPath];

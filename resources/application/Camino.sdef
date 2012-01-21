@@ -324,7 +324,7 @@
 		<cocoa name="InternetSuite"/>
 		<command name="open location" code="GURLGURL" description="Open a URL in Camino.">
 			<cocoa name="GetURLCommand" class="GetURLCommand"/>
-			<direct-parameter description="the URL to open" type="text" optional="yes"/>
+			<direct-parameter description="the URL to open" type="text"/>
 			<parameter name="using referrer" code="refe" description="The URL from which the request will appear to originate." type="text" optional="yes">
 				<cocoa key="referrer"/>
 			</parameter>
@@ -333,7 +333,7 @@
 			 Synonym should work on 10.4 but apparently does not. -->
 		<command name="DeprecatedOpenURL" code="WWW!OURL" description="Open a URL in Camino via the deprecated OpenURL AppleEvent. Included for compatibility purposes only; scripts should use &quot;open location&quot; instead." hidden="yes">
 			<cocoa name="DeprecatedOpenURLCommand" class="GetURLCommand"/>
-			<direct-parameter description="the URL to open" type="text" optional="yes"/>
+			<direct-parameter description="the URL to open" type="text"/>
 		</command>
 	</suite>
 </dictionary>
