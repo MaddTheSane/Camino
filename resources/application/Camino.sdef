@@ -223,6 +223,9 @@
 				<cocoa key="isActive"/>
 			</property>
 			<property name="version" code="vers" description="The version of the application." type="text" access="r"/>
+			<property name="online" code="pOnl" description="Is the application online?" type="boolean">
+				<cocoa key="isOnline"/>
+			</property>
 			<property name="bookmark menu collection" code="fmnu" type="bookmark folder" access="r">
 				<cocoa key="bookmarkMenuFolder"/>
 			</property>

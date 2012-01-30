@@ -66,6 +66,8 @@
 - (BOOL)application:(NSApplication *)sender delegateHandlesKey:(NSString *)key;
 - (NSArray *)orderedWindows;
 - (NSArray *)allBrowserWindows;
+- (BOOL)isOnline;
+- (void)setIsOnline:(BOOL)newState;
 - (NSArray *)bookmarkCollections;
 - (void)insertInBookmarkCollections:(BookmarkFolder *)aItem atIndex:(unsigned)aIndex;
 - (void)insertInBookmarkCollections:(BookmarkFolder *)aItem;
@@ -129,6 +131,7 @@
 {
   return [key isEqualToString:@"orderedWindows"] ||
          [key isEqualToString:@"allBrowserWindows"] ||
+         [key isEqualToString:@"isOnline"] ||
          [key isEqualToString:@"bookmarkCollections"] ||
          [key isEqualToString:@"bookmarkMenuFolder"] ||
          [key isEqualToString:@"toolbarFolder"] ||
@@ -191,6 +194,20 @@
   }
 
   return windowArray;
+}
+
+// Returns the online state of the application.
+- (BOOL)isOnline
+{
+  return !mOffline;
+}
+
+- (void)setIsOnline:(BOOL)newState
+{
+  if (newState == [self isOnline])
+    return;
+
+  [self toggleOfflineMode:nil];
 }
 
 
