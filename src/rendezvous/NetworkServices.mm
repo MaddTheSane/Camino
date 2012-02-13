@@ -315,15 +315,14 @@ static inline u_int ns_get16(u_char* buffer)
           NSData* pathData = [TXTRecordDict objectForKey:@"path"];
           if (pathData)
           {
-            unsigned int dataLen = [pathData length];
-            char* pathBuff = (char*)calloc(dataLen + 1, 1);
-            
-            [pathData getBytes:pathBuff length:dataLen];
-            pathBuff[dataLen] = '\0';
-            
-            path = [NSString stringWithUTF8String:pathBuff];
-
-            free(pathBuff);
+            NSString* pathString = [[[NSString alloc] initWithData:pathData
+                                                          encoding:NSUTF8StringEncoding] autorelease];
+            path = pathString;
+            // Newer implementations may not include the leading slash in the
+            // path data, so add it in these cases in order to resolve the
+            // service correctly.
+            if (![path hasPrefix:@"/"])
+              path = [@"/" stringByAppendingString:path];
           }
           
           NSString* urlString = nil;
