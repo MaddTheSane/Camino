@@ -319,7 +319,7 @@
 				<cocoa key="lastVisit"/>
 			</property>
 			<property name="visit count" code="pvct" description="The number of times the bookmark has been visited." type="integer" access="r">
-				<cocoa key="numberOfVisits"/>
+				<cocoa key="visitCount"/>
 			</property>
 		</class>
 	</suite>
