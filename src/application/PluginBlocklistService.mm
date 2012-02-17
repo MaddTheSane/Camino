@@ -61,8 +61,11 @@ struct VersionStruct {
 // PPC so we have to allow it.
 static const VersionStruct minFlashVersion = { 10, 1, 102, 64 };
 #else
-static const VersionStruct minFlashVersion = { 10, 3, 183, 10 };
+static const VersionStruct minFlashVersion = { 10, 3, 183, 15 };
 #endif
+// Flash 11 doesn't officially support Gecko 1.9.2, but users on 10.6 and 10.7
+// may still have it installed instead of Flash 10.3.
+static const VersionStruct minUnsupportedFlashVersion = { 11, 1, 102, 62 };
 
 // Given a version string, parses it according to the common major.minor.bugfix
 // format. Any component not present (or not parsable) will be set to 0.
@@ -135,8 +138,11 @@ NS_IMETHODIMP PluginBlocklistService::GetPluginBlocklistState(nsIPluginTag *plug
     BOOL prefLoaded = NO;
     BOOL allowDangerousPlugins = [[PreferenceManager sharedInstanceDontCreate]
         getBooleanPref:kGeckoPrefAllowDangerousPlugins withSuccess:&prefLoaded];
-    if (prefLoaded && !allowDangerousPlugins)
+    if (prefLoaded && !allowDangerousPlugins) {
       blocked = IsOlder(version, minFlashVersion);
+      if (!blocked && version.major > minFlashVersion.major)
+        blocked = IsOlder(version, minUnsupportedFlashVersion);
+    }
 
     // Flash 9 leaks file handles on every instantiation.
     if (version.major == 9)
