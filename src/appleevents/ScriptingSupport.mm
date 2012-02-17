@@ -80,11 +80,16 @@
 - (NSArray *)tabs;
 - (BrowserWrapper *)currentTab;
 - (void)setCurrentTab:(BrowserWrapper *)newTabItemView;
+- (void)handleReloadScriptCommand:(NSScriptCommand *)command;
+- (void)handleReloadForObject:(id)objectToReload ignoringCache:(BOOL)ignoreCache;
 @end
 
 @interface BrowserWrapper (ScriptingSupport)
 - (NSScriptObjectSpecifier *)objectSpecifier;
 - (void)setCurrentURI:(NSString *)newURI;
+- (void)handleReloadScriptCommand:(NSScriptCommand *)command;
+- (void)handleReloadForObject:(id)objectToReload ignoringCache:(BOOL)ignoreCache;
+- (void)scriptableReload:(BOOL)ignoreCache;
 @end
 
 @interface BookmarkItem (ScriptingSupport)
@@ -299,7 +304,7 @@
 // Changes the current tab in a given browser window to a tab (BrowserWrapper)
 // specified by the user. Make sure that the BrowserWrapper we are given is
 // actually in the same browser window and warn the user if it is not.
-- (void)setCurrentTab:(BrowserWrapper *)newTabItemView;
+- (void)setCurrentTab:(BrowserWrapper *)newTabItemView
 {
   NSTabViewItem *newTabItem = [newTabItemView tab];
   BrowserTabView *tabView = [[self windowController] tabBrowser];
@@ -309,6 +314,38 @@
   else {
     [[NSScriptCommand currentCommand] setScriptErrorNumber:NSArgumentsWrongScriptError];
     [[NSScriptCommand currentCommand] setScriptErrorString:@"The tab to select must be in the same window."];
+  }
+}
+
+- (void)handleReloadScriptCommand:(NSScriptCommand *)command
+{
+  id browserWindowsToReload = [command evaluatedReceivers];
+  BOOL ignoreCache = [[[command evaluatedArguments] objectForKey:@"ignoringCache"] boolValue];
+  [self handleReloadForObject:browserWindowsToReload ignoringCache:ignoreCache];
+}
+
+- (void)handleReloadForObject:(id)objectToReload ignoringCache:(BOOL)ignoreCache
+{
+  // Scripts can send single browser windows or a simple array of browser
+  // windows ("reload every browser window" or "reload browser windows 1
+  // through 3").
+  if ([objectToReload isKindOfClass:[NSArray class]]) {
+    id maybeReloadableObject;
+    NSEnumerator *reloadablesEnumerator = [objectToReload objectEnumerator];
+    while ((maybeReloadableObject = [reloadablesEnumerator nextObject])) {
+      [self handleReloadForObject:maybeReloadableObject ignoringCache:ignoreCache];
+    }
+  }
+  else if ([objectToReload isKindOfClass:[BrowserWindow class]]) {
+    BrowserWindow *windowToReload = objectToReload;
+    BrowserWrapper *tabToReload = [windowToReload currentTab];
+    [tabToReload scriptableReload:ignoreCache];
+  }
+  else {
+    // This shouldn't ever happen, but if it does, we need to hear about it.
+    [[NSScriptCommand currentCommand] setScriptErrorNumber:NSArgumentsWrongScriptError];
+    NSString *scriptingClassName = [[NSScriptClassDescription classDescriptionForClass:[objectToReload class]] className];
+    [[NSScriptCommand currentCommand] setScriptErrorString:[NSString stringWithFormat:@"A %@ can't be reloaded.", scriptingClassName]];
   }
 }
 
@@ -360,6 +397,48 @@
   else
     [[self nativeWindow] performClose:self];
   return nil;
+}
+
+- (void)handleReloadScriptCommand:(NSScriptCommand *)command
+{
+  id tabsToReload = [command evaluatedReceivers];
+  BOOL ignoreCache = [[[command evaluatedArguments] objectForKey:@"ignoringCache"] boolValue];
+  [self handleReloadForObject:tabsToReload ignoringCache:ignoreCache];
+}
+
+- (void)handleReloadForObject:(id)objectToReload ignoringCache:(BOOL)ignoreCache
+{
+  // Scripts can send single tabs, a simple array of tabs ("reload every tab of
+  // browser window 1" or "reload tabs 1 through 2 of browser window 1"), or an
+  // array containing arrays of tabs ("reload every tab of every browser 
+  // window" or "reload tabs 1 through 2 of browser windows 2 through 3").
+  if ([objectToReload isKindOfClass:[NSArray class]]) {
+    id maybeReloadableObject;
+    NSEnumerator *reloadablesEnumerator = [objectToReload objectEnumerator];
+    while ((maybeReloadableObject = [reloadablesEnumerator nextObject])) {
+      [self handleReloadForObject:maybeReloadableObject ignoringCache:ignoreCache];
+    }
+  }
+  else if ([objectToReload isKindOfClass:[BrowserWrapper class]]) {
+    BrowserWrapper *tabToReload = objectToReload;
+    [tabToReload scriptableReload:ignoreCache];
+  }
+  else {
+    // This shouldn't ever happen, but if it does, we need to hear about it.
+    [[NSScriptCommand currentCommand] setScriptErrorNumber:NSArgumentsWrongScriptError];
+    NSString *scriptingClassName = [[NSScriptClassDescription classDescriptionForClass:[objectToReload class]] className];
+    [[NSScriptCommand currentCommand] setScriptErrorString:[NSString stringWithFormat:@"A %@ can't be reloaded.", scriptingClassName]];
+  }
+}
+
+- (void)scriptableReload:(BOOL)ignoreCache
+{
+  if (![self canReload])
+    return;
+
+  unsigned int reloadFlag = ignoreCache ?
+      NSLoadFlagsBypassCacheAndProxy : NSLoadFlagsNone;
+  [self reload:reloadFlag];
 }
 
 @end

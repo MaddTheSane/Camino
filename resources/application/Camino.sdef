@@ -256,6 +256,9 @@
 			<element description="Tabs open in the browser window." type="tab" access="r">
 				<cocoa key="tabs"/>
 			</element>
+			<responds-to name="reload">
+				<cocoa method="handleReloadScriptCommand:"/>
+			</responds-to>
 		</class>
 		<class name="tab" code="BTab" plural="tabs">
 			<cocoa class="BrowserWrapper"/>
@@ -284,6 +287,9 @@
 			</property>
 			<responds-to name="close">
 				<cocoa method="close:"/>
+			</responds-to>
+			<responds-to name="reload">
+				<cocoa method="handleReloadScriptCommand:"/>
 			</responds-to>
 		</class>
 		<class name="bookmark item" code="BMIt" plural="bookmark items">
@@ -322,6 +328,15 @@
 				<cocoa key="visitCount"/>
 			</property>
 		</class>
+		<command name="reload" code="MOZCreld" description="Reloads the specified browser window or tab.">
+			<direct-parameter description="The browser window or tab to reload.">
+				<type type="tab"/>
+				<type type="browser window"/>
+			</direct-parameter>
+			<parameter name="ignoring cache" code="iCch" description="Should Camino ignore any cached data and force-reload the page? The default is no." type="boolean" optional="yes">
+				<cocoa key="ignoringCache"/>
+			</parameter>
+		</command>
 	</suite>
 	<suite name="Internet Suite" code="GURL" description="Standard terms for Internet scripting">
 		<cocoa name="InternetSuite"/>
