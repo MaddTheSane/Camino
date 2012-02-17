@@ -105,9 +105,12 @@ static NSString* const kMainControllerIsInitializedKey = @"initialized";
       return nil;
     }
     NSString* referrer = [[self evaluatedArguments] objectForKey:@"referrer"];
+    BOOL backgroundLoad = [[[self evaluatedArguments] objectForKey:@"background"] boolValue];
     if ([url isFileURL])
       urlString = [[NSURL decodeLocalFileURL:url] absoluteString];
-    [mainController showURL:urlString usingReferrer:referrer];
+    [mainController showURL:urlString
+              usingReferrer:referrer
+           loadInBackground:backgroundLoad];
   }
   else {
     [self suspendExecution];

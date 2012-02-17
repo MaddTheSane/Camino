@@ -224,7 +224,7 @@ typedef enum ETabAndWindowCount
 - (BrowserWindowController*)openBrowserWindowWithURL:(NSString*)aURL andReferrer:(NSString*)aReferrer behind:(NSWindow*)window allowPopups:(BOOL)inAllowPopups;
 - (BrowserWindowController*)openBrowserWindowWithURLs:(NSArray*)urlArray behind:(NSWindow*)window allowPopups:(BOOL)inAllowPopups;
 - (void)showURL:(NSString*)aURL;
-- (void)showURL:(NSString*)aURL usingReferrer:(NSString*)aReferrer;
+- (void)showURL:(NSString*)aURL usingReferrer:(NSString*)aReferrer loadInBackground:(BOOL)aLoadInBG;
 - (void)loadBookmark:(BookmarkItem*)item withBWC:(BrowserWindowController*)browserWindowController openBehavior:(EBookmarkOpenBehavior)behavior reverseBgToggle:(BOOL)reverseBackgroundPref;
 
 - (void)adjustCloseWindowMenuItemKeyEquivalent:(BOOL)inHaveTabs;

@@ -343,6 +343,9 @@
 		<command name="open location" code="GURLGURL" description="Open a URL in Camino.">
 			<cocoa name="GetURLCommand" class="GetURLCommand"/>
 			<direct-parameter description="the URL to open" type="text"/>
+			<parameter name="loading in background" code="bgnd" description="Should the URL be opened in a background tab (or background window)?  The default is to open a foreground tab or window." type="boolean" optional="yes">
+				<cocoa key="background"/>
+			</parameter>
 			<parameter name="using referrer" code="refe" description="The URL from which the request will appear to originate." type="text" optional="yes">
 				<cocoa key="referrer"/>
 			</parameter>
