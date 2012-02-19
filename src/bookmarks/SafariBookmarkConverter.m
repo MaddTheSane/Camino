@@ -62,10 +62,10 @@ static NSString* const kEntryTypeProxy = @"WebBookmarkTypeProxy";
 // Returns nil if the item is an unknown type.
 - (BookmarkItem*)bookmarkItemForDictionary:(NSDictionary*)safariDict;
 
-// Returns a native boomark object for the given Safari dictionary.
+// Returns a native bookmark object for the given Safari dictionary.
 - (Bookmark*)bookmarkForDictionary:(NSDictionary*)safariDict;
 
-// Returns a native boomark folder object for the given Safari dictionary.
+// Returns a native bookmark folder object for the given Safari dictionary.
 - (BookmarkFolder*)bookmarkFolderForDictionary:(NSDictionary*)safariDict;
 
 // Returns a Safari dictionary of the correct type for the given bookmark item.

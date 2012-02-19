@@ -103,7 +103,7 @@ const long kOpenInTabsTag = 0xBEEF;
   [self setAutoenablesItems:NO];
 
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-  // TODO: Move this once the boomark notifications are refactored.
+  // TODO: Move this once the bookmark notifications are refactored.
   [nc addObserver:self
          selector:@selector(bookmarkChanged:)
              name:kBookmarkItemChangedNotification
