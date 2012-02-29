@@ -101,8 +101,10 @@
   if (mozPath)
     [self tryAddImportFromBrowser:@"SeaMonkey 2" withBookmarkPath:mozPath];
 
-  if (![self tryAddImportFromBrowser:@"Opera" withBookmarkPath:@"~/Library/Preferences/Opera Preferences/bookmarks.adr"]) {
-    [self tryAddImportFromBrowser:@"Opera" withBookmarkPath:@"~/Library/Preferences/Opera Preferences/Bookmarks"];
+  if (![self tryAddImportFromBrowser:@"Opera" withBookmarkPath:@"~/Library/Opera/bookmarks.adr"]) {
+    if (![self tryAddImportFromBrowser:@"Opera" withBookmarkPath:@"~/Library/Preferences/Opera Preferences/bookmarks.adr"]) {
+        [self tryAddImportFromBrowser:@"Opera" withBookmarkPath:@"~/Library/Preferences/Opera Preferences/Bookmarks"];
+    }
   }
   [self tryAddImportFromBrowser:@"OmniWeb 4" withBookmarkPath:@"~/Library/Application Support/Omniweb/Bookmarks.html"];
   // OmniWeb 5 has between 0 and 3 bookmark files.
