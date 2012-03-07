@@ -136,9 +136,6 @@ static const NSTimeInterval kTimeIntervalToConsiderSiteBlockingStatusValid = 900
 - (void)addBlockedPopupViewAndDisplay;
 - (void)removeBlockedPopupViewAndDisplay;
 
-- (void)addFindBarViewAndDisplay;
-- (void)removeFindBarViewAndDisplay;
-
 - (void)performCommandForXULElementWithID:(NSString*)elementIdentifier
                                    onPage:(NSString*)pageURI
                                      site:(NSString*)siteURI;

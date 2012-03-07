@@ -3112,7 +3112,6 @@ public:
   return mThrobberImages;
 }
 
-
 - (void)clickThrobber:(id)aSender
 {
   NSString *pageToLoad = NSLocalizedStringFromTable(@"ThrobberPage", @"WebsiteDefaults", nil);
@@ -3129,6 +3128,16 @@ public:
     mThrobberHandler = [[ThrobberHandler alloc] initWithToolbarItem:throbberItem 
                           images:[self throbberImages]];
   }
+}
+
+- (void)stopThrobber
+{
+  [mThrobberHandler stopThrobber];
+  [mThrobberHandler release];
+  mThrobberHandler = nil;
+  NSToolbarItem* throbberItem = [self throbberItem];
+  if (throbberItem)
+    [throbberItem setImage: [NSImage imageNamed:@"throbber-00"]];
 }
 
 // -find:
@@ -3167,17 +3176,6 @@ public:
       break;
   }
 }
-
-- (void)stopThrobber
-{
-  [mThrobberHandler stopThrobber];
-  [mThrobberHandler release];
-  mThrobberHandler = nil;
-  NSToolbarItem* throbberItem = [self throbberItem];
-  if (throbberItem)
-    [throbberItem setImage: [NSImage imageNamed:@"throbber-00"]];
-}
-
 
 - (BOOL)bookmarkManagerIsVisible
 {
