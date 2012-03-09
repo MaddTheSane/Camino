@@ -53,7 +53,7 @@ extern NSString* const kBookmarksMenuFolderIdentifier;
 extern NSString* const kBookmarkImportPathIndentifier;
 extern NSString* const kBookmarkImportNewFolderNameIdentifier;
 
-const int kBookmarksContextMenuArrangeSeparatorTag = 100;
+extern const int kBookmarksContextMenuArrangeSeparatorTag;
 
 
 @interface BookmarkManager : NSObject

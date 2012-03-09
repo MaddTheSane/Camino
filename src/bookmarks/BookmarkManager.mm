@@ -63,6 +63,7 @@
 #import "HTMLBookmarkConverter.h"
 #import "OperaBookmarkConverter.h"
 #import "SafariBookmarkConverter.h"
+#import "ICabBookmarkConverter.h"
 
 NSString* const kBookmarkManagerStartedNotification = @"BookmarkManagerStartedNotification";
 
@@ -80,6 +81,8 @@ static NSString* const kHistoryFolderIdentifier                = @"HistoryFolder
 
 NSString* const kBookmarkImportPathIndentifier                 = @"path";
 NSString* const kBookmarkImportNewFolderNameIdentifier         = @"title";
+
+const int kBookmarksContextMenuArrangeSeparatorTag             = 100;
 
 static NSString* const kBookmarkImportStatusIndentifier        = @"flag";
 static NSString* const kBookmarkImportNewFolderIdentifier      = @"folder";
@@ -1524,9 +1527,14 @@ static BookmarkManager* gBookmarkManager = nil;
     BookmarkFolder *importFolder = nil;
 
     NSString *extension = [[pathToFile pathExtension] lowercaseString];
-    // Older Opera bookmarks have no extension, so guess that for extensionless
-    // files.
-    if ([extension isEqualToString:@"adr"] || [extension isEqualToString:@""]) {
+    // The allergy to file extensions was transmitted from the Norwagians to ze
+    // Germans, so try iCab first.
+    if ([extension isEqualToString:@""]) {
+      importFolder = [[ICabBookmarkConverter iCabBookmarkConverter]
+                          bookmarksFromFile:pathToFile];
+    }
+    // Newer Opera versions use "adr" as their bookmarks file extension.
+    else if ([extension isEqualToString:@"adr"]) {
       importFolder = [[OperaBookmarkConverter operaBookmarkConverter]
                           bookmarksFromFile:pathToFile];
     }
@@ -1534,11 +1542,14 @@ static BookmarkManager* gBookmarkManager = nil;
       importFolder = [[HTMLBookmarkConverter htmlBookmarkConverter]
                           bookmarksFromFile:pathToFile];
     }
+    // Even though iCab uses a plist format, its file lacks an extension, so
+    // iCab bookmarks won't hit this code path.
     else if ([extension isEqualToString:@"plist"] || !importFolder) {
       importFolder = [self importPropertyListFile:pathToFile];
     }
     // We don't know the extension, or we failed to load. We'll take another
     // crack at it trying everything we know.
+    // This will catch ancient extension-less Opera bookmarks files.
     if (!importFolder) {
       importFolder = [[OperaBookmarkConverter operaBookmarkConverter]
                           bookmarksFromFile:pathToFile];

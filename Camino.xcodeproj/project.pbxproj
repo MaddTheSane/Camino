@@ -262,6 +262,8 @@
 		0FFE0A84079B147F00966027 /* bm_sort.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 0FFE0A7E079B147F00966027 /* bm_sort.tiff */; };
 		0FFE0A85079B147F00966027 /* bm_add.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 0FFE0A7F079B147F00966027 /* bm_add.tiff */; };
 		0FFE0A86079B147F00966027 /* bm_action.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 0FFE0A80079B147F00966027 /* bm_action.tiff */; };
+		168962F514EC8D890002B873 /* ICabBookmarkConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 168962F414EC8D890002B873 /* ICabBookmarkConverter.m */; };
+		168962F614EC8D890002B873 /* ICabBookmarkConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 168962F414EC8D890002B873 /* ICabBookmarkConverter.m */; };
 		1B825D030C5D268600CB4343 /* Camino.sdef in Resources */ = {isa = PBXBuildFile; fileRef = 1B825D020C5D268600CB4343 /* Camino.sdef */; };
 		1B825D040C5D268600CB4343 /* Camino.sdef in Resources */ = {isa = PBXBuildFile; fileRef = 1B825D020C5D268600CB4343 /* Camino.sdef */; };
 		1F8407070C5705CC007B893D /* TabThumbnailGridView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1F8407030C5705CC007B893D /* TabThumbnailGridView.mm */; };
@@ -2721,6 +2723,8 @@
 		0FFE0A7F079B147F00966027 /* bm_add.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = bm_add.tiff; path = chrome/bm_add.tiff; sourceTree = "<group>"; };
 		0FFE0A80079B147F00966027 /* bm_action.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = bm_action.tiff; path = chrome/bm_action.tiff; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		168962F314EC8D890002B873 /* ICabBookmarkConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ICabBookmarkConverter.h; path = src/bookmarks/ICabBookmarkConverter.h; sourceTree = SOURCE_ROOT; };
+		168962F414EC8D890002B873 /* ICabBookmarkConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ICabBookmarkConverter.m; path = src/bookmarks/ICabBookmarkConverter.m; sourceTree = SOURCE_ROOT; };
 		1B825D020C5D268600CB4343 /* Camino.sdef */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.sdef; name = Camino.sdef; path = resources/application/Camino.sdef; sourceTree = "<group>"; };
 		1F8407030C5705CC007B893D /* TabThumbnailGridView.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = TabThumbnailGridView.mm; path = src/browser/TabThumbnailGridView.mm; sourceTree = "<group>"; };
 		1F8407040C5705CC007B893D /* TabThumbnailGridView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = TabThumbnailGridView.h; path = src/browser/TabThumbnailGridView.h; sourceTree = "<group>"; };
@@ -4313,6 +4317,8 @@
 		336234450E6BC2C700DD5373 /* Import and Export */ = {
 			isa = PBXGroup;
 			children = (
+				168962F314EC8D890002B873 /* ICabBookmarkConverter.h */,
+				168962F414EC8D890002B873 /* ICabBookmarkConverter.m */,
 				336234460E6BC2FB00DD5373 /* HTMLBookmarkConverter.h */,
 				336234470E6BC2FB00DD5373 /* HTMLBookmarkConverter.m */,
 				00F79F571075B622006688AC /* OperaBookmarkConverter.h */,
@@ -6690,6 +6696,7 @@
 				009EE0E412E024C400A8C0AD /* PluginBlocklistService.mm in Sources */,
 				00BA5DA7133466BC00C9A8C0 /* AutoCompleteScorer.mm in Sources */,
 				00BA5EBC1338215C00C9A8C0 /* AutoCompleteKeywordGenerator.mm in Sources */,
+				168962F514EC8D890002B873 /* ICabBookmarkConverter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6895,6 +6902,7 @@
 				009EE0E512E024C400A8C0AD /* PluginBlocklistService.mm in Sources */,
 				00BA5DA6133466BC00C9A8C0 /* AutoCompleteScorer.mm in Sources */,
 				00BA5EBB1338215C00C9A8C0 /* AutoCompleteKeywordGenerator.mm in Sources */,
+				168962F614EC8D890002B873 /* ICabBookmarkConverter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

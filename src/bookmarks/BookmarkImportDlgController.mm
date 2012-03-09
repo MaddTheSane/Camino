@@ -86,6 +86,8 @@
   [self tryAddImportFromBrowser:@"Internet Explorer" withBookmarkPath:@"~/Library/Preferences/Explorer/Favorites.html"];
   [self tryAddImportFromBrowser:@"iCab 2" withBookmarkPath:@"~/Library/Preferences/iCab Preferences/Hotlist.html"];
   [self tryAddImportFromBrowser:@"iCab 3" withBookmarkPath:@"~/Library/Preferences/iCab Preferences/Hotlist3.html"];
+  // iCab 4 uses a plist format, but doesn't put a plist extension on the file.
+  [self tryAddImportFromBrowser:@"iCab 4" withBookmarkPath:@"~/Library/Preferences/iCab/iCab 4 Bookmarks"];
 
   NSString *mozPath = [self saltedBookmarkPathForProfile:@"~/Library/Mozilla/Profiles/default/"];
   if (mozPath)
