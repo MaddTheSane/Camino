@@ -251,21 +251,27 @@ static KeychainService *sInstance = nil;
 //
 // Discussion of how the default keychain entry is chosen in Camino and Safari:
 //  Safari sets its default entry by entering 'default' in the keychain entry
-//  comment field.  We designed Camino so that it can use another default
+//  comment field. We designed Camino so that it can use another default
 //  by setting 'camino_default' in the comment field. Camino first checks for
-//  'camino_default', then looks for 'default' if there isn't one.  Safari will
-//  overwrite the comment field when setting the default.  If Safari changes the
+//  'camino_default', then looks for 'default' if there isn't one. Safari will
+//  overwrite the comment field when setting the default. If Safari changes the
 //  'camino_default' entry to 'default', Camino will still treat it as the
-//  default.  Camino won't overwrite a comment field, meaning that the Safari
+//  default. Camino won't overwrite a comment field, meaning that the Safari
 //  default will be preserved if the user selects the same item in Camino.
 //
-// This method sets the default Camino keychain entry.  The default Camino
-// entry will have a comment value set to "camino_default".  It first clears
-// any existing default Camino entry before setting the passed in keychain to
-// the new default.  It doesn't modify any other comment values, meaning that
-// the Safari default will preserved.
+// This method sets the default Camino keychain entry. The default Camino
+// entry will have a comment value set to "camino_default". If the passed-in
+// entry already has the comment value set to "camino_default", do nothing,
+// because the Keychain apparently does not guarantee the order of multiple
+// actions on different references in the same thread (see bug 413400). For
+// other entries, it first clears any existing default Camino entry before
+// setting the passed-in keychain entry to the new default. It doesn't modify
+// any other comment values, meaning that the Safari default will be preserved.
 - (void)setDefaultWebFormKeychainEntry:(KeychainItem*)keychainItem
 {
+  if ([[keychainItem comment] isEqualToString:@"camino_default"])
+    return;
+
   NSArray* keychainArray =  [KeychainItem allKeychainItemsForHost:[keychainItem host]
                                                              port:[keychainItem port]
                                                          protocol:[keychainItem protocol]
