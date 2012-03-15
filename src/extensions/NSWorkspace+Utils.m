@@ -191,11 +191,7 @@
 //
 + (BOOL)isLionOrHigher
 {
-#if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_6
-  return YES;
-#else
   return [self systemVersion] >= 0x1070;
-#endif
 }
 
 @end
