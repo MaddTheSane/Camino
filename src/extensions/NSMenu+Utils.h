@@ -100,4 +100,7 @@
 // copy the title and enabled state from the given item
 - (void)takeStateFromItem:(NSMenuItem*)inItem;
 
+// Returns YES if the item is a descendant (including direct child) of |aMenu|.
+- (BOOL)isDescendantOfMenu:(NSMenu*)aMenu;
+
 @end

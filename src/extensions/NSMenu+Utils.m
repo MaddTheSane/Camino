@@ -394,4 +394,16 @@ static OSStatus MenuEventHandler(EventHandlerCallRef inHandlerCallRef, EventRef 
   [self setEnabled:[inItem isEnabled]];
 }
 
+- (BOOL)isDescendantOfMenu:(NSMenu*)aMenu
+{
+  NSMenu* ancestor = [self menu];
+  while (ancestor) {
+    if (ancestor == aMenu)
+      return YES;
+ 
+    ancestor = [ancestor supermenu];
+  }
+  return NO;
+}
+
 @end

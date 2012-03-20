@@ -1314,8 +1314,8 @@ static const int kZoomActionsTag = 108;
 
 - (IBAction)newWindow:(id)aSender
 {
-  // Always come to the front for actions in the Dock menu
-  if ([aSender isKindOfClass:[NSMenuItem class]] && [aSender menu] == mDockMenu)
+  // Always come to the front for actions in the Dock menu.
+  if ([aSender isKindOfClass:[NSMenuItem class]] && [aSender isDescendantOfMenu:mDockMenu])
     [NSApp activateIgnoringOtherApps:YES];
 
   // If we have a key window, have it autosave its dimensions before
@@ -1543,7 +1543,7 @@ static const int kZoomActionsTag = 108;
   NSSavePanel* savePanel = [NSSavePanel savePanel];
   [savePanel setPrompt:NSLocalizedString(@"Export", @"Export")];
 
-  // get an accessory view for HTML or Safari .plist output
+  // Get an accessory view for HTML or Safari .plist output.
   if (!mExportPanelView)
     [NSBundle loadNibNamed:@"AccessoryViews" owner:self];
   NSPopUpButton* button = [mExportPanelView viewWithTag:1001];
@@ -1850,8 +1850,8 @@ static const int kZoomActionsTag = 108;
 
 - (IBAction)openMenuBookmark:(id)aSender
 {
-  // Always come to the front for actions in the Dock menu
-  if ([aSender isKindOfClass:[NSMenuItem class]] && [aSender menu] == mDockMenu)
+  // Always come to the front for actions in the Dock menu.
+  if ([aSender isKindOfClass:[NSMenuItem class]] && [aSender isDescendantOfMenu:mDockMenu])
     [NSApp activateIgnoringOtherApps:YES];
 
   BookmarkItem*  item = [aSender representedObject];
