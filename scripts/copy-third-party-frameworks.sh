@@ -1,4 +1,8 @@
 #!/bin/bash
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
 # Xcode doesn't understand that our third-party frameworks are built into different directories
 # than Camino is built into, so doing a normal copy phase doesn't work. Instead, we copy them
 # manually.
