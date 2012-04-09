@@ -212,6 +212,7 @@ object[type="application/x-shockwave-flash"][data*="server.cpmstar.com"],
 embed[type="application/x-shockwave-flash"][src*="checkm8.com/"],
 embed[type="application/x-shockwave-flash"][src*="247realmedia.com"],
 embed[type="application/x-shockwave-flash"][src*="game-advertising-online.com"],
+object[type="application/x-shockwave-flash"][data*="http%3A%2F%2Fads%2Etlvmedia%2Ecom"],
 
 /* Flash trackers */
 object[data*=".clearspring.com"],
@@ -393,6 +394,7 @@ iframe[src*="media.adrevolver.com"],
 iframe[src*="kanoodle"],
 iframe[src*="nextag.com"],
 iframe[src*="adframe"],
+iframe[src*="/adiframe/"],
 iframe[src*="mm.chitika.net"],
 iframe[src*="/RealMedia/ads/"],
 iframe[src*="precisionclick.com/ad/"],
@@ -466,6 +468,9 @@ iframe[id="csp-ad"],
 iframe[src*="server.gameads.com"],
 iframe[src*="game-advertising-online.com"],
 iframe[src*="impact-ad.jp"],
+iframe[id="adFrame"],
+iframe[src*="advertise.twitpic.com"],
+iframe[src*=".afdads.com"],
 
 table#overtureLinksWrapper,
 table.adbritetable,
@@ -626,6 +631,8 @@ div[id*="ad_google"],
 div[class^="googleAdBlock"],
 div[class*="google-ads"],
 div[class*="googleAds"],
+div[class="googleAdSense"],
+div[class^="google_adsense"],
 div[id*="google-ads-container"],
 div[id="google-afc-region-one"],
 div[id="google_ads_site"],
@@ -654,6 +661,7 @@ div[id^="AdBanner"],
 div[id^="ad-front"],
 div[id="ad-leaderboard"],
 div[id="ad_leaderboard"],
+div[class~="promoAndLeaderboard"],
 div[class~="textlinkads"],
 div[id*="story-sponsoredlinks"],
 div[class="blk_advert"],
@@ -705,7 +713,17 @@ div[class~="admarker"],
 div[id$="ads-container"],
 div[class="mod-adcpc"],
 div[id="adsTop"],
-div[id="adsBottom"]
+div[id="adsBottom"],
+div[id="bw_mall"],
+div[class~="envoltorio_publi"],
+div[id="ads-lower"],
+div[id="ads-top"],
+div[id="ygrp-sponsored-links"],
+div[id^="adzerk"],
+div[id="marketplaceDeal_widget"],
+div[class="sidead"],
+div[id^="VwPanl"],
+div[class*="position_pub"]
 
 { display: none !important; -moz-binding: none !important }
 
@@ -713,7 +731,8 @@ div[id="adsBottom"]
 div#rhc>div.rh,
 div.slwyWc,
 div.oM,
-div.z0DeRc { display: none !important }
+div.z0DeRc,
+div[class="nH PS"] { display: none !important }
 }
 
 @-moz-document domain(wunderground.com) { 
@@ -791,4 +810,16 @@ div[class*="swiff_container video_player"] { display: block !important }
 
 @-moz-document domain(duesseldorf.de) {
 div[class="nur_anzeige"] { display: block !important }
+}
+
+@-moz-document domain(petfinder.com) {
+div[id="photo-ad"] { display: block !important }
+}
+
+@-moz-document domain(espn.go.com) {
+div[class*="two_col_ad_in_rightcol"] { display: block !important }
+}
+
+@-moz-document domain(bloomberg.com) {
+div[class="market_content_with_right_ad"] { display: block !important }
 }
