@@ -6,16 +6,17 @@
 #import "FindBarController.h"
 
 #import "BrowserWrapper.h"
+#import "FindNotifications.h"
 #import "RolloverImageButton.h"
 #import "NSWorkspace+Utils.h"
 
-
 @interface FindBarController(Private)
 - (void)lazyLoad;
+- (void)doFindForwards:(BOOL)inNext;
 - (void)setupCloseBox:(RolloverImageButton*)button;
 - (void)putStringOnFindPasteboard:(NSString*)inStr;
 - (NSString*)findPasteboardString;
-- (void)doFindForwards:(BOOL)inNext;
+- (void)updateStatusTextWithSuccess:(BOOL)success;
 @end
 
 
@@ -38,6 +39,8 @@
 
 - (void)dealloc
 {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+
   // Balance the implicit retain from being a top-level nib object.
   [mFindBar release];
 
@@ -80,6 +83,11 @@
   }
 
   [mFindBar setLastKeySubview:mMatchCase];
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(updateFindStatusText:)
+                                               name:kFindStatusNotification
+                                             object:nil];
 }
 
 //
@@ -171,7 +179,7 @@
   [self putStringOnFindPasteboard:searchText];
   BOOL success = [mFinder findInPageWithPattern:searchText caseSensitive:caseSensitive wrap:YES backwards:!inNext];
 
-  [mStatusText setStringValue:(success ? NSLocalizedString(@"", nil) : NSLocalizedString(@"TextNotFound", nil))];
+  [self updateStatusTextWithSuccess:success];
 }
 
 - (IBAction)findAll:(id)sender
@@ -202,7 +210,7 @@
 // -control:textView:doCommandBySelector:
 // delegate method
 // 
-// Hook in to handle the user hitting the escape key which will hide the bar
+// Hook in to handle the user hitting the escape key, which will hide the bar.
 //
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)command
 {
@@ -228,9 +236,9 @@
 //
 // -findPasteboardString
 //
-// Retrieve the most recent search string
+// Retrieve the most recent search string.
 //
-- (NSString*)findPasteboardString;
+- (NSString*)findPasteboardString
 {
   NSString* searchText = @"";
 
@@ -241,5 +249,28 @@
   return searchText;
 }
 
-@end
+//
+// -updateFindStatusText:
+//
+// Updates the Find Bar status string in response to a notification.
+//
+- (void)updateFindStatusText:(NSNotification *)notification
+{
+  if ([notification object] != [mContentView browserView])
+    return;
+  BOOL success = [[[notification userInfo]
+      objectForKey:kFindStatusNotificationSuccessKey] boolValue];
+  [self updateStatusTextWithSuccess:success];
+}
 
+//
+// -updateStatusTextWithSuccess:
+//
+// Updates the Find Bar status string based on results of a find operation.
+//
+- (void)updateStatusTextWithSuccess:(BOOL)success
+{
+  [mStatusText setStringValue:(success ? NSLocalizedString(@"", nil) : NSLocalizedString(@"TextNotFound", nil))];
+}
+
+@end

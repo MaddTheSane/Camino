@@ -88,6 +88,9 @@
 // this adds a dependency on camino/src/security
 #import "CertificateItem.h"
 
+// Updating the Find Bar UI
+#import "FindNotifications.h"
+
 #import "mozView.h"
 
 // Cut/copy/paste
@@ -131,6 +134,7 @@ const char* const kHTMLMIMEType = "text/html";
 - (void)incrementPageZoom:(float)increment min:(float)min max:(float)max;
 - (nsIDocShell*)docShell;    // does NOT addref
 - (NSString*)selectedText;
+- (void)postFindStatusNotification:(BOOL)success;
 - (already_AddRefed<nsIDOMWindow>)focussedDOMWindow;
 - (already_AddRefed<nsIDOMElement>)focusedDOMElement;
 - (already_AddRefed<nsISecureBrowserUI>)secureBrowserUI;
@@ -997,7 +1001,18 @@ const char* const kHTMLMIMEType = "text/html";
   PRBool found;
   webFind->FindNext(&found);
 
+  [self postFindStatusNotification:(BOOL)found];
   return (BOOL)found;
+}
+
+- (void)postFindStatusNotification:(BOOL)success
+{
+  NSDictionary* successInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:success]
+                                                          forKey:kFindStatusNotificationSuccessKey];
+  NSNotification* note = [NSNotification notificationWithName:kFindStatusNotification
+                                                       object:self
+                                                     userInfo:successInfo];
+  [[NSNotificationCenter defaultCenter] postNotification:note];
 }
 
 - (NSString*)lastFindText
