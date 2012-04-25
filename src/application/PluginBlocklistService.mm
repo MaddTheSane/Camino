@@ -12,6 +12,7 @@
 #include "nsIPluginTag.h"
 #include "nsString.h"
 
+static NSString* const kPluginNameAdobePDFNPAPI = @"Adobe Acrobat NPAPI Plug-in";
 static NSString* const kPluginNameFlash = @"Shockwave Flash";
 static NSString* const kPluginNameFlip4Mac = @"Flip4Mac";
 
@@ -124,6 +125,11 @@ NS_IMETHODIMP PluginBlocklistService::GetPluginBlocklistState(nsIPluginTag *plug
       VersionStruct minAllowed = { 2, 2, 1, 0 };
       blocked = IsOlder(version, minAllowed);
     }
+  }
+  else if ([name hasPrefix:kPluginNameAdobePDFNPAPI]) {
+    // Newer Acrobat Reader versions automatically install an incompatible PDF
+    // plug-in.
+    blocked = YES;
   }
 
   if (blocked) {
