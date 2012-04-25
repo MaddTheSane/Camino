@@ -138,12 +138,14 @@
 
   NSWindow* curWindow;
   while ((curWindow = [windowEnum nextObject])) {
-    // Two kinds of invisible windows show up in [NSApp orderedWindows]:
-    // AutoCompleteWindows and NSWindows with uniqueID == -1.  It is unclear what
-    // the second set of windows is, but they certainly shouldn't be included.
+    // Three kinds of invisible windows show up in [NSApp orderedWindows]:
+    // AutoCompleteWindows, ToolTips (which have the NSBorderlessWindowMask
+    // style mask), and NSWindows with uniqueID == -1.  It is unclear what the
+    // third set of windows is, but they certainly shouldn't be included.
     // Note: there is no -[NSWindow uniqueID] method; the uniqueID key is only
     // availible via KVC.
     if (![curWindow isKindOfClass:[MAAttachedWindow class]] &&
+        [curWindow styleMask] != NSBorderlessWindowMask &&
         [[curWindow valueForKey:@"uniqueID"] intValue] != -1) {
           [windowArray addObject:curWindow];
     }
