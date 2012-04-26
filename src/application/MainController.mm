@@ -164,6 +164,11 @@ static const int kZoomActionsTag = 108;
   const nsModuleComponentInfo* comps = GetAppComponents(&numComps);
   CHBrowserService::RegisterAppComponents(comps, numComps);
 
+  // Load user stylesheets after our app components have been registered with
+  // Gecko to prevent stylesheet-related plug-in enumeration from beating
+  // blocklist registration (see bug 667441).
+  [[PreferenceManager sharedInstanceDontCreate] loadUserStylesheets];
+
   // This is a hack to make sure that the string bundle service knows about our
   // override as soon as possible, since some core components cache their string
   // bundle instance when they are inited, and will bypass us if we aren't in

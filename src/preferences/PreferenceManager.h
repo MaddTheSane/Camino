@@ -40,6 +40,10 @@ extern NSString* const kPrefChangedPrefNameUserInfoKey;   // NSString
 - (void)syncMozillaPrefs;
 - (void)savePrefsFile;
 
+// Load our various style sheets, according to user prefs. Must be called after
+// component registration, since it accesses the plug-in list.
+- (void)loadUserStylesheets;
+
 - (NSString*)homePageUsingStartPage:(BOOL)checkStartupPagePref;
 
 - (NSURL*)getFilePref:(const char*)prefName withSuccess:(BOOL*)outSuccess;

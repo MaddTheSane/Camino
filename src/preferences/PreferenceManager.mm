@@ -817,6 +817,8 @@ static BOOL gMadePrefManager;
 
 - (void)syncMozillaPrefs
 {
+  // Avoid calling anything in this method that will cause plug-in enumeration
+  // (see bug 667441).
   if (!mPrefs) {
     NSLog(@"Mozilla prefs not set up successfully");
     return;
@@ -877,16 +879,6 @@ static BOOL gMadePrefManager;
 
   [self setAcceptLanguagesPref];
   [self setLocalePref];
-
-  // Load our various style sheets, according to user prefs.
-  [self setBundledStyleSheet:kHTML5ElementsCSSFile loaded:YES];
-  if ([self getBooleanPref:kGeckoPrefBlockAds withSuccess:NULL])
-    [self setBundledStyleSheet:kAdBlockingCSSFile loaded:YES];
-  BOOL flashblockAllowed = [self isFlashblockAllowed];
-  if (flashblockAllowed && [self getBooleanPref:kGeckoPrefBlockFlash withSuccess:NULL])
-    [self setFlashblockStyleSheetLoaded:YES];
-  if ([self getBooleanPref:kGeckoPrefForceAquaSelects withSuccess:NULL])
-    [self setBundledStyleSheet:kAquaSelectCSSFile loaded:YES];
 
   // Register a Gecko pref observer to watch for changes via about:config.
   // We do this here rather than in |-registerNotificationListener:| because
@@ -1029,6 +1021,18 @@ static BOOL gMadePrefManager;
     [self setPref:kGeckoPrefDownloadsDir toFile:[NSURL fileURLWithPath:aPath]];
   }
   [self setPref:kGeckoPrefDownloadsFolderList toInt:folderType];
+}
+
+- (void)loadUserStylesheets
+{
+  [self setBundledStyleSheet:kHTML5ElementsCSSFile loaded:YES];
+  if ([self getBooleanPref:kGeckoPrefBlockAds withSuccess:NULL])
+    [self setBundledStyleSheet:kAdBlockingCSSFile loaded:YES];
+  BOOL flashblockAllowed = [self isFlashblockAllowed];
+  if (flashblockAllowed && [self getBooleanPref:kGeckoPrefBlockFlash withSuccess:NULL])
+    [self setFlashblockStyleSheetLoaded:YES];
+  if ([self getBooleanPref:kGeckoPrefForceAquaSelects withSuccess:NULL])
+    [self setBundledStyleSheet:kAquaSelectCSSFile loaded:YES];
 }
 
 #pragma mark -
