@@ -297,6 +297,11 @@
 			<property name="name" code="pnam" description="The name of the bookmark item." type="text">
 				<cocoa key="title"/>
 			</property>
+			<!-- This is typically an integer, but can be of any class, per the AppleScript Language Guide.
+			     For bookmark item unique ids, Camino uses UUIDs, which are strings. -->
+			<property name="id" code="ID  " description="The unique identifier of the bookmark item." type="text" access="r">
+				<cocoa key="uniqueID"/>
+			</property>
 			<property name="description" code="pdes" description="The description of the bookmark item." type="text">
 				<cocoa key="itemDescription"/>
 			</property>

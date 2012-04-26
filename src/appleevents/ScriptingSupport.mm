@@ -61,6 +61,7 @@
 
 @interface BookmarkItem (ScriptingSupport)
 - (void)setScriptingProperties:(NSDictionary *)properties;
+- (NSString *)uniqueID;
 @end
 
 @interface BookmarkFolder (ScriptingSupport)
@@ -448,6 +449,24 @@
       [[NSScriptCommand currentCommand] setScriptErrorString:[NSString stringWithFormat:@"A bookmark item's %@ can't be that type.", scriptingClassName]];
     }
   }
+}
+
+- (NSString *)uniqueID
+{
+  // Separators don't have UUIDs, but BookmarkItem's UUID will create one if
+  // one is not present.  Bookmarks in the Address Book and Bonjour smart
+  // collections, as well as all three smart collections themselves, don't have
+  // persistent UUIDs, so it's unwise to let a script think that they do.
+  if ([self isKindOfClass:[Bookmark class]] && [self isSeparator])
+    return nil;
+
+  if ([[self parent] isKindOfClass:[BookmarkFolder class]] && [[self parent] isSmartFolder])
+    return nil;
+
+  if ([self isKindOfClass:[BookmarkFolder class]] && [(BookmarkFolder *)self isSmartFolder])
+    return nil;
+
+  return [self UUID];
 }
 
 @end
