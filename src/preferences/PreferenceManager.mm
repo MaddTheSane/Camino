@@ -581,6 +581,7 @@ static BOOL gMadePrefManager;
         const char* kVolatileProfileFiles[] = {
           "compatibility.ini",
           "compreg.dat",
+          "pluginreg.dat",
           "xpti.dat",
           "XUL.mfasl",
           nsnull
