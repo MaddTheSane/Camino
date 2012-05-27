@@ -37,12 +37,31 @@ static BreakpadWrapper* sGlobalBreakpadInstance = nil;
       }
       sGlobalBreakpadInstance = self;
 
-      // Breakpad uses CFBundleVersion, but we want our short version instead.
-      BreakpadSetKeyValue(mBreakpadReference, @BREAKPAD_VERSION,
-                          [info valueForKey:@"CFBundleShortVersionString"]);
+      // Breakpad uses CFBundleVersion, but we want our short version instead,
+      // and we also need to modify nightly version strings for Socorro. We
+      // also set the release channel based on the version string.
+      NSString* cmVersion = [info valueForKey:@"CFBundleShortVersionString"];
+      NSString* breakpadVersion = cmVersion;
+      NSString* releaseChannel = nil;
+      if ([cmVersion hasSuffix:@"pre"]) {
+        NSCharacterSet* preSet = [NSCharacterSet characterSetWithCharactersInString:@"pre"];
+        breakpadVersion = [cmVersion stringByTrimmingCharactersInSet:preSet];
+        releaseChannel = @"nightly";
+      }
+      else if ([cmVersion rangeOfString:@"a" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+        releaseChannel = @"aurora";
+      }
+      else if ([cmVersion rangeOfString:@"b" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+        releaseChannel = @"beta";
+      }
+      else {
+        releaseChannel = @"release";
+      }
+      BreakpadSetKeyValue(mBreakpadReference, @BREAKPAD_VERSION, breakpadVersion);
       // Get the localized vendor, which infoDictionary doesn't do.
       BreakpadSetKeyValue(mBreakpadReference, @BREAKPAD_VENDOR,
                           [mainBundle objectForInfoDictionaryKey:@"BreakpadVendor"]);
+      BreakpadAddUploadParameter(mBreakpadReference, @"ReleaseChannel", releaseChannel);
 
       NSString* installTime = [self versionFirstInstalledTime];
       BreakpadAddUploadParameter(mBreakpadReference, @"InstallTime", installTime);
