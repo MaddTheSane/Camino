@@ -16,6 +16,10 @@
 // |aIcon| and |aTitle| must both be non-nil.
 + (NSImage*)dragImageWithIcon:(NSImage*)aIcon title:(NSString*)aTitle;
 
+// Returns the standard OS Bonjour icon; the constant is only available with
+// the 10.5 SDK.
++ (NSImage*)osBonjourIcon;
+
 // Returns the standard OS folder icon; unfortunately there's no convenient
 // name constant for it.
 + (NSImage*)osFolderIcon;

@@ -8,6 +8,10 @@
 
 #import "NSWorkspace+Utils.h"
 
+#if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
+NSString *const NSImageNameBonjour = @"NSBonjour";
+#endif
+
 @implementation NSImage (CaminoImageUtils)
 
 - (void)drawTiledInRect:(NSRect)rect origin:(NSPoint)inOrigin operation:(NSCompositingOperation)inOperation
@@ -76,6 +80,21 @@
 
   [dragImage unlockFocus];
   return dragImage;
+}
+
++ (NSImage*)osBonjourIcon
+{
+  static NSImage* sBonjourImage = nil;
+  if (!sBonjourImage) {
+    if ([NSWorkspace isLeopardOrHigher]) {
+      sBonjourImage = [[NSImage imageNamed:NSImageNameBonjour] retain];
+      [sBonjourImage setSize:NSMakeSize(16, 16)];
+    }
+    else {
+      sBonjourImage = [[NSImage imageNamed:@"rendezvous_icon"] retain];
+    }
+  }
+  return sBonjourImage;
 }
 
 + (NSImage*)osFolderIcon

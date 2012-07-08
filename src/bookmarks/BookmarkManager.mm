@@ -14,6 +14,7 @@
 #import "NSWorkspace+Utils.h"
 #import "NSPasteboard+Utils.h"
 #import "NSMenu+Utils.h"
+#import "NSImage+Utils.h"
 
 #import "PreferenceManager.h"
 #import "Bookmark.h"
@@ -433,7 +434,7 @@ static BookmarkManager* gBookmarkManager = nil;
   [[self top10Folder]         setIcon:[NSImage imageNamed:@"top10_icon"]];
   [[self bookmarkMenuFolder]  setIcon:[NSImage imageNamed:@"bookmarkmenu_icon"]];
   [[self toolbarFolder]       setIcon:[NSImage imageNamed:@"bookmarktoolbar_icon"]];
-  [[self rendezvousFolder]    setIcon:[NSImage imageNamed:@"rendezvous_icon"]];
+  [[self rendezvousFolder]    setIcon:[NSImage osBonjourIcon]];
   [[self addressBookFolder]   setIcon:[NSImage imageNamed:@"addressbook_icon"]];
 }
 
