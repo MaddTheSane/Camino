@@ -31,7 +31,7 @@ $bad_ips = [
 # Keys for the various printed sections. These are listed explicitly, rather
 # than generated dynamically from the data, in order to match the spreadsheet.
 $by_arch_keys = ['x86', 'ppc']
-$by_os_keys = ['10.7', '10.6', '10.5', '10.4', '10.3']
+$by_os_keys = ['10.8', '10.7', '10.6', '10.5', '10.4', '10.3']
 $by_major_version_keys = ['2.1', '2.0', '1.6']
 $by_version_keys = [
   '2.1.2', '2.1.1', '2.1',
