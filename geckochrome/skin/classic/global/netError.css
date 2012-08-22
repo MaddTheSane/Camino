@@ -63,6 +63,7 @@ ul {
   padding: 3em;
   -moz-padding-start: 60px;
   background: url("chrome://global/skin/icons/warning.png") 1.1em 1.6em no-repeat -moz-Field;
+  -moz-background-size: 100px 100px;
   -moz-box-shadow: -4px 4px 8px rgba(0,0,0,0.12), 4px 4px 8px rgba(0,0,0,0.12);
 }
 
@@ -168,6 +169,7 @@ div[collapsed] > div {
 :root.blacklist #errorPageContainer {
   background-image: url("chrome://global/skin/icons/blacklist.png");
   background-color: #e8e8e8;
+  -moz-background-size: 100px 100px;
   border: 2px solid #000;
   -moz-box-shadow: -4px 4px 8px rgba(0,0,0,0.3), 4px 4px 8px rgba(0,0,0,0.3);
 }

@@ -67,6 +67,7 @@
   list-style-image: none;
   margin-right: 2em;
    background: url("chrome://global/skin/icons/warning.png") no-repeat 0 0;
+   -moz-background-size: 100px 100px;
    width:100px;
    height:100px;
 }
