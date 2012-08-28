@@ -16,7 +16,7 @@ _RELNOTE_VERSION:=$(subst .,-,$(CAMINO_VERSION))
 
 # The packager runs in the dist directory, paths must be relative to there.
 MOZ_PKG_MAC_DSSTORE=../camino/resources/package/dsstore
-MOZ_PKG_MAC_BACKGROUND=../camino/resources/package/background.jpg
+MOZ_PKG_MAC_BACKGROUND=../camino/resources/package/background.png
 MOZ_PKG_MAC_ICON=../camino/resources/package/disk.icns
 # The docs aren't copied into an objdir, chase them in the srcdir.
 # Use $(_ABS_MOZSRCDIR) for an absolute path, handling both srcdir and
