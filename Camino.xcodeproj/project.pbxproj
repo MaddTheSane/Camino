@@ -1055,10 +1055,10 @@
 		C7DE8E430F30D32700CD3872 /* url-classifier.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = C7DE8E260F30D1BC00CD3872 /* url-classifier.xpt */; };
 		C7DE8E4B0F30D41500CD3872 /* nsUrlClassifierListManager.js in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = C7DE8E150F30D14F00CD3872 /* nsUrlClassifierListManager.js */; };
 		C7DE8E4C0F30D41500CD3872 /* nsUrlClassifierLib.js in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = C7DE8E160F30D14F00CD3872 /* nsUrlClassifierLib.js */; };
-		C7FF536C0D35281F00194776 /* search_editor_bottom_background.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FF536A0D35281F00194776 /* search_editor_bottom_background.png */; };
-		C7FF536D0D35281F00194776 /* search_editor_action.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FF536B0D35281F00194776 /* search_editor_action.png */; };
-		C7FF536E0D35281F00194776 /* search_editor_bottom_background.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FF536A0D35281F00194776 /* search_editor_bottom_background.png */; };
-		C7FF536F0D35281F00194776 /* search_editor_action.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FF536B0D35281F00194776 /* search_editor_action.png */; };
+		C7FF536C0D35281F00194776 /* search_editor_bottom_background.tiff in Resources */ = {isa = PBXBuildFile; fileRef = C7FF536A0D35281F00194776 /* search_editor_bottom_background.tiff */; };
+		C7FF536D0D35281F00194776 /* search_editor_action.tiff in Resources */ = {isa = PBXBuildFile; fileRef = C7FF536B0D35281F00194776 /* search_editor_action.tiff */; };
+		C7FF536E0D35281F00194776 /* search_editor_bottom_background.tiff in Resources */ = {isa = PBXBuildFile; fileRef = C7FF536A0D35281F00194776 /* search_editor_bottom_background.tiff */; };
+		C7FF536F0D35281F00194776 /* search_editor_action.tiff in Resources */ = {isa = PBXBuildFile; fileRef = C7FF536B0D35281F00194776 /* search_editor_action.tiff */; };
 		C7FF53720D35285400194776 /* SearchEngineEditor.nib in Resources */ = {isa = PBXBuildFile; fileRef = C7FF53700D35285400194776 /* SearchEngineEditor.nib */; };
 		C7FF53730D35285400194776 /* SearchEngineEditor.nib in Resources */ = {isa = PBXBuildFile; fileRef = C7FF53700D35285400194776 /* SearchEngineEditor.nib */; };
 		C7FF53760D35286800194776 /* WebSearchEngines.plist in Resources */ = {isa = PBXBuildFile; fileRef = C7FF53740D35286800194776 /* WebSearchEngines.plist */; };
@@ -2978,8 +2978,8 @@
 		C7DE8E160F30D14F00CD3872 /* nsUrlClassifierLib.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = nsUrlClassifierLib.js; path = ../dist/bin/components/nsUrlClassifierLib.js; sourceTree = SOURCE_ROOT; };
 		C7DE8E260F30D1BC00CD3872 /* url-classifier.xpt */ = {isa = PBXFileReference; lastKnownFileType = file; name = "url-classifier.xpt"; path = "../dist/bin/components/url-classifier.xpt"; sourceTree = SOURCE_ROOT; };
 		C7DE8E2B0F30D27300CD3872 /* libcaminosafebrowsing.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; name = libcaminosafebrowsing.dylib; path = ../dist/bin/components/libcaminosafebrowsing.dylib; sourceTree = SOURCE_ROOT; };
-		C7FF536A0D35281F00194776 /* search_editor_bottom_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = search_editor_bottom_background.png; path = chrome/search_editor_bottom_background.png; sourceTree = "<group>"; };
-		C7FF536B0D35281F00194776 /* search_editor_action.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = search_editor_action.png; path = chrome/search_editor_action.png; sourceTree = "<group>"; };
+		C7FF536A0D35281F00194776 /* search_editor_bottom_background.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = search_editor_bottom_background.tiff; path = chrome/search_editor_bottom_background.tiff; sourceTree = "<group>"; };
+		C7FF536B0D35281F00194776 /* search_editor_action.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = search_editor_action.tiff; path = chrome/search_editor_action.tiff; sourceTree = "<group>"; };
 		C7FF53710D35285400194776 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = resources/localized/English.lproj/SearchEngineEditor.nib; sourceTree = "<group>"; };
 		C7FF53750D35286800194776 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = English; path = resources/localized/English.lproj/WebSearchEngines.plist; sourceTree = "<group>"; };
 		C7FF53790D3528B700194776 /* SearchEngineManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = SearchEngineManager.mm; path = src/websearch/SearchEngineManager.mm; sourceTree = "<group>"; };
@@ -4638,8 +4638,8 @@
 				DE09CD6E0ACB97C5008A8D9C /* popup_close.tiff */,
 				DE09CD720ACB97C5008A8D9C /* popup_close_hover.tiff */,
 				DE09CD6F0ACB97C5008A8D9C /* popup_close_pressed.tiff */,
-				C7FF536A0D35281F00194776 /* search_editor_bottom_background.png */,
-				C7FF536B0D35281F00194776 /* search_editor_action.png */,
+				C7FF536A0D35281F00194776 /* search_editor_bottom_background.tiff */,
+				C7FF536B0D35281F00194776 /* search_editor_action.tiff */,
 			);
 			name = images;
 			path = resources/images;
@@ -6012,8 +6012,8 @@
 				1B825D030C5D268600CB4343 /* Camino.sdef in Resources */,
 				DEB608CA0CAF0964006C34F1 /* throbber-00.tiff in Resources */,
 				E43EFBAF0D143F0D00DACA10 /* FindBar.nib in Resources */,
-				C7FF536C0D35281F00194776 /* search_editor_bottom_background.png in Resources */,
-				C7FF536D0D35281F00194776 /* search_editor_action.png in Resources */,
+				C7FF536C0D35281F00194776 /* search_editor_bottom_background.tiff in Resources */,
+				C7FF536D0D35281F00194776 /* search_editor_action.tiff in Resources */,
 				C7FF53720D35285400194776 /* SearchEngineEditor.nib in Resources */,
 				C7FF53760D35286800194776 /* WebSearchEngines.plist in Resources */,
 				00BBBF1F0D6A149900C2D916 /* FindBarTextured.nib in Resources */,
@@ -6244,8 +6244,8 @@
 				1B825D040C5D268600CB4343 /* Camino.sdef in Resources */,
 				DEB608CB0CAF0964006C34F1 /* throbber-00.tiff in Resources */,
 				E43EFBB00D143F0D00DACA10 /* FindBar.nib in Resources */,
-				C7FF536E0D35281F00194776 /* search_editor_bottom_background.png in Resources */,
-				C7FF536F0D35281F00194776 /* search_editor_action.png in Resources */,
+				C7FF536E0D35281F00194776 /* search_editor_bottom_background.tiff in Resources */,
+				C7FF536F0D35281F00194776 /* search_editor_action.tiff in Resources */,
 				C7FF53730D35285400194776 /* SearchEngineEditor.nib in Resources */,
 				C7FF53770D35286800194776 /* WebSearchEngines.plist in Resources */,
 				00BBBF1E0D6A149900C2D916 /* FindBarTextured.nib in Resources */,
