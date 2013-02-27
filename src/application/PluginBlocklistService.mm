@@ -29,11 +29,11 @@ struct VersionStruct {
 // PPC so we have to allow it.
 static const VersionStruct minFlashVersion = { 10, 1, 102, 64 };
 #else
-static const VersionStruct minFlashVersion = { 10, 3, 183, 51 };
+static const VersionStruct minFlashVersion = { 10, 3, 183, 67 };
 #endif
 // Flash 11 doesn't officially support Gecko 1.9.2, but users on 10.6 and 10.7
 // may still have it installed instead of Flash 10.3.
-static const VersionStruct minUnsupportedFlashVersion = { 11, 5, 502, 149 };
+static const VersionStruct minUnsupportedFlashVersion = { 11, 6, 602, 171 };
 
 // Given a version string, parses it according to the common major.minor.bugfix
 // format. Any component not present (or not parsable) will be set to 0.
