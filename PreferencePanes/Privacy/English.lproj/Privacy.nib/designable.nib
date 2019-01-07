@@ -1,0 +1,677 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="OrgMozillaCaminoPreferencePrivacy">
+            <connections>
+                <outlet property="_firstKeyView" destination="531" id="611"/>
+                <outlet property="_initialKeyView" destination="531" id="612"/>
+                <outlet property="_lastKeyView" destination="520" id="619"/>
+                <outlet property="_window" destination="5" id="26"/>
+                <outlet property="mAskAboutCookies" destination="521" id="542"/>
+                <outlet property="mCookieBehavior" destination="531" id="544"/>
+                <outlet property="mCookiesFilterField" destination="684" id="688"/>
+                <outlet property="mCookiesPanel" destination="401" id="466"/>
+                <outlet property="mCookiesTable" destination="417" id="428"/>
+                <outlet property="mKeychainExclusionsFilterField" destination="697" id="714"/>
+                <outlet property="mKeychainExclusionsPanel" destination="693" id="715"/>
+                <outlet property="mKeychainExclusionsTable" destination="700" id="716"/>
+                <outlet property="mPermissionColumn" destination="425" id="499"/>
+                <outlet property="mPermissionFilterField" destination="678" id="683"/>
+                <outlet property="mPermissionsPanel" destination="287" id="296"/>
+                <outlet property="mPermissionsTable" destination="424" id="429"/>
+                <outlet property="mStorePasswords" destination="526" id="545"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application"/>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="5" userLabel="Window">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="252" y="296" width="595" height="318"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1024" height="746"/>
+            <view key="contentView" id="6">
+                <rect key="frame" x="0.0" y="0.0" width="595" height="318"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField verticalHuggingPriority="750" id="517">
+                        <rect key="frame" x="57" y="282" width="59" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Cookies:" id="736">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" imageHugsTitle="YES" id="520">
+                        <rect key="frame" x="113" y="50" width="181" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Open Keychain Access" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="737">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="launchKeychainAccess:" target="-2" id="548"/>
+                            <outlet property="nextKeyView" destination="718" id="727"/>
+                        </connections>
+                    </button>
+                    <button imageHugsTitle="YES" id="521">
+                        <rect key="frame" x="117" y="217" width="296" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="check" title="Ask me before accepting each cookie" bezelStyle="regularSquare" imagePosition="leading" alignment="left" allowsMixedState="YES" inset="2" id="738">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="clickAskAboutCookies:" target="-2" id="555"/>
+                            <outlet property="nextKeyView" destination="535" id="598"/>
+                        </connections>
+                    </button>
+                    <button imageHugsTitle="YES" id="526">
+                        <rect key="frame" x="117" y="96" width="352" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="check" title="Save web form passwords in the Keychain" bezelStyle="regularSquare" imagePosition="leading" alignment="left" inset="2" id="739">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="clickStorePasswords:" target="-2" id="556"/>
+                            <outlet property="nextKeyView" destination="520" id="675"/>
+                        </connections>
+                    </button>
+                    <textField verticalHuggingPriority="750" id="527">
+                        <rect key="frame" x="116" y="129" width="404" height="42"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" id="740">
+                            <font key="font" metaFont="smallSystem"/>
+                            <string key="title">Cookies are small pieces of information that some websites store on your computer. They can be used to remember your preferences or to track your visits to any site.</string>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" id="530">
+                        <rect key="frame" x="116" y="20" width="439" height="30"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" id="741">
+                            <font key="font" metaFont="smallSystem"/>
+                            <string key="title">You can edit your Keychain with the Keychain Access application. Although most websites allow saving of passwords and user names, some do not.</string>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <matrix verticalHuggingPriority="750" allowsEmptySelection="NO" id="531">
+                        <rect key="frame" x="117" y="241" width="296" height="58"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        <size key="cellSize" width="296" height="18"/>
+                        <size key="intercellSpacing" width="4" height="2"/>
+                        <buttonCell key="prototype" type="radio" title="Radio" imagePosition="leading" alignment="left" inset="2" id="757">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <cells>
+                            <column>
+                                <buttonCell type="radio" title="Accept cookies from any site" imagePosition="leading" alignment="left" state="on" inset="2" id="670">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <buttonCell type="radio" title="Accept cookies only from sites I visit" imagePosition="leading" alignment="left" tag="1" inset="2" id="671">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <buttonCell type="radio" title="Don’t accept any cookies" imagePosition="leading" alignment="left" tag="2" inset="2" id="672">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </column>
+                        </cells>
+                        <connections>
+                            <action selector="clickCookieBehavior:" target="-2" id="554"/>
+                            <outlet property="nextKeyView" destination="521" id="597"/>
+                        </connections>
+                    </matrix>
+                    <button verticalHuggingPriority="750" imageHugsTitle="YES" id="534">
+                        <rect key="frame" x="254" y="171" width="176" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Edit Exceptions List…" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="742">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="editPermissions:" target="-2" id="547"/>
+                            <outlet property="nextKeyView" destination="526" id="600"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" imageHugsTitle="YES" id="535">
+                        <rect key="frame" x="113" y="171" width="141" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Show Cookies…" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="743">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="editCookies:" target="-2" id="546"/>
+                            <outlet property="nextKeyView" destination="534" id="599"/>
+                        </connections>
+                    </button>
+                    <textField verticalHuggingPriority="750" id="577">
+                        <rect key="frame" x="40" y="97" width="74" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Passwords:" id="744">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" imageHugsTitle="YES" id="718">
+                        <rect key="frame" x="294" y="50" width="208" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Edit Keychain Exclusions…" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="745">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="editKeychainExclusions:" target="-2" id="719"/>
+                            <outlet property="nextKeyView" destination="531" id="726"/>
+                        </connections>
+                    </button>
+                </subviews>
+            </view>
+            <connections>
+                <outlet property="initialFirstResponder" destination="531" id="604"/>
+            </connections>
+        </window>
+        <window title="Edit Site Permissions" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="287" userLabel="Edit Permissions" customClass="NSPanel">
+            <windowStyleMask key="styleMask" titled="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="110" y="306" width="540" height="355"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1024" height="746"/>
+            <view key="contentView" id="288">
+                <rect key="frame" x="0.0" y="0.0" width="540" height="355"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button verticalHuggingPriority="750" imageHugsTitle="YES" id="289">
+                        <rect key="frame" x="426" y="13" width="100" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="Done" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="746">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="editPermissionsDone:" target="-2" id="484"/>
+                            <outlet property="nextKeyView" destination="678" id="681"/>
+                        </connections>
+                    </button>
+                    <scrollView horizontalLineScroll="16" horizontalPageScroll="10" verticalLineScroll="16" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="422">
+                        <rect key="frame" x="20" y="57" width="500" height="211"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <clipView key="contentView" id="0Z9-5Q-ORH">
+                            <rect key="frame" x="1" y="0.0" width="498" height="210"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <tableView focusRingType="exterior" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveName="cookie_exception_list" rowHeight="14" headerView="768" id="424" customClass="ExtendedTableView">
+                                    <rect key="frame" x="0.0" y="0.0" width="498" height="185"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <size key="intercellSpacing" width="3" height="2"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                    <tableColumns>
+                                        <tableColumn identifier="host" editable="NO" width="366.5" minWidth="40" maxWidth="1000" id="423">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Website">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" white="0.33333299" alpha="1" colorSpace="calibratedWhite"/>
+                                            </tableHeaderCell>
+                                            <textFieldCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="left" id="758">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </textFieldCell>
+                                            <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        </tableColumn>
+                                        <tableColumn identifier="policy" editable="NO" width="125.57763671875" minWidth="38.57763671875" maxWidth="150" id="425">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Policy">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" white="0.33333299" alpha="1" colorSpace="calibratedWhite"/>
+                                            </tableHeaderCell>
+                                            <popUpButtonCell key="dataCell" type="bevel" bezelStyle="rounded" controlSize="small" borderStyle="bezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" id="500">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <menu key="menu" id="766"/>
+                                            </popUpButtonCell>
+                                        </tableColumn>
+                                    </tableColumns>
+                                    <connections>
+                                        <outlet property="dataSource" destination="-2" id="496"/>
+                                        <outlet property="delegate" destination="-2" id="497"/>
+                                        <outlet property="menu" destination="635" id="638"/>
+                                    </connections>
+                                </tableView>
+                            </subviews>
+                        </clipView>
+                        <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" controlSize="small" horizontal="YES" id="767">
+                            <rect key="frame" x="-100" y="-100" width="238" height="11"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" controlSize="small" horizontal="NO" id="769">
+                            <rect key="frame" x="485" y="25" width="14" height="185"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <tableHeaderView key="headerView" id="768">
+                            <rect key="frame" x="0.0" y="0.0" width="498" height="25"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </tableHeaderView>
+                        <connections>
+                            <outlet property="nextKeyView" destination="630" id="664"/>
+                        </connections>
+                    </scrollView>
+                    <textField verticalHuggingPriority="750" id="576">
+                        <rect key="frame" x="20" y="306" width="500" height="29"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" id="747">
+                            <font key="font" metaFont="label"/>
+                            <string key="title">Allow or deny cookies from specific sites, regardless of your defaults. Turn on the “Ask before accepting each cookie” option to put sites on your exceptions list.</string>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button toolTip="Shortcuts for commonly used actions" imageHugsTitle="YES" id="630" customClass="PopupMenuButton">
+                        <rect key="frame" x="20" y="20" width="26" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="bevel" title="action" bezelStyle="regularSquare" image="action_button" imagePosition="only" alignment="center" inset="2" id="748">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <outlet property="menu" destination="635" id="639"/>
+                            <outlet property="nextKeyView" destination="289" id="651"/>
+                        </connections>
+                    </button>
+                    <searchField verticalHuggingPriority="750" textCompletion="NO" id="678">
+                        <rect key="frame" x="356" y="276" width="164" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                        <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" bezelStyle="round" id="749">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </searchFieldCell>
+                        <connections>
+                            <action selector="filterChanged:" target="-2" id="732"/>
+                            <outlet property="delegate" destination="-2" id="690"/>
+                            <outlet property="nextKeyView" destination="422" id="682"/>
+                        </connections>
+                    </searchField>
+                </subviews>
+            </view>
+        </window>
+        <window title="Edit Cookies" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="401" userLabel="Edit Cookies" customClass="NSPanel">
+            <windowStyleMask key="styleMask" titled="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="305" y="176" width="540" height="340"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1024" height="746"/>
+            <view key="contentView" id="398">
+                <rect key="frame" x="0.0" y="0.0" width="540" height="340"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button verticalHuggingPriority="750" imageHugsTitle="YES" id="403">
+                        <rect key="frame" x="426" y="13" width="100" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="Done" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="750">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="editCookiesDone:" target="-2" id="485"/>
+                            <outlet property="nextKeyView" destination="684" id="686"/>
+                        </connections>
+                    </button>
+                    <scrollView horizontalLineScroll="16" horizontalPageScroll="10" verticalLineScroll="16" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="412">
+                        <rect key="frame" x="20" y="57" width="500" height="233"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <clipView key="contentView" id="EHF-OJ-7R6">
+                            <rect key="frame" x="1" y="0.0" width="498" height="232"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <tableView focusRingType="exterior" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveName="cookie_list" rowHeight="14" headerView="771" id="417" customClass="ExtendedTableView">
+                                    <rect key="frame" x="0.0" y="0.0" width="498" height="207"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <size key="intercellSpacing" width="3" height="2"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                    <tableColumns>
+                                        <tableColumn identifier="domain" editable="NO" width="100" minWidth="10" maxWidth="1000" id="411">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Website">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" white="0.33333299" alpha="1" colorSpace="calibratedWhite"/>
+                                            </tableHeaderCell>
+                                            <textFieldCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="left" id="759">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </textFieldCell>
+                                            <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        </tableColumn>
+                                        <tableColumn identifier="name" editable="NO" width="80" minWidth="10" maxWidth="1000" id="416">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Name">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                            </tableHeaderCell>
+                                            <textFieldCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="left" drawsBackground="YES" id="762">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        </tableColumn>
+                                        <tableColumn identifier="path" editable="NO" width="60" minWidth="10" maxWidth="1000" id="418">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Path">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                            </tableHeaderCell>
+                                            <textFieldCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="left" drawsBackground="YES" id="763">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        </tableColumn>
+                                        <tableColumn identifier="isSecure" editable="NO" width="38" minWidth="10" maxWidth="1000" id="414">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Secure">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                            </tableHeaderCell>
+                                            <textFieldCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="left" drawsBackground="YES" id="761">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        </tableColumn>
+                                        <tableColumn identifier="expiresDate" editable="NO" width="80" minWidth="10" maxWidth="1000" id="413">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Expires">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                            </tableHeaderCell>
+                                            <textFieldCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="left" drawsBackground="YES" id="760">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        </tableColumn>
+                                        <tableColumn identifier="value" editable="NO" width="121.9010009765625" minWidth="33.4010009765625" maxWidth="1000" id="419">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Value">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                            </tableHeaderCell>
+                                            <textFieldCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="left" drawsBackground="YES" id="764">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        </tableColumn>
+                                    </tableColumns>
+                                    <connections>
+                                        <outlet property="dataSource" destination="-2" id="494"/>
+                                        <outlet property="delegate" destination="-2" id="495"/>
+                                        <outlet property="menu" destination="622" id="625"/>
+                                    </connections>
+                                </tableView>
+                            </subviews>
+                        </clipView>
+                        <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" controlSize="small" horizontal="YES" id="770">
+                            <rect key="frame" x="-100" y="-100" width="483" height="15"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" controlSize="small" horizontal="NO" id="772">
+                            <rect key="frame" x="485" y="25" width="14" height="207"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <tableHeaderView key="headerView" id="771">
+                            <rect key="frame" x="0.0" y="0.0" width="498" height="25"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </tableHeaderView>
+                        <connections>
+                            <outlet property="nextKeyView" destination="632" id="663"/>
+                        </connections>
+                    </scrollView>
+                    <button toolTip="Shortcuts for commonly used actions" imageHugsTitle="YES" id="632" customClass="PopupMenuButton">
+                        <rect key="frame" x="20" y="20" width="26" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="bevel" title="action" bezelStyle="regularSquare" image="action_button" imagePosition="only" alignment="center" inset="2" id="751">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <outlet property="menu" destination="622" id="634"/>
+                            <outlet property="nextKeyView" destination="403" id="655"/>
+                        </connections>
+                    </button>
+                    <searchField verticalHuggingPriority="750" textCompletion="NO" id="684">
+                        <rect key="frame" x="356" y="298" width="164" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                        <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" bezelStyle="round" id="752">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </searchFieldCell>
+                        <connections>
+                            <action selector="filterChanged:" target="-2" id="733"/>
+                            <outlet property="delegate" destination="-2" id="689"/>
+                            <outlet property="nextKeyView" destination="412" id="685"/>
+                        </connections>
+                    </searchField>
+                </subviews>
+            </view>
+        </window>
+        <menu title="Menu" id="622" userLabel="Cookie context menu">
+            <items>
+                <menuItem title="Remove" id="624">
+                    <connections>
+                        <action selector="removeCookies:" target="-2" id="627"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="626">
+                    <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                </menuItem>
+                <menuItem title="Allow Cookies from This Site" id="691">
+                    <connections>
+                        <action selector="allowCookiesFromSites:" target="-2" id="692"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Block Cookies from This Site" id="623">
+                    <connections>
+                        <action selector="blockCookiesFromSites:" target="-2" id="647"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Remove Cookies and Block Sites" id="646">
+                    <connections>
+                        <action selector="removeCookiesAndBlockSites:" target="-2" id="648"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="641">
+                    <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                </menuItem>
+                <menuItem title="Remove All…" id="640">
+                    <connections>
+                        <action selector="removeAllCookies:" target="-2" id="643"/>
+                    </connections>
+                </menuItem>
+            </items>
+        </menu>
+        <menu title="Menu" id="635" userLabel="Permissions context menu">
+            <items>
+                <menuItem title="Remove" id="637">
+                    <connections>
+                        <action selector="removeCookiePermissions:" target="-2" id="644"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="728">
+                    <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                </menuItem>
+                <menuItem title="Expand Exception" id="729">
+                    <connections>
+                        <action selector="expandCookiePermission:" target="-2" id="731"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="730">
+                    <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                </menuItem>
+                <menuItem title="Remove All…" id="636">
+                    <connections>
+                        <action selector="removeAllCookiePermissions:" target="-2" id="645"/>
+                    </connections>
+                </menuItem>
+            </items>
+        </menu>
+        <window title="Edit Keychain Exclusions" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="693" userLabel="Edit Keychain Exclusions" customClass="NSPanel">
+            <windowStyleMask key="styleMask" titled="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="110" y="296" width="456" height="365"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1024" height="746"/>
+            <view key="contentView" id="694">
+                <rect key="frame" x="0.0" y="0.0" width="456" height="365"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button verticalHuggingPriority="750" imageHugsTitle="YES" id="695">
+                        <rect key="frame" x="342" y="12" width="100" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="Done" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="753">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="editKeychainExclusionsDone:" target="-2" id="720"/>
+                            <outlet property="nextKeyView" destination="697" id="706"/>
+                        </connections>
+                    </button>
+                    <scrollView horizontalLineScroll="16" horizontalPageScroll="10" verticalLineScroll="16" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="699">
+                        <rect key="frame" x="20" y="60" width="416" height="218"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <clipView key="contentView" id="2Mh-Sa-ZoN">
+                            <rect key="frame" x="1" y="0.0" width="414" height="217"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <tableView focusRingType="exterior" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveName="exceptions_list" rowHeight="14" headerView="774" id="700" customClass="ExtendedTableView">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="192"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <size key="intercellSpacing" width="3" height="2"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                    <tableColumns>
+                                        <tableColumn identifier="Website" editable="NO" width="410.99169921875" minWidth="150" maxWidth="2000" id="701">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Website">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" white="0.33333299" alpha="1" colorSpace="calibratedWhite"/>
+                                            </tableHeaderCell>
+                                            <textFieldCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="left" id="765">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </textFieldCell>
+                                            <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        </tableColumn>
+                                    </tableColumns>
+                                    <connections>
+                                        <outlet property="dataSource" destination="-2" id="721"/>
+                                        <outlet property="delegate" destination="-2" id="722"/>
+                                        <outlet property="menu" destination="709" id="723"/>
+                                    </connections>
+                                </tableView>
+                            </subviews>
+                        </clipView>
+                        <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" controlSize="small" horizontal="YES" id="773">
+                            <rect key="frame" x="-100" y="-100" width="403" height="11"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" controlSize="small" horizontal="NO" id="775">
+                            <rect key="frame" x="401" y="25" width="14" height="192"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <tableHeaderView key="headerView" id="774">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="25"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </tableHeaderView>
+                        <connections>
+                            <outlet property="nextKeyView" destination="698" id="705"/>
+                        </connections>
+                    </scrollView>
+                    <textField verticalHuggingPriority="750" id="696">
+                        <rect key="frame" x="20" y="321" width="416" height="24"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Camino will never offer to save passwords in the Keychain for these sites." id="754">
+                            <font key="font" metaFont="label"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button toolTip="Shortcuts for commonly used actions" imageHugsTitle="YES" id="698" customClass="PopupMenuButton">
+                        <rect key="frame" x="20" y="20" width="26" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="bevel" title="action" bezelStyle="regularSquare" image="action_button" imagePosition="only" alignment="center" inset="2" id="756">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <outlet property="menu" destination="709" id="717"/>
+                            <outlet property="nextKeyView" destination="695" id="707"/>
+                        </connections>
+                    </button>
+                    <searchField verticalHuggingPriority="750" textCompletion="NO" id="697">
+                        <rect key="frame" x="236" y="291" width="200" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                        <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" bezelStyle="round" id="755">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </searchFieldCell>
+                        <connections>
+                            <action selector="filterChanged:" target="-2" id="734"/>
+                            <outlet property="delegate" destination="-2" id="713"/>
+                            <outlet property="nextKeyView" destination="699" id="708"/>
+                        </connections>
+                    </searchField>
+                </subviews>
+            </view>
+        </window>
+        <menu title="Menu" id="709" userLabel="Keychain Exclusions context/action menu">
+            <items>
+                <menuItem title="Remove" id="710">
+                    <connections>
+                        <action selector="removeKeychainExclusions:" target="-2" id="724"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Remove All…" id="711">
+                    <connections>
+                        <action selector="removeAllKeychainExclusions:" target="-2" id="725"/>
+                    </connections>
+                </menuItem>
+            </items>
+        </menu>
+    </objects>
+    <resources>
+        <image name="action_button" width="26" height="21"/>
+    </resources>
+</document>

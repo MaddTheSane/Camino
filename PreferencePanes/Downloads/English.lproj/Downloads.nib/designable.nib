@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="OrgMozillaCaminoPreferenceDownloads">
+            <connections>
+                <outlet property="_firstKeyView" destination="338" id="349"/>
+                <outlet property="_initialKeyView" destination="338" id="350"/>
+                <outlet property="_lastKeyView" destination="335" id="355"/>
+                <outlet property="_window" destination="5" id="193"/>
+                <outlet property="mAutoCloseDLManager" destination="336" id="344"/>
+                <outlet property="mDownloadFolder" destination="338" id="343"/>
+                <outlet property="mDownloadRemovalPolicy" destination="359" id="369"/>
+                <outlet property="mEnableHelperApps" destination="335" id="345"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application"/>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="5" userLabel="Window">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="49" y="458" width="595" height="193"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <view key="contentView" id="6">
+                <rect key="frame" x="0.0" y="0.0" width="595" height="193"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button imageHugsTitle="YES" id="335">
+                        <rect key="frame" x="237" y="68" width="183" height="18"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="check" title="Open downloaded files" bezelStyle="regularSquare" imagePosition="leading" alignment="left" inset="2" id="376">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="checkboxClicked:" target="-2" id="348"/>
+                            <outlet property="nextKeyView" destination="338" id="353"/>
+                        </connections>
+                    </button>
+                    <button imageHugsTitle="YES" id="336">
+                        <rect key="frame" x="237" y="90" width="198" height="18"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="check" title="Close Downloads window" bezelStyle="regularSquare" imagePosition="leading" alignment="left" inset="2" id="377">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="checkboxClicked:" target="-2" id="347"/>
+                            <outlet property="nextKeyView" destination="335" id="352"/>
+                        </connections>
+                    </button>
+                    <popUpButton verticalHuggingPriority="750" imageHugsTitle="YES" id="338">
+                        <rect key="frame" x="236" y="149" width="263" height="26"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <popUpButtonCell key="cell" type="push" title="Holder" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" tag="1" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="337" id="378">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <menu key="menu" title="OtherViews" id="334">
+                                <items>
+                                    <menuItem title="Holder" state="on" tag="1" id="337"/>
+                                    <menuItem isSeparatorItem="YES" id="333">
+                                        <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                                    </menuItem>
+                                    <menuItem title="Select…" tag="3" id="332">
+                                        <connections>
+                                            <action selector="chooseDownloadFolder:" target="-2" id="346"/>
+                                        </connections>
+                                    </menuItem>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                        <connections>
+                            <outlet property="nextKeyView" destination="359" id="372"/>
+                        </connections>
+                    </popUpButton>
+                    <textField verticalHuggingPriority="750" id="339">
+                        <rect key="frame" x="62" y="155" width="172" height="17"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" id="379">
+                            <font key="font" metaFont="system"/>
+                            <string key="title">Save downloaded files to:
+</string>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" id="340">
+                        <rect key="frame" x="236" y="20" width="325" height="42"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" id="380">
+                            <font key="font" metaFont="smallSystem"/>
+                            <string key="title">Downloaded files can be passed off to other “helper” applications. While convenient, enabling this feature makes your computer vulnerable to damaging programs.</string>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" id="354">
+                        <rect key="frame" x="62" y="91" width="172" height="17"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="When downloads finish:" id="381">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <popUpButton verticalHuggingPriority="750" imageHugsTitle="YES" id="359">
+                        <rect key="frame" x="236" y="119" width="263" height="26"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <popUpButtonCell key="cell" type="push" title="Upon completion" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="366" id="382">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <menu key="menu" title="OtherViews" id="360">
+                                <items>
+                                    <menuItem title="Manually" tag="2" id="365"/>
+                                    <menuItem title="When Camino quits" tag="1" id="361"/>
+                                    <menuItem title="Upon completion" state="on" id="366"/>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                        <connections>
+                            <action selector="chooseDownloadRemovalPolicy:" target="-2" id="370"/>
+                            <outlet property="nextKeyView" destination="336" id="373"/>
+                        </connections>
+                    </popUpButton>
+                    <textField verticalHuggingPriority="750" id="364">
+                        <rect key="frame" x="34" y="125" width="200" height="17"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Remove successful downloads:" id="383">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                </subviews>
+            </view>
+            <connections>
+                <outlet property="delegate" destination="-2" id="192"/>
+                <outlet property="initialFirstResponder" destination="338" id="374"/>
+            </connections>
+        </window>
+    </objects>
+</document>

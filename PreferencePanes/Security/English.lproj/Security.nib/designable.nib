@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="OrgMozillaCaminoPreferenceSecurity">
+            <connections>
+                <outlet property="_firstKeyView" destination="426" id="463"/>
+                <outlet property="_initialKeyView" destination="426" id="464"/>
+                <outlet property="_lastKeyView" destination="346" id="465"/>
+                <outlet property="_window" destination="5" id="26"/>
+                <outlet property="mCertificateBehavior" destination="297" id="303"/>
+                <outlet property="mLeaveEncrypted" destination="253" id="263"/>
+                <outlet property="mOverridePanel" destination="318" id="344"/>
+                <outlet property="mOverridesController" destination="351" id="373"/>
+                <outlet property="mOverridesTable" destination="329" id="376"/>
+                <outlet property="mSafeBrowsing" destination="426" id="439"/>
+                <outlet property="mViewMixed" destination="255" id="265"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application"/>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="5" userLabel="Window">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="27" y="335" width="595" height="348"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <view key="contentView" id="6">
+                <rect key="frame" x="0.0" y="0.0" width="595" height="348"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField verticalHuggingPriority="750" id="252">
+                        <rect key="frame" x="31" y="220" width="145" height="19"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Show a warning when:" id="467">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button imageHugsTitle="YES" id="253">
+                        <rect key="frame" x="179" y="221" width="287" height="18"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="check" title="Moving from a secure to an insecure page" bezelStyle="regularSquare" imagePosition="leading" alignment="left" inset="2" id="468">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="clickEnableLeaveEncrypted:" target="-2" id="256"/>
+                            <outlet property="nextKeyView" destination="255" id="433"/>
+                        </connections>
+                    </button>
+                    <button imageHugsTitle="YES" id="255">
+                        <rect key="frame" x="179" y="199" width="384" height="18"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="check" title="A page uses a mix of encrypted and unencrypted content" bezelStyle="regularSquare" imagePosition="leading" alignment="left" inset="2" id="469">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="clickEnableViewMixed:" target="-2" id="258"/>
+                            <outlet property="nextKeyView" destination="297" id="434"/>
+                        </connections>
+                    </button>
+                    <textField verticalHuggingPriority="750" id="291">
+                        <rect key="frame" x="181" y="167" width="370" height="26"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" id="470">
+                            <font key="font" metaFont="label"/>
+                            <string key="title">When a page is secure, Camino will show a lock icon in the Location bar.
+Avoid providing bank account or personal information to an insecure page.</string>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" imageHugsTitle="YES" id="292">
+                        <rect key="frame" x="175" y="46" width="149" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="push" title="Show Certificates" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="471">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="showCertificates:" target="-2" id="294"/>
+                            <outlet property="nextKeyView" destination="346" id="436"/>
+                        </connections>
+                    </button>
+                    <textField verticalHuggingPriority="750" id="295">
+                        <rect key="frame" x="181" y="20" width="347" height="26"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Camino uses certificates to ensure that transactions with banking and shopping sites are secure." id="472">
+                            <font key="font" metaFont="label"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" id="296">
+                        <rect key="frame" x="88" y="134" width="88" height="17"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Certificates:" id="473">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <matrix verticalHuggingPriority="750" allowsEmptySelection="NO" autosizesCells="NO" id="297">
+                        <rect key="frame" x="179" y="89" width="175" height="38"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        <size key="cellSize" width="175" height="18"/>
+                        <size key="intercellSpacing" width="4" height="2"/>
+                        <buttonCell key="prototype" type="radio" title="Radio" imagePosition="leading" alignment="left" inset="2" id="482">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <cells>
+                            <column>
+                                <buttonCell type="radio" title="Select one automatically" imagePosition="leading" alignment="left" state="on" inset="2" id="298">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <buttonCell type="radio" title="Ask me which to use" imagePosition="leading" alignment="left" tag="1" inset="2" id="299">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </column>
+                        </cells>
+                        <connections>
+                            <action selector="clickCertificateSelectionBehavior:" target="-2" id="304"/>
+                            <outlet property="nextKeyView" destination="292" id="435"/>
+                        </connections>
+                    </matrix>
+                    <textField verticalHuggingPriority="750" id="307">
+                        <rect key="frame" x="178" y="134" width="329" height="17"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="When a website requires a personal certificate:" id="474">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" imageHugsTitle="YES" id="346">
+                        <rect key="frame" x="324" y="46" width="204" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="push" title="Edit Security Exceptions…" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="475">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="editOverrides:" target="-2" id="350"/>
+                            <outlet property="nextKeyView" destination="426" id="437"/>
+                        </connections>
+                    </button>
+                    <textField verticalHuggingPriority="750" id="425">
+                        <rect key="frame" x="31" y="311" width="145" height="19"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Dangerous sites:" id="476">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button imageHugsTitle="YES" id="426">
+                        <rect key="frame" x="179" y="312" width="333" height="18"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="check" title="Warn me when visiting potentially malicious sites" bezelStyle="regularSquare" imagePosition="leading" alignment="left" allowsMixedState="YES" inset="2" id="477">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="clickSafeBrowsing:" target="-2" id="438"/>
+                            <outlet property="nextKeyView" destination="253" id="432"/>
+                        </connections>
+                    </button>
+                    <textField verticalHuggingPriority="750" id="429">
+                        <rect key="frame" x="181" y="254" width="370" height="52"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" id="478">
+                            <font key="font" metaFont="label"/>
+                            <string key="title">Camino can warn you about sites that may attempt to steal your personal information or install harmful software on your computer. You should avoid visiting sites that have been identified as potentially dangerous, but be aware that some dangerous sites may not be identified.</string>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                </subviews>
+            </view>
+            <connections>
+                <outlet property="initialFirstResponder" destination="426" id="431"/>
+            </connections>
+        </window>
+        <window title="Edit Security Exceptions" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="318" userLabel="Edit Overrides" customClass="NSPanel">
+            <windowStyleMask key="styleMask" titled="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="110" y="353" width="541" height="308"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <view key="contentView" id="319">
+                <rect key="frame" x="0.0" y="0.0" width="541" height="308"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button verticalHuggingPriority="750" imageHugsTitle="YES" id="324">
+                        <rect key="frame" x="427" y="12" width="100" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="Done" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="481">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="editOverridesDone:" target="-2" id="345"/>
+                            <outlet property="nextKeyView" destination="329" id="343"/>
+                        </connections>
+                    </button>
+                    <scrollView horizontalLineScroll="16" horizontalPageScroll="10" verticalLineScroll="16" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="323">
+                        <rect key="frame" x="20" y="56" width="501" height="211"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <clipView key="contentView" id="dxs-Pq-zeP">
+                            <rect key="frame" x="1" y="25" width="499" height="185"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                            <subviews>
+                                <tableView focusRingType="exterior" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveName="certificate_exception_list" rowHeight="14" headerView="485" id="329" customClass="ExtendedTableView">
+                                    <rect key="frame" x="0.0" y="0.0" width="499" height="185"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <size key="intercellSpacing" width="3" height="2"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                    <tableColumns>
+                                        <tableColumn identifier="host" editable="NO" width="443" minWidth="40" maxWidth="1000" id="331">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Website">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" white="0.33333299" alpha="1" colorSpace="calibratedWhite"/>
+                                            </tableHeaderCell>
+                                            <textFieldCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="left" id="483">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </textFieldCell>
+                                            <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                            <connections>
+                                                <binding destination="351" name="value" keyPath="arrangedObjects.host" id="365"/>
+                                            </connections>
+                                        </tableColumn>
+                                        <tableColumn identifier="port" editable="NO" width="50" minWidth="39" maxWidth="150" id="330">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Port">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" white="0.33333299" alpha="1" colorSpace="calibratedWhite"/>
+                                            </tableHeaderCell>
+                                            <textFieldCell key="dataCell" controlSize="small" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="342">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <binding destination="351" name="value" keyPath="arrangedObjects.port" id="364"/>
+                                            </connections>
+                                        </tableColumn>
+                                    </tableColumns>
+                                    <connections>
+                                        <outlet property="menu" destination="366" id="371"/>
+                                    </connections>
+                                </tableView>
+                            </subviews>
+                        </clipView>
+                        <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" controlSize="small" horizontal="YES" id="484">
+                            <rect key="frame" x="-100" y="-100" width="238" height="11"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" controlSize="small" horizontal="NO" id="486">
+                            <rect key="frame" x="486" y="25" width="14" height="185"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <tableHeaderView key="headerView" id="485">
+                            <rect key="frame" x="0.0" y="0.0" width="499" height="25"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </tableHeaderView>
+                        <connections>
+                            <outlet property="nextKeyView" destination="321" id="338"/>
+                        </connections>
+                    </scrollView>
+                    <textField verticalHuggingPriority="750" id="322">
+                        <rect key="frame" x="20" y="271" width="500" height="17"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Security exceptions allow you to visit sites with invalid or untrusted certificates." id="480">
+                            <font key="font" metaFont="label"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button toolTip="Shortcuts for commonly used actions" imageHugsTitle="YES" id="321" customClass="PopupMenuButton">
+                        <rect key="frame" x="21" y="19" width="26" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="bevel" title="action" bezelStyle="regularSquare" image="action_button" imagePosition="only" alignment="center" inset="2" id="479">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <outlet property="menu" destination="366" id="369"/>
+                            <outlet property="nextKeyView" destination="324" id="340"/>
+                        </connections>
+                    </button>
+                </subviews>
+            </view>
+        </window>
+        <arrayController editable="NO" id="351" userLabel="Override Array Controller">
+            <declaredKeys>
+                <string>host</string>
+                <string>port</string>
+                <string>@count</string>
+            </declaredKeys>
+            <connections>
+                <binding destination="-2" name="contentArray" keyPath="mOverrides" id="360"/>
+            </connections>
+        </arrayController>
+        <menu title="Menu" id="366" userLabel="Override context/action menu">
+            <items>
+                <menuItem title="Remove" id="368">
+                    <connections>
+                        <action selector="removeOverrides:" target="-2" id="374"/>
+                        <binding destination="351" name="enabled" keyPath="canRemove" id="402"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Remove All…" id="367">
+                    <connections>
+                        <action selector="removeAllOverrides:" target="-2" id="375"/>
+                        <binding destination="351" name="enabled" keyPath="arrangedObjects.@count" id="404"/>
+                    </connections>
+                </menuItem>
+            </items>
+        </menu>
+    </objects>
+    <resources>
+        <image name="action_button" width="26" height="21"/>
+    </resources>
+</document>

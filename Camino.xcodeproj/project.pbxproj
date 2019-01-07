@@ -3152,9 +3152,9 @@
 		F51704E9034A30DF01026D5D /* SecurityPane.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SecurityPane.h; path = PreferencePanes/Security/SecurityPane.h; sourceTree = SOURCE_ROOT; };
 		F51704EA034A30DF01026D5D /* SecurityPane.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = SecurityPane.mm; path = PreferencePanes/Security/SecurityPane.mm; sourceTree = SOURCE_ROOT; };
 		F51704EF034A30F101026D5D /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = PreferencePanes/Security/English.lproj/Security.nib; sourceTree = SOURCE_ROOT; };
-		F5170515034A398F01026D5D /* WebFeatures.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = WebFeatures.h; path = PreferencePanes/WebFeatures/WebFeatures.h; sourceTree = SOURCE_ROOT; };
-		F5170516034A398F01026D5D /* WebFeatures.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = WebFeatures.mm; path = PreferencePanes/WebFeatures/WebFeatures.mm; sourceTree = SOURCE_ROOT; };
-		F5170517034A398F01026D5D /* WebFeatures.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = WebFeatures.tiff; path = PreferencePanes/WebFeatures/WebFeatures.tiff; sourceTree = SOURCE_ROOT; };
+		F5170515034A398F01026D5D /* WebFeatures.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = WebFeatures.h; sourceTree = "<group>"; };
+		F5170516034A398F01026D5D /* WebFeatures.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = WebFeatures.mm; sourceTree = "<group>"; };
+		F5170517034A398F01026D5D /* WebFeatures.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = WebFeatures.tiff; sourceTree = "<group>"; };
 		F517051C034A399E01026D5D /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = PreferencePanes/WebFeatures/English.lproj/WebFeatures.nib; sourceTree = SOURCE_ROOT; };
 		F5170530034B5E9701026D5D /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = generated/PreferencePanes/Privacy/English.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
 		F5173958020CE1E50189DA0C /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = resources/localized/English.lproj/ProgressDialog.nib; sourceTree = SOURCE_ROOT; };
@@ -3707,8 +3707,7 @@
 				032FFDD0077351A800440548 /* Downloads.nib */,
 				032FFDD2077351A800440548 /* Localizable.strings */,
 			);
-			name = Downloads;
-			path = ../../PreferencePanes/Downloads;
+			path = Downloads;
 			sourceTree = "<group>";
 		};
 		035A4981079DCA100084B05F /* History */ = {
@@ -3720,8 +3719,7 @@
 				035A4989079DCA100084B05F /* History.mm */,
 				035A498A079DCA100084B05F /* History.tiff */,
 			);
-			name = History;
-			path = ../../PreferencePanes/History;
+			path = History;
 			sourceTree = "<group>";
 		};
 		03E2D8590771F78500BD2443 /* Tabs */ = {
@@ -4778,6 +4776,7 @@
 				3F8C005506800E1300658CBC /* Localizable.strings */,
 			);
 			name = "Web Features";
+			path = WebFeatures;
 			sourceTree = "<group>";
 		};
 		F51D9B1402094BB501A80166 /* Gecko Statics */ = {
@@ -4898,9 +4897,8 @@
 				F51704D1034A303101026D5D /* Security */,
 				F51704FC034A38E601026D5D /* Web Features */,
 			);
-			name = PreferencePanes;
-			path = src/preferences;
-			sourceTree = SOURCE_ROOT;
+			path = PreferencePanes;
+			sourceTree = "<group>";
 		};
 		F5571935022B401B010001CA /* Categories */ = {
 			isa = PBXGroup;
@@ -5170,6 +5168,7 @@
 				F5A8CE4202DFEF4C013CA8EC /* PreferencePaneBase.mm */,
 			);
 			name = Shared;
+			path = ../src/preferences;
 			sourceTree = "<group>";
 		};
 		F5A8CE4D02DFF167013CA8EC /* Appearance */ = {
@@ -5198,7 +5197,8 @@
 				33C222850D106CDD00611936 /* PreferencesWindow.m */,
 			);
 			name = "Prefs window";
-			sourceTree = "<group>";
+			path = src/preferences;
+			sourceTree = SOURCE_ROOT;
 		};
 		F6BD637A01B30E0F01A962F7 /* Gecko */ = {
 			isa = PBXGroup;
@@ -7662,8 +7662,7 @@
 				F517051C034A399E01026D5D /* English */,
 			);
 			name = WebFeatures.nib;
-			path = src/preferences;
-			sourceTree = SOURCE_ROOT;
+			sourceTree = "<group>";
 		};
 		F517052F034B5E9701026D5D /* Localizable.strings */ = {
 			isa = PBXVariantGroup;

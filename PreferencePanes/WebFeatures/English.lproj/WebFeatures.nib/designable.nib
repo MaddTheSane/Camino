@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="OrgMozillaCaminoPreferenceWebFeatures">
+            <connections>
+                <outlet property="_firstKeyView" destination="302" id="440"/>
+                <outlet property="_initialKeyView" destination="302" id="441"/>
+                <outlet property="_window" destination="5" id="26"/>
+                <outlet property="mAddButton" destination="322" id="356"/>
+                <outlet property="mAddField" destination="320" id="325"/>
+                <outlet property="mAddFlashblockButton" destination="488" id="517"/>
+                <outlet property="mAddFlashblockField" destination="489" id="516"/>
+                <outlet property="mEditFlashblockWhitelist" destination="477" id="521"/>
+                <outlet property="mEditWhitelist" destination="300" id="304"/>
+                <outlet property="mEnableAdBlocking" destination="375" id="376"/>
+                <outlet property="mEnableAnnoyanceBlocker" destination="302" id="305"/>
+                <outlet property="mEnableFlashblock" destination="414" id="531"/>
+                <outlet property="mEnableJS" destination="225" id="232"/>
+                <outlet property="mEnableJava" destination="226" id="233"/>
+                <outlet property="mEnablePopupBlocking" destination="286" id="290"/>
+                <outlet property="mFlashblockWhitelistPanel" destination="481" id="524"/>
+                <outlet property="mFlashblockWhitelistTable" destination="497" id="518"/>
+                <outlet property="mPolicyColumn" destination="428" id="430"/>
+                <outlet property="mPreventAnimation" destination="383" id="384"/>
+                <outlet property="mTabBehaviorPopup" destination="435" id="451"/>
+                <outlet property="mWhitelistPanel" destination="312" id="324"/>
+                <outlet property="mWhitelistTable" destination="315" id="329"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application"/>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="5" userLabel="Window">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="118" y="377" width="595" height="310"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <view key="contentView" id="6">
+                <rect key="frame" x="0.0" y="0.0" width="595" height="310"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button imageHugsTitle="YES" id="414">
+                        <rect key="frame" x="174" y="230" width="279" height="18"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="check" title="Block Flash animations" bezelStyle="regularSquare" imagePosition="leading" alignment="left" inset="2" id="543">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="clickEnableFlashblock:" target="-2" id="530"/>
+                            <outlet property="nextKeyView" destination="477" id="522"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" imageHugsTitle="YES" id="300">
+                        <rect key="frame" x="188" y="124" width="227" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="push" title="Edit Pop-up Exceptions List…" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="537">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="editWhitelist:" target="-2" id="307"/>
+                            <outlet property="nextKeyView" destination="225" id="445"/>
+                        </connections>
+                    </button>
+                    <button imageHugsTitle="YES" id="286">
+                        <rect key="frame" x="174" y="158" width="181" height="18"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="check" title="Block pop-up windows" bezelStyle="regularSquare" imagePosition="leading" alignment="left" inset="2" id="536">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="clickEnablePopupBlocking:" target="-2" id="291"/>
+                            <outlet property="nextKeyView" destination="300" id="309"/>
+                        </connections>
+                    </button>
+                    <textField verticalHuggingPriority="750" id="227">
+                        <rect key="frame" x="30" y="100" width="141" height="17"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Content Control:" id="535">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button imageHugsTitle="YES" id="225">
+                        <rect key="frame" x="174" y="99" width="181" height="18"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="check" title="Enable JavaScript" bezelStyle="regularSquare" imagePosition="leading" alignment="left" inset="2" id="533">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="clickEnableJS:" target="-2" id="238"/>
+                            <outlet property="nextKeyView" destination="226" id="446"/>
+                        </connections>
+                    </button>
+                    <button imageHugsTitle="YES" id="226">
+                        <rect key="frame" x="174" y="77" width="181" height="18"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="check" title="Enable Java" bezelStyle="regularSquare" imagePosition="leading" alignment="left" inset="2" id="534">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="clickEnableJava:" target="-2" id="239"/>
+                            <outlet property="nextKeyView" destination="383" id="447"/>
+                        </connections>
+                    </button>
+                    <textField verticalHuggingPriority="750" id="358">
+                        <rect key="frame" x="30" y="275" width="141" height="17"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Annoyance Blocking: " id="539">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button imageHugsTitle="YES" id="375">
+                        <rect key="frame" x="174" y="252" width="181" height="18"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="check" title="Block web advertising" bezelStyle="regularSquare" imagePosition="leading" alignment="left" inset="2" id="540">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="clickEnableAdBlocking:" target="-2" id="377"/>
+                            <outlet property="nextKeyView" destination="414" id="443"/>
+                        </connections>
+                    </button>
+                    <button imageHugsTitle="YES" id="383">
+                        <rect key="frame" x="174" y="55" width="279" height="18"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="check" title="Play animated images only once" bezelStyle="regularSquare" imagePosition="leading" alignment="left" allowsMixedState="YES" inset="2" id="541">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="clickPreventAnimation:" target="-2" id="385"/>
+                            <outlet property="nextKeyView" destination="435" id="448"/>
+                        </connections>
+                    </button>
+                    <textField verticalHuggingPriority="750" id="388">
+                        <rect key="frame" x="30" y="22" width="141" height="17"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Tab selects:" id="542">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" id="424">
+                        <rect key="frame" x="176" y="210" width="325" height="14"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="JavaScript must be enabled to block Flash." id="544">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <popUpButton verticalHuggingPriority="750" imageHugsTitle="YES" id="435">
+                        <rect key="frame" x="173" y="16" width="239" height="26"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <popUpButtonCell key="cell" type="push" title="Text fields" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="439" id="545">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <menu key="menu" title="OtherViews" id="436">
+                                <items>
+                                    <menuItem title="Text fields" state="on" id="439"/>
+                                    <menuItem title="All form controls" id="438"/>
+                                    <menuItem title="All form controls and links" id="437"/>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                        <connections>
+                            <action selector="tabFocusBehaviorChanged:" target="-2" id="450"/>
+                            <outlet property="nextKeyView" destination="302" id="449"/>
+                        </connections>
+                    </popUpButton>
+                    <button imageHugsTitle="YES" id="302">
+                        <rect key="frame" x="174" y="274" width="389" height="18"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="check" title="Prevent sites from changing, moving or resizing windows" bezelStyle="regularSquare" imagePosition="leading" alignment="left" allowsMixedState="YES" inset="2" id="538">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="clickEnableAnnoyanceBlocker:" target="-2" id="306"/>
+                            <outlet property="nextKeyView" destination="375" id="442"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" imageHugsTitle="YES" id="477">
+                        <rect key="frame" x="188" y="174" width="227" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="push" title="Edit Flash Exceptions List…" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="546">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="editFlashblockWhitelist:" target="-2" id="508"/>
+                            <outlet property="nextKeyView" destination="286" id="523"/>
+                        </connections>
+                    </button>
+                </subviews>
+            </view>
+            <connections>
+                <outlet property="initialFirstResponder" destination="375" id="405"/>
+            </connections>
+        </window>
+        <window title="Panel" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="312" userLabel="Whitelist Sheet" customClass="NSPanel">
+            <windowStyleMask key="styleMask" titled="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="178" y="272" width="445" height="333"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <view key="contentView" id="313">
+                <rect key="frame" x="0.0" y="0.0" width="445" height="333"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <scrollView horizontalLineScroll="16" horizontalPageScroll="10" verticalLineScroll="16" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="316">
+                        <rect key="frame" x="20" y="56" width="405" height="207"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <clipView key="contentView" id="B4P-U2-bvx">
+                            <rect key="frame" x="1" y="25" width="403" height="181"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                            <subviews>
+                                <tableView focusRingType="exterior" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnReordering="NO" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" rowHeight="14" headerView="563" id="315" customClass="ExtendedTableView">
+                                    <rect key="frame" x="0.0" y="0.0" width="403" height="181"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <size key="intercellSpacing" width="3" height="2"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                    <tableColumns>
+                                        <tableColumn editable="NO" width="296.99099731445312" minWidth="49.491001129150391" maxWidth="1000" id="317">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Website">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" white="0.33333299" alpha="1" colorSpace="calibratedWhite"/>
+                                            </tableHeaderCell>
+                                            <textFieldCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="left" id="559">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </textFieldCell>
+                                            <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        </tableColumn>
+                                        <tableColumn identifier="policy" editable="NO" width="100.07699584960938" minWidth="34.576999664306641" maxWidth="1000" id="428">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Policy">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                            </tableHeaderCell>
+                                            <popUpButtonCell key="dataCell" type="bevel" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="clipping" borderStyle="bezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" id="429">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <menu key="menu" id="561"/>
+                                            </popUpButtonCell>
+                                            <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        </tableColumn>
+                                    </tableColumns>
+                                    <connections>
+                                        <outlet property="dataSource" destination="-2" id="330"/>
+                                    </connections>
+                                </tableView>
+                            </subviews>
+                        </clipView>
+                        <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" controlSize="small" horizontal="YES" id="562">
+                            <rect key="frame" x="-100" y="-100" width="241" height="11"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" controlSize="small" horizontal="NO" id="564">
+                            <rect key="frame" x="390" y="25" width="14" height="181"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <tableHeaderView key="headerView" id="563">
+                            <rect key="frame" x="0.0" y="0.0" width="403" height="25"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </tableHeaderView>
+                        <connections>
+                            <outlet property="nextKeyView" destination="319" id="367"/>
+                        </connections>
+                    </scrollView>
+                    <button verticalHuggingPriority="750" imageHugsTitle="YES" id="318">
+                        <rect key="frame" x="341" y="12" width="90" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES"/>
+                        <buttonCell key="cell" type="push" title="Done" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="547">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="editWhitelistDone:" target="-2" id="328"/>
+                            <outlet property="nextKeyView" destination="320" id="369"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" imageHugsTitle="YES" id="319">
+                        <rect key="frame" x="14" y="12" width="90" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES"/>
+                        <buttonCell key="cell" type="push" title="Remove" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="548">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="removeWhitelistSite:" target="-2" id="327"/>
+                            <outlet property="nextKeyView" destination="318" id="368"/>
+                        </connections>
+                    </button>
+                    <textField verticalHuggingPriority="750" id="320">
+                        <rect key="frame" x="49" y="273" width="290" height="19"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" placeholderString="www.example.com" drawsBackground="YES" id="549">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                        <connections>
+                            <outlet property="delegate" destination="-2" id="355"/>
+                            <outlet property="nextKeyView" destination="322" id="364"/>
+                        </connections>
+                    </textField>
+                    <button verticalHuggingPriority="750" imageHugsTitle="YES" id="322">
+                        <rect key="frame" x="341" y="265" width="90" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Add" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="550">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="addWhitelistSite:" target="-2" id="326"/>
+                            <outlet property="nextKeyView" destination="316" id="408"/>
+                        </connections>
+                    </button>
+                    <textField verticalHuggingPriority="750" id="346">
+                        <rect key="frame" x="17" y="275" width="27" height="14"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" alignment="right" title="Site:" id="551">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" id="407">
+                        <rect key="frame" x="17" y="300" width="405" height="13"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Allow or deny pop-up windows from specific sites." id="552">
+                            <font key="font" metaFont="label"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                </subviews>
+            </view>
+            <connections>
+                <outlet property="initialFirstResponder" destination="320" id="370"/>
+            </connections>
+        </window>
+        <window title="Panel" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="481" userLabel="Flashblock Whitelist Sheet" customClass="NSPanel">
+            <windowStyleMask key="styleMask" titled="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="686" y="179" width="445" height="333"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <view key="contentView" id="482">
+                <rect key="frame" x="0.0" y="0.0" width="445" height="333"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <scrollView horizontalLineScroll="16" horizontalPageScroll="0.0" verticalLineScroll="16" verticalPageScroll="0.0" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="485">
+                        <rect key="frame" x="20" y="56" width="405" height="207"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <clipView key="contentView" id="014-R6-atW">
+                            <rect key="frame" x="1" y="25" width="403" height="181"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                            <subviews>
+                                <tableView focusRingType="exterior" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnReordering="NO" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" rowHeight="14" headerView="566" id="497" customClass="ExtendedTableView">
+                                    <rect key="frame" x="0.0" y="0.0" width="403" height="181"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <size key="intercellSpacing" width="3" height="2"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                    <tableColumns>
+                                        <tableColumn editable="NO" width="399.99169921875" minWidth="49.49169921875" maxWidth="1000" id="498">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Website">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" white="0.33333299" alpha="1" colorSpace="calibratedWhite"/>
+                                            </tableHeaderCell>
+                                            <textFieldCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="left" id="560">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </textFieldCell>
+                                            <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        </tableColumn>
+                                    </tableColumns>
+                                    <connections>
+                                        <outlet property="dataSource" destination="-2" id="525"/>
+                                    </connections>
+                                </tableView>
+                            </subviews>
+                        </clipView>
+                        <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" controlSize="small" horizontal="YES" id="565">
+                            <rect key="frame" x="-100" y="-100" width="241" height="11"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" controlSize="small" horizontal="NO" id="567">
+                            <rect key="frame" x="390" y="25" width="14" height="181"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <tableHeaderView key="headerView" id="566">
+                            <rect key="frame" x="0.0" y="0.0" width="403" height="25"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </tableHeaderView>
+                        <connections>
+                            <outlet property="nextKeyView" destination="484" id="526"/>
+                        </connections>
+                    </scrollView>
+                    <button verticalHuggingPriority="750" imageHugsTitle="YES" id="483">
+                        <rect key="frame" x="341" y="12" width="90" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES"/>
+                        <buttonCell key="cell" type="push" title="Done" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="553">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="editFlashblockWhitelistDone:" target="-2" id="520"/>
+                            <outlet property="nextKeyView" destination="489" id="528"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" imageHugsTitle="YES" id="484">
+                        <rect key="frame" x="14" y="12" width="90" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES"/>
+                        <buttonCell key="cell" type="push" title="Remove" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="554">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="removeFlashblockWhitelistSite:" target="-2" id="519"/>
+                            <outlet property="nextKeyView" destination="483" id="527"/>
+                        </connections>
+                    </button>
+                    <textField verticalHuggingPriority="750" id="489">
+                        <rect key="frame" x="49" y="273" width="290" height="19"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" placeholderString="www.example.com" drawsBackground="YES" id="558">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                        <connections>
+                            <outlet property="delegate" destination="-2" id="513"/>
+                            <outlet property="nextKeyView" destination="488" id="502"/>
+                        </connections>
+                    </textField>
+                    <button verticalHuggingPriority="750" imageHugsTitle="YES" id="488">
+                        <rect key="frame" x="341" y="265" width="90" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Add" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" inset="2" id="557">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="addFlashblockWhitelistSite:" target="-2" id="514"/>
+                            <outlet property="nextKeyView" destination="485" id="507"/>
+                        </connections>
+                    </button>
+                    <textField verticalHuggingPriority="750" id="487">
+                        <rect key="frame" x="17" y="275" width="27" height="14"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" alignment="right" title="Site:" id="556">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" id="486">
+                        <rect key="frame" x="17" y="300" width="405" height="13"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Allow Flash animations from specific sites." id="555">
+                            <font key="font" metaFont="label"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                </subviews>
+            </view>
+            <connections>
+                <outlet property="initialFirstResponder" destination="489" id="505"/>
+            </connections>
+        </window>
+    </objects>
+</document>
