@@ -13,4 +13,5 @@ GCC_ENABLE_FIX_AND_CONTINUE = NO
 
 // Setting this here will also cause preference panes to inherit hidden
 // visibility during the debug build without requiring target-level changes.
+DEBUG_INFORMATION_FORMAT = dwarf
 GCC_SYMBOLS_PRIVATE_EXTERN = YES

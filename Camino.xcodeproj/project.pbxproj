@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -74,25 +74,25 @@
 		00335B900C655ABC00A607F2 /* WebSearchField.mm in Sources */ = {isa = PBXBuildFile; fileRef = 00335B8C0C655ABC00A607F2 /* WebSearchField.mm */; };
 		00450523100A8E140096B649 /* bookmark_group_badge.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 00450522100A8E140096B649 /* bookmark_group_badge.tiff */; };
 		00450524100A8E140096B649 /* bookmark_group_badge.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 00450522100A8E140096B649 /* bookmark_group_badge.tiff */; };
-		005C998D11B3FC54002FAA43 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 7B64B7CA0CCFD9F50098406C /* Sparkle.framework */; };
+		005C998D11B3FC54002FAA43 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 7B64B7CA0CCFD9F50098406C /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		005C998E11B3FC68002FAA43 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B64B7CA0CCFD9F50098406C /* Sparkle.framework */; };
-		005C998F11B3FC78002FAA43 /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 00BC6C81114B6F45000A0508 /* Growl.framework */; };
+		005C998F11B3FC78002FAA43 /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 00BC6C81114B6F45000A0508 /* Growl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		005C999111B3FC83002FAA43 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00BC6C81114B6F45000A0508 /* Growl.framework */; };
-		005C999311B3FC8C002FAA43 /* Breakpad.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 33820DA60F8AA24500D2164A /* Breakpad.framework */; };
+		005C999311B3FC8C002FAA43 /* Breakpad.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 33820DA60F8AA24500D2164A /* Breakpad.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		005C999511B3FC98002FAA43 /* Breakpad.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33820DA60F8AA24500D2164A /* Breakpad.framework */; };
-		005C999611B3FCB5002FAA43 /* Breakpad.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 33820DA60F8AA24500D2164A /* Breakpad.framework */; };
+		005C999611B3FCB5002FAA43 /* Breakpad.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 33820DA60F8AA24500D2164A /* Breakpad.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		005C999711B3FCBD002FAA43 /* Breakpad.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33820DA60F8AA24500D2164A /* Breakpad.framework */; };
-		005C999811B3FCC4002FAA43 /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 00BC6C81114B6F45000A0508 /* Growl.framework */; };
+		005C999811B3FCC4002FAA43 /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 00BC6C81114B6F45000A0508 /* Growl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		005C999911B3FCCF002FAA43 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00BC6C81114B6F45000A0508 /* Growl.framework */; };
 		005C999A11B3FCD9002FAA43 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B64B7CA0CCFD9F50098406C /* Sparkle.framework */; };
-		005C99B611B403A8002FAA43 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 7B64B7CA0CCFD9F50098406C /* Sparkle.framework */; };
+		005C99B611B403A8002FAA43 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 7B64B7CA0CCFD9F50098406C /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		005F387E0E50852D00D8E7A6 /* InvalidCertOverrideDialog.nib in Resources */ = {isa = PBXBuildFile; fileRef = 005F387C0E50852D00D8E7A6 /* InvalidCertOverrideDialog.nib */; };
 		005F387F0E50852D00D8E7A6 /* InvalidCertOverrideDialog.nib in Resources */ = {isa = PBXBuildFile; fileRef = 005F387C0E50852D00D8E7A6 /* InvalidCertOverrideDialog.nib */; };
 		0081150B0B180DDE001CB3F0 /* libthebes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0081150A0B180DDE001CB3F0 /* libthebes.a */; };
 		0081150D0B180DFA001CB3F0 /* libgkgfxthebes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0081150C0B180DFA001CB3F0 /* libgkgfxthebes.a */; };
 		008115430B180F35001CB3F0 /* libthebes.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 008115420B180F35001CB3F0 /* libthebes.dylib */; };
-		008115440B181032001CB3F0 /* libthebes.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 008115420B180F35001CB3F0 /* libthebes.dylib */; };
-		008115480B1811F0001CB3F0 /* libgkgfxthebes.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = 008115470B1811F0001CB3F0 /* libgkgfxthebes.dylib */; };
+		008115440B181032001CB3F0 /* libthebes.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 008115420B180F35001CB3F0 /* libthebes.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		008115480B1811F0001CB3F0 /* libgkgfxthebes.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = 008115470B1811F0001CB3F0 /* libgkgfxthebes.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0095FAC90D9C99880039B3D8 /* CHBrowserView+Spelling.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0095FAC80D9C99880039B3D8 /* CHBrowserView+Spelling.mm */; };
 		0095FACA0D9C99880039B3D8 /* CHBrowserView+Spelling.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0095FAC80D9C99880039B3D8 /* CHBrowserView+Spelling.mm */; };
 		0098B1230CAEA77500DA0F2F /* nsHandlerService.js in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = 0098B11D0CAEA75700DA0F2F /* nsHandlerService.js */; };
@@ -128,8 +128,8 @@
 		00BC68A8114B5F99000A0508 /* Importer-main.c in Sources */ = {isa = PBXBuildFile; fileRef = 00BC68A4114B5F99000A0508 /* Importer-main.c */; };
 		00BC68A9114B5F99000A0508 /* schema.xml in Resources */ = {isa = PBXBuildFile; fileRef = 00BC68A5114B5F99000A0508 /* schema.xml */; };
 		00BC6955114B6009000A0508 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
-		00BC696F114B68D1000A0508 /* CaminoImporter.mdimporter in Copy Spotlight Importer */ = {isa = PBXBuildFile; fileRef = 00BC6874114B5EA3000A0508 /* CaminoImporter.mdimporter */; };
-		00BC6971114B68E0000A0508 /* CaminoImporter.mdimporter in Copy Spotlight Importer */ = {isa = PBXBuildFile; fileRef = 00BC6874114B5EA3000A0508 /* CaminoImporter.mdimporter */; };
+		00BC696F114B68D1000A0508 /* CaminoImporter.mdimporter in Copy Spotlight Importer */ = {isa = PBXBuildFile; fileRef = 00BC6874114B5EA3000A0508 /* CaminoImporter.mdimporter */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		00BC6971114B68E0000A0508 /* CaminoImporter.mdimporter in Copy Spotlight Importer */ = {isa = PBXBuildFile; fileRef = 00BC6874114B5EA3000A0508 /* CaminoImporter.mdimporter */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		00BC6D6D114B6FA4000A0508 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00BC6CD8114B6F9C000A0508 /* CoreServices.framework */; };
 		00C1D4831285DF14009C4DC3 /* HistoryTree.mm in Sources */ = {isa = PBXBuildFile; fileRef = 00C1D4821285DF14009C4DC3 /* HistoryTree.mm */; };
 		00C1D4841285DF14009C4DC3 /* HistoryTree.mm in Sources */ = {isa = PBXBuildFile; fileRef = 00C1D4821285DF14009C4DC3 /* HistoryTree.mm */; };
@@ -177,7 +177,7 @@
 		0F2453D708C96478001C264F /* lock_badge.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 0F2453D508C96478001C264F /* lock_badge.tiff */; };
 		0F4752D507DC0F4D002AEE9F /* AddBookmarkDialogController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0F4752D307DC0F4D002AEE9F /* AddBookmarkDialogController.mm */; };
 		0F4752D707DC0F4D002AEE9F /* AddBookmarkDialogController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0F4752D307DC0F4D002AEE9F /* AddBookmarkDialogController.mm */; };
-		0F518833088592020091F3FB /* libpermissions.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = 0F5187C308858E620091F3FB /* libpermissions.dylib */; };
+		0F518833088592020091F3FB /* libpermissions.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = 0F5187C308858E620091F3FB /* libpermissions.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0F518835088593F30091F3FB /* libpermissions.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F518834088593F30091F3FB /* libpermissions.a */; };
 		0F66E4A807D6D8D500444E2A /* intl.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = 0FCCE56707D6D7DA006DD3D1 /* intl.xpt */; };
 		0F66E4A907D6D90500444E2A /* intl.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = 0FCCE56707D6D7DA006DD3D1 /* intl.xpt */; };
@@ -254,8 +254,8 @@
 		0FEA7E660926BFC600B06154 /* unknown_file_icon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 0FEA7E640926BFC600B06154 /* unknown_file_icon.tiff */; };
 		0FF288550961EDDD007527B4 /* libfreebl3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FF288540961EDDD007527B4 /* libfreebl3.dylib */; };
 		0FF288560961EDDD007527B4 /* libfreebl3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FF288540961EDDD007527B4 /* libfreebl3.dylib */; };
-		0FF2885A0961EE00007527B4 /* libfreebl3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = 0FF288540961EDDD007527B4 /* libfreebl3.dylib */; };
-		0FF2885D0961EE2A007527B4 /* libfreebl3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = 0FF288540961EDDD007527B4 /* libfreebl3.dylib */; };
+		0FF2885A0961EE00007527B4 /* libfreebl3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = 0FF288540961EDDD007527B4 /* libfreebl3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		0FF2885D0961EE2A007527B4 /* libfreebl3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = 0FF288540961EDDD007527B4 /* libfreebl3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0FFE0A81079B147F00966027 /* bm_sort.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 0FFE0A7E079B147F00966027 /* bm_sort.tiff */; };
 		0FFE0A82079B147F00966027 /* bm_add.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 0FFE0A7F079B147F00966027 /* bm_add.tiff */; };
 		0FFE0A83079B147F00966027 /* bm_action.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 0FFE0A80079B147F00966027 /* bm_action.tiff */; };
@@ -284,11 +284,11 @@
 		33819AD80D938A3B00CA9F52 /* GeckoPrefConstants.mm in Sources */ = {isa = PBXBuildFile; fileRef = 33819AD30D938A2D00CA9F52 /* GeckoPrefConstants.mm */; };
 		33B775AA0C4EAC1E00A6D67F /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 33B775A90C4EAC1E00A6D67F /* libsqlite3.dylib */; };
 		33B775AB0C4EAC1E00A6D67F /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 33B775A90C4EAC1E00A6D67F /* libsqlite3.dylib */; };
-		33B7763C0C4EB32C00A6D67F /* libsqlite3.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 33B775A90C4EAC1E00A6D67F /* libsqlite3.dylib */; };
-		33B7763D0C4EB34300A6D67F /* libsqlite3.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 33B775A90C4EAC1E00A6D67F /* libsqlite3.dylib */; };
+		33B7763C0C4EB32C00A6D67F /* libsqlite3.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 33B775A90C4EAC1E00A6D67F /* libsqlite3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		33B7763D0C4EB34300A6D67F /* libsqlite3.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 33B775A90C4EAC1E00A6D67F /* libsqlite3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		33B777E20C55890200A6D67F /* libmozqcms.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 33B777E10C5588E500A6D67F /* libmozqcms.a */; };
-		33B778810C55C58500A6D67F /* libnssdbm3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = 33B778800C55C57800A6D67F /* libnssdbm3.dylib */; };
-		33B778820C55C59A00A6D67F /* libnssdbm3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = 33B778800C55C57800A6D67F /* libnssdbm3.dylib */; };
+		33B778810C55C58500A6D67F /* libnssdbm3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = 33B778800C55C57800A6D67F /* libnssdbm3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		33B778820C55C59A00A6D67F /* libnssdbm3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = 33B778800C55C57800A6D67F /* libnssdbm3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		33C222870D106CDD00611936 /* PreferencesWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 33C222850D106CDD00611936 /* PreferencesWindow.m */; };
 		33C222890D106CDD00611936 /* PreferencesWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 33C222850D106CDD00611936 /* PreferencesWindow.m */; };
 		33E1EA100D34550A00910BBD /* AddSearchProviderHandler.mm in Sources */ = {isa = PBXBuildFile; fileRef = 33E1EA0E0D34550A00910BBD /* AddSearchProviderHandler.mm */; };
@@ -318,8 +318,8 @@
 		3DACDAAB0FBF1D1600709AC3 /* SafeBrowsingTestDataUpdater.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3DACDAA90FBF1D1600709AC3 /* SafeBrowsingTestDataUpdater.mm */; };
 		3DE5B63A0F6C11B300D2EF11 /* TransientBar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3DE5B6390F6C11B300D2EF11 /* TransientBar.mm */; };
 		3DE5B63B0F6C11B400D2EF11 /* TransientBar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3DE5B6390F6C11B300D2EF11 /* TransientBar.mm */; };
-		3F12FC57072E8ECB00995ED9 /* libxpcom_core.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 3F12FC56072E8ECB00995ED9 /* libxpcom_core.dylib */; };
-		3F12FD3107312CCD00995ED9 /* libxpcom_core.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 3F12FC56072E8ECB00995ED9 /* libxpcom_core.dylib */; };
+		3F12FC57072E8ECB00995ED9 /* libxpcom_core.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 3F12FC56072E8ECB00995ED9 /* libxpcom_core.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F12FD3107312CCD00995ED9 /* libxpcom_core.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 3F12FC56072E8ECB00995ED9 /* libxpcom_core.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3F27D94D05DB2600007B543D /* NSSplitView+Utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F27D94B05DB2600007B543D /* NSSplitView+Utils.mm */; };
 		3F27D94F05DB2600007B543D /* NSSplitView+Utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F27D94B05DB2600007B543D /* NSSplitView+Utils.mm */; };
 		3F383A47087C6D3C00A2594D /* AddressBookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FB2BAE00545EB30002B9691 /* AddressBookManager.m */; };
@@ -461,9 +461,9 @@
 		3F44ACCA05BDFB9E00CB4B08 /* NSArray+Utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3FB2BA970545EA80002B9691 /* NSArray+Utils.mm */; };
 		3F44ACCC05BDFB9E00CB4B08 /* ProgressView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3FC0FB8005A0D2DC002F47DE /* ProgressView.mm */; };
 		3F44ACCD05BDFB9E00CB4B08 /* HistoryItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F7C6CBA05B4819E002FFFD3 /* HistoryItem.mm */; };
-		3F44ACD605BDFB9F00CB4B08 /* libappcomps.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F5F181C90208006F0124611D /* libappcomps.dylib */; };
+		3F44ACD605BDFB9F00CB4B08 /* libappcomps.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F5F181C90208006F0124611D /* libappcomps.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3F44ACD705BDFB9F00CB4B08 /* caps.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD639401B3131201A962F7 /* caps.xpt */; };
-		3F44ACD805BDFB9F00CB4B08 /* libtxmgr.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F5F59320020F4CD201ACA690 /* libtxmgr.dylib */; };
+		3F44ACD805BDFB9F00CB4B08 /* libtxmgr.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F5F59320020F4CD201ACA690 /* libtxmgr.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3F44ACD905BDFB9F00CB4B08 /* docshell.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD639601B3131201A962F7 /* docshell.xpt */; };
 		3F44ACDA05BDFB9F00CB4B08 /* dom_base.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD639701B3131201A962F7 /* dom_base.xpt */; };
 		3F44ACDA05BDFB9F00CB4B09 /* dom_canvas.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD639701B3131201A962F8 /* dom_canvas.xpt */; };
@@ -480,12 +480,12 @@
 		3F44ACE405BDFB9F00CB4B08 /* dom_xul.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD63A101B3131201A962F7 /* dom_xul.xpt */; };
 		3F44ACE505BDFB9F00CB4B08 /* dom.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD63A201B3131201A962F7 /* dom.xpt */; };
 		3F44ACE605BDFB9F00CB4B08 /* gfx.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD63A401B3131201A962F7 /* gfx.xpt */; };
-		3F44ACE705BDFB9F00CB4B08 /* libcaps.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD63A601B3131201A962F7 /* libcaps.dylib */; };
-		3F44ACE805BDFB9F00CB4B08 /* libchrome.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD63A701B3131201A962F7 /* libchrome.dylib */; };
-		3F44ACE905BDFB9F00CB4B08 /* libcookie.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD63A801B3131201A962F7 /* libcookie.dylib */; };
-		3F44ACEA05BDFB9F00CB4B08 /* libdocshell.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD63A901B3131201A962F7 /* libdocshell.dylib */; };
-		3F44ACEC05BDFB9F00CB4B08 /* libembedcomponents.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD63AB01B3131201A962F7 /* libembedcomponents.dylib */; };
-		3F44ACEF05BDFB9F00CB4B08 /* libwebbrwsr.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD63B101B3131201A962F7 /* libwebbrwsr.dylib */; };
+		3F44ACE705BDFB9F00CB4B08 /* libcaps.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD63A601B3131201A962F7 /* libcaps.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44ACE805BDFB9F00CB4B08 /* libchrome.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD63A701B3131201A962F7 /* libchrome.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44ACE905BDFB9F00CB4B08 /* libcookie.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD63A801B3131201A962F7 /* libcookie.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44ACEA05BDFB9F00CB4B08 /* libdocshell.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD63A901B3131201A962F7 /* libdocshell.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44ACEC05BDFB9F00CB4B08 /* libembedcomponents.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD63AB01B3131201A962F7 /* libembedcomponents.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44ACEF05BDFB9F00CB4B08 /* libwebbrwsr.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD63B101B3131201A962F7 /* libwebbrwsr.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3F44ACF005BDFB9F00CB4B08 /* mimetype.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD63B201B3131201A962F7 /* mimetype.xpt */; };
 		3F44ACF105BDFB9F00CB4B08 /* txtsvc.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD63B301B3131201A962F7 /* txtsvc.xpt */; };
 		3F44ACF205BDFB9F00CB4B08 /* webBrowser_core.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD63B401B3131201A962F7 /* webBrowser_core.xpt */; };
@@ -495,10 +495,10 @@
 		3F44ACF705BDFB9F00CB4B08 /* layout_base.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD63DC01B313EE01A962F7 /* layout_base.xpt */; };
 		3F44ACF805BDFB9F00CB4B08 /* layout_xul.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD63DD01B313EE01A962F7 /* layout_xul.xpt */; };
 		3F44ACF905BDFB9F00CB4B08 /* widget.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = 3F7C6CC505B5B42E002FFFD3 /* widget.xpt */; };
-		3F44ACFA05BDFB9F00CB4B08 /* libgklayout.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD63DF01B313EE01A962F7 /* libgklayout.dylib */; };
-		3F44ACFB05BDFB9F00CB4B08 /* libhtmlpars.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD63E101B313EE01A962F7 /* libhtmlpars.dylib */; };
-		3F44ACFC05BDFB9F00CB4B08 /* libjar50.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD63E201B313EE01A962F7 /* libjar50.dylib */; };
-		3F44ACFD05BDFB9F00CB4B08 /* libnecko.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD63E401B313EE01A962F7 /* libnecko.dylib */; };
+		3F44ACFA05BDFB9F00CB4B08 /* libgklayout.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD63DF01B313EE01A962F7 /* libgklayout.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44ACFB05BDFB9F00CB4B08 /* libhtmlpars.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD63E101B313EE01A962F7 /* libhtmlpars.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44ACFC05BDFB9F00CB4B08 /* libjar50.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD63E201B313EE01A962F7 /* libjar50.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44ACFD05BDFB9F00CB4B08 /* libnecko.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD63E401B313EE01A962F7 /* libnecko.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3F44ACFF05BDFB9F00CB4B08 /* necko_about.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD63E601B313EE01A962F7 /* necko_about.xpt */; };
 		3F44AD0005BDFB9F00CB4B08 /* necko_cache.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD63E701B313EE01A962F7 /* necko_cache.xpt */; };
 		3F44AD0205BDFB9F00CB4B08 /* necko_dns.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD63E901B313EE01A962F7 /* necko_dns.xpt */; };
@@ -509,13 +509,13 @@
 		3F44AD0805BDFB9F00CB4B08 /* necko_strconv.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD63EF01B313EE01A962F7 /* necko_strconv.xpt */; };
 		3F44AD0905BDFB9F00CB4B08 /* necko_viewsource.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD63F001B313EE01A962F7 /* necko_viewsource.xpt */; };
 		3F44AD0A05BDFB9F00CB4B08 /* necko.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD63F101B313EE01A962F7 /* necko.xpt */; };
-		3F44AD0B05BDFB9F00CB4B08 /* libimglib2.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD640E01B3156701A962F7 /* libimglib2.dylib */; };
-		3F44AD0C05BDFB9F00CB4B08 /* libpref.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD641201B3156701A962F7 /* libpref.dylib */; };
-		3F44AD0E05BDFB9F00CB4B08 /* librdf.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD641401B3156701A962F7 /* librdf.dylib */; };
-		3F44AD0F05BDFB9F00CB4B08 /* libuconv.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD641701B3156701A962F7 /* libuconv.dylib */; };
-		3F44AD1005BDFB9F00CB4B08 /* libuniversalchardet.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F507A82C030BFB7901026D5D /* libuniversalchardet.dylib */; };
-		3F44AD1105BDFB9F00CB4B08 /* libwidget_mac.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD641B01B3156701A962F7 /* libwidget_mac.dylib */; };
-		3F44AD1205BDFB9F00CB4B08 /* libxpconnect.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD641C01B3156701A962F7 /* libxpconnect.dylib */; };
+		3F44AD0B05BDFB9F00CB4B08 /* libimglib2.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD640E01B3156701A962F7 /* libimglib2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AD0C05BDFB9F00CB4B08 /* libpref.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD641201B3156701A962F7 /* libpref.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AD0E05BDFB9F00CB4B08 /* librdf.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD641401B3156701A962F7 /* librdf.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AD0F05BDFB9F00CB4B08 /* libuconv.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD641701B3156701A962F7 /* libuconv.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AD1005BDFB9F00CB4B08 /* libuniversalchardet.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F507A82C030BFB7901026D5D /* libuniversalchardet.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AD1105BDFB9F00CB4B08 /* libwidget_mac.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD641B01B3156701A962F7 /* libwidget_mac.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AD1205BDFB9F00CB4B08 /* libxpconnect.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD641C01B3156701A962F7 /* libxpconnect.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3F44AD1305BDFB9F00CB4B08 /* pref.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD641D01B3156701A962F7 /* pref.xpt */; };
 		3F44AD1505BDFB9F00CB4B08 /* rdf.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD641F01B3156701A962F7 /* rdf.xpt */; };
 		3F44AD1605BDFB9F00CB4B08 /* shistory.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD642001B3156701A962F7 /* shistory.xpt */; };
@@ -531,12 +531,12 @@
 		3F44AD2005BDFB9F00CB4B08 /* xpconnect.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD642B01B3156701A962F7 /* xpconnect.xpt */; };
 		3F44AD2105BDFB9F00CB4B08 /* embed_base.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD644D01B315FA01A962F7 /* embed_base.xpt */; };
 		3F44AD2205BDFB9F00CB4B08 /* imglib2.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F6BD644E01B315FA01A962F7 /* imglib2.xpt */; };
-		3F44AD2305BDFB9F00CB4B08 /* libgkplugin.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD644F01B315FA01A962F7 /* libgkplugin.dylib */; };
+		3F44AD2305BDFB9F00CB4B08 /* libgkplugin.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F6BD644F01B315FA01A962F7 /* libgkplugin.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3F44AD2405BDFB9F00CB4B08 /* xuldoc.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = F517941F027F3F2901A967DF /* xuldoc.xpt */; };
-		3F44AD2605BDFB9F00CB4B08 /* liboji.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F53A902202C1127A01A967F3 /* liboji.dylib */; };
+		3F44AD2605BDFB9F00CB4B08 /* liboji.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F53A902202C1127A01A967F3 /* liboji.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3F44AD2705BDFB9F00CB4B08 /* nsProxyAutoConfig.js in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = F5461CBB03AAC25C01A96660 /* nsProxyAutoConfig.js */; };
-		3F44AD2905BDFB9F00CB4B08 /* libi18n.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = A708E74103FB9041003C038B /* libi18n.dylib */; };
-		3F44AD2B05BDFB9F00CB4B08 /* libsuitetypeaheadfind.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = A7D88E680465D94000A80196 /* libsuitetypeaheadfind.dylib */; };
+		3F44AD2905BDFB9F00CB4B08 /* libi18n.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = A708E74103FB9041003C038B /* libi18n.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AD2B05BDFB9F00CB4B08 /* libsuitetypeaheadfind.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = A7D88E680465D94000A80196 /* libsuitetypeaheadfind.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3F44AD2C05BDFB9F00CB4B08 /* suitetypeaheadfind.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = A7D88E6A0465D9F800A80196 /* suitetypeaheadfind.xpt */; };
 		3F44AD2E05BDFB9F00CB4B08 /* charsetalias.properties in Copy Gecko Resources */ = {isa = PBXBuildFile; fileRef = F6BD64B801B316DA01A962F7 /* charsetalias.properties */; };
 		3F44AD2F05BDFB9F00CB4B08 /* charsetData.properties in Copy Gecko Resources */ = {isa = PBXBuildFile; fileRef = F6BD64B901B316DA01A962F7 /* charsetData.properties */; };
@@ -563,22 +563,22 @@
 		3F44AD5805BDFB9F00CB4B08 /* toolkit.jar in Copy Chrome */ = {isa = PBXBuildFile; fileRef = F6BD650001B3184301A962F7 /* toolkit.jar */; };
 		3F44AD5805BDFB9F00CB4B18 /* flashblock.jar in Copy Chrome */ = {isa = PBXBuildFile; fileRef = F6BD650001B3184301A96307 /* flashblock.jar */; };
 		3F44AD5905BDFB9F00CB4B08 /* toolkit.manifest in Copy Chrome */ = {isa = PBXBuildFile; fileRef = F5DA444A027DD5AA01A80166 /* toolkit.manifest */; };
-		3F44AD5B05BDFB9F00CB4B08 /* libnss3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = F5247C320228B91F013DD99A /* libnss3.dylib */; };
-		3F44AD5C05BDFB9F00CB4B08 /* libnssckbi.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = F5247C330228B91F013DD99A /* libnssckbi.dylib */; };
-		3F44AD5D05BDFB9F00CB4B08 /* libsmime3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = F5247C340228B91F013DD99A /* libsmime3.dylib */; };
-		3F44AD5E05BDFB9F00CB4B08 /* libsoftokn3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = F5247C350228B91F013DD99A /* libsoftokn3.dylib */; };
-		3F44AD5F05BDFB9F00CB4B08 /* libssl3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = F5247C360228B91F013DD99A /* libssl3.dylib */; };
-		3F44AD6105BDFB9F00CB4B08 /* libxpcom.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F57F0F470209DF5301A967DF /* libxpcom.dylib */; };
-		3F44AD6305BDFB9F00CB4B08 /* libmozjs.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F6BD637F01B30EA301A962F7 /* libmozjs.dylib */; };
-		3F44AD6405BDFB9F00CB4B08 /* libnspr4.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F6BD638001B30EA301A962F7 /* libnspr4.dylib */; };
-		3F44AD6505BDFB9F00CB4B08 /* libplc4.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F6BD638101B30EA301A962F7 /* libplc4.dylib */; };
-		3F44AD6605BDFB9F00CB4B08 /* libplds4.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F6BD638201B30EA301A962F7 /* libplds4.dylib */; };
-		3F44AD6705BDFB9F00CB4B08 /* libgkgfx.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F6BD638701B30F5301A962F7 /* libgkgfx.dylib */; };
-		3F44AD6905BDFB9F00CB4B08 /* libjsj.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F50DCB4302C2856001A967F3 /* libjsj.dylib */; };
+		3F44AD5B05BDFB9F00CB4B08 /* libnss3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = F5247C320228B91F013DD99A /* libnss3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AD5C05BDFB9F00CB4B08 /* libnssckbi.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = F5247C330228B91F013DD99A /* libnssckbi.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AD5D05BDFB9F00CB4B08 /* libsmime3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = F5247C340228B91F013DD99A /* libsmime3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AD5E05BDFB9F00CB4B08 /* libsoftokn3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = F5247C350228B91F013DD99A /* libsoftokn3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AD5F05BDFB9F00CB4B08 /* libssl3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = F5247C360228B91F013DD99A /* libssl3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AD6105BDFB9F00CB4B08 /* libxpcom.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F57F0F470209DF5301A967DF /* libxpcom.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AD6305BDFB9F00CB4B08 /* libmozjs.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F6BD637F01B30EA301A962F7 /* libmozjs.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AD6405BDFB9F00CB4B08 /* libnspr4.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F6BD638001B30EA301A962F7 /* libnspr4.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AD6505BDFB9F00CB4B08 /* libplc4.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F6BD638101B30EA301A962F7 /* libplc4.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AD6605BDFB9F00CB4B08 /* libplds4.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F6BD638201B30EA301A962F7 /* libplds4.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AD6705BDFB9F00CB4B08 /* libgkgfx.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F6BD638701B30F5301A962F7 /* libgkgfx.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AD6905BDFB9F00CB4B08 /* libjsj.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F50DCB4302C2856001A967F3 /* libjsj.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3F44AD6B05BDFB9F00CB4B08 /* pipboot.xpt in Copy Security Components */ = {isa = PBXBuildFile; fileRef = F5247C4C0228BBB2013DD99A /* pipboot.xpt */; };
 		3F44AD6C05BDFB9F00CB4B08 /* pipnss.xpt in Copy Security Components */ = {isa = PBXBuildFile; fileRef = F5247C4D0228BBB2013DD99A /* pipnss.xpt */; };
-		3F44AD6D05BDFB9F00CB4B08 /* libpipboot.dylib in Copy Security Components */ = {isa = PBXBuildFile; fileRef = F5247C3C0228B990013DD99A /* libpipboot.dylib */; };
-		3F44AD6E05BDFB9F00CB4B08 /* libpipnss.dylib in Copy Security Components */ = {isa = PBXBuildFile; fileRef = F5247C3D0228B990013DD99A /* libpipnss.dylib */; };
+		3F44AD6D05BDFB9F00CB4B08 /* libpipboot.dylib in Copy Security Components */ = {isa = PBXBuildFile; fileRef = F5247C3C0228B990013DD99A /* libpipboot.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AD6E05BDFB9F00CB4B08 /* libpipnss.dylib in Copy Security Components */ = {isa = PBXBuildFile; fileRef = F5247C3D0228B990013DD99A /* libpipnss.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3F44AD7005BDFB9F00CB4B08 /* en-US.jar in Copy Chrome */ = {isa = PBXBuildFile; fileRef = F54EF7ED022A2F9C01A80165 /* en-US.jar */; };
 		3F44AD7D05BDFB9F00CB4B08 /* libembed_base_s.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F51D9B2D0209573701A80166 /* libembed_base_s.a */; };
 		3F44AD7E05BDFB9F00CB4B08 /* libunicharutil_s.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F5C2CDA702383CE601A967DF /* libunicharutil_s.a */; };
@@ -814,19 +814,19 @@
 		3F44AF7305BDFBA000CB4B08 /* toolkit.jar in Copy Chrome */ = {isa = PBXBuildFile; fileRef = F6BD650001B3184301A962F7 /* toolkit.jar */; };
 		3F44AF7305BDFBA000CB4B18 /* flashblock.jar in Copy Chrome */ = {isa = PBXBuildFile; fileRef = F6BD650001B3184301A96307 /* flashblock.jar */; };
 		3F44AF7405BDFBA000CB4B08 /* toolkit.manifest in Copy Chrome */ = {isa = PBXBuildFile; fileRef = F5DA444A027DD5AA01A80166 /* toolkit.manifest */; };
-		3F44AF7605BDFBA000CB4B08 /* libnss3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = F5247C320228B91F013DD99A /* libnss3.dylib */; };
-		3F44AF7705BDFBA000CB4B08 /* libnssckbi.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = F5247C330228B91F013DD99A /* libnssckbi.dylib */; };
-		3F44AF7805BDFBA000CB4B08 /* libsmime3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = F5247C340228B91F013DD99A /* libsmime3.dylib */; };
-		3F44AF7905BDFBA000CB4B08 /* libsoftokn3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = F5247C350228B91F013DD99A /* libsoftokn3.dylib */; };
-		3F44AF7A05BDFBA000CB4B08 /* libssl3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = F5247C360228B91F013DD99A /* libssl3.dylib */; };
+		3F44AF7605BDFBA000CB4B08 /* libnss3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = F5247C320228B91F013DD99A /* libnss3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AF7705BDFBA000CB4B08 /* libnssckbi.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = F5247C330228B91F013DD99A /* libnssckbi.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AF7805BDFBA000CB4B08 /* libsmime3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = F5247C340228B91F013DD99A /* libsmime3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AF7905BDFBA000CB4B08 /* libsoftokn3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = F5247C350228B91F013DD99A /* libsoftokn3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AF7A05BDFBA000CB4B08 /* libssl3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = F5247C360228B91F013DD99A /* libssl3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3F44AF7C05BDFBA000CB4B08 /* pipboot.xpt in Copy Security Components */ = {isa = PBXBuildFile; fileRef = F5247C4C0228BBB2013DD99A /* pipboot.xpt */; };
 		3F44AF7D05BDFBA000CB4B08 /* pipnss.xpt in Copy Security Components */ = {isa = PBXBuildFile; fileRef = F5247C4D0228BBB2013DD99A /* pipnss.xpt */; };
 		3F44AF7F05BDFBA000CB4B08 /* en-US.jar in Copy Chrome */ = {isa = PBXBuildFile; fileRef = F54EF7ED022A2F9C01A80165 /* en-US.jar */; };
-		3F44AF8705BDFBA000CB4B08 /* libxpcom.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F57F0F470209DF5301A967DF /* libxpcom.dylib */; };
-		3F44AF8905BDFBA000CB4B08 /* libmozjs.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F6BD637F01B30EA301A962F7 /* libmozjs.dylib */; };
-		3F44AF8A05BDFBA000CB4B08 /* libnspr4.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F6BD638001B30EA301A962F7 /* libnspr4.dylib */; };
-		3F44AF8B05BDFBA000CB4B08 /* libplc4.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F6BD638101B30EA301A962F7 /* libplc4.dylib */; };
-		3F44AF8C05BDFBA000CB4B08 /* libplds4.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F6BD638201B30EA301A962F7 /* libplds4.dylib */; };
+		3F44AF8705BDFBA000CB4B08 /* libxpcom.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F57F0F470209DF5301A967DF /* libxpcom.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AF8905BDFBA000CB4B08 /* libmozjs.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F6BD637F01B30EA301A962F7 /* libmozjs.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AF8A05BDFBA000CB4B08 /* libnspr4.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F6BD638001B30EA301A962F7 /* libnspr4.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AF8B05BDFBA000CB4B08 /* libplc4.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F6BD638101B30EA301A962F7 /* libplc4.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3F44AF8C05BDFBA000CB4B08 /* libplds4.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F6BD638201B30EA301A962F7 /* libplds4.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3F44AF9605BDFBA000CB4B08 /* libembed_base_s.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F51D9B2D0209573701A80166 /* libembed_base_s.a */; };
 		3F44AF9705BDFBA000CB4B08 /* libnecko.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F56F242602AC706801A967F3 /* libnecko.a */; };
 		3F44AF9905BDFBA000CB4B08 /* libuconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F56F242B02AC706801A967F3 /* libuconv.a */; };
@@ -896,7 +896,7 @@
 		3FE4ECEA082C2D89003BF39E /* NSURL+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FE4ECE9082C2D89003BF39E /* NSURL+Utils.m */; };
 		3FE4ECEB082C2D89003BF39E /* NSURL+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FE4ECE9082C2D89003BF39E /* NSURL+Utils.m */; };
 		3FE5BA0C068A1A140001CECD /* libmozz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FE5BA0B068A1A140001CECD /* libmozz.a */; };
-		3FE5BA0D068A1A6F0001CECD /* libmozz.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 3FE5B9FC068A090F0001CECD /* libmozz.dylib */; };
+		3FE5BA0D068A1A6F0001CECD /* libmozz.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 3FE5B9FC068A090F0001CECD /* libmozz.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3FEBB28D089D73A700BD8373 /* bookmarks.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FEBB28C089D73A700BD8373 /* bookmarks.plist */; };
 		3FEBB28E089D73A700BD8373 /* bookmarks.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FEBB28C089D73A700BD8373 /* bookmarks.plist */; };
 		3FEBB43C089DA88C00BD8373 /* history.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3FEBB43B089DA88B00BD8373 /* history.tiff */; };
@@ -966,9 +966,9 @@
 		7BB332F40A7E99BC0075521C /* libspellchecker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BB332F30A7E99BC0075521C /* libspellchecker.a */; };
 		7BB8FC1D0D2D58BB00CC63B0 /* KeychainDenyList.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7BB8FC1A0D2D589100CC63B0 /* KeychainDenyList.mm */; };
 		7BB8FC1F0D2D58D000CC63B0 /* KeychainDenyList.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7BB8FC1A0D2D589100CC63B0 /* KeychainDenyList.mm */; };
-		7BC5674B0D411368007503E1 /* libnssutil3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = 7B9A26180D411275008CDB39 /* libnssutil3.dylib */; };
+		7BC5674B0D411368007503E1 /* libnssutil3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = 7B9A26180D411275008CDB39 /* libnssutil3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		7BC5674C0D4113D8007503E1 /* libnssutil3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B9A26180D411275008CDB39 /* libnssutil3.dylib */; };
-		7BC5674D0D4113EA007503E1 /* libnssutil3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = 7B9A26180D411275008CDB39 /* libnssutil3.dylib */; };
+		7BC5674D0D4113EA007503E1 /* libnssutil3.dylib in Copy Security Libraries */ = {isa = PBXBuildFile; fileRef = 7B9A26180D411275008CDB39 /* libnssutil3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		82180AB107368AD7002EFA6D /* grabber.gif in Copy Gecko Resources */ = {isa = PBXBuildFile; fileRef = 82CE28710736615300B4DE07 /* grabber.gif */; };
 		82180AB207368AD7002EFA6D /* table-add-column-after-active.gif in Copy Gecko Resources */ = {isa = PBXBuildFile; fileRef = 82CE28720736615300B4DE07 /* table-add-column-after-active.gif */; };
 		82180AB307368AD7002EFA6D /* table-add-column-after-hover.gif in Copy Gecko Resources */ = {isa = PBXBuildFile; fileRef = 82CE28730736615300B4DE07 /* table-add-column-after-hover.gif */; };
@@ -991,7 +991,7 @@
 		82180AC607368B03002EFA6D /* txmgr.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = 82CE28C80736633900B4DE07 /* txmgr.xpt */; };
 		82180AC707368B03002EFA6D /* composer.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = 82CE28C40736625800B4DE07 /* composer.xpt */; };
 		82180AC807368B21002EFA6D /* EditorOverride.css in Copy Gecko Resources */ = {isa = PBXBuildFile; fileRef = 82CE28BD073661E300B4DE07 /* EditorOverride.css */; };
-		82180ACB07368BF2002EFA6D /* libcomposer.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = 82180AC907368BDF002EFA6D /* libcomposer.dylib */; };
+		82180ACB07368BF2002EFA6D /* libcomposer.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = 82180AC907368BDF002EFA6D /* libcomposer.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		828FBD97065A986900B3D52A /* dom_xpath.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = 82AC0D5E065A5F5100776B02 /* dom_xpath.xpt */; };
 		828FBD98065A986900B3D52A /* content_xslt.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = 82AC0D5D065A5F2300776B02 /* content_xslt.xpt */; };
 		82AC0D65065A602200776B02 /* dom_xpath.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = 82AC0D5E065A5F5100776B02 /* dom_xpath.xpt */; };
@@ -1031,7 +1031,7 @@
 		B33032D510AE17A7002FA0A7 /* places.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = B33032AE10AE166F002FA0A7 /* places.xpt */; };
 		B33032F610AE17C9002FA0A7 /* nsLivemarkService.js in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = B33032AA10AE15EA002FA0A7 /* nsLivemarkService.js */; };
 		B33032F710AE17F1002FA0A7 /* nsLivemarkService.js in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = B33032AA10AE15EA002FA0A7 /* nsLivemarkService.js */; };
-		B330336310AE1C60002FA0A7 /* libplaces.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = B330336010AE1C4C002FA0A7 /* libplaces.dylib */; };
+		B330336310AE1C60002FA0A7 /* libplaces.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = B330336010AE1C4C002FA0A7 /* libplaces.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		B386FC3110CF5AF30094DAAB /* NSMenu+Gecko.mm in Sources */ = {isa = PBXBuildFile; fileRef = B386FC3010CF5AF30094DAAB /* NSMenu+Gecko.mm */; };
 		B386FC3210CF5AF30094DAAB /* NSMenu+Gecko.mm in Sources */ = {isa = PBXBuildFile; fileRef = B386FC3010CF5AF30094DAAB /* NSMenu+Gecko.mm */; };
 		B3886D880F79D53700D8E015 /* FlashblockWhitelistManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = B3886D870F79D53700D8E015 /* FlashblockWhitelistManager.mm */; };
@@ -1048,7 +1048,7 @@
 		C7DE8DD80F30CFAC00CD3872 /* SafeBrowsingAboutModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7DE8DD50F30CFAC00CD3872 /* SafeBrowsingAboutModule.mm */; };
 		C7DE8DD90F30CFAC00CD3872 /* SafeBrowsingListManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7DE8DD30F30CFAC00CD3872 /* SafeBrowsingListManager.mm */; };
 		C7DE8DDA0F30CFAC00CD3872 /* SafeBrowsingAboutModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7DE8DD50F30CFAC00CD3872 /* SafeBrowsingAboutModule.mm */; };
-		C7DE8E2F0F30D2AD00CD3872 /* libcaminosafebrowsing.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = C7DE8E2B0F30D27300CD3872 /* libcaminosafebrowsing.dylib */; };
+		C7DE8E2F0F30D2AD00CD3872 /* libcaminosafebrowsing.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = C7DE8E2B0F30D27300CD3872 /* libcaminosafebrowsing.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C7DE8E300F30D2C100CD3872 /* nsUrlClassifierListManager.js in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = C7DE8E150F30D14F00CD3872 /* nsUrlClassifierListManager.js */; };
 		C7DE8E310F30D2C100CD3872 /* nsUrlClassifierLib.js in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = C7DE8E160F30D14F00CD3872 /* nsUrlClassifierLib.js */; };
 		C7DE8E420F30D2FF00CD3872 /* url-classifier.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = C7DE8E260F30D1BC00CD3872 /* url-classifier.xpt */; };
@@ -1177,7 +1177,7 @@
 		DE57A0030D43FB790057C437 /* MyYahooFeedHandler.app in Copy Feed Handlers */ = {isa = PBXBuildFile; fileRef = DE579FFD0D43FB790057C437 /* MyYahooFeedHandler.app */; };
 		DE581AB511865B1A00BAEA05 /* pluginGlue.js in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = DE581AB411865B1A00BAEA05 /* pluginGlue.js */; };
 		DE581AB611865B1A00BAEA05 /* pluginGlue.js in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = DE581AB411865B1A00BAEA05 /* pluginGlue.js */; };
-		DE62E4300B72B3D200142851 /* libauth.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = DE62E42F0B72B3D200142851 /* libauth.dylib */; };
+		DE62E4300B72B3D200142851 /* libauth.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = DE62E42F0B72B3D200142851 /* libauth.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DE62E4320B72B50C00142851 /* libauth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE62E4310B72B50C00142851 /* libauth.a */; };
 		DE6D27E70C1A014D00292043 /* CHPermissionManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = DE6D27E60C1A014D00292043 /* CHPermissionManager.mm */; };
 		DE6D27E80C1A014D00292043 /* CHPermissionManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = DE6D27E60C1A014D00292043 /* CHPermissionManager.mm */; };
@@ -1228,14 +1228,14 @@
 		DEC17FE70F9E8269001E43F1 /* xpcom_system.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = DEC17FE10F9E7F0C001E43F1 /* xpcom_system.xpt */; };
 		DEC180780F9EA96A001E43F1 /* global_locale_crashes_properties.strings in Resources */ = {isa = PBXBuildFile; fileRef = DEC180760F9EA96A001E43F1 /* global_locale_crashes_properties.strings */; };
 		DEC180790F9EA96A001E43F1 /* global_locale_crashes_properties.strings in Resources */ = {isa = PBXBuildFile; fileRef = DEC180760F9EA96A001E43F1 /* global_locale_crashes_properties.strings */; };
-		DEC87B100C2882DC002EB106 /* libstoragecomps.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = DEC87B0F0C2882DC002EB106 /* libstoragecomps.dylib */; };
+		DEC87B100C2882DC002EB106 /* libstoragecomps.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = DEC87B0F0C2882DC002EB106 /* libstoragecomps.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DEC87B120C288337002EB106 /* storage.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = DEC87B110C288337002EB106 /* storage.xpt */; };
 		DEC87B130C288337002EB106 /* storage.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = DEC87B110C288337002EB106 /* storage.xpt */; };
 		DEC87B150C288403002EB106 /* libstoragecomps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DEC87B140C288403002EB106 /* libstoragecomps.a */; };
-		DED015FA0D84C5B00017CFE5 /* libimgicon.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = DED015F90D84C5B00017CFE5 /* libimgicon.dylib */; };
+		DED015FA0D84C5B00017CFE5 /* libimgicon.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = DED015F90D84C5B00017CFE5 /* libimgicon.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DED0160C0D84C9810017CFE5 /* imgicon.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = DED0160B0D84C9810017CFE5 /* imgicon.xpt */; };
 		DED0160D0D84C9810017CFE5 /* imgicon.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = DED0160B0D84C9810017CFE5 /* imgicon.xpt */; };
-		DEDDE2930ABFB4B400D415F2 /* libchardet.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = DEDDE22D0ABFB21A00D415F2 /* libchardet.dylib */; };
+		DEDDE2930ABFB4B400D415F2 /* libchardet.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = DEDDE22D0ABFB21A00D415F2 /* libchardet.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DEDDE3CC0ABFB97A00D415F2 /* libchardet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DEDDE3310ABFB7E500D415F2 /* libchardet.a */; };
 		DEE34A570B84F5E100BCD687 /* FileChangeWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = DEE34A560B84F5E100BCD687 /* FileChangeWatcher.m */; settings = {COMPILER_FLAGS = "-fobjc-exceptions"; }; };
 		DEE34A580B84F5E100BCD687 /* FileChangeWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = DEE34A560B84F5E100BCD687 /* FileChangeWatcher.m */; settings = {COMPILER_FLAGS = "-fobjc-exceptions"; }; };
@@ -1303,7 +1303,7 @@
 		E43EFBBC0D143F2600DACA10 /* FindBarView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E43EFBB40D143F2600DACA10 /* FindBarView.mm */; };
 		E4575BBC09CE163A0060A9E7 /* PopupBlockView.nib in Resources */ = {isa = PBXBuildFile; fileRef = E4575BBA09CE163A0060A9E7 /* PopupBlockView.nib */; };
 		E4575BBD09CE163A0060A9E7 /* PopupBlockView.nib in Resources */ = {isa = PBXBuildFile; fileRef = E4575BBA09CE163A0060A9E7 /* PopupBlockView.nib */; };
-		E4C7D98C0A32108500B455AD /* libspellchecker.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = E4C7D98B0A32108500B455AD /* libspellchecker.dylib */; };
+		E4C7D98C0A32108500B455AD /* libspellchecker.dylib in Copy Component Libraries */ = {isa = PBXBuildFile; fileRef = E4C7D98B0A32108500B455AD /* libspellchecker.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		E4C7D99F0A32109D00B455AD /* spellchecker.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = E4C7D99E0A32109D00B455AD /* spellchecker.xpt */; };
 		E4C7D9A00A32109D00B455AD /* spellchecker.xpt in Copy Component XPTs */ = {isa = PBXBuildFile; fileRef = E4C7D99E0A32109D00B455AD /* spellchecker.xpt */; };
 		F724342B0FE6DB08008B783E /* AutoCompleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F72434200FE6DA90008B783E /* AutoCompleteCell.m */; };
@@ -3970,6 +3970,7 @@
 			);
 			name = Camino;
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
@@ -5563,8 +5564,11 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1010;
+			};
 			buildConfigurationList = 3323778E0C4D0F9600A34879 /* Build configuration list for PBXProject "Camino" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -7725,8 +7729,10 @@
 		00BC6876114B5EA5000A0508 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "Info-Importer.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.camino.spotlightimporter;
 				PRODUCT_NAME = CaminoImporter;
 				WRAPPER_EXTENSION = mdimporter;
 			};
@@ -7735,8 +7741,10 @@
 		00BC6877114B5EA5000A0508 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "Info-Importer.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.camino.spotlightimporter;
 				PRODUCT_NAME = CaminoImporter;
 				WRAPPER_EXTENSION = mdimporter;
 			};
@@ -7746,7 +7754,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				INFOPLIST_FILE = "Info-AppearancePrefPane.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.camino.preference.appearance;
 				PRODUCT_NAME = Appearance;
 			};
 			name = Debug;
@@ -7755,7 +7765,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				INFOPLIST_FILE = "Info-AppearancePrefPane.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.camino.preference.appearance;
 				PRODUCT_NAME = Appearance;
 			};
 			name = Release;
@@ -7764,8 +7776,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				FRAMEWORK_SEARCH_PATHS = "sparkle/build/$(CONFIGURATION)";
 				INFOPLIST_FILE = "Info-GeneralPrefPane.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.camino.preference.general;
 				PRODUCT_NAME = General;
 			};
 			name = Debug;
@@ -7774,8 +7788,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				FRAMEWORK_SEARCH_PATHS = "sparkle/build/$(CONFIGURATION)";
 				INFOPLIST_FILE = "Info-GeneralPrefPane.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.camino.preference.general;
 				PRODUCT_NAME = General;
 			};
 			name = Release;
@@ -7784,7 +7800,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				INFOPLIST_FILE = "Info-PrivacyPrefPane.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.camino.preference.privacy;
 				PRODUCT_NAME = Privacy;
 			};
 			name = Debug;
@@ -7793,7 +7811,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				INFOPLIST_FILE = "Info-PrivacyPrefPane.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.camino.preference.privacy;
 				PRODUCT_NAME = Privacy;
 			};
 			name = Release;
@@ -7802,7 +7822,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				INFOPLIST_FILE = "Info-SecurityPrefPane.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.camino.preference.security;
 				PRODUCT_NAME = Security;
 			};
 			name = Debug;
@@ -7811,7 +7833,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				INFOPLIST_FILE = "Info-SecurityPrefPane.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.camino.preference.security;
 				PRODUCT_NAME = Security;
 			};
 			name = Release;
@@ -7820,7 +7844,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				INFOPLIST_FILE = "Info-WebFeaturesPrefPane.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.camino.preference.webfeatures;
 				PRODUCT_NAME = WebFeatures;
 			};
 			name = Debug;
@@ -7829,7 +7855,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				INFOPLIST_FILE = "Info-WebFeaturesPrefPane.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.camino.preference.webfeatures;
 				PRODUCT_NAME = WebFeatures;
 			};
 			name = Release;
@@ -7838,7 +7866,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				INFOPLIST_FILE = "Info-TabsPrefPane.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.camino.preference.tabs;
 				PRODUCT_NAME = Tabs;
 			};
 			name = Debug;
@@ -7847,7 +7877,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				INFOPLIST_FILE = "Info-TabsPrefPane.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.camino.preference.tabs;
 				PRODUCT_NAME = Tabs;
 			};
 			name = Release;
@@ -7856,7 +7888,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				INFOPLIST_FILE = "Info-DownloadsPrefPane.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.camino.preference.downloads;
 				PRODUCT_NAME = Downloads;
 			};
 			name = Debug;
@@ -7865,7 +7899,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				INFOPLIST_FILE = "Info-DownloadsPrefPane.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.camino.preference.downloads;
 				PRODUCT_NAME = Downloads;
 			};
 			name = Release;
@@ -7874,6 +7910,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				GCC_PREFIX_HEADER = src/includes/ChimeraPrefix.h;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"OSTYPE=Darwin1.4",
@@ -7902,6 +7939,7 @@
 					"$(OTHER_CPLUSPLUSFLAGS)",
 					"-Wno-non-virtual-dtor",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.camino.preference.history;
 				PRODUCT_NAME = History;
 			};
 			name = Debug;
@@ -7910,6 +7948,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D10C4D88D300A34879 /* PrefPane.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				GCC_PREFIX_HEADER = src/includes/ChimeraPrefix.h;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"OSTYPE=Darwin1.4",
@@ -7933,6 +7972,7 @@
 					"$(OTHER_CPLUSPLUSFLAGS)",
 					"-Wno-non-virtual-dtor",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.camino.preference.history;
 				PRODUCT_NAME = History;
 				WARNING_CFLAGS = (
 					"$(WARNING_CFLAGS)",
@@ -7945,6 +7985,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377970C4D0FBD00A34879 /* Camino.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				LIBRARY_SEARCH_PATHS = (
 					"$(COMMON_LIBRARY_SEARCH_PATHS)",
 					"$(SHARED_LIBRARY_SEARCH_PATHS)",
@@ -7962,6 +8003,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377970C4D0FBD00A34879 /* Camino.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				LIBRARY_SEARCH_PATHS = (
 					"$(COMMON_LIBRARY_SEARCH_PATHS)",
 					"$(SHARED_LIBRARY_SEARCH_PATHS)",
@@ -7973,6 +8015,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377970C4D0FBD00A34879 /* Camino.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(GCC_PREPROCESSOR_DEFINITIONS)",
 					_BUILD_STATIC_BIN,
@@ -7994,6 +8037,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377970C4D0FBD00A34879 /* Camino.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(GCC_PREPROCESSOR_DEFINITIONS)",
 					_BUILD_STATIC_BIN,
@@ -8009,10 +8053,36 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377CF0C4D886800A34879 /* Debug.xcconfig */;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				PREBINDING = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
 				ZERO_LINK = NO;
 			};
 			name = Debug;
@@ -8021,10 +8091,34 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 332377D00C4D887600A34879 /* Release.xcconfig */;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				PREBINDING = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -8032,6 +8126,7 @@
 		7BDD26CD0D0DC2BA00BA05C6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -8042,9 +8137,9 @@
 		7BDD26CE0D0DC2BA00BA05C6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				PRODUCT_NAME = Camino;
 				ZERO_LINK = NO;
 			};
@@ -8053,6 +8148,7 @@
 		7BDD26E40D0DC30700BA05C6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -8063,9 +8159,9 @@
 		7BDD26E50D0DC30700BA05C6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				PRODUCT_NAME = CaminoStatic;
 				ZERO_LINK = NO;
 			};
