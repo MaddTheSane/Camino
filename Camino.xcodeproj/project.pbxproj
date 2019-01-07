@@ -72,18 +72,18 @@
 		001FFD9A0C795D5400D9C2C8 /* designmode.css in Copy Gecko Resources */ = {isa = PBXBuildFile; fileRef = 001FFD940C795D3300D9C2C8 /* designmode.css */; };
 		00335B8E0C655ABC00A607F2 /* WebSearchField.mm in Sources */ = {isa = PBXBuildFile; fileRef = 00335B8C0C655ABC00A607F2 /* WebSearchField.mm */; };
 		00335B900C655ABC00A607F2 /* WebSearchField.mm in Sources */ = {isa = PBXBuildFile; fileRef = 00335B8C0C655ABC00A607F2 /* WebSearchField.mm */; };
-		005C998D11B3FC54002FAA43 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 7B64B7CA0CCFD9F50098406C /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		005C998D11B3FC54002FAA43 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 7B64B7CA0CCFD9F50098406C /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		005C998E11B3FC68002FAA43 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B64B7CA0CCFD9F50098406C /* Sparkle.framework */; };
-		005C998F11B3FC78002FAA43 /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 00BC6C81114B6F45000A0508 /* Growl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		005C998F11B3FC78002FAA43 /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 00BC6C81114B6F45000A0508 /* Growl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		005C999111B3FC83002FAA43 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00BC6C81114B6F45000A0508 /* Growl.framework */; };
-		005C999311B3FC8C002FAA43 /* Breakpad.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 33820DA60F8AA24500D2164A /* Breakpad.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		005C999311B3FC8C002FAA43 /* Breakpad.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 33820DA60F8AA24500D2164A /* Breakpad.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		005C999511B3FC98002FAA43 /* Breakpad.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33820DA60F8AA24500D2164A /* Breakpad.framework */; };
-		005C999611B3FCB5002FAA43 /* Breakpad.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 33820DA60F8AA24500D2164A /* Breakpad.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		005C999611B3FCB5002FAA43 /* Breakpad.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 33820DA60F8AA24500D2164A /* Breakpad.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		005C999711B3FCBD002FAA43 /* Breakpad.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33820DA60F8AA24500D2164A /* Breakpad.framework */; };
-		005C999811B3FCC4002FAA43 /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 00BC6C81114B6F45000A0508 /* Growl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		005C999811B3FCC4002FAA43 /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 00BC6C81114B6F45000A0508 /* Growl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		005C999911B3FCCF002FAA43 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00BC6C81114B6F45000A0508 /* Growl.framework */; };
 		005C999A11B3FCD9002FAA43 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B64B7CA0CCFD9F50098406C /* Sparkle.framework */; };
-		005C99B611B403A8002FAA43 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 7B64B7CA0CCFD9F50098406C /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		005C99B611B403A8002FAA43 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 7B64B7CA0CCFD9F50098406C /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		005F387E0E50852D00D8E7A6 /* InvalidCertOverrideDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 005F387C0E50852D00D8E7A6 /* InvalidCertOverrideDialog.xib */; };
 		005F387F0E50852D00D8E7A6 /* InvalidCertOverrideDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 005F387C0E50852D00D8E7A6 /* InvalidCertOverrideDialog.xib */; };
 		0081150B0B180DDE001CB3F0 /* libthebes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0081150A0B180DDE001CB3F0 /* libthebes.a */; };
@@ -5171,7 +5171,6 @@
 				00BC696B114B6839000A0508 /* Copy Spotlight Importer */,
 				33820EA50F8AB1F400D2164A /* Force Copy Before Link */,
 				3F44AD7C05BDFB9F00CB4B08 /* Frameworks */,
-				334D108B0FAA4D7600545AFE /* Strip Framework Headers */,
 			);
 			buildRules = (
 			);
@@ -5310,7 +5309,6 @@
 				00BC696D114B6899000A0508 /* Copy Spotlight Importer */,
 				33A72CD40F8ADDE4003D3D78 /* Force Copy Before Link */,
 				3F44AF9405BDFBA000CB4B08 /* Frameworks */,
-				00118D860FA3C75D00EADCBC /* Strip Framework Headers */,
 			);
 			buildRules = (
 			);
@@ -5932,22 +5930,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		00118D860FA3C75D00EADCBC /* Strip Framework Headers */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)",
-			);
-			name = "Strip Framework Headers";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/scripts/strip-headers.sh\"";
-			showEnvVarsInLog = 0;
-		};
 		005C9E1111B44D3D002FAA43 /* Copy Frameworks to Build Dir */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -6026,22 +6008,6 @@
 			shellPath = /bin/sh;
 			shellScript = "echo \"Change Sparkle Load Path\"\n/usr/bin/install_name_tool -change @loader_path/../Frameworks/Sparkle.framework/Versions/A/Sparkle @executable_path/../Frameworks/Sparkle.framework/Versions/A/Sparkle \"$BUILT_PRODUCTS_DIR/$PRODUCT_NAME.$WRAPPER_EXTENSION/Contents/MacOS/$PRODUCT_NAME\"\n";
 		};
-		334D108B0FAA4D7600545AFE /* Strip Framework Headers */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)",
-			);
-			name = "Strip Framework Headers";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/scripts/strip-headers.sh\"";
-			showEnvVarsInLog = 0;
-		};
 		3365CA0F0D07197E00ACBF18 /* Scrub Framework Languages */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -6069,7 +6035,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/scripts/scrub-framework-languages.pl\"";
+			shellScript = "\"${SRCROOT}/scripts/scrub-framework-languages.pl\"\n";
 			showEnvVarsInLog = 0;
 		};
 		33820EA50F8AB1F400D2164A /* Force Copy Before Link */ = {
@@ -6087,7 +6053,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This script does nothing; it is here only to force Xcode (via the input and output files)\n# into understanding that library and framework copy phases must take place before linking.\n# This is necessary to be able to set an @executable_path that works for both libthebes.dylib\n# and Breakpad.framework.\necho \"Forcing library and framework copy phase to happen before linking.\"";
+			shellScript = "# This script does nothing; it is here only to force Xcode (via the input and output files)\n# into understanding that library and framework copy phases must take place before linking.\n# This is necessary to be able to set an @executable_path that works for both libthebes.dylib\n# and Breakpad.framework.\necho \"Forcing library and framework copy phase to happen before linking.\"\n";
 			showEnvVarsInLog = 0;
 		};
 		33A72CD40F8ADDE4003D3D78 /* Force Copy Before Link */ = {
