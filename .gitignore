@@ -1,0 +1,9 @@
+
+Makefile
+build
+generated
+
+*.xcodeproj/*.mode?
+*.xcodeproj/*.mode?v?
+*.xcodeproj/*.pbxuser
+xcuserdata/
