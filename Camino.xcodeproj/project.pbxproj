@@ -2821,7 +2821,7 @@
 		DE02573112F28D45003F4B1C /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = English; path = English.lproj/mozilla.dtd; sourceTree = "<group>"; };
 		DE02573312F28D45003F4B1C /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = English; path = English.lproj/global.dtd; sourceTree = "<group>"; };
 		DE02573512F28D45003F4B1C /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = English; path = English.lproj/config.dtd; sourceTree = "<group>"; };
-		DE02574712F28D8D003F4B1C /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = English; path = resources/localized/English.lproj/gecko.manifest; sourceTree = "<group>"; };
+		DE02574712F28D8D003F4B1C /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = English; path = English.lproj/gecko.manifest; sourceTree = "<group>"; };
 		DE18FBFA0F2435F700325C11 /* GrowlController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GrowlController.mm; sourceTree = "<group>"; };
 		DE18FBFB0F2435F700325C11 /* GrowlController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowlController.h; sourceTree = "<group>"; };
 		DE19C72E1121F350007A57E0 /* libplaces.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libplaces.a; path = ../staticlib/libplaces.a; sourceTree = SOURCE_ROOT; };
