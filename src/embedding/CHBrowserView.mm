@@ -397,7 +397,7 @@ const char* const kHTMLMIMEType = "text/html";
   return secureUI;
 }
 
-- (void)loadURI:(NSString *)urlSpec referrer:(NSString*)referrer flags:(unsigned int)flags allowPopups:(BOOL)inAllowPopups
+- (void)loadURI:(NSString *)urlSpec referrer:(NSString*)referrer flags:(CHLoadURIFlag)flags allowPopups:(BOOL)inAllowPopups
 {
   nsCOMPtr<nsIWebNavigation> nav = do_QueryInterface(_webBrowser);
 
@@ -518,7 +518,7 @@ const char* const kHTMLMIMEType = "text/html";
   }    
 }
 
-- (void)stop:(unsigned int)flags
+- (void)stop:(NSStopFlag)flags
 {
   nsCOMPtr<nsIWebNavigation> nav = do_QueryInterface(_webBrowser);
   if ( !nav )

@@ -2480,7 +2480,7 @@
 		00BBBC840D66C13400C2D916 /* CHGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHGradient.m; path = src/extensions/CHGradient.m; sourceTree = SOURCE_ROOT; };
 		00BBBF1D0D6A149800C2D916 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/FindBarTextured.xib; sourceTree = "<group>"; };
 		00BC6874114B5EA3000A0508 /* CaminoImporter.mdimporter */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CaminoImporter.mdimporter; sourceTree = BUILT_PRODUCTS_DIR; };
-		00BC68A2114B5F99000A0508 /* GetMetadataForFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetMetadataForFile.m; sourceTree = "<group>"; };
+		00BC68A2114B5F99000A0508 /* GetMetadataForFile.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = GetMetadataForFile.m; sourceTree = "<group>"; };
 		00BC68A3114B5F99000A0508 /* Info-Importer.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Importer.plist"; sourceTree = "<group>"; };
 		00BC68A4114B5F99000A0508 /* Importer-main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "Importer-main.c"; sourceTree = "<group>"; };
 		00BC68A5114B5F99000A0508 /* schema.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = schema.xml; path = "resources/spotlight-importer/schema.xml"; sourceTree = SOURCE_ROOT; };
@@ -7339,6 +7339,7 @@
 		00BC6876114B5EA5000A0508 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "Info-Importer.plist";
@@ -7351,6 +7352,7 @@
 		00BC6877114B5EA5000A0508 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "Info-Importer.plist";

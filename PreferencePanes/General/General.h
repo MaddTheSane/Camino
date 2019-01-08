@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#import <PreferencePaneBase.h>
+#import "PreferencePaneBase.h"
 
 @interface OrgMozillaCaminoPreferenceGeneral : PreferencePaneBase
 {
@@ -33,7 +33,6 @@
 // so we can rebuild the list here as well
 - (void)updateDefaultFeedViewerMenu;
 
-- (IBAction)defaultFeedViewerChange:(id)sender;
 - (IBAction)runOpenDialogToSelectBrowser:(id)sender;
 - (IBAction)runOpenDialogToSelectFeedViewer:(id)sender;
 

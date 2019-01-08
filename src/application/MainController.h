@@ -17,18 +17,18 @@
 @class SUUpdater;
 
 
-typedef enum EBookmarkOpenBehavior
+typedef NS_ENUM(NSInteger, EBookmarkOpenBehavior)
 {
-  eBookmarkOpenBehavior_Preferred,     // Reuse current window/tab, unless there isn't one, then open a new one
-  eBookmarkOpenBehavior_NewPreferred,  // Open in new window or tab based on prefs
+  eBookmarkOpenBehavior_Preferred,     //!< Reuse current window/tab, unless there isn't one, then open a new one
+  eBookmarkOpenBehavior_NewPreferred,  //!< Open in new window or tab based on prefs
   eBookmarkOpenBehavior_ForceReuse,
   eBookmarkOpenBehavior_NewWindow,
   eBookmarkOpenBehavior_NewTab
 };
 
-typedef enum ETabAndWindowCount
+typedef NS_ENUM(NSInteger, ETabAndWindowCount)
 {
-  eNoWindows,                     // so we have something to fall back on
+  eNoWindows,                     //!< so we have something to fall back on
   eOneWindowWithoutTabs,
   eMultipleWindowsWithoutTabs,
   eMultipleTabsInOneWindow,

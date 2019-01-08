@@ -10,13 +10,13 @@
 @class RolloverImageButton;
 @class CHSlidingViewAnimation;
 
-typedef enum {
+typedef NS_ENUM(NSInteger, ESlideAnimationDirection) {
   eSlideAnimationDirectionLeft,
   eSlideAnimationDirectionRight,
   eSlideAnimationDirectionNone
-} ESlideAnimationDirection;
+};
 
-extern NSString *const kSlidingTabAnimationFinishedNotification;
+extern NSNotificationName const kSlidingTabAnimationFinishedNotification;
 // Key in the |kSlidingTabAnimationFinishedNotification| user info dictionary to inform observers
 // if the sliding tab animation was aborted before it finished.
 extern NSString *const kSlidingTabAnimationFinishedCompletelyKey;

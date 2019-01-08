@@ -11,12 +11,12 @@
 @class ExtendedTableView;
 
 // for the "Policy" column in the Exceptions List
-typedef enum ECookiePolicyPopupIndex
+typedef NS_ENUM(NSInteger, ECookiePolicyPopupIndex)
 {
   eAllowIndex,
   eSessionOnlyIndex,
   eDenyIndex
-} ECookiePolicyPopupIndex;
+};
 
 @interface OrgMozillaCaminoPreferencePrivacy : PreferencePaneBase
 {

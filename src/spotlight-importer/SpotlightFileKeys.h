@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-NSString* const kSpotlightBookmarkTitleKey = @"Name";
-NSString* const kSpotlightBookmarkURLKey = @"URL";
-NSString* const kSpotlightBookmarkDescriptionKey = @"Description";
-NSString* const kSpotlightBookmarkShortcutKey = @"Shortcut";
+static NSString* const kSpotlightBookmarkTitleKey = @"Name";
+static NSString* const kSpotlightBookmarkURLKey = @"URL";
+static NSString* const kSpotlightBookmarkDescriptionKey = @"Description";
+static NSString* const kSpotlightBookmarkShortcutKey = @"Shortcut";

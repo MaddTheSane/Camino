@@ -33,24 +33,24 @@ class nsIDOMSimpleGestureEvent;
 // failed means there was an error (e.g., 404), and blocked means
 // that the page was flagged as possible phishing/malware (in which
 // case the user is seeing our warning overlay, rather than the page).
-typedef enum
+typedef NS_ENUM(int, ERequestStatus)
 {
   eRequestSucceeded,
   eRequestFailed,
   eRequestBlocked
-} ERequestStatus;
+};
 
-typedef enum {
+typedef NS_ENUM(int, ESafeBrowsingBlockedReason) {
   eSafeBrowsingNotBlocked = 0,
   eSafeBrowsingBlockedAsPhishing,
   eSafeBrowsingBlockedAsMalware
-} ESafeBrowsingBlockedReason;
+};
 
 // Protocol implemented by anyone interested in progress
 // related to a BrowserView. A listener should explicitly
 // register itself with the view using the addListener
 // method.
-@protocol CHBrowserListener
+@protocol CHBrowserListener <NSObject>
 
 - (void)onLoadingStarted;
 - (void)onLoadingCompleted:(BOOL)succeeded;
@@ -92,11 +92,11 @@ typedef enum {
 
 @end
 
-typedef enum {
+typedef NS_ENUM(int, NSStatusType) {
   NSStatusTypeScript            = 0x0001,
   NSStatusTypeScriptDefault     = 0x0002,
   NSStatusTypeLink              = 0x0003,
-} NSStatusType;
+};
 
 @protocol CHBrowserContainer
 
@@ -141,7 +141,7 @@ typedef enum {
 
 @end
 
-enum {
+typedef NS_OPTIONS(unsigned int, CHLoadURIFlag) {
   NSLoadFlagsNone                   = 0x0000,
   NSLoadFlagsDontPutInHistory       = 0x0010,
   NSLoadFlagsReplaceHistoryEntry    = 0x0020,
@@ -150,24 +150,24 @@ enum {
   NSLoadFlagsBypassClassifier       = 0x10000
 }; 
 
-enum {
+typedef NS_OPTIONS(unsigned int, NSStopFlag) {
   NSStopLoadNetwork   = 0x01,
   NSStopLoadContent   = 0x02,
   NSStopLoadAll       = 0x03  
 };
 
-typedef enum {
+typedef NS_ENUM(NSInteger, CHSecurityStatus) {
   CHSecurityInsecure     = 0,
   CHSecuritySecure       = 1,
   CHSecurityBroken       = 2     // or mixed content
-} CHSecurityStatus;
+};
 
-typedef enum {
+typedef NS_ENUM(NSInteger, CHSecurityStrength) {
   CHSecurityNone          = 0,
   CHSecurityLow           = 1,
   CHSecurityMedium        = 2,     // key strength < 90 bit
   CHSecurityHigh          = 3
-} CHSecurityStrength;
+};
 
 extern const char* const kPlainTextMIMEType;
 extern const char* const kHTMLMIMEType;
@@ -199,13 +199,13 @@ extern const char* const kHTMLMIMEType;
 - (already_AddRefed<nsIDOMWindow>)contentWindow;	// addrefs
 
 // nsIWebNavigation methods
-- (void)loadURI:(NSString *)urlSpec referrer:(NSString*)referrer flags:(unsigned int)flags allowPopups:(BOOL)inAllowPopups;
+- (void)loadURI:(NSString *)urlSpec referrer:(NSString*)referrer flags:(CHLoadURIFlag)flags allowPopups:(BOOL)inAllowPopups;
 - (void)reload:(unsigned int)flags;
 - (void)goBack;
 - (BOOL)canGoBack;
 - (void)goForward;
 - (BOOL)canGoForward;
-- (void)stop:(unsigned int)flags;   // NSStop flags
+- (void)stop:(NSStopFlag)flags;   // NSStop flags
 - (void)goToSessionHistoryIndex:(int)index;
 
 - (NSString*)currentURI;

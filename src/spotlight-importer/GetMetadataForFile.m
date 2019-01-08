@@ -16,9 +16,10 @@ Boolean GetMetadataForFile(void* thisInterface,
                            CFStringRef contentTypeUTI,
                            CFStringRef pathToFile)
 {
-  NSMutableDictionary* outDict = (NSMutableDictionary*)attributes;
+  @autoreleasepool {
+  NSMutableDictionary* outDict = (__bridge NSMutableDictionary*)attributes;
   NSDictionary* fileInfo =
-      [NSDictionary dictionaryWithContentsOfFile:(NSString*)pathToFile];
+  [NSDictionary dictionaryWithContentsOfFile:(__bridge NSString*)pathToFile];
   if (!fileInfo)
     return FALSE;
 
@@ -47,4 +48,5 @@ Boolean GetMetadataForFile(void* thisInterface,
   }
 
   return TRUE;
+  }
 }

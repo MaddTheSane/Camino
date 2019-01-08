@@ -47,19 +47,19 @@ class BWCDataOwner;
 
 #pragma mark -
 
-typedef enum
+typedef NS_ENUM(NSInteger, ETabOpenPolicy)
 {
   eAppendTabs,
   eReplaceTabs,
   eReplaceFromCurrentTab
 	  
-} ETabOpenPolicy;
+};
 
-typedef enum  {
+typedef NS_ENUM(NSInteger, EOpenDestination) {
   eDestinationNewWindow = 0,
   eDestinationNewTab,
   eDestinationCurrentView
-} EOpenDestination;
+};
 
 @class CHBrowserView;
 @class BookmarkViewController;
