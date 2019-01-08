@@ -31,7 +31,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="18" userLabel="BookmarkManager" customClass="BookmarksEditingView">
             <rect key="frame" x="0.0" y="0.0" width="586" height="416"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -423,8 +423,8 @@
                     <rect key="frame" x="0.0" y="0.0" width="434" height="397"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" id="0oh-xH-NRV">
-                        <rect key="frame" x="1" y="25" width="432" height="371"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <rect key="frame" x="1" y="0.0" width="432" height="396"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <outlineView focusRingType="exterior" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveColumns="NO" rowHeight="16" headerView="372" indentationPerLevel="16" autoresizesOutlineColumn="YES" outlineTableColumn="258" id="259" customClass="BookmarkOutlineView">
                                 <rect key="frame" x="0.0" y="0.0" width="641" height="371"/>
@@ -520,8 +520,8 @@
                     <rect key="frame" x="0.0" y="0.0" width="437" height="341"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" id="y5p-ms-Ezg">
-                        <rect key="frame" x="1" y="25" width="435" height="315"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <rect key="frame" x="1" y="0.0" width="435" height="340"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <outlineView focusRingType="exterior" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveColumns="NO" rowHeight="16" headerView="375" indentationPerLevel="16" autoresizesOutlineColumn="YES" outlineTableColumn="265" id="267" customClass="ExtendedOutlineView">
                                 <rect key="frame" x="0.0" y="0.0" width="435" height="315"/>
