@@ -30,7 +30,7 @@ OTHER_LDFLAGS = -Wl,-executable_path,$(BUILD_DIR)/$(CONFIGURATION)/Camino.app/Co
 // ld: warning internal error: output_flush(offset = w, size = x) overlaps with flushed block(offset = y, size = z)
 // This is not a problem in Xcode 3.0.  This can be removed once Xcode 3.0 is
 // the minimum build requirement.
-DEAD_CODE_STRIPPING = NO
+//DEAD_CODE_STRIPPING = NO
 
 // Xcode 2.x ld creates huge __LINKEDIT segments when linking preference pane
 // bundles against a static Camino.  The segments seem to contain entries for
@@ -55,3 +55,5 @@ STRIP_STYLE = none  // Anything other than a recognized value (all, non-global,
 // Disable stripping of nibs on 10.6 to ensure any 10.6-built release will have
 // localizable nibs.
 IBC_STRIP_NIBS = NO
+
+USER_HEADER_SEARCH_PATHS = $(SOURCE_ROOT)/src/preferences

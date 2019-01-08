@@ -4070,7 +4070,6 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Unit tests/UnitTests-Prefix.pch";
-				GCC_VERSION = 4.0;
 				INFOPLIST_FILE = "$(SRCROOT)/Unit tests/Unit tests-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				OTHER_LDFLAGS = "-lgcov";
@@ -4095,7 +4094,6 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Unit tests/UnitTests-Prefix.pch";
-				GCC_VERSION = 4.0;
 				INFOPLIST_FILE = "$(SRCROOT)/Unit tests/Unit tests-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				OTHER_LDFLAGS = "-lgcov";
@@ -4121,7 +4119,6 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Unit tests/UnitTests-Prefix.pch";
-				GCC_VERSION = 4.0;
 				INFOPLIST_FILE = "$(SRCROOT)/Unit tests/Unit tests-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				OTHER_LDFLAGS = "-lgcov";

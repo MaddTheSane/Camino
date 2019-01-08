@@ -5,7 +5,7 @@
 
 #import <AppKit/AppKit.h>
 
-extern NSString* const kPopupMenuButtonWillDisplayMenuNotification;
+extern NSNotificationName const kPopupMenuButtonWillDisplayMenuNotification;
 
 @interface PopupMenuButton : NSButton
 {

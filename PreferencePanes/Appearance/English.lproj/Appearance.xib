@@ -32,7 +32,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="99" userLabel="Window">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
@@ -84,7 +84,7 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                             <popUpButtonCell key="cell" type="push" title="Item1" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="519" id="1080">
                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                <font key="font" metaFont="system"/>
+                                                <font key="font" metaFont="menu"/>
                                                 <menu key="menu" title="OtherViews" id="516">
                                                     <items>
                                                         <menuItem title="Item1" state="on" id="519"/>
@@ -149,7 +149,7 @@
                                         <button imageHugsTitle="YES" id="755">
                                             <rect key="frame" x="181" y="46" width="258" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="Always use my fonts" bezelStyle="regularSquare" imagePosition="leading" alignment="left" inset="2" id="1086">
+                                            <buttonCell key="cell" type="check" title="Always use my fonts" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="1086">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -164,17 +164,17 @@
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             <size key="cellSize" width="138" height="18"/>
                                             <size key="intercellSpacing" width="4" height="2"/>
-                                            <buttonCell key="prototype" type="radio" title="Radio" imagePosition="leading" alignment="left" inset="2" id="1090">
+                                            <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" inset="2" id="1090">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <cells>
                                                 <column>
-                                                    <buttonCell type="radio" title="Serif" imagePosition="leading" alignment="left" state="on" inset="2" id="591">
+                                                    <buttonCell type="radio" title="Serif" imagePosition="left" alignment="left" state="on" inset="2" id="591">
                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
-                                                    <buttonCell type="radio" title="Sans-serif" imagePosition="leading" alignment="left" tag="1" inset="2" id="592">
+                                                    <buttonCell type="radio" title="Sans-serif" imagePosition="left" alignment="left" tag="1" inset="2" id="592">
                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
@@ -199,7 +199,7 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                             <popUpButtonCell key="cell" type="push" title="8" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" tag="8" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="958" id="1087">
                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                <font key="font" metaFont="system"/>
+                                                <font key="font" metaFont="menu"/>
                                                 <menu key="menu" title="OtherViews" id="954">
                                                     <items>
                                                         <menuItem title="None" id="957"/>
@@ -243,12 +243,12 @@
                             <tabViewItem label="Colors &amp; Links" identifier="colors" id="103">
                                 <view key="view" id="104">
                                     <rect key="frame" x="10" y="33" width="549" height="316"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button imageHugsTitle="YES" id="108">
                                             <rect key="frame" x="208" y="125" width="159" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="Underline links" bezelStyle="regularSquare" imagePosition="leading" alignment="left" inset="2" id="1070">
+                                            <buttonCell key="cell" type="check" title="Underline links" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="1070">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>

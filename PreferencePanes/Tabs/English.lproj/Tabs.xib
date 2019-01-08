@@ -19,7 +19,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="5" userLabel="Window">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
@@ -32,7 +32,7 @@
                     <button imageHugsTitle="YES" id="354">
                         <rect key="frame" x="275" y="39" width="183" height="18"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="check" title="Open in the background" bezelStyle="regularSquare" imagePosition="leading" alignment="left" inset="2" id="447">
+                        <buttonCell key="cell" type="check" title="Open in the background" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="447">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -53,7 +53,7 @@
                     <button imageHugsTitle="YES" id="382">
                         <rect key="frame" x="275" y="70" width="171" height="18"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <buttonCell key="cell" type="check" title="Always stays visible" bezelStyle="regularSquare" imagePosition="leading" alignment="left" inset="2" id="449">
+                        <buttonCell key="cell" type="check" title="Always stays visible" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="449">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -74,7 +74,7 @@
                     <button imageHugsTitle="YES" id="409">
                         <rect key="frame" x="275" y="101" width="250" height="18"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <buttonCell key="cell" type="check" title="Links that would open new windows" bezelStyle="regularSquare" imagePosition="leading" alignment="left" allowsMixedState="YES" inset="2" id="451">
+                        <buttonCell key="cell" type="check" title="Links that would open new windows" bezelStyle="regularSquare" imagePosition="left" alignment="left" allowsMixedState="YES" inset="2" id="451">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -95,7 +95,7 @@
                     <button imageHugsTitle="YES" id="419">
                         <rect key="frame" x="275" y="145" width="206" height="18"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <buttonCell key="cell" type="check" title="Links opened with ⌘-click" bezelStyle="regularSquare" imagePosition="leading" alignment="left" inset="2" id="453">
+                        <buttonCell key="cell" type="check" title="Links opened with ⌘-click" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="453">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -107,7 +107,7 @@
                     <button imageHugsTitle="YES" id="420">
                         <rect key="frame" x="275" y="123" width="243" height="18"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <buttonCell key="cell" type="check" title="Links opened by other applications" bezelStyle="regularSquare" imagePosition="leading" alignment="left" allowsMixedState="YES" inset="2" id="454">
+                        <buttonCell key="cell" type="check" title="Links opened by other applications" bezelStyle="regularSquare" imagePosition="left" alignment="left" allowsMixedState="YES" inset="2" id="454">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
